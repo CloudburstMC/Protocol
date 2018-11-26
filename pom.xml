@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.nukkitx.protocol</groupId>
+    <artifactId>parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Protocol Parent</name>
+    <description>A protocol library for Minecraft</description>
+    <url>https://github.com/NukkitX/Protocol</url>
+    <inceptionYear>2018</inceptionYear>
+
+    <modules>
+        <module>common</module>
+        <module>bedrock</module>
+    </modules>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License v3</name>
+            <url>https://opensource.org/licenses/LGPL-3.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>NukkitX</name>
+        <url>https://github.com/NukkitX</url>
+    </organization>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/NukkitX/Protocol/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://ci.nukkitx.com/job/NukkitX/job/Protocol</url>
+    </ciManagement>
+
+    <scm>
+        <connection>scm:git:https://github.com/NukkitX/Protocol.git</connection>
+        <developerConnection>scm:git:git@github.com:NukkitX/Protocol.git</developerConnection>
+        <url>https://github.com/NukkitX/Protocol</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>nukkitx-releases</name>
+            <url>https://repo.nukkitx.com/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>nukkitx-snapshots</name>
+            <url>https://repo.nukkitx.com/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>HHmm-ddMMyyyy</maven.build.timestamp.format>
+        <network.version>1.2.3-SNAPSHOT</network.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>nukkitx-repo-release</id>
+            <url>https://repo.nukkitx.com/release/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>nukkitx-repo-snapshot</id>
+            <url>https://repo.nukkitx.com/snapshot/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
