@@ -9,7 +9,7 @@ import com.nukkitx.protocol.PlayerSession;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
-import com.nukkitx.protocol.bedrock.compat.CompatUtils;
+import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
 import com.nukkitx.protocol.bedrock.session.data.AuthData;
@@ -51,7 +51,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     private final Queue<BedrockPacket> currentlyQueued = new ConcurrentLinkedQueue<>();
     @Getter(AccessLevel.NONE)
     private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
-    private BedrockPacketCodec packetCodec = CompatUtils.COMPAT_CODEC;
+    private BedrockPacketCodec packetCodec = BedrockCompat.COMPAT_CODEC;
     private BedrockPacketHandler handler;
     private WrapperHandler wrapperHandler = DefaultWrapperHandler.DEFAULT;
     private RakNetSession connection;
