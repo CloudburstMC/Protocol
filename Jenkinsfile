@@ -19,7 +19,7 @@ pipeline {
                 branch "master"
             }
             steps {
-                sh 'mvn javadoc:aggregate -DskipTests'
+                sh 'mvn javadoc:aggregate -pl bedrock/bedrock-common -am -DskipTests'
             }
             post {
                 success {
