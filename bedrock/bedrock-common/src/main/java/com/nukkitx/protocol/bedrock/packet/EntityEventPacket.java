@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class EntityEventPacket extends BedrockPacket {
+public class EntityEventPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected int event;
     protected int data;

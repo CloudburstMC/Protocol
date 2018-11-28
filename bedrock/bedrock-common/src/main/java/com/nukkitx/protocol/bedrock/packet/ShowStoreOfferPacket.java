@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ShowStoreOfferPacket extends BedrockPacket {
+public class ShowStoreOfferPacket extends BedrockPacket {
     protected String offerId;
     protected boolean shownToAll;
 

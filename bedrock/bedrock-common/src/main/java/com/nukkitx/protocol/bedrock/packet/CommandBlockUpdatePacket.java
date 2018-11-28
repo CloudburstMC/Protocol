@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class CommandBlockUpdatePacket extends BedrockPacket {
+public class CommandBlockUpdatePacket extends BedrockPacket {
     protected boolean block;
     protected Vector3i blockPosition;
     protected int commandBlockMode;

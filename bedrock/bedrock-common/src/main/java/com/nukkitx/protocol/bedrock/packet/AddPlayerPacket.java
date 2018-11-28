@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AddPlayerPacket extends BedrockPacket {
+public class AddPlayerPacket extends BedrockPacket {
     protected final MetadataDictionary metadata = new MetadataDictionary();
     protected final List<EntityLink> entityLinks = new ArrayList<>();
     protected UUID uuid;

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PurchaseReceiptPacket extends BedrockPacket {
+public class PurchaseReceiptPacket extends BedrockPacket {
     protected final List<String> receipts = new ArrayList<>();
 
     @Override

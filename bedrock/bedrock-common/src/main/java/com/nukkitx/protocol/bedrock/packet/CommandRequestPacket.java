@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class CommandRequestPacket extends BedrockPacket {
+public class CommandRequestPacket extends BedrockPacket {
     protected String command;
     protected CommandOriginData commandOriginData;
     protected boolean internal;

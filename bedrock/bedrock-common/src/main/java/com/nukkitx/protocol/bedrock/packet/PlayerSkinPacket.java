@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PlayerSkinPacket extends BedrockPacket {
+public class PlayerSkinPacket extends BedrockPacket {
     protected UUID uuid;
     protected String skinId;
     protected String newSkinName;

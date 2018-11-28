@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ScriptCustomEventPacket extends BedrockPacket {
+public class ScriptCustomEventPacket extends BedrockPacket {
     protected String eventName;
     protected String data;
 

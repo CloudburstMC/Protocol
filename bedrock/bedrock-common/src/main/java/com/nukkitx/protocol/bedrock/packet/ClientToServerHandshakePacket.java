@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ClientToServerHandshakePacket extends BedrockPacket {
+public class ClientToServerHandshakePacket extends BedrockPacket {
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

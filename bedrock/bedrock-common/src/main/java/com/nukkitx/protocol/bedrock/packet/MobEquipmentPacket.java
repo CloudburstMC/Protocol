@@ -8,11 +8,11 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class MobEquipmentPacket extends BedrockPacket {
+public class MobEquipmentPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected Item item;
-    protected byte inventorySlot;
-    protected byte hotbarSlot;
+    protected int inventorySlot;
+    protected int hotbarSlot;
     protected byte windowId;
 
     @Override

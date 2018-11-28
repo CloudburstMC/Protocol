@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetDisplayObjectivePacket extends BedrockPacket {
+public class SetDisplayObjectivePacket extends BedrockPacket {
     protected String displaySlot;
     protected String objectiveId;
     protected String displayName;

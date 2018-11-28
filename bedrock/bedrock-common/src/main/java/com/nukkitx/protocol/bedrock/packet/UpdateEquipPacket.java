@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class UpdateEquipPacket extends BedrockPacket {
+public class UpdateEquipPacket extends BedrockPacket {
     protected short windowId;
     protected short windowType;
     protected int unknown0; // Couldn't find anything on this one. Looks like it isn't used?

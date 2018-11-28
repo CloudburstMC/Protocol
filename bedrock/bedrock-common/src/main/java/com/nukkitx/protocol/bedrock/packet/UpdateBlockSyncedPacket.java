@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class UpdateBlockSyncedPacket extends UpdateBlockPacket {
+public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
     protected long runtimeEntityId;
     protected long unknownLong1;
 

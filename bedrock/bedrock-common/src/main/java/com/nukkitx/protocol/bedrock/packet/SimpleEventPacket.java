@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SimpleEventPacket extends BedrockPacket {
+public class SimpleEventPacket extends BedrockPacket {
     protected short event;
 
     @Override

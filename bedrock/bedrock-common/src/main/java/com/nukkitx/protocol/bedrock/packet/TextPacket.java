@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class TextPacket extends BedrockPacket {
+public class TextPacket extends BedrockPacket {
     protected Type type;
     protected boolean needsTranslation;
     protected String sourceName;

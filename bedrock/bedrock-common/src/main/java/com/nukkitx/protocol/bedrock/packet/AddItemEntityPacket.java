@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AddItemEntityPacket extends BedrockPacket {
+public class AddItemEntityPacket extends BedrockPacket {
     protected final MetadataDictionary metadata = new MetadataDictionary();
     protected long uniqueEntityId;
     protected long runtimeEntityId;

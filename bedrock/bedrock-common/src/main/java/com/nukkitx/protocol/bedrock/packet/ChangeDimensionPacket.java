@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ChangeDimensionPacket extends BedrockPacket {
+public class ChangeDimensionPacket extends BedrockPacket {
     protected int dimension;
     protected Vector3f position;
     protected boolean respawn;

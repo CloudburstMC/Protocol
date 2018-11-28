@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetEntityMotionPacket extends BedrockPacket {
+public class SetEntityMotionPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected Vector3f motion;
 

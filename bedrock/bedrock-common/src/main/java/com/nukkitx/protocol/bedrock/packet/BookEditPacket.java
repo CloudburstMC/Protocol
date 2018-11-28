@@ -7,11 +7,11 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BookEditPacket extends BedrockPacket {
+public class BookEditPacket extends BedrockPacket {
     protected Type type;
-    protected byte inventorySlot;
-    protected byte pageNumber;
-    protected byte secondaryPageNumber;
+    protected int inventorySlot;
+    protected int pageNumber;
+    protected int secondaryPageNumber;
     protected String text;
     protected String photoName;
     protected String title;

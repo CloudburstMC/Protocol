@@ -7,9 +7,9 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class EntityPickRequestPacket extends BedrockPacket {
+public class EntityPickRequestPacket extends BedrockPacket {
     protected long runtimeEntityId;
-    protected byte hotbarSlot;
+    protected int hotbarSlot;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

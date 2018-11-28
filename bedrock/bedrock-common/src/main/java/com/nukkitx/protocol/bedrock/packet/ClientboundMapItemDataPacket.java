@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ClientboundMapItemDataPacket extends BedrockPacket {
+public class ClientboundMapItemDataPacket extends BedrockPacket {
     protected final TLongList trackedEntityIds = new TLongArrayList();
     protected final List<MapTrackedObject> trackedObjects = new ArrayList<>();
     protected final List<MapDecoration> decorations = new ArrayList<>();

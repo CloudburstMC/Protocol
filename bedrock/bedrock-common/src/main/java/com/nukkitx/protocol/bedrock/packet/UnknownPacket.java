@@ -2,35 +2,30 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UnknownPacket extends BedrockPacket {
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(UnknownPacket.class);
-    private short id;
+public final class UnknownPacket extends BedrockPacket implements PacketSerializer<UnknownPacket> {
     private ByteBuf payload;
 
     @Override
-    public void encode(ByteBuf buffer) {
-        buffer.writeShort(id);
-        buffer.writeBytes(payload);
+    public void serialize(ByteBuf buffer, UnknownPacket packet) {
+        buffer.writeBytes(packet.payload);
     }
 
     @Override
-    public void decode(ByteBuf buffer) {
-        id = buffer.readUnsignedByte();
-        payload = buffer.readBytes(buffer.readableBytes());
+    public void deserialize(ByteBuf buffer, UnknownPacket packet) {
+        packet.payload = buffer.readBytes(buffer.readableBytes());
     }
 
     @Override
     public String toString() {
-        return "UNKNOWN - " + Integer.toHexString(id) + " - Hex: " + ByteBufUtil.hexDump(payload);
+        return "UNKNOWN - " + getHeader() + " - Hex: " + ByteBufUtil.hexDump(payload);
     }
 
     @Override

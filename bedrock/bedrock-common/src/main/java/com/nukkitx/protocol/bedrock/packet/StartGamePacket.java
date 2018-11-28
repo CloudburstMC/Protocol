@@ -7,7 +7,9 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.GameRule;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.buffer.ByteBuf;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class StartGamePacket extends BedrockPacket {
+public class StartGamePacket extends BedrockPacket {
     protected final List<GameRule> gamerules = new ArrayList<>();
     protected long uniqueEntityId;
     protected long runtimeEntityId;
@@ -61,7 +63,6 @@ public abstract class StartGamePacket extends BedrockPacket {
     protected boolean trial;
     protected long currentTick;
     protected int enchantmentSeed;
-    @Getter(AccessLevel.NONE)
     protected ByteBuf cachedPalette;
     protected Collection<PaletteEntry> paletteEntries = new ArrayDeque<>();
     protected String multiplayerCorrelationId;

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BlockEntityDataPacket extends BedrockPacket {
+public class BlockEntityDataPacket extends BedrockPacket {
     protected Vector3i blockPostion;
     protected Tag<?> data;
 

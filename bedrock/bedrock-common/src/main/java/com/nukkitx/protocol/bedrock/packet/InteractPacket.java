@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class InteractPacket extends BedrockPacket {
+public class InteractPacket extends BedrockPacket {
     protected int action;
     protected long runtimeEntityId;
     protected Vector3f mousePosition;

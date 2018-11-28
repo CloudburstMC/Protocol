@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class RiderJumpPacket extends BedrockPacket {
+public class RiderJumpPacket extends BedrockPacket {
     protected int jumpStrength;
 
     @Override

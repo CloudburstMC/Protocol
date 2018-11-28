@@ -15,7 +15,7 @@ import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.bedrock.util.TIntHashBiMap;
-import com.nukkitx.protocol.bedrock.v291.packet.GameRulesChangedPacket_v291;
+import com.nukkitx.protocol.bedrock.v291.serializer.GameRulesChangedSerializer_v291;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AsciiString;
 import lombok.experimental.UtilityClass;
@@ -666,7 +666,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(gameRule, "gameRule");
 
         Object value = gameRule.getValue();
-        int type = GameRulesChangedPacket_v291.RULE_TYPES.get(value.getClass());
+        int type = GameRulesChangedSerializer_v291.RULE_TYPES.get(value.getClass());
 
         BedrockUtils.writeString(buffer, gameRule.getName());
         VarInts.writeUnsignedInt(buffer, type);

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PlayerInputPacket extends BedrockPacket {
+public class PlayerInputPacket extends BedrockPacket {
     protected Vector2f inputMotion;
     protected boolean jumping;
     protected boolean sneaking;

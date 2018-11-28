@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class InventoryTransactionPacket extends BedrockPacket {
+public class InventoryTransactionPacket extends BedrockPacket {
     protected final List<InventoryAction> actions = new ArrayList<>();
     protected Type transactionType;
     protected int actionType;

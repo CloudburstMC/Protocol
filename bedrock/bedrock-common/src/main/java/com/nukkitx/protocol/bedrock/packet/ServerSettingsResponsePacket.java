@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ServerSettingsResponsePacket extends BedrockPacket {
+public class ServerSettingsResponsePacket extends BedrockPacket {
     protected int formId;
     protected String formData;
 

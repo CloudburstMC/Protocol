@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class MobArmorEquipmentPacket extends BedrockPacket {
+public class MobArmorEquipmentPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected Item helmet;
     protected Item chestplate;

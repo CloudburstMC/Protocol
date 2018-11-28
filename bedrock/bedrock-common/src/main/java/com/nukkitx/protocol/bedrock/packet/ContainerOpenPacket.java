@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ContainerOpenPacket extends BedrockPacket {
+public class ContainerOpenPacket extends BedrockPacket {
     protected byte windowId;
     protected byte type;
     protected Vector3i blockPosition;

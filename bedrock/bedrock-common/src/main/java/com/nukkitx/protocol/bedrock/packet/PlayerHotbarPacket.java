@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PlayerHotbarPacket extends BedrockPacket {
+public class PlayerHotbarPacket extends BedrockPacket {
     protected int selectedHotbarSlot;
     protected byte windowId;
     protected boolean selectHotbarSlot;

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PlayerActionPacket extends BedrockPacket {
+public class PlayerActionPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected Action action;
     protected Vector3i blockPosition;

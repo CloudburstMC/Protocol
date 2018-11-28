@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class DisconnectPacket extends BedrockPacket {
+public class DisconnectPacket extends BedrockPacket {
     protected boolean disconnectScreenHidden;
     protected String kickMessage;
 

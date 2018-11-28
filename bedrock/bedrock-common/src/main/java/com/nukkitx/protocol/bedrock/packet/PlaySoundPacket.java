@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PlaySoundPacket extends BedrockPacket {
+public class PlaySoundPacket extends BedrockPacket {
     protected String sound;
     protected Vector3f position;
     protected float volume;

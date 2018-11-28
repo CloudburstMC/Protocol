@@ -1,0 +1,30 @@
+package com.nukkitx.protocol.bedrock.v291.serializer;
+
+import com.nukkitx.protocol.bedrock.packet.ExplodePacket;
+import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
+import com.nukkitx.protocol.serializer.PacketSerializer;
+import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ExplodeSerializer_v291 implements PacketSerializer<ExplodePacket> {
+    public static final ExplodeSerializer_v291 INSTANCE = new ExplodeSerializer_v291();
+
+
+    @Override
+    public void serialize(ByteBuf buffer, ExplodePacket packet) {
+        BedrockUtils.writeVector3f(buffer, packet.getPosition());
+        buffer.writeFloatLE(packet.getRadius());
+
+        BedrockUtils.writeArray(buffer, packet.getRecords(), BedrockUtils::writeVector3i);
+    }
+
+    @Override
+    public void deserialize(ByteBuf buffer, ExplodePacket packet) {
+        packet.setPosition(BedrockUtils.readVector3f(buffer));
+        packet.setRadius(buffer.readFloatLE());
+
+        BedrockUtils.readArray(buffer, packet.getRecords(), BedrockUtils::readVector3i);
+    }
+}

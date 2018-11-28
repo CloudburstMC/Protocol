@@ -6,7 +6,7 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor()
 public class DefaultTailHandler implements TailHandler {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(DefaultTailHandler.class);
 

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetCommandsEnabledPacket extends BedrockPacket {
+public class SetCommandsEnabledPacket extends BedrockPacket {
     protected boolean commandsEnabled;
 
     @Override

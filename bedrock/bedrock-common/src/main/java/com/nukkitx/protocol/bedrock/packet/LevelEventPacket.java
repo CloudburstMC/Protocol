@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class LevelEventPacket extends BedrockPacket {
+public class LevelEventPacket extends BedrockPacket {
     protected Event event;
     protected Vector3f position;
     protected int data;

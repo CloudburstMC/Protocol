@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SpawnExperienceOrbPacket extends BedrockPacket {
+public class SpawnExperienceOrbPacket extends BedrockPacket {
     protected Vector3f position;
     protected int amount;
 

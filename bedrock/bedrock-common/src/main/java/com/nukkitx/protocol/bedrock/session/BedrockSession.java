@@ -1,7 +1,5 @@
 package com.nukkitx.protocol.bedrock.session;
 
-import com.nukkitx.network.NetworkPacket;
-import com.nukkitx.network.raknet.RakNetPacket;
 import com.nukkitx.network.raknet.session.RakNetSession;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.MinecraftSession;
@@ -11,6 +9,8 @@ import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import com.nukkitx.protocol.bedrock.handler.DefaultTailHandler;
+import com.nukkitx.protocol.bedrock.handler.TailHandler;
 import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
 import com.nukkitx.protocol.bedrock.session.data.AuthData;
 import com.nukkitx.protocol.bedrock.session.data.ClientData;
@@ -32,7 +32,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
+import javax.security.auth.DestroyFailedException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.security.GeneralSecurityException;
@@ -54,15 +54,17 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     private BedrockPacketCodec packetCodec = BedrockCompat.COMPAT_CODEC;
     private BedrockPacketHandler handler;
     private WrapperHandler wrapperHandler = DefaultWrapperHandler.DEFAULT;
+    @Setter
+    private TailHandler tailHandler = new DefaultTailHandler(this);
     private RakNetSession connection;
     private AuthData authData;
     private ClientData clientData;
-    private BungeeCipher encryptionCipher;
-    private BungeeCipher decryptionCipher;
+    private BungeeCipher encryptionCipher = null;
+    private BungeeCipher decryptionCipher = null;
     @Setter
     private PLAYER player;
     @Getter(AccessLevel.NONE)
-    private byte[] serverKey;
+    private SecretKey agreedKey;
     private int protocolVersion;
 
     public BedrockSession(RakNetSession connection) {
@@ -112,62 +114,48 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         currentlyQueued.add(packet);
     }
 
-    public void sendPacketImmediately(NetworkPacket packet) {
+    public void sendPacketImmediately(BedrockPacket packet) {
         checkForClosed();
         Preconditions.checkNotNull(packet, "packet");
-        sendPacketInternal(packet);
+
+        WrappedPacket wrappedPacket = new WrappedPacket();
+        wrappedPacket.getPackets().add(packet);
+        if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
+            wrappedPacket.setEncrypted(true);
+        }
+        sendWrapped(wrappedPacket);
     }
 
-    private void sendPacketInternal(NetworkPacket packet) {
-        if (packet instanceof BedrockPacket) {
-            if (log.isTraceEnabled()) {
-                String to = connection.getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
-                log.trace("Outbound {}: {}", to, packet);
-            }
-            WrappedPacket wrappedPacket = new WrappedPacket();
-            wrappedPacket.getPackets().add((BedrockPacket) packet);
-            if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
-                wrappedPacket.setEncrypted(true);
-            }
-            packet = wrappedPacket;
-        }
-
-        if (packet instanceof WrappedPacket) {
-            WrappedPacket wrappedPacket = (WrappedPacket) packet;
-            ByteBuf compressed;
-            if (wrappedPacket.getBatched() == null) {
-                compressed = wrapperHandler.compressPackets(packetCodec, wrappedPacket.getPackets());
-            } else {
-                compressed = wrappedPacket.getBatched();
-            }
-
-            ByteBuf finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer();
-            try {
-                if (encryptionCipher == null || wrappedPacket.isEncrypted()) {
-                    compressed.readerIndex(0);
-                    finalPayload.writeBytes(compressed);
-                } else {
-                    compressed.readerIndex(0);
-                    byte[] trailer = generateTrailer(compressed);
-                    compressed.writeBytes(trailer);
-
-                    compressed.readerIndex(0);
-                    encryptionCipher.cipher(compressed, finalPayload);
-                }
-            } catch (GeneralSecurityException e) {
-                finalPayload.release();
-                throw new RuntimeException("Unable to encrypt package", e);
-            } finally {
-                compressed.release();
-            }
-            wrappedPacket.setPayload(finalPayload);
-        }
-
-        if (packet instanceof RakNetPacket) {
-            connection.sendPacket((RakNetPacket) packet);
+    private void sendWrapped(WrappedPacket wrappedPacket) {
+        ByteBuf compressed;
+        if (wrappedPacket.getBatched() == null) {
+            compressed = wrapperHandler.compressPackets(packetCodec, wrappedPacket.getPackets());
         } else {
-            throw new UnsupportedOperationException("Unknown packet type sent");
+            compressed = wrappedPacket.getBatched();
         }
+
+        ByteBuf finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer();
+        try {
+            if (encryptionCipher == null || wrappedPacket.isEncrypted()) {
+                compressed.readerIndex(0);
+                finalPayload.writeBytes(compressed);
+            } else {
+                compressed.readerIndex(0);
+                byte[] trailer = generateTrailer(compressed);
+                compressed.writeBytes(trailer);
+
+                compressed.readerIndex(0);
+                encryptionCipher.cipher(compressed, finalPayload);
+            }
+        } catch (GeneralSecurityException e) {
+            finalPayload.release();
+            throw new RuntimeException("Unable to encrypt package", e);
+        } finally {
+            compressed.release();
+        }
+        wrappedPacket.setPayload(finalPayload);
+
+        connection.sendPacket(wrappedPacket);
     }
 
     public void onTick() {
@@ -185,11 +173,11 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
             if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
                 // We hit a wrappable packet. Send the current wrapper and then send the un-wrappable packet.
                 if (!wrapper.getPackets().isEmpty()) {
-                    sendPacketInternal(wrapper);
+                    sendWrapped(wrapper);
                     wrapper = new WrappedPacket();
                 }
 
-                sendPacketInternal(packet);
+                sendPacketImmediately(packet);
 
                 try {
                     // Delay things a tiny bit
@@ -203,22 +191,24 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         }
 
         if (!wrapper.getPackets().isEmpty()) {
-            sendPacketInternal(wrapper);
+            sendWrapped(wrapper);
         }
     }
 
-    void enableEncryption(byte[] secretKey) {
+    public void enableEncryption(@Nonnull SecretKey secretKey) {
         checkForClosed();
+        Preconditions.checkNotNull(secretKey, "secretKey");
+        Preconditions.checkArgument(secretKey.getAlgorithm().equals("AES"));
+        Preconditions.checkState(encryptionCipher == null && decryptionCipher == null, "encryption has already been enabled");
 
-        serverKey = secretKey;
-        byte[] iv = Arrays.copyOf(secretKey, 16);
-        SecretKey key = new SecretKeySpec(secretKey, "AES");
+        agreedKey = secretKey;
+        byte[] iv = Arrays.copyOf(secretKey.getEncoded(), 16);
         try {
             encryptionCipher = NativeCodeFactory.cipher.newInstance();
             decryptionCipher = NativeCodeFactory.cipher.newInstance();
 
-            encryptionCipher.init(true, key, iv);
-            decryptionCipher.init(false, key, iv);
+            encryptionCipher.init(true, secretKey, iv);
+            decryptionCipher.init(false, secretKey, iv);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to initialize ciphers", e);
         }
@@ -229,10 +219,10 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     private byte[] generateTrailer(ByteBuf buf) {
         VoxelwindHash hash = hashLocal.get();
         ByteBuf counterBuf = PooledByteBufAllocator.DEFAULT.directBuffer(8);
-        ByteBuf keyBuf = PooledByteBufAllocator.DEFAULT.directBuffer(serverKey.length);
+        ByteBuf keyBuf = PooledByteBufAllocator.DEFAULT.directBuffer(agreedKey.getEncoded().length);
         try {
             counterBuf.writeLongLE(sentEncryptedPacketCount.getAndIncrement());
-            keyBuf.writeBytes(serverKey);
+            keyBuf.writeBytes(agreedKey.getEncoded());
 
             hash.update(counterBuf);
             hash.update(buf);
@@ -262,6 +252,15 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
             decryptionCipher.free();
         }
 
+        // Destroy secret key
+        if (agreedKey != null) {
+            try {
+                agreedKey.destroy();
+            } catch (DestroyFailedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         // Make sure the player is closed properly
         if (player != null) {
             player.close();
@@ -272,7 +271,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         this.clientData = clientData;
     }
 
-    void setProtocolVersion(@Nonnegative int protocolVersion) {
+    public void setProtocolVersion(@Nonnegative int protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
 
@@ -289,7 +288,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     public void disconnect(@Nullable String reason, boolean hideReason) {
         checkForClosed();
 
-        DisconnectPacket packet = packetCodec.createPacket(DisconnectPacket.class);
+        DisconnectPacket packet = new DisconnectPacket();
         if (reason == null || hideReason) {
             packet.setDisconnectScreenHidden(true);
             reason = "disconnect.disconnected";
@@ -332,18 +331,23 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
                 unwrappedData = wrappedData;
             }
 
-            String to = getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
-            // Decompress and handle packets
-            for (BedrockPacket pk : wrapperHandler.decompressPackets(packetCodec, unwrappedData)) {
-                if (log.isTraceEnabled()) {
-                    log.trace("Inbound {}: {}", to, pk.toString());
-                }
-                pk.handle(handler);
-            }
+            handleBatched(unwrappedData);
         } finally {
             wrappedData.release();
             if (unwrappedData != null && unwrappedData != wrappedData) {
                 unwrappedData.release();
+            }
+        }
+    }
+
+    protected void handleBatched(ByteBuf batchedData) {
+        String to = getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
+        for (BedrockPacket packet : wrapperHandler.decompressPackets(packetCodec, batchedData)) {
+            if (log.isTraceEnabled()) {
+                log.trace("Inbound {}: {}", to, packet.toString());
+            }
+            if (!packet.handle(handler) && tailHandler != null) {
+                tailHandler.handle(packet);
             }
         }
     }

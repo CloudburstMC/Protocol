@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetTitlePacket extends BedrockPacket {
+public class SetTitlePacket extends BedrockPacket {
     protected Type type;
     protected String text;
     protected int fadeInTime;

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class HurtArmorPacket extends BedrockPacket {
+public class HurtArmorPacket extends BedrockPacket {
     protected int health;
 
     @Override

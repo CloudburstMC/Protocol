@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class TransferPacket extends BedrockPacket {
+public class TransferPacket extends BedrockPacket {
     protected String address;
     protected int port;
 

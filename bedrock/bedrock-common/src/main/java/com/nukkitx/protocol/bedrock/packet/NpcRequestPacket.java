@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class NpcRequestPacket extends BedrockPacket {
+public class NpcRequestPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected Type requestType;
     protected String command;

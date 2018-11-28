@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ServerSettingsRequestPacket extends BedrockPacket {
+public class ServerSettingsRequestPacket extends BedrockPacket {
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

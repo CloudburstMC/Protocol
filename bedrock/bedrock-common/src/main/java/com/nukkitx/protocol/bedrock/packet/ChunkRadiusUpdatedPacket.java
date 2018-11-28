@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ChunkRadiusUpdatedPacket extends BedrockPacket {
+public class ChunkRadiusUpdatedPacket extends BedrockPacket {
     protected int radius;
 
     @Override

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class InventorySlotPacket extends BedrockPacket {
+public class InventorySlotPacket extends BedrockPacket {
     protected int windowId;
     protected int inventorySlot;
     protected Item slot;

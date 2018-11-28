@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoEncryption // This is sent in plain text to complete the Diffie Hellman key exchange.
-public abstract class ServerToClientHandshakePacket extends BedrockPacket {
+public class ServerToClientHandshakePacket extends BedrockPacket {
     protected String jwt;
 
     @Override

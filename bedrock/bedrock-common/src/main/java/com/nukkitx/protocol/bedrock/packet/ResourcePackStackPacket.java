@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ResourcePackStackPacket extends BedrockPacket {
+public class ResourcePackStackPacket extends BedrockPacket {
     protected final List<Entry> behaviorPacks = new ArrayList<>();
     protected final List<Entry> resourcePacks = new ArrayList<>();
     protected boolean forcedToAccept;

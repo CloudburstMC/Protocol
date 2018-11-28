@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class UpdateSoftEnumPacket extends BedrockPacket {
+public class UpdateSoftEnumPacket extends BedrockPacket {
     protected final List<String> values = new ArrayList<>();
     protected String enumName;
     protected Type type;

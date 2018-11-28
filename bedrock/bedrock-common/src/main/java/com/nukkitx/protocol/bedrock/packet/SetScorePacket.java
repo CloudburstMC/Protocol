@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetScorePacket extends BedrockPacket {
+public class SetScorePacket extends BedrockPacket {
     protected Action action;
     protected List<ScoreInfo> infos = new ArrayList<>();
 

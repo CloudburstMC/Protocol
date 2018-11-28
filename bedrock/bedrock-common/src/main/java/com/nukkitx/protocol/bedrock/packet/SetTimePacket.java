@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetTimePacket extends BedrockPacket {
+public class SetTimePacket extends BedrockPacket {
     protected int time;
 
     @Override

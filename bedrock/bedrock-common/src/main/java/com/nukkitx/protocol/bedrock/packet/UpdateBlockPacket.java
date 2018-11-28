@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class UpdateBlockPacket extends BedrockPacket {
+public class UpdateBlockPacket extends BedrockPacket {
     public static final Set<Flag> FLAG_ALL = Collections.unmodifiableSet(
             new HashSet<>(Arrays.asList(Flag.NEIGHBORS, Flag.NETWORK)));
     public static final Set<Flag> FLAG_ALL_PRIORITY = Collections.unmodifiableSet(

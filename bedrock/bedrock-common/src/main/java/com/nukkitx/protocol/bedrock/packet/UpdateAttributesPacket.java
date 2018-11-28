@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class UpdateAttributesPacket extends BedrockPacket {
+public class UpdateAttributesPacket extends BedrockPacket {
     protected long runtimeEntityId;
     protected List<Attribute> attributes = new ArrayList<>();
 

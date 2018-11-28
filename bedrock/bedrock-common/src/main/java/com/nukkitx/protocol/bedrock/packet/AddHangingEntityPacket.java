@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AddHangingEntityPacket extends BedrockPacket {
+public class AddHangingEntityPacket extends BedrockPacket {
     protected long uniqueEntityId;
     protected long runtimeEntityId;
     protected Vector3i blockPosition;

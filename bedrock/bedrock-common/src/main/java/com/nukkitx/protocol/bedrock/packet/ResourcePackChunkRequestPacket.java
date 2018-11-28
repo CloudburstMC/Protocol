@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ResourcePackChunkRequestPacket extends BedrockPacket {
+public class ResourcePackChunkRequestPacket extends BedrockPacket {
     protected UUID packId;
     protected int chunkIndex;
 

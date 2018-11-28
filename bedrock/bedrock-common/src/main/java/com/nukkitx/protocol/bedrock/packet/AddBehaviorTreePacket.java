@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AddBehaviorTreePacket extends BedrockPacket {
+public class AddBehaviorTreePacket extends BedrockPacket {
     protected String behaviorTreeJson;
 
     @Override

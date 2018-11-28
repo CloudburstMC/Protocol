@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class GameRulesChangedPacket extends BedrockPacket {
+public class GameRulesChangedPacket extends BedrockPacket {
     protected final List<GameRule> gameRules = new ArrayList<>();
 
     @Override

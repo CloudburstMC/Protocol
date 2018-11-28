@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class GuiDataPickItemPacket extends BedrockPacket {
+public class GuiDataPickItemPacket extends BedrockPacket {
     protected String description;
     protected String itemEffects;
     protected int hotbarSlot;

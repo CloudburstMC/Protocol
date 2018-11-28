@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ExplodePacket extends BedrockPacket {
+public class ExplodePacket extends BedrockPacket {
     protected final List<Vector3i> records = new ArrayList<>();
     protected Vector3f position;
     protected float radius;

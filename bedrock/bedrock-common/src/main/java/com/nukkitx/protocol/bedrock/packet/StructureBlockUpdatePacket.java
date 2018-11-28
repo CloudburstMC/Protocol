@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class StructureBlockUpdatePacket extends BedrockPacket {
+public class StructureBlockUpdatePacket extends BedrockPacket {
     protected Vector3i blockPosition;
     protected Type structureType;
     // Structure Editor Data start

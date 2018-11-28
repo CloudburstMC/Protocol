@@ -1,14 +1,13 @@
 package com.nukkitx.protocol.bedrock;
 
-import com.nukkitx.network.PacketCodec;
-import com.nukkitx.network.PacketFactory;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.packet.PacketHeader;
+import com.nukkitx.protocol.bedrock.packet.UnknownPacket;
+import com.nukkitx.protocol.bedrock.util.TIntHashBiMap;
+import com.nukkitx.protocol.serializer.PacketSerializer;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 import io.netty.buffer.ByteBuf;
@@ -22,42 +21,35 @@ import lombok.RequiredArgsConstructor;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-import java.util.function.Supplier;
 
 @Immutable
 @RequiredArgsConstructor
-@SuppressWarnings("unchecked")
-public final class BedrockPacketCodec implements PacketCodec<BedrockPacket> {
+public final class BedrockPacketCodec {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketCodec.class);
 
     private final TIntSet compatibleVersions;
-    private final PacketFactory<BedrockPacket>[] factories;
-    private final TObjectIntMap<Class<? extends BedrockPacket>> idMapping;
-    private final Supplier<PacketHeader> headerFactory;
+    private final PacketSerializer<BedrockPacket>[] serializers;
+    private final TIntHashBiMap<Class<BedrockPacket>> idBiMap;
+    private final PacketSerializer<PacketHeader> headerSerializer;
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public final <T extends BedrockPacket> T createPacket(@Nonnull Class<T> clazz) {
-        int id = idMapping.get(clazz);
-        Preconditions.checkArgument(id >= 0 && id < factories.length, "Invalid packet");
-        T packet = (T) factories[id].newInstance();
-        PacketHeader header = headerFactory.get();
-        header.setPacketId(id);
-        packet.setHeader(header);
-
-        return packet;
-    }
-
-    @Override
     public BedrockPacket tryDecode(ByteBuf buf) {
-        PacketHeader header = headerFactory.get();
-        header.decode(buf);
+        PacketHeader header = new PacketHeader();
 
-        BedrockPacket packet = factories[header.getPacketId()].newInstance();
+        headerSerializer.deserialize(buf, header);
+
+        BedrockPacket packet;
+        try {
+            packet = idBiMap.get(header.getPacketId()).newInstance();
+        } catch (ClassCastException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         packet.setHeader(header);
-        packet.decode(buf);
+
+        serializers[header.getPacketId()].deserialize(buf, packet);
 
         if (log.isDebugEnabled() && buf.isReadable()) {
             log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
@@ -65,45 +57,47 @@ public final class BedrockPacketCodec implements PacketCodec<BedrockPacket> {
         return packet;
     }
 
-    @Override
     public ByteBuf tryEncode(BedrockPacket packet) {
-        Preconditions.checkNotNull(packet.getHeader(), "packet header null");
-        packet.getHeader().setPacketId(getId(packet));
+        PacketHeader header = packet.getHeader();
+        if (header == null) {
+            header = new PacketHeader();
+        }
+        int packetId = getId(packet);
+        header.setPacketId(packetId);
 
         ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer();
-        packet.getHeader().encode(buf);
-        packet.encode(buf);
+        headerSerializer.serialize(buf, header);
+        serializers[packetId].serialize(buf, packet);
         return buf;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
     public int getId(BedrockPacket packet) {
-        Class<? extends BedrockPacket> clazz = packet.getClass();
-        int id = idMapping.get(clazz);
+        Class<BedrockPacket> clazz = (Class<BedrockPacket>) packet.getClass();
+        int id = idBiMap.get(clazz);
         if (id == -1) {
             throw new IllegalArgumentException("Packet ID for " + clazz.getName() + " does not exist.");
         }
         return id;
     }
 
+    @SuppressWarnings("unchecked")
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
-        private final TIntObjectMap<PacketFactory<BedrockPacket>> packets = new TIntObjectHashMap<>();
-        private final TObjectIntMap<Class<? extends BedrockPacket>> ids = new TObjectIntHashMap<>(64, 0.75f, -1);
+        private final TIntObjectMap<PacketSerializer<BedrockPacket>> serializers = new TIntObjectHashMap<>();
+        private final TIntHashBiMap<Class<BedrockPacket>> idBiMap = new TIntHashBiMap<>((Class) UnknownPacket.class);
         private final TIntSet compatibleVersions = new TIntHashSet();
-        private Supplier<PacketHeader> headerFactory = null;
+        private PacketSerializer<PacketHeader> headerSerializer = null;
 
-        public <T extends BedrockPacket> Builder registerPacket(Class<T> clazz, PacketFactory<? extends T> packet, @Nonnegative int id) {
+        public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, PacketSerializer<T> packetSerializer, @Nonnegative int id) {
             Preconditions.checkArgument(id >= 0, "id cannot be negative");
-            if (packets.containsKey(id)) {
-                throw new IllegalArgumentException("Packet id already registered");
-            }
-            if (ids.containsKey(clazz)) {
-                throw new IllegalArgumentException("Packet class already registered");
-            }
+            Class<BedrockPacket> clazz = (Class<BedrockPacket>) packetClass;
+            PacketSerializer<BedrockPacket> serializer = (PacketSerializer<BedrockPacket>) packetSerializer;
+            Preconditions.checkArgument(!idBiMap.containsKey(id), "Packet id already registered");
+            Preconditions.checkArgument(!idBiMap.containsValue(clazz), "Packet class already registered");
 
-            packets.put(id, (PacketFactory<BedrockPacket>) packet);
-            ids.put(clazz, id);
+            serializers.put(id, serializer);
+            idBiMap.put(id, clazz);
             return this;
         }
 
@@ -113,31 +107,31 @@ public final class BedrockPacketCodec implements PacketCodec<BedrockPacket> {
             return this;
         }
 
-        public Builder packetHeader(@Nonnull Supplier<PacketHeader> headerFactory) {
-            Preconditions.checkNotNull(headerFactory, "headerFactory");
-            this.headerFactory = headerFactory;
+        public Builder headerSerializer(@Nonnull PacketSerializer<PacketHeader> headerSerializer) {
+            Preconditions.checkNotNull(headerSerializer, "headerFactory");
+            this.headerSerializer = headerSerializer;
             return this;
         }
 
         public BedrockPacketCodec build() {
             Preconditions.checkArgument(!compatibleVersions.isEmpty(), "Must have at least one compatible version");
-            Preconditions.checkNotNull(headerFactory, "headerFactory cannot be null");
+            Preconditions.checkNotNull(headerSerializer, "headerSerializer cannot be null");
             int largestId = -1;
-            for (int id : packets.keys()) {
+            for (int id : serializers.keys()) {
                 if (id > largestId) {
                     largestId = id;
                 }
             }
             Preconditions.checkArgument(largestId > -1, "Must have at least one packet registered");
-            PacketFactory<BedrockPacket>[] packets = new PacketFactory[largestId + 1];
+            PacketSerializer<BedrockPacket>[] serializers = new PacketSerializer[largestId + 1];
 
-            TIntObjectIterator<PacketFactory<BedrockPacket>> iterator = this.packets.iterator();
+            TIntObjectIterator<PacketSerializer<BedrockPacket>> iterator = this.serializers.iterator();
 
             while (iterator.hasNext()) {
                 iterator.advance();
-                packets[iterator.key()] = iterator.value();
+                serializers[iterator.key()] = iterator.value();
             }
-            return new BedrockPacketCodec(compatibleVersions, packets, ids, headerFactory);
+            return new BedrockPacketCodec(compatibleVersions, serializers, idBiMap, headerSerializer);
         }
     }
 }

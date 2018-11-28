@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ItemFrameDropItemPacket extends BedrockPacket {
+public class ItemFrameDropItemPacket extends BedrockPacket {
     protected Vector3i blockPosition;
 
     @Override

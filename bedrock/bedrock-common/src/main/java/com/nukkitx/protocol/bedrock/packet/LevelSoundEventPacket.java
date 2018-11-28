@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class LevelSoundEventPacket extends BedrockPacket {
+public class LevelSoundEventPacket extends BedrockPacket {
     protected Sound sound;
     protected Vector3f position;
     protected int extraData;

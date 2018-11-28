@@ -1,8 +1,8 @@
 package com.nukkitx.protocol.bedrock.wrapper;
 
-import com.nukkitx.network.PacketCodec;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.util.Zlib;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -27,7 +27,7 @@ public class DefaultWrapperHandler implements WrapperHandler {
     }
 
     @Override
-    public ByteBuf compressPackets(PacketCodec<BedrockPacket> packetCodec, Collection<BedrockPacket> packets) {
+    public ByteBuf compressPackets(BedrockPacketCodec packetCodec, Collection<BedrockPacket> packets) {
         ByteBuf source = PooledByteBufAllocator.DEFAULT.directBuffer();
         try {
             for (BedrockPacket packet : packets) {
@@ -44,7 +44,7 @@ public class DefaultWrapperHandler implements WrapperHandler {
     }
 
     @Override
-    public List<BedrockPacket> decompressPackets(PacketCodec<BedrockPacket> packetCodec, ByteBuf compressed) {
+    public List<BedrockPacket> decompressPackets(BedrockPacketCodec packetCodec, ByteBuf compressed) {
         List<BedrockPacket> packets = new ArrayList<>();
         ByteBuf decompressed = null;
         try {

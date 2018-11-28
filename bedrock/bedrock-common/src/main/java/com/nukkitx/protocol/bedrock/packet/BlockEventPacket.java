@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BlockEventPacket extends BedrockPacket {
+public class BlockEventPacket extends BedrockPacket {
     protected Vector3i blockPosition;
     protected int eventType;
     protected int eventData;

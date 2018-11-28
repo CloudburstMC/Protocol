@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class LabTablePacket extends BedrockPacket {
+public class LabTablePacket extends BedrockPacket {
     protected byte unknownByte0;
     protected Vector3i blockEntityPosition;
     protected byte reactionType;

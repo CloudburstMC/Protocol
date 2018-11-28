@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetDefaultGameTypePacket extends BedrockPacket {
+public class SetDefaultGameTypePacket extends BedrockPacket {
     protected int gamemode;
 
     @Override

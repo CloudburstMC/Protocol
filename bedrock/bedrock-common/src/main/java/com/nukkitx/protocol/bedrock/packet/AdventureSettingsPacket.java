@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AdventureSettingsPacket extends BedrockPacket {
+public class AdventureSettingsPacket extends BedrockPacket {
     protected int playerFlags;
     protected int commandPermission;
     protected int worldFlags;

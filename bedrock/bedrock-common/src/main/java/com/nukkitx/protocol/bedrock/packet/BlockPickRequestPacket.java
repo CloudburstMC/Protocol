@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BlockPickRequestPacket extends BedrockPacket {
+public class BlockPickRequestPacket extends BedrockPacket {
     protected Vector3i blockPosition;
     protected boolean addUserData;
-    protected byte hotbarSlot;
+    protected int hotbarSlot;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

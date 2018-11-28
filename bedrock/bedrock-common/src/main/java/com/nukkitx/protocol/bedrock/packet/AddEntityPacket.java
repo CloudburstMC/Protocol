@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AddEntityPacket extends BedrockPacket {
+public class AddEntityPacket extends BedrockPacket {
     protected final List<Attribute> attributes = new ArrayList<>();
     protected final MetadataDictionary metadata = new MetadataDictionary();
     protected final List<EntityLink> entityLinks = new ArrayList<>();

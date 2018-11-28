@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class ResourcePackClientResponsePacket extends BedrockPacket {
+public class ResourcePackClientResponsePacket extends BedrockPacket {
     protected final List<String> packIds = new ArrayList<>();
     protected Status status;
 

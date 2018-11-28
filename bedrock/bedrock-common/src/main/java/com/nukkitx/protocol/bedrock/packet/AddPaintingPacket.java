@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AddPaintingPacket extends AddHangingEntityPacket {
+public class AddPaintingPacket extends AddHangingEntityPacket {
     protected String title;
 
     @Override

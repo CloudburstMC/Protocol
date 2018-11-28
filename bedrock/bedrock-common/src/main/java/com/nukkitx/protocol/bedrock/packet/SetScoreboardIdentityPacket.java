@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetScoreboardIdentityPacket extends BedrockPacket {
+public class SetScoreboardIdentityPacket extends BedrockPacket {
     protected final List<Entry> entries = new ArrayList<>();
     protected Type type;
 

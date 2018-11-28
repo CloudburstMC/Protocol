@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class AnimatePacket extends BedrockPacket {
+public class AnimatePacket extends BedrockPacket {
     protected float rowingTime;
     protected Action action;
     protected long runtimeEntityId;

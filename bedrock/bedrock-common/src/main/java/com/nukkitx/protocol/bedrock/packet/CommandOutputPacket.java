@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class CommandOutputPacket extends BedrockPacket {
+public class CommandOutputPacket extends BedrockPacket {
     protected final List<CommandOutputMessage> messages = new ArrayList<>();
     protected CommandOriginData commandOriginData;
     protected int outputType;

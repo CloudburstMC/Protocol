@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetEntityLinkPacket extends BedrockPacket {
+public class SetEntityLinkPacket extends BedrockPacket {
     protected EntityLink entityLink;
 
     @Override

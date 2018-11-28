@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class RespawnPacket extends BedrockPacket {
+public class RespawnPacket extends BedrockPacket {
     protected Vector3f position;
 
     @Override

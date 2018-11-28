@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class PlayStatusPacket extends BedrockPacket {
+public class PlayStatusPacket extends BedrockPacket {
     protected Status status;
 
     @Override

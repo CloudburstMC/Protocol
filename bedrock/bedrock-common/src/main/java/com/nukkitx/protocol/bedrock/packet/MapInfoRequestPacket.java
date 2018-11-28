@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class MapInfoRequestPacket extends BedrockPacket {
+public class MapInfoRequestPacket extends BedrockPacket {
     protected long uniqueMapId;
 
     @Override

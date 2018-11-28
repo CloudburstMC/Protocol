@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SetHealthPacket extends BedrockPacket {
+public class SetHealthPacket extends BedrockPacket {
     protected int health;
 
     @Override

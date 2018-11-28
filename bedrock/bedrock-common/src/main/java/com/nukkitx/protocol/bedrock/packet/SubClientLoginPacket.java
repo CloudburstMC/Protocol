@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class SubClientLoginPacket extends BedrockPacket {
+public class SubClientLoginPacket extends BedrockPacket {
     protected AsciiString chainData;
     protected AsciiString skinData;
 
