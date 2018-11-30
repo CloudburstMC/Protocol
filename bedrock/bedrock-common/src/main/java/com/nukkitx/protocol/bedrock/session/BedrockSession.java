@@ -71,6 +71,11 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         this.connection = connection;
     }
 
+    public BedrockSession(RakNetSession connection, BedrockPacketCodec codec) {
+        this.connection = connection;
+        this.packetCodec = codec;
+    }
+
     public AuthData getAuthData() {
         return authData;
     }
@@ -86,7 +91,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         this.handler = handler;
     }
 
-    void setPacketCodec(BedrockPacketCodec packetCodec) {
+    public void setPacketCodec(BedrockPacketCodec packetCodec) {
         this.packetCodec = packetCodec;
     }
 
@@ -118,7 +123,12 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         checkForClosed();
         Preconditions.checkNotNull(packet, "packet");
 
-        WrappedPacket wrappedPacket = new WrappedPacket();
+        if (log.isTraceEnabled()) {
+            String to = connection.getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
+            log.trace("Outbound {}: {}", to, packet);
+        }
+
+        WrappedPacket<PLAYER> wrappedPacket = new WrappedPacket<>();
         wrappedPacket.getPackets().add(packet);
         if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
             wrappedPacket.setEncrypted(true);

@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.wrapper;
 
 import com.nukkitx.network.raknet.CustomRakNetPacket;
+import com.nukkitx.protocol.PlayerSession;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.session.BedrockSession;
 import io.netty.buffer.ByteBuf;
@@ -10,7 +11,7 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 
 @Data
-public class WrappedPacket implements CustomRakNetPacket<BedrockSession> {
+public class WrappedPacket<T extends PlayerSession> implements CustomRakNetPacket<BedrockSession<T>> {
     private final Collection<BedrockPacket> packets = new ArrayDeque<>();
     private boolean encrypted;
     private ByteBuf batched;
@@ -28,7 +29,7 @@ public class WrappedPacket implements CustomRakNetPacket<BedrockSession> {
     }
 
     @Override
-    public void handle(BedrockSession session) throws Exception {
+    public void handle(BedrockSession<T> session) throws Exception {
         session.onWrappedPacket(this);
     }
 }
