@@ -6,9 +6,9 @@ A protocol library for Minecraft that supports multiple versions. (Currently Bed
 
 ### Links
 
-__[Jenkins](https://ci.nukkitx.com/jobs/NukkitX/jobs/Protocol/)__
+__[Jenkins](https://ci.nukkitx.com/job/NukkitX/job/Protocol/)__
 
-__[JavaDocs](https://ci.nukkitx.com/jobs/NukkitX/jobs/Protocol/jobs/master/javadoc/index.html?overview-summary.html)__
+__[JavaDocs](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/javadoc/index.html?overview-summary.html)__
 
 ### Maven
 
