@@ -20,7 +20,7 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
     @Override
     public Object put(@Nonnull Metadata metadata, @Nonnull Object o) {
         Preconditions.checkNotNull(metadata, "dictionary");
-        Preconditions.checkArgument(isAcceptable(metadata, o), "object cannot be serialized");
+        Preconditions.checkArgument(isAcceptable(metadata, o), "%s cannot be serialized to %s", metadata, o.getClass().getSimpleName());
 
         return super.put(metadata, o);
     }

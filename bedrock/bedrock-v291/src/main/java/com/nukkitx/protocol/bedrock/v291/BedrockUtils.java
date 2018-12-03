@@ -18,6 +18,8 @@ import com.nukkitx.protocol.bedrock.util.TIntHashBiMap;
 import com.nukkitx.protocol.bedrock.v291.serializer.GameRulesChangedSerializer_v291;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AsciiString;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ import static com.nukkitx.protocol.bedrock.data.Metadata.*;
 
 @UtilityClass
 public final class BedrockUtils {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockUtils.class);
     private static final TIntHashBiMap<Metadata> METADATAS = new TIntHashBiMap<>();
     private static final TIntHashBiMap<Metadata.Flag> METADATA_FLAGS = new TIntHashBiMap<>();
     private static final TIntHashBiMap<Metadata.Type> METADATA_TYPES = new TIntHashBiMap<>(9);
@@ -45,6 +48,7 @@ public final class BedrockUtils {
         METADATAS.put(7, AIR);
         METADATAS.put(8, POTION_COLOR);
         METADATAS.put(9, POTION_AMBIENT);
+        METADATAS.put(10, JUMP_DURATION);
         METADATAS.put(11, HURT_TIME);
         METADATAS.put(12, HURT_DIRECTION);
         METADATAS.put(13, PADDLE_TIME_LEFT);
@@ -55,6 +59,9 @@ public final class BedrockUtils {
         METADATAS.put(18, HAS_DISPLAY);
         METADATAS.put(23, ENDERMAN_HELD_ITEM_ID);
         METADATAS.put(24, ENTITY_AGE);
+        METADATAS.put(26, CAN_START_SLEEP);
+        METADATAS.put(27, PLAYER_INDEX);
+        METADATAS.put(28, BED_RESPAWN_POS);
         METADATAS.put(29, FIREBALL_POWER_X);
         METADATAS.put(30, FIREBALL_POWER_Y);
         METADATAS.put(31, FIREBALL_POWER_Z);
@@ -93,6 +100,7 @@ public final class BedrockUtils {
         METADATAS.put(73, CONTROLLING_RIDER_SEAT_NUMBER);
         METADATAS.put(74, STRENGTH);
         METADATAS.put(75, MAX_STRENGTH);
+        METADATAS.put(76, EVOKER_SPELL_COLOR);
         METADATAS.put(77, LIMITED_LIFE);
         METADATAS.put(78, ARMOR_STAND_POSE_INDEX);
         METADATAS.put(79, ENDER_CRYSTAL_TIME_OFFSET);
@@ -101,6 +109,7 @@ public final class BedrockUtils {
         METADATAS.put(83, SCORE_TAG);
         METADATAS.put(84, BALLOON_ATTACHED_ENTITY);
         METADATAS.put(85, PUFFERFISH_SIZE);
+        METADATAS.put(87, AGENT_ID);
 
         METADATA_FLAGS.put(0, Flag.ON_FIRE);
         METADATA_FLAGS.put(1, Flag.SNEAKING);
@@ -163,14 +172,14 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(59, Flag.LAYING_EGG);
 
         METADATA_TYPES.put(0, Type.BYTE);
-        METADATA_TYPES.put(0, Type.SHORT);
-        METADATA_TYPES.put(0, Type.INT);
-        METADATA_TYPES.put(0, Type.FLOAT);
-        METADATA_TYPES.put(0, Type.STRING);
-        METADATA_TYPES.put(0, Type.ITEM);
-        METADATA_TYPES.put(0, Type.VECTOR3I);
-        METADATA_TYPES.put(0, Type.LONG);
-        METADATA_TYPES.put(0, Type.VECTOR3F);
+        METADATA_TYPES.put(1, Type.SHORT);
+        METADATA_TYPES.put(2, Type.INT);
+        METADATA_TYPES.put(3, Type.FLOAT);
+        METADATA_TYPES.put(4, Type.STRING);
+        METADATA_TYPES.put(5, Type.ITEM);
+        METADATA_TYPES.put(6, Type.VECTOR3I);
+        METADATA_TYPES.put(7, Type.LONG);
+        METADATA_TYPES.put(8, Type.VECTOR3F);
     }
 
     public static byte[] readByteArray(ByteBuf buffer) {
@@ -309,26 +318,28 @@ public final class BedrockUtils {
 
     public static Vector3f readByteRotation(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        float pitch = rotationByteToAngle(buffer.readByte());
-        float yaw = rotationByteToAngle(buffer.readByte());
-        float roll = rotationByteToAngle(buffer.readByte());
+        float pitch = readByteAngle(buffer);
+        float yaw = readByteAngle(buffer);
+        float roll = readByteAngle(buffer);
         return new Vector3f(pitch, yaw, roll);
     }
 
     public static void writeByteRotation(ByteBuf buffer, Vector3f rotation) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(rotation, "rotation");
-        buffer.writeByte(rotationAngleToByte(rotation.getX()));
-        buffer.writeByte(rotationAngleToByte(rotation.getY()));
-        buffer.writeByte(rotationAngleToByte(rotation.getZ()));
+        writeByteAngle(buffer, rotation.getX());
+        writeByteAngle(buffer, rotation.getY());
+        writeByteAngle(buffer, rotation.getZ());
     }
 
-    private static byte rotationAngleToByte(float angle) {
-        return (byte) Math.ceil(angle / 360 * 255);
+    public static float readByteAngle(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return buffer.readByte() / 255f * 360f;
     }
 
-    private static float rotationByteToAngle(byte angle) {
-        return angle / 255f * 360f;
+    public static void writeByteAngle(ByteBuf buffer, float angle) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        buffer.writeByte((byte) Math.ceil(angle / 360 * 255));
     }
 
     public static Attribute readEntityAttribute(ByteBuf buffer) {
@@ -558,29 +569,22 @@ public final class BedrockUtils {
         }
     }
 
-    public static List<ResourcePackStackPacket.Entry> readPackInstanceEntries(ByteBuf buffer) {
+    public static ResourcePackStackPacket.Entry readPackInstanceEntry(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
-        List<ResourcePackStackPacket.Entry> entries = new ArrayList<>();
-        int length = buffer.readShortLE();
-        for (int i = 0; i < length; i++) {
-            UUID packId = UUID.fromString(readString(buffer));
-            String packVersion = readString(buffer);
-            String subpackName = readString(buffer);
-            entries.add(new ResourcePackStackPacket.Entry(packId, packVersion, subpackName));
-        }
-        return entries;
+        UUID packId = UUID.fromString(readString(buffer));
+        String packVersion = readString(buffer);
+        String subpackName = readString(buffer);
+        return new ResourcePackStackPacket.Entry(packId, packVersion, subpackName);
     }
 
-    public static void writePackInstanceEntries(ByteBuf buffer, Collection<ResourcePackStackPacket.Entry> packInstanceEntries) {
+    public static void writePackInstanceEntry(ByteBuf buffer, ResourcePackStackPacket.Entry packInstanceEntry) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(packInstanceEntries, "packInstanceEntries");
-        buffer.writeShortLE(packInstanceEntries.size());
-        for (ResourcePackStackPacket.Entry packInstanceEntry : packInstanceEntries) {
-            writeString(buffer, packInstanceEntry.getPackId().toString());
-            writeString(buffer, packInstanceEntry.getPackVersion());
-            writeString(buffer, packInstanceEntry.getSubpackName());
-        }
+        Preconditions.checkNotNull(packInstanceEntry, "packInstanceEntry");
+
+        writeString(buffer, packInstanceEntry.getPackId().toString());
+        writeString(buffer, packInstanceEntry.getPackVersion());
+        writeString(buffer, packInstanceEntry.getSubpackName());
     }
 
     public static <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
@@ -691,7 +695,8 @@ public final class BedrockUtils {
         int length = VarInts.readUnsignedInt(buffer);
 
         for (int i = 0; i < length; i++) {
-            Metadata metadata = METADATAS.get(VarInts.readUnsignedInt(buffer));
+            int metadataInt = VarInts.readUnsignedInt(buffer);
+            Metadata metadata = METADATAS.get(metadataInt);
             Metadata.Type type = METADATA_TYPES.get(VarInts.readUnsignedInt(buffer));
 
             Object object;
@@ -726,7 +731,11 @@ public final class BedrockUtils {
                 default:
                     throw new IllegalArgumentException("Unknown metadata type received");
             }
-            metadataDictionary.put(metadata, object);
+            if (metadata != null) {
+                metadataDictionary.put(metadata, object);
+            } else {
+                log.debug("Unknown metadata: {}", metadataInt);
+            }
         }
     }
 
