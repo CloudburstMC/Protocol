@@ -14,13 +14,13 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
     }
 
     private static boolean isAcceptable(Metadata metadata, Object o) {
-        return o != null && metadata.getType().typeClass() == o.getClass();
+        return o != null && metadata.getType() != null && metadata.getType().typeClass() == o.getClass();
     }
 
     @Override
     public Object put(@Nonnull Metadata metadata, @Nonnull Object o) {
         Preconditions.checkNotNull(metadata, "dictionary");
-        Preconditions.checkArgument(isAcceptable(metadata, o), "%s cannot be serialized to %s", metadata, o.getClass().getSimpleName());
+        Preconditions.checkArgument(isAcceptable(metadata, o), "%s is not of type %s but %s", metadata, o.getClass().getSimpleName(), metadata.getType().typeClass().getSimpleName());
 
         return super.put(metadata, o);
     }

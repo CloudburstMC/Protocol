@@ -25,7 +25,7 @@ public enum Metadata {
     PADDLE_TIME_RIGHT(Type.FLOAT),
     EXPERIENCE_VALUE(Type.INT),
     DISPLAY_ITEM(Type.INT),
-    DISPLAY_OFFSET(Type.LONG),
+    DISPLAY_OFFSET(null), // Can be long or int
     HAS_DISPLAY(Type.BYTE),
     ENDERMAN_HELD_ITEM_ID(Type.INT),
     ENTITY_AGE(Type.BYTE),
