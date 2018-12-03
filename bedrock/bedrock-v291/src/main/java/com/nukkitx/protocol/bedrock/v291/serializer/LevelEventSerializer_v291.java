@@ -58,6 +58,7 @@ public class LevelEventSerializer_v291 implements PacketSerializer<LevelEventPac
         events.put(2006, Event.GUARDIAN_CURSE);
         events.put(2008, Event.PARTICLE_BLOCK_FORCE_FIELD);
         events.put(2014, Event.PARTICLE_PUNCH_BLOCK);
+        events.put(2015, Event.PARTICLE_WATER_SPLASH);
         events.put(3001, Event.START_RAIN);
         events.put(3002, Event.START_THUNDER);
         events.put(3003, Event.STOP_RAIN);

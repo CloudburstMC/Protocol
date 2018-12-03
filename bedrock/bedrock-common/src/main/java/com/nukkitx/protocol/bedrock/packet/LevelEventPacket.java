@@ -56,6 +56,7 @@ public class LevelEventPacket extends BedrockPacket {
         GUARDIAN_CURSE,
         PARTICLE_BLOCK_FORCE_FIELD,
         PARTICLE_PUNCH_BLOCK,
+        PARTICLE_WATER_SPLASH,
         START_RAIN,
         START_THUNDER,
         STOP_RAIN,
