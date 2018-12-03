@@ -4,6 +4,7 @@ import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityDeltaPacket;
+import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -23,7 +24,7 @@ public class MoveEntityDeltaSerializer_v291 implements PacketSerializer<MoveEnti
     @Override
     public void serialize(ByteBuf buffer, MoveEntityDeltaPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        int flags = 0;
+        byte flags = 0;
         Vector3i movementDelta = packet.getMovementDelta();
         Vector3f rotationDelta = packet.getRotationDelta();
         flags |= movementDelta.getX() != 0 ? HAS_X : 0;
@@ -43,20 +44,20 @@ public class MoveEntityDeltaSerializer_v291 implements PacketSerializer<MoveEnti
             VarInts.writeInt(buffer, movementDelta.getZ());
         }
         if ((flags & HAS_PITCH) != 0) {
-            buffer.writeFloatLE(rotationDelta.getX());
+            BedrockUtils.writeByteAngle(buffer, rotationDelta.getX());
         }
         if ((flags & HAS_YAW) != 0) {
-            buffer.writeFloatLE(rotationDelta.getY());
+            BedrockUtils.writeByteAngle(buffer, rotationDelta.getY());
         }
         if ((flags & HAS_ROLL) != 0) {
-            buffer.writeFloatLE(rotationDelta.getZ());
+            BedrockUtils.writeByteAngle(buffer, rotationDelta.getZ());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, MoveEntityDeltaPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        int flags = buffer.readUnsignedByte();
+        byte flags = buffer.readByte();
         int x = 0, y = 0, z = 0;
         float pitch = 0, yaw = 0, roll = 0;
         if ((flags & HAS_X) != 0) {
@@ -69,13 +70,13 @@ public class MoveEntityDeltaSerializer_v291 implements PacketSerializer<MoveEnti
             z = VarInts.readInt(buffer);
         }
         if ((flags & HAS_PITCH) != 0) {
-            pitch = buffer.readFloatLE();
+            pitch = BedrockUtils.readByteAngle(buffer);
         }
         if ((flags & HAS_YAW) != 0) {
-            yaw = buffer.readFloatLE();
+            yaw = BedrockUtils.readByteAngle(buffer);
         }
         if ((flags & HAS_ROLL) != 0) {
-            roll = buffer.readFloatLE();
+            roll = BedrockUtils.readByteAngle(buffer);
         }
         packet.setMovementDelta(new Vector3i(x, y, z));
         packet.setRotationDelta(new Vector3f(pitch, yaw, roll));

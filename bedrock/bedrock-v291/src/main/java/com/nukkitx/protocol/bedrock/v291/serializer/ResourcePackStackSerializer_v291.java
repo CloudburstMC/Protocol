@@ -15,14 +15,14 @@ public class ResourcePackStackSerializer_v291 implements PacketSerializer<Resour
     @Override
     public void serialize(ByteBuf buffer, ResourcePackStackPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
-        BedrockUtils.writePackInstanceEntries(buffer, packet.getBehaviorPacks());
-        BedrockUtils.writePackInstanceEntries(buffer, packet.getResourcePacks());
+        BedrockUtils.writeArray(buffer, packet.getBehaviorPacks(), BedrockUtils::writePackInstanceEntry);
+        BedrockUtils.writeArray(buffer, packet.getResourcePacks(), BedrockUtils::writePackInstanceEntry);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, ResourcePackStackPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
-        packet.getBehaviorPacks().addAll(BedrockUtils.readPackInstanceEntries(buffer));
-        packet.getResourcePacks().addAll(BedrockUtils.readPackInstanceEntries(buffer));
+        BedrockUtils.readArray(buffer, packet.getBehaviorPacks(), BedrockUtils::readPackInstanceEntry);
+        BedrockUtils.readArray(buffer, packet.getResourcePacks(), BedrockUtils::readPackInstanceEntry);
     }
 }

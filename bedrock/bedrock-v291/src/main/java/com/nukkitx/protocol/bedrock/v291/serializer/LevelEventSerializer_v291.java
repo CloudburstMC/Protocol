@@ -6,6 +6,8 @@ import com.nukkitx.protocol.bedrock.util.TIntHashBiMap;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +17,7 @@ import static com.nukkitx.protocol.bedrock.packet.LevelEventPacket.Event;
 public class LevelEventSerializer_v291 implements PacketSerializer<LevelEventPacket> {
     public static final LevelEventSerializer_v291 INSTANCE = new LevelEventSerializer_v291();
 
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(LevelEventSerializer_v291.class);
     private static final TIntHashBiMap<Event> events = new TIntHashBiMap<>();
 
     static {
@@ -85,7 +88,11 @@ public class LevelEventSerializer_v291 implements PacketSerializer<LevelEventPac
 
     @Override
     public void deserialize(ByteBuf buffer, LevelEventPacket packet) {
-        packet.setEvent(events.get(VarInts.readInt(buffer)));
+        int eventId = VarInts.readInt(buffer);
+        packet.setEvent(events.get(eventId));
+        if (packet.getEvent() == null) {
+            log.debug("Unknown Level Event {} received", eventId);
+        }
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setData(VarInts.readInt(buffer));
     }

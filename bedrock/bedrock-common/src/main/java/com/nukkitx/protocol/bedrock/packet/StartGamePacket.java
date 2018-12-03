@@ -9,6 +9,7 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.Value;
 
 import java.util.ArrayDeque;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(exclude = {"paletteEntries"})
 public class StartGamePacket extends BedrockPacket {
     protected final List<GameRule> gamerules = new ArrayList<>();
     protected long uniqueEntityId;
