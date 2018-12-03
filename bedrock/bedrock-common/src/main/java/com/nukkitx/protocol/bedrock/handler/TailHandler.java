@@ -4,5 +4,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 
 public interface TailHandler {
 
-    void handle(BedrockPacket packet);
+    default boolean handle(BedrockPacket packet, boolean packetsHandled) {
+        return false;
+    }
 }

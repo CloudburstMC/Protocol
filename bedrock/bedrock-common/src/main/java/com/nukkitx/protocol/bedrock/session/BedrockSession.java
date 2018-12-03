@@ -9,8 +9,8 @@ import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import com.nukkitx.protocol.bedrock.handler.DefaultTailHandler;
 import com.nukkitx.protocol.bedrock.handler.TailHandler;
+import com.nukkitx.protocol.bedrock.handler.WrapperTailHandler;
 import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
 import com.nukkitx.protocol.bedrock.session.data.AuthData;
 import com.nukkitx.protocol.bedrock.session.data.ClientData;
@@ -55,7 +55,9 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     private BedrockPacketHandler handler;
     private WrapperHandler wrapperHandler = DefaultWrapperHandler.DEFAULT;
     @Setter
-    private TailHandler tailHandler = new DefaultTailHandler(this);
+    private TailHandler tailHandler = null;
+    @Setter
+    private WrapperTailHandler<PLAYER> wrapperTailHandler = null;
     private RakNetSession connection;
     private AuthData authData;
     private ClientData clientData;
@@ -66,6 +68,8 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     @Getter(AccessLevel.NONE)
     private SecretKey agreedKey;
     private int protocolVersion;
+    @Setter
+    private volatile boolean logging = true;
 
     public BedrockSession(RakNetSession connection) {
         this.connection = connection;
@@ -108,7 +112,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     public void sendPacket(BedrockPacket packet) {
         checkForClosed();
         Preconditions.checkNotNull(packet, "packet");
-        if (log.isTraceEnabled()) {
+        if (log.isTraceEnabled() && logging) {
             String to = connection.getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
             log.trace("Outbound {}: {}", to, packet);
         }
@@ -123,7 +127,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         checkForClosed();
         Preconditions.checkNotNull(packet, "packet");
 
-        if (log.isTraceEnabled()) {
+        if (log.isTraceEnabled() && logging) {
             String to = connection.getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
             log.trace("Outbound {}: {}", to, packet);
         }
@@ -136,20 +140,22 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         sendWrapped(wrappedPacket);
     }
 
-    private void sendWrapped(WrappedPacket wrappedPacket) {
+    public void sendWrapped(WrappedPacket<PLAYER> packet) {
+        Preconditions.checkNotNull(packet, "packet");
         ByteBuf compressed;
-        if (wrappedPacket.getBatched() == null) {
-            compressed = wrapperHandler.compressPackets(packetCodec, wrappedPacket.getPackets());
+        if (packet.getBatched() == null) {
+            compressed = wrapperHandler.compressPackets(packetCodec, packet.getPackets());
         } else {
-            compressed = wrappedPacket.getBatched();
+            compressed = packet.getBatched();
         }
 
-        ByteBuf finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer();
+        ByteBuf finalPayload = null;
         try {
-            if (encryptionCipher == null || wrappedPacket.isEncrypted()) {
+            if (encryptionCipher == null || packet.isEncrypted()) {
                 compressed.readerIndex(0);
-                finalPayload.writeBytes(compressed);
+                finalPayload = compressed;
             } else {
+                finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer();
                 compressed.readerIndex(0);
                 byte[] trailer = generateTrailer(compressed);
                 compressed.writeBytes(trailer);
@@ -158,14 +164,18 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
                 encryptionCipher.cipher(compressed, finalPayload);
             }
         } catch (GeneralSecurityException e) {
-            finalPayload.release();
+            if (finalPayload != null) {
+                finalPayload.release();
+            }
             throw new RuntimeException("Unable to encrypt package", e);
         } finally {
-            compressed.release();
+            if (compressed != finalPayload) {
+                compressed.release();
+            }
         }
-        wrappedPacket.setPayload(finalPayload);
+        packet.setPayload(finalPayload);
 
-        connection.sendPacket(wrappedPacket);
+        connection.sendPacket(packet);
     }
 
     public void onTick() {
@@ -178,13 +188,13 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
 
     private void sendQueued() {
         BedrockPacket packet;
-        WrappedPacket wrapper = new WrappedPacket();
+        WrappedPacket<PLAYER> wrapper = new WrappedPacket<>();
         while ((packet = currentlyQueued.poll()) != null) {
             if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
                 // We hit a wrappable packet. Send the current wrapper and then send the un-wrappable packet.
                 if (!wrapper.getPackets().isEmpty()) {
                     sendWrapped(wrapper);
-                    wrapper = new WrappedPacket();
+                    wrapper = new WrappedPacket<>();
                 }
 
                 sendPacketImmediately(packet);
@@ -263,7 +273,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         }
 
         // Destroy secret key
-        if (agreedKey != null) {
+        if (agreedKey != null && !agreedKey.isDestroyed()) {
             try {
                 agreedKey.destroy();
             } catch (DestroyFailedException e) {
@@ -321,7 +331,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         close();
     }
 
-    public void onWrappedPacket(WrappedPacket packet) throws Exception {
+    public void onWrappedPacket(WrappedPacket<PLAYER> packet) throws Exception {
         Preconditions.checkNotNull(packet, "packet");
         if (wrapperHandler == null) {
             return;
@@ -341,7 +351,8 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
                 unwrappedData = wrappedData;
             }
 
-            handleBatched(unwrappedData);
+            packet.setBatched(unwrappedData);
+            handleBatched(packet);
         } finally {
             wrappedData.release();
             if (unwrappedData != null && unwrappedData != wrappedData) {
@@ -350,16 +361,23 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         }
     }
 
-    protected void handleBatched(ByteBuf batchedData) {
-        String to = getRemoteAddress().orElse(LOOPBACK_BEDROCK).toString();
-        for (BedrockPacket packet : wrapperHandler.decompressPackets(packetCodec, batchedData)) {
-            if (log.isTraceEnabled()) {
-                log.trace("Inbound {}: {}", to, packet.toString());
+    protected void handleBatched(WrappedPacket<PLAYER> wrappedPacket) {
+        boolean handled = false;
+        for (BedrockPacket packet : wrapperHandler.decompressPackets(packetCodec, wrappedPacket.getBatched())) {
+            if (logging && log.isTraceEnabled()) {
+                log.trace("Inbound {}: {}", getAddress(), packet);
             }
-            if (!packet.handle(handler) && tailHandler != null) {
-                tailHandler.handle(packet);
+            if ((handler != null && packet.handle(handler)) || (tailHandler != null && tailHandler.handle(packet, handled))) {
+                handled = true;
             }
         }
+        if (wrapperTailHandler != null) {
+            wrapperTailHandler.handle(wrappedPacket, handled);
+        }
+    }
+
+    private String getAddress() {
+        return getRemoteAddress().map(InetSocketAddress::toString).orElse("UNKNOWN");
     }
 
     @Override

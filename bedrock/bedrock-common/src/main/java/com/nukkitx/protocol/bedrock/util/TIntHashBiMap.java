@@ -49,7 +49,6 @@ public class TIntHashBiMap<T> {
     }
 
     public int get(T value) {
-        Preconditions.checkNotNull(value, "value");
         return backwards.get(value);
     }
 
