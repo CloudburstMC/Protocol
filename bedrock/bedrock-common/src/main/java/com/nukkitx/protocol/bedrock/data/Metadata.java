@@ -27,8 +27,10 @@ public enum Metadata {
     DISPLAY_ITEM(Type.INT),
     DISPLAY_OFFSET(null), // Can be long or int
     HAS_DISPLAY(Type.BYTE),
+    CHARGED(Type.BYTE),
     ENDERMAN_HELD_ITEM_ID(Type.INT),
     ENTITY_AGE(Type.BYTE),
+    WITCH_UNKNOWN(Type.BYTE), // TODO: Initialized to 0 but never changed.
     CAN_START_SLEEP(Type.BYTE),
     PLAYER_INDEX(Type.INT),
     BED_RESPAWN_POS(Type.VECTOR3I),
@@ -66,6 +68,7 @@ public enum Metadata {
     SHULKER_ATTACH_FACE(Type.BYTE),
     SHULKER_ATTACH_POS(Type.VECTOR3I),
     TRADING_PLAYER_EID(Type.LONG),
+    COMMAND_BLOCK_ENABLED(Type.BYTE),
     COMMAND_BLOCK_COMMAND(Type.STRING),
     COMMAND_BLOCK_LAST_OUTPUT(Type.STRING),
     COMMAND_BLOCK_TRACK_OUTPUT(Type.BYTE),

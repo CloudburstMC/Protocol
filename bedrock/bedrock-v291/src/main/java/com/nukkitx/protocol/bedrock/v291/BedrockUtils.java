@@ -57,8 +57,10 @@ public final class BedrockUtils {
         METADATAS.put(16, DISPLAY_ITEM);
         METADATAS.put(17, DISPLAY_OFFSET);
         METADATAS.put(18, HAS_DISPLAY);
+        METADATAS.put(22, CHARGED);
         METADATAS.put(23, ENDERMAN_HELD_ITEM_ID);
         METADATAS.put(24, ENTITY_AGE);
+        METADATAS.put(25, WITCH_UNKNOWN);
         METADATAS.put(26, CAN_START_SLEEP);
         METADATAS.put(27, PLAYER_INDEX);
         METADATAS.put(28, BED_RESPAWN_POS);
@@ -94,6 +96,7 @@ public final class BedrockUtils {
         METADATAS.put(64, SHULKER_ATTACH_FACE);
         METADATAS.put(66, SHULKER_ATTACH_POS);
         METADATAS.put(67, TRADING_PLAYER_EID);
+        METADATAS.put(69, COMMAND_BLOCK_ENABLED); // Unsure
         METADATAS.put(70, COMMAND_BLOCK_COMMAND);
         METADATAS.put(71, COMMAND_BLOCK_LAST_OUTPUT);
         METADATAS.put(72, COMMAND_BLOCK_TRACK_OUTPUT);
@@ -734,7 +737,7 @@ public final class BedrockUtils {
             if (metadata != null) {
                 metadataDictionary.put(metadata, object);
             } else {
-                log.debug("Unknown metadata: {}", metadataInt);
+                log.debug("Unknown metadata: {} type {}", metadataInt, type);
             }
         }
     }
