@@ -56,17 +56,17 @@ public class EntityEventPacket extends BedrockPacket {
         DEATH_SMOKE_CLOUD,
         COMPLETE_TRADE,
         REMOVE_LEASH,
-        /**
+        /*
          * Join or leave caravan
          * Data: Caravan size
          */
         CARAVAN,
         CONSUME_TOTEM,
-        /**
+        /*
          * Microjang hack to check if achievement is successful sent every 4 seconds.
          */
         CHECK_TREASURE_HUNTER_ACHIEVEMENT,
-        /**
+        /*
          * Entity spawn
          * Data: MobSpawnMethod | (entityId << 16)
          */
