@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class StopSoundPacket extends BedrockPacket {
-    protected String soundName;
-    protected boolean stoppingAllSound;
+    private String soundName;
+    private boolean stoppingAllSound;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class LevelEventPacket extends BedrockPacket {
-    protected Event event;
-    protected Vector3f position;
-    protected int data;
+    private Event event;
+    private Vector3f position;
+    private int data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

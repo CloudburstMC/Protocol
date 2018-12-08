@@ -9,8 +9,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SpawnExperienceOrbPacket extends BedrockPacket {
-    protected Vector3f position;
-    protected int amount;
+    private Vector3f position;
+    private int amount;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

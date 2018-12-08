@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class RespawnPacket extends BedrockPacket {
-    protected Vector3f position;
+    private Vector3f position;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

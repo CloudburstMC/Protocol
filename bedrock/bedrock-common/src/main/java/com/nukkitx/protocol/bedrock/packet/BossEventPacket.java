@@ -8,14 +8,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BossEventPacket extends BedrockPacket {
-    protected long bossUniqueEntityId;
-    protected Type type;
-    protected long playerUniqueEntityId;
-    protected String title;
-    protected float healthPercentage;
-    protected short unknown0;
-    protected int color;
-    protected int overlay;
+    private long bossUniqueEntityId;
+    private Type type;
+    private long playerUniqueEntityId;
+    private String title;
+    private float healthPercentage;
+    private short unknown0;
+    private int color;
+    private int overlay;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

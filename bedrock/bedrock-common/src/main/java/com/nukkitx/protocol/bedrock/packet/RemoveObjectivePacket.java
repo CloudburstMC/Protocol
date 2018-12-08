@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class RemoveObjectivePacket extends BedrockPacket {
-    protected String objectiveId;
+    private String objectiveId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

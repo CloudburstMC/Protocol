@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class WSConnectPacket extends BedrockPacket {
-    protected String address;
+    private String address;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

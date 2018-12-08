@@ -8,15 +8,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BookEditPacket extends BedrockPacket {
-    protected Type type;
-    protected int inventorySlot;
-    protected int pageNumber;
-    protected int secondaryPageNumber;
-    protected String text;
-    protected String photoName;
-    protected String title;
-    protected String author;
-    protected String xuid;
+    private Type type;
+    private int inventorySlot;
+    private int pageNumber;
+    private int secondaryPageNumber;
+    private String text;
+    private String photoName;
+    private String title;
+    private String author;
+    private String xuid;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

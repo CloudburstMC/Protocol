@@ -8,12 +8,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MobEffectPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Event event;
-    protected int effectId;
-    protected int amplifier;
-    protected boolean particles;
-    protected int duration;
+    private long runtimeEntityId;
+    private Event event;
+    private int effectId;
+    private int amplifier;
+    private boolean particles;
+    private int duration;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

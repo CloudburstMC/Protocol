@@ -12,8 +12,8 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InventoryContentPacket extends BedrockPacket {
-    protected final List<Item> contents = new ArrayList<>();
-    protected int windowId;
+    private final List<Item> contents = new ArrayList<>();
+    private int windowId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -9,11 +9,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MoveEntityAbsolutePacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Vector3f position;
-    protected Vector3f rotation;
-    protected boolean onGround;
-    protected boolean teleported;
+    private long runtimeEntityId;
+    private Vector3f position;
+    private Vector3f rotation;
+    private boolean onGround;
+    private boolean teleported;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -11,9 +11,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UpdateSoftEnumPacket extends BedrockPacket {
-    protected final List<String> values = new ArrayList<>();
-    protected String enumName;
-    protected Type type;
+    private final List<String> values = new ArrayList<>();
+    private String enumName;
+    private Type type;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

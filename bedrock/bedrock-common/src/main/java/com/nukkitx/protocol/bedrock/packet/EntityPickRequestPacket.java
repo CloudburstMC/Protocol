@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EntityPickRequestPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected int hotbarSlot;
+    private long runtimeEntityId;
+    private int hotbarSlot;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

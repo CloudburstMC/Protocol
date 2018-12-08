@@ -11,8 +11,8 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ResourcePackClientResponsePacket extends BedrockPacket {
-    protected final List<String> packIds = new ArrayList<>();
-    protected Status status;
+    private final List<String> packIds = new ArrayList<>();
+    private Status status;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

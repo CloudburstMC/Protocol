@@ -12,8 +12,8 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetScorePacket extends BedrockPacket {
-    protected Action action;
-    protected List<ScoreInfo> infos = new ArrayList<>();
+    private Action action;
+    private List<ScoreInfo> infos = new ArrayList<>();
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class NetworkStackLatencyPacket extends BedrockPacket {
-    protected long timestamp;
+    private long timestamp;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

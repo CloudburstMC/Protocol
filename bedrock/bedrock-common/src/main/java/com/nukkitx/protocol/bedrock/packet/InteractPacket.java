@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InteractPacket extends BedrockPacket {
-    protected int action;
-    protected long runtimeEntityId;
-    protected Vector3f mousePosition;
+    private int action;
+    private long runtimeEntityId;
+    private Vector3f mousePosition;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

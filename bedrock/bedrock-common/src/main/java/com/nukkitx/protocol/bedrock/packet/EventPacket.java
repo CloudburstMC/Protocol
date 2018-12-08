@@ -8,10 +8,23 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class EventPacket extends BedrockPacket {
-    protected long uniqueEntityId;
-    protected int data;
-    protected int type;
-    //protected EventDetails details; Haven't quite figured this out yet.
+    private long uniqueEntityId;
+    private int data;
+    private int type;
+
+    private int id;
+    private int cause;
+    private int unknown0;
+    private short unknown1;
+    private long mobEntityId;
+    private long unknownEid;
+    private String unknown2;
+    private String unknown3;
+    private String unknown4;
+    private int unknown5;
+    private int unknown6;
+    private String unknown7;
+    private boolean unknown8;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

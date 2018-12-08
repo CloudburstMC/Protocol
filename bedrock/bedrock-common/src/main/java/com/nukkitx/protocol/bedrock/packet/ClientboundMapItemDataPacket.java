@@ -15,17 +15,17 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ClientboundMapItemDataPacket extends BedrockPacket {
-    protected final TLongList trackedEntityIds = new TLongArrayList();
-    protected final List<MapTrackedObject> trackedObjects = new ArrayList<>();
-    protected final List<MapDecoration> decorations = new ArrayList<>();
-    protected long uniqueMapId;
-    protected int dimensionId;
-    protected int scale;
-    protected int height;
-    protected int width;
-    protected int xOffset;
-    protected int yOffset;
-    protected int[] colors;
+    private final TLongList trackedEntityIds = new TLongArrayList();
+    private final List<MapTrackedObject> trackedObjects = new ArrayList<>();
+    private final List<MapDecoration> decorations = new ArrayList<>();
+    private long uniqueMapId;
+    private int dimensionId;
+    private int scale;
+    private int height;
+    private int width;
+    private int xOffset;
+    private int yOffset;
+    private int[] colors;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

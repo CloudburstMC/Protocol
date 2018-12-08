@@ -10,8 +10,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BlockEntityDataPacket extends BedrockPacket {
-    protected Vector3i blockPostion;
-    protected Tag<?> data;
+    private Vector3i blockPostion;
+    private Tag<?> data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

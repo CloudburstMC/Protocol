@@ -9,11 +9,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MobArmorEquipmentPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Item helmet;
-    protected Item chestplate;
-    protected Item leggings;
-    protected Item boots;
+    private long runtimeEntityId;
+    private Item helmet;
+    private Item chestplate;
+    private Item leggings;
+    private Item boots;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -10,15 +10,15 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayerSkinPacket extends BedrockPacket {
-    protected UUID uuid;
-    protected String skinId;
-    protected String newSkinName;
-    protected String oldSkinName;
-    protected byte[] skinData;
-    protected byte[] capeData;
-    protected String geometryName;
-    protected String geometryData;
-    protected boolean premiumSkin;
+    private UUID uuid;
+    private String skinId;
+    private String newSkinName;
+    private String oldSkinName;
+    private byte[] skinData;
+    private byte[] capeData;
+    private String geometryName;
+    private String geometryData;
+    private boolean premiumSkin;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -15,17 +15,17 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InventoryTransactionPacket extends BedrockPacket {
-    protected final List<InventoryAction> actions = new ArrayList<>();
-    protected Type transactionType;
-    protected int actionType;
-    protected long runtimeEntityId;
-    protected Vector3i blockPosition;
-    protected int face;
-    protected int hotbarSlot;
-    protected Item itemInHand;
-    protected Vector3f playerPosition;
-    protected Vector3f clickPosition;
-    protected Vector3f headPosition;
+    private final List<InventoryAction> actions = new ArrayList<>();
+    private Type transactionType;
+    private int actionType;
+    private long runtimeEntityId;
+    private Vector3i blockPosition;
+    private int face;
+    private int hotbarSlot;
+    private Item itemInHand;
+    private Vector3f playerPosition;
+    private Vector3f clickPosition;
+    private Vector3f headPosition;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

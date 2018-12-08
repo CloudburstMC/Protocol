@@ -10,10 +10,10 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ResourcePackChunkDataPacket extends BedrockPacket {
-    protected UUID packId;
-    protected int chunkIndex;
-    protected long progress;
-    protected byte[] data;
+    private UUID packId;
+    private int chunkIndex;
+    private long progress;
+    private byte[] data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -16,23 +16,23 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddPlayerPacket extends BedrockPacket {
-    protected final MetadataDictionary metadata = new MetadataDictionary();
-    protected final List<EntityLink> entityLinks = new ArrayList<>();
-    protected UUID uuid;
-    protected String username;
-    protected long uniqueEntityId;
-    protected long runtimeEntityId;
-    protected String platformChatId;
-    protected Vector3f position;
-    protected Vector3f motion;
-    protected Vector3f rotation;
-    protected Item hand;
-    protected int playerFlags;
-    protected int commandPermission;
-    protected int worldFlags;
-    protected int playerPermission;
-    protected int customFlags;
-    protected String deviceId;
+    private final MetadataDictionary metadata = new MetadataDictionary();
+    private final List<EntityLink> entityLinks = new ArrayList<>();
+    private UUID uuid;
+    private String username;
+    private long uniqueEntityId;
+    private long runtimeEntityId;
+    private String platformChatId;
+    private Vector3f position;
+    private Vector3f motion;
+    private Vector3f rotation;
+    private Item hand;
+    private int playerFlags;
+    private int commandPermission;
+    private int worldFlags;
+    private int playerPermission;
+    private int customFlags;
+    private String deviceId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

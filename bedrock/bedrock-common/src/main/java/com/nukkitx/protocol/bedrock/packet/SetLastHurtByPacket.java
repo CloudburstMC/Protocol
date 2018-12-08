@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetLastHurtByPacket extends BedrockPacket {
-    protected int entityTypeId;
+    private int entityTypeId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

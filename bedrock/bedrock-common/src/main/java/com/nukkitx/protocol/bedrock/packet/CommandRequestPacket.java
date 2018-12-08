@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CommandRequestPacket extends BedrockPacket {
-    protected String command;
-    protected CommandOriginData commandOriginData;
-    protected boolean internal;
+    private String command;
+    private CommandOriginData commandOriginData;
+    private boolean internal;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

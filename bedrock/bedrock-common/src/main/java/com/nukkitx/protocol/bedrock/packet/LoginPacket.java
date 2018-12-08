@@ -11,9 +11,9 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true, exclude = {"skinData"})
 @ToString(exclude = {"chainData", "skinData"})
 public class LoginPacket extends BedrockPacket {
-    protected int protocolVersion;
-    protected AsciiString chainData;
-    protected AsciiString skinData;
+    private int protocolVersion;
+    private AsciiString chainData;
+    private AsciiString skinData;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

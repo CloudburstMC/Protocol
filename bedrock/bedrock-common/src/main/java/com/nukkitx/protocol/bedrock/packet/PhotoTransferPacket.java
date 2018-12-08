@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class PhotoTransferPacket extends BedrockPacket {
-    protected String name;
-    protected byte[] data;
-    protected String bookId;
+    private String name;
+    private byte[] data;
+    private String bookId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -14,11 +14,11 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CommandOutputPacket extends BedrockPacket {
-    protected final List<CommandOutputMessage> messages = new ArrayList<>();
-    protected CommandOriginData commandOriginData;
-    protected int outputType;
-    protected int successCount;
-    protected String data;
+    private final List<CommandOutputMessage> messages = new ArrayList<>();
+    private CommandOriginData commandOriginData;
+    private int outputType;
+    private int successCount;
+    private String data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

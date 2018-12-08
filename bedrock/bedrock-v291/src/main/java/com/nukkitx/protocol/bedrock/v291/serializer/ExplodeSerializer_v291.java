@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ExplodePacket;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -15,7 +16,7 @@ public class ExplodeSerializer_v291 implements PacketSerializer<ExplodePacket> {
     @Override
     public void serialize(ByteBuf buffer, ExplodePacket packet) {
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
-        buffer.writeFloatLE(packet.getRadius());
+        VarInts.writeInt(buffer, (int) (packet.getRadius() * 32));
 
         BedrockUtils.writeArray(buffer, packet.getRecords(), BedrockUtils::writeVector3i);
     }
@@ -23,7 +24,7 @@ public class ExplodeSerializer_v291 implements PacketSerializer<ExplodePacket> {
     @Override
     public void deserialize(ByteBuf buffer, ExplodePacket packet) {
         packet.setPosition(BedrockUtils.readVector3f(buffer));
-        packet.setRadius(buffer.readFloatLE());
+        packet.setRadius(VarInts.readInt(buffer) / 32f);
 
         BedrockUtils.readArray(buffer, packet.getRecords(), BedrockUtils::readVector3i);
     }

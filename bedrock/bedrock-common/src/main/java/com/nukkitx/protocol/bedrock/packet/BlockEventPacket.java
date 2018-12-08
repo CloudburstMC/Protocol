@@ -32,9 +32,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BlockEventPacket extends BedrockPacket {
-    protected Vector3i blockPosition;
-    protected int eventType;
-    protected int eventData;
+    private Vector3i blockPosition;
+    private int eventType;
+    private int eventData;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

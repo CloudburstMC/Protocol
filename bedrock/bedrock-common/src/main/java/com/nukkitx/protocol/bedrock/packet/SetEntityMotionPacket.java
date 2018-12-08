@@ -9,8 +9,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetEntityMotionPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Vector3f motion;
+    private long runtimeEntityId;
+    private Vector3f motion;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

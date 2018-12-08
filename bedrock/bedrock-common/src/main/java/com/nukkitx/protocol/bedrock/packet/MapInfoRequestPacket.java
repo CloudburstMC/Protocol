@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MapInfoRequestPacket extends BedrockPacket {
-    protected long uniqueMapId;
+    private long uniqueMapId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

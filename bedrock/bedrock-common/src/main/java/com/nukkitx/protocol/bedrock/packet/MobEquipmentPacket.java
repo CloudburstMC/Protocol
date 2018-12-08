@@ -9,11 +9,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MobEquipmentPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Item item;
-    protected int inventorySlot;
-    protected int hotbarSlot;
-    protected byte windowId;
+    private long runtimeEntityId;
+    private Item item;
+    private int inventorySlot;
+    private int hotbarSlot;
+    private byte windowId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

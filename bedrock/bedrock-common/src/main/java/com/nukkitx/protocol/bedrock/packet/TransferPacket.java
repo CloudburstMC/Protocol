@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TransferPacket extends BedrockPacket {
-    protected String address;
-    protected int port;
+    private String address;
+    private int port;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

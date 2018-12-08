@@ -9,12 +9,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class LevelSoundEventPacket extends BedrockPacket {
-    protected Sound sound;
-    protected Vector3f position;
-    protected int extraData;
-    protected int pitch;
-    protected boolean unknown0;
-    protected boolean relativeVolumeDisabled;
+    private Sound sound;
+    private Vector3f position;
+    private int extraData;
+    private int pitch;
+    private boolean unknown0;
+    private boolean relativeVolumeDisabled;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

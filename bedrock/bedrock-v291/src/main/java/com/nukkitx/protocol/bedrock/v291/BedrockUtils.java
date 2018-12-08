@@ -60,7 +60,7 @@ public final class BedrockUtils {
         METADATAS.put(22, CHARGED);
         METADATAS.put(23, ENDERMAN_HELD_ITEM_ID);
         METADATAS.put(24, ENTITY_AGE);
-        METADATAS.put(25, WITCH_UNKNOWN);
+        //METADATAS.put(25, WITCH_UNKNOWN);
         METADATAS.put(26, CAN_START_SLEEP);
         METADATAS.put(27, PLAYER_INDEX);
         METADATAS.put(28, BED_RESPAWN_POS);
@@ -737,7 +737,7 @@ public final class BedrockUtils {
             if (metadata != null) {
                 metadataDictionary.put(metadata, object);
             } else {
-                log.debug("Unknown metadata: {} type {}", metadataInt, type);
+                log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
             }
         }
     }

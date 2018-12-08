@@ -13,9 +13,9 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ResourcePacksInfoPacket extends BedrockPacket {
-    protected final List<Entry> behaviorPackInfos = new ArrayList<>();
-    protected final List<Entry> resourcePackInfos = new ArrayList<>();
-    protected boolean forcedToAccept;
+    private final List<Entry> behaviorPackInfos = new ArrayList<>();
+    private final List<Entry> resourcePackInfos = new ArrayList<>();
+    private boolean forcedToAccept;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

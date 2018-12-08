@@ -259,11 +259,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         return encryptionCipher != null;
     }
 
-    private void close() {
-        if (!connection.isClosed()) {
-            connection.close();
-        }
-
+    public void close() {
         // Free native resources if required
         if (encryptionCipher != null) {
             encryptionCipher.free();

@@ -8,11 +8,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetTitlePacket extends BedrockPacket {
-    protected Type type;
-    protected String text;
-    protected int fadeInTime;
-    protected int stayTime;
-    protected int fadeOutTime;
+    private Type type;
+    private String text;
+    private int fadeInTime;
+    private int stayTime;
+    private int fadeOutTime;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ChangeDimensionPacket extends BedrockPacket {
-    protected int dimension;
-    protected Vector3f position;
-    protected boolean respawn;
+    private int dimension;
+    private Vector3f position;
+    private boolean respawn;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

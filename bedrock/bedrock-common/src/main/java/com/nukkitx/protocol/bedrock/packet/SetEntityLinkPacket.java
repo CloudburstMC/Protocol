@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetEntityLinkPacket extends BedrockPacket {
-    protected EntityLink entityLink;
+    private EntityLink entityLink;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

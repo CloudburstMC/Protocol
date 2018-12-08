@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ContainerOpenPacket extends BedrockPacket {
-    protected byte windowId;
-    protected byte type;
-    protected Vector3i blockPosition;
-    protected long uniqueEntityId;
+    private byte windowId;
+    private byte type;
+    private Vector3i blockPosition;
+    private long uniqueEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

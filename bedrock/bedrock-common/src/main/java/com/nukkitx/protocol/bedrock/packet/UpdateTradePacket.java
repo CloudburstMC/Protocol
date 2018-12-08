@@ -9,15 +9,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UpdateTradePacket extends BedrockPacket {
-    protected short windowId;
-    protected short windowType;
-    protected int unknown0; // Couldn't find anything on this one.
-    protected int unknown1; // Something to do with AI and randomness?
-    protected boolean willing;
-    protected long traderUniqueEntityId;
-    protected long playerUniqueEntityId;
-    protected String displayName;
-    protected Tag<?> offers;
+    private short windowId;
+    private short windowType;
+    private int unknown0; // Couldn't find anything on this one.
+    private int unknown1; // Something to do with AI and randomness?
+    private boolean willing;
+    private long traderUniqueEntityId;
+    private long playerUniqueEntityId;
+    private String displayName;
+    private Tag<?> offers;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

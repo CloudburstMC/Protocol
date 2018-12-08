@@ -8,9 +8,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayerHotbarPacket extends BedrockPacket {
-    protected int selectedHotbarSlot;
-    protected byte windowId;
-    protected boolean selectHotbarSlot;
+    private int selectedHotbarSlot;
+    private byte windowId;
+    private boolean selectHotbarSlot;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

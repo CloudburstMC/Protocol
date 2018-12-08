@@ -11,13 +11,13 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TextPacket extends BedrockPacket {
-    protected Type type;
-    protected boolean needsTranslation;
-    protected String sourceName;
-    protected String message;
-    protected List<String> parameters = new ArrayList<>();
-    protected String xuid;
-    protected String platformChatId = "";
+    private Type type;
+    private boolean needsTranslation;
+    private String sourceName;
+    private String message;
+    private List<String> parameters = new ArrayList<>();
+    private String xuid;
+    private String platformChatId = "";
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

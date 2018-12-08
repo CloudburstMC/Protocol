@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ServerSettingsResponsePacket extends BedrockPacket {
-    protected int formId;
-    protected String formData;
+    private int formId;
+    private String formData;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

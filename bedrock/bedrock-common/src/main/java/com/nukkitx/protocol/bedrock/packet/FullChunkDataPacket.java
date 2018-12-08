@@ -10,9 +10,9 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(exclude = {"data"}) // We don't really want to be printing the entire chunk
 public class FullChunkDataPacket extends BedrockPacket {
-    protected int chunkX;
-    protected int chunkZ;
-    protected byte[] data;
+    private int chunkX;
+    private int chunkZ;
+    private byte[] data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ShowCreditsPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Status status;
+    private long runtimeEntityId;
+    private Status status;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddHangingEntityPacket extends BedrockPacket {
-    protected long uniqueEntityId;
-    protected long runtimeEntityId;
-    protected Vector3i blockPosition;
-    protected int rotation;
+    private long uniqueEntityId;
+    private long runtimeEntityId;
+    private Vector3i blockPosition;
+    private int rotation;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InventorySlotPacket extends BedrockPacket {
-    protected int windowId;
-    protected int inventorySlot;
-    protected Item slot;
+    private int windowId;
+    private int inventorySlot;
+    private Item slot;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -9,8 +9,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetEntityDataPacket extends BedrockPacket {
-    protected final MetadataDictionary metadata = new MetadataDictionary();
-    protected long runtimeEntityId;
+    private final MetadataDictionary metadata = new MetadataDictionary();
+    private long runtimeEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

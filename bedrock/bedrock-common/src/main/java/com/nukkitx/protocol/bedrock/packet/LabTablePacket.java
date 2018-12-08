@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class LabTablePacket extends BedrockPacket {
-    protected byte unknownByte0;
-    protected Vector3i blockEntityPosition;
-    protected byte reactionType;
+    private byte unknownByte0;
+    private Vector3i blockEntityPosition;
+    private byte reactionType;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

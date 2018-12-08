@@ -8,12 +8,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AdventureSettingsPacket extends BedrockPacket {
-    protected int playerFlags;
-    protected int commandPermission;
-    protected int worldFlags;
-    protected int playerPermission;
-    protected int customFlags;
-    protected long uniqueEntityId;
+    private int playerFlags;
+    private int commandPermission;
+    private int worldFlags;
+    private int playerPermission;
+    private int customFlags;
+    private long uniqueEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

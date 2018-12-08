@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlaySoundPacket extends BedrockPacket {
-    protected String sound;
-    protected Vector3f position;
-    protected float volume;
-    protected float pitch;
+    private String sound;
+    private Vector3f position;
+    private float volume;
+    private float pitch;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

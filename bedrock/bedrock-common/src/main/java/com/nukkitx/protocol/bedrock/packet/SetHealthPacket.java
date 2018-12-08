@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetHealthPacket extends BedrockPacket {
-    protected int health;
+    private int health;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

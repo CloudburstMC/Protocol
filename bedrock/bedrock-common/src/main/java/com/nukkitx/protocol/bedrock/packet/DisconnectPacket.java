@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class DisconnectPacket extends BedrockPacket {
-    protected boolean disconnectScreenHidden;
-    protected String kickMessage;
+    private boolean disconnectScreenHidden;
+    private String kickMessage;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

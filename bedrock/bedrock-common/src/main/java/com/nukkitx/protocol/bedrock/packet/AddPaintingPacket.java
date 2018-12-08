@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddPaintingPacket extends AddHangingEntityPacket {
-    protected String title;
+    private String title;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

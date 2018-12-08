@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
-    protected long runtimeEntityId;
-    protected long unknownLong1;
+    private long runtimeEntityId;
+    private long unknownLong1;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

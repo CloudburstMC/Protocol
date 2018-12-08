@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ScriptCustomEventPacket extends BedrockPacket {
-    protected String eventName;
-    protected String data;
+    private String eventName;
+    private String data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

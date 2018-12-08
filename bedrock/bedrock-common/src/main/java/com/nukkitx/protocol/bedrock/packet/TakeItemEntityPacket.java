@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TakeItemEntityPacket extends BedrockPacket {
-    protected long itemRuntimeEntityId;
-    protected long runtimeEntityId;
+    private long itemRuntimeEntityId;
+    private long runtimeEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

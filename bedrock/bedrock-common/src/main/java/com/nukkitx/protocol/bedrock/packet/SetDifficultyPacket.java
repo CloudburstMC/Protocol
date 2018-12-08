@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetDifficultyPacket extends BedrockPacket {
-    protected int difficulty;
+    private int difficulty;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ShowProfilePacket extends BedrockPacket {
-    protected String xuid;
+    private String xuid;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CameraPacket extends BedrockPacket {
-    protected long cameraUniqueEntityId;
-    protected long playerUniqueEntityId;
+    private long cameraUniqueEntityId;
+    private long playerUniqueEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

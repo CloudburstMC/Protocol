@@ -13,8 +13,8 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayerListPacket extends BedrockPacket {
-    protected final List<Entry> entries = new ArrayList<>();
-    protected Type type;
+    private final List<Entry> entries = new ArrayList<>();
+    private Type type;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -30,15 +30,15 @@ public class PlayerListPacket extends BedrockPacket {
     @EqualsAndHashCode(exclude = {"skinData", "capeData", "geometryData"})
     @Data
     public final static class Entry {
-        protected final UUID uuid;
-        protected long entityId;
-        protected String name;
-        protected String skinId;
-        protected byte[] skinData;
-        protected byte[] capeData;
-        protected String geometryName;
-        protected String geometryData;
-        protected String xuid;
-        protected String platformChatId;
+        private final UUID uuid;
+        private long entityId;
+        private String name;
+        private String skinId;
+        private byte[] skinData;
+        private byte[] capeData;
+        private String geometryName;
+        private String geometryData;
+        private String xuid;
+        private String platformChatId;
     }
 }

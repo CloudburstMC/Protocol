@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PurchaseReceiptPacket extends BedrockPacket {
-    protected final List<String> receipts = new ArrayList<>();
+    private final List<String> receipts = new ArrayList<>();
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,9 +8,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class GuiDataPickItemPacket extends BedrockPacket {
-    protected String description;
-    protected String itemEffects;
-    protected int hotbarSlot;
+    private String description;
+    private String itemEffects;
+    private int hotbarSlot;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class NpcRequestPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Type requestType;
-    protected String command;
-    protected int actionType;
+    private long runtimeEntityId;
+    private Type requestType;
+    private String command;
+    private int actionType;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

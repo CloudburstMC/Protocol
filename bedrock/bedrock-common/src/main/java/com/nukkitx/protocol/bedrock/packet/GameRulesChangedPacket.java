@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class GameRulesChangedPacket extends BedrockPacket {
-    protected final List<GameRule> gameRules = new ArrayList<>();
+    private final List<GameRule> gameRules = new ArrayList<>();
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

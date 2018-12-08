@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ChunkRadiusUpdatedPacket extends BedrockPacket {
-    protected int radius;
+    private int radius;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

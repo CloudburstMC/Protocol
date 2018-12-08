@@ -1,14 +1,15 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
-import com.nukkitx.nbt.NBTEncodingType;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
+import com.nukkitx.nbt.stream.NetworkDataInputStream;
+import com.nukkitx.nbt.stream.NetworkDataOutputStream;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.UpdateEquipPacket;
-import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
-import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +27,7 @@ public class UpdateEquipSerializer_v291 implements PacketSerializer<UpdateEquipP
         buffer.writeByte(packet.getWindowType());
         VarInts.writeInt(buffer, packet.getUnknown0());
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        try (NBTOutputStream writer = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer), NBTEncodingType.BEDROCK)) {
+        try (NBTOutputStream writer = new NBTOutputStream(new NetworkDataOutputStream(new ByteBufOutputStream(buffer)))) {
             writer.write(packet.getTag());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -39,7 +40,7 @@ public class UpdateEquipSerializer_v291 implements PacketSerializer<UpdateEquipP
         packet.setWindowType(buffer.readUnsignedByte());
         packet.setUnknown0(VarInts.readInt(buffer));
         packet.setUniqueEntityId(VarInts.readLong(buffer));
-        try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer), NBTEncodingType.BEDROCK)) {
+        try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
             packet.setTag(reader.readTag());
         } catch (IOException e) {
             throw new RuntimeException(e);

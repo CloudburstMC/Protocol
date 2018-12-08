@@ -13,9 +13,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ExplodePacket extends BedrockPacket {
-    protected final List<Vector3i> records = new ArrayList<>();
-    protected Vector3f position;
-    protected float radius;
+    private final List<Vector3i> records = new ArrayList<>();
+    private Vector3f position;
+    private float radius;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

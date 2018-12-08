@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetSpawnPositionPacket extends BedrockPacket {
-    protected Type spawnType;
-    protected Vector3i blockPosition;
-    protected boolean spawnForced;
+    private Type spawnType;
+    private Vector3i blockPosition;
+    private boolean spawnForced;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

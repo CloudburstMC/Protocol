@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ShowStoreOfferPacket extends BedrockPacket {
-    protected String offerId;
-    protected boolean shownToAll;
+    private String offerId;
+    private boolean shownToAll;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

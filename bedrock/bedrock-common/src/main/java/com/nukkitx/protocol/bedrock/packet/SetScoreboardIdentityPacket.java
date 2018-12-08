@@ -13,8 +13,8 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetScoreboardIdentityPacket extends BedrockPacket {
-    protected final List<Entry> entries = new ArrayList<>();
-    protected Type type;
+    private final List<Entry> entries = new ArrayList<>();
+    private Type type;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -28,7 +28,7 @@ public class SetScoreboardIdentityPacket extends BedrockPacket {
 
     @Value
     public static class Entry {
-        protected final long scoreboardId;
-        protected final UUID uuid;
+        private final long scoreboardId;
+        private final UUID uuid;
     }
 }

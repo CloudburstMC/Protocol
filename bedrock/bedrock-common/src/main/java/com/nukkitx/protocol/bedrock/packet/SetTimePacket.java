@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetTimePacket extends BedrockPacket {
-    protected int time;
+    private int time;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

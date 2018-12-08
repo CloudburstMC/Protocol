@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayerActionPacket extends BedrockPacket {
-    protected long runtimeEntityId;
-    protected Action action;
-    protected Vector3i blockPosition;
-    protected int face;
+    private long runtimeEntityId;
+    private Action action;
+    private Vector3i blockPosition;
+    private int face;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

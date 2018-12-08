@@ -9,11 +9,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UpdateEquipPacket extends BedrockPacket {
-    protected short windowId;
-    protected short windowType;
-    protected int unknown0; // Couldn't find anything on this one. Looks like it isn't used?
-    protected long uniqueEntityId;
-    protected Tag<?> tag;
+    private short windowId;
+    private short windowType;
+    private int unknown0; // Couldn't find anything on this one. Looks like it isn't used?
+    private long uniqueEntityId;
+    private Tag<?> tag;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

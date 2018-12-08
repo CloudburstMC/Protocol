@@ -30,7 +30,7 @@ public enum Metadata {
     CHARGED(Type.BYTE),
     ENDERMAN_HELD_ITEM_ID(Type.INT),
     ENTITY_AGE(Type.BYTE),
-    WITCH_UNKNOWN(Type.BYTE), // TODO: Initialized to 0 but never changed.
+    //WITCH_UNKNOWN(Type.BYTE), // TODO: Initialized to 0 but never changed.
     CAN_START_SLEEP(Type.BYTE),
     PLAYER_INDEX(Type.INT),
     BED_RESPAWN_POS(Type.VECTOR3I),

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetCommandsEnabledPacket extends BedrockPacket {
-    protected boolean commandsEnabled;
+    private boolean commandsEnabled;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

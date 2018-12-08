@@ -8,11 +8,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetDisplayObjectivePacket extends BedrockPacket {
-    protected String displaySlot;
-    protected String objectiveId;
-    protected String displayName;
-    protected String criteria;
-    protected int sortOrder;
+    private String displaySlot;
+    private String objectiveId;
+    private String displayName;
+    private String criteria;
+    private int sortOrder;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

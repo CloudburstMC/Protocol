@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class PacketHeader implements MinecraftPacket {
-    protected int packetId;
-    protected int senderId;
-    protected int clientId;
+    private int packetId;
+    private int senderId;
+    private int clientId;
 }

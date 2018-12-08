@@ -9,30 +9,30 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class StructureBlockUpdatePacket extends BedrockPacket {
-    protected Vector3i blockPosition;
-    protected Type structureType;
+    private Vector3i blockPosition;
+    private Type structureType;
     // Structure Editor Data start
-    protected String customName;
-    protected String metadata;
-    protected Vector3i structureOffset;
-    protected Vector3i structureSize;
-    protected boolean includingEntities;
-    protected boolean ignoringBlocks;
-    protected boolean includingPlayers;
-    protected boolean showingAir;
+    private String customName;
+    private String metadata;
+    private Vector3i structureOffset;
+    private Vector3i structureSize;
+    private boolean includingEntities;
+    private boolean ignoringBlocks;
+    private boolean includingPlayers;
+    private boolean showingAir;
     // Structure Settings start
-    protected float integrity;
-    protected int seed;
-    protected int mirror;
-    protected int rotation;
-    protected boolean ignoringEntities;
-    protected boolean ignoringStructureBlocks;
-    protected Vector3i bbMin;
-    protected Vector3i bbMax;
+    private float integrity;
+    private int seed;
+    private int mirror;
+    private int rotation;
+    private boolean ignoringEntities;
+    private boolean ignoringStructureBlocks;
+    private Vector3i bbMin;
+    private Vector3i bbMax;
     // Structure Settings end
     // Structure Editor Data end
-    protected boolean boundingBoxVisible;
-    protected boolean powered;
+    private boolean boundingBoxVisible;
+    private boolean powered;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

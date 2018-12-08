@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayStatusPacket extends BedrockPacket {
-    protected Status status;
+    private Status status;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetLocalPlayerAsInitializedPacket extends BedrockPacket {
-    protected long runtimeEntityId;
+    private long runtimeEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

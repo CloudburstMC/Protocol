@@ -15,15 +15,15 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddEntityPacket extends BedrockPacket {
-    protected final List<Attribute> attributes = new ArrayList<>();
-    protected final MetadataDictionary metadata = new MetadataDictionary();
-    protected final List<EntityLink> entityLinks = new ArrayList<>();
-    protected long uniqueEntityId;
-    protected long runtimeEntityId;
-    protected int entityType;
-    protected Vector3f position;
-    protected Vector3f motion;
-    protected Vector3f rotation;
+    private final List<Attribute> attributes = new ArrayList<>();
+    private final MetadataDictionary metadata = new MetadataDictionary();
+    private final List<EntityLink> entityLinks = new ArrayList<>();
+    private long uniqueEntityId;
+    private long runtimeEntityId;
+    private int entityType;
+    private Vector3f position;
+    private Vector3f motion;
+    private Vector3f rotation;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
