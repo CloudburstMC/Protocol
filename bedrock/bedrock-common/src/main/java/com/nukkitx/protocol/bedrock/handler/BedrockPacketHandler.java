@@ -468,4 +468,24 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(UpdateTradePacket packet) {
         return false;
     }
+
+    default boolean handle(AvailableEntityIdentifiersPacket packet) {
+        return false;
+    }
+
+    default boolean handle(BiomeDefinitionListPacket packet) {
+        return false;
+    }
+
+    default boolean handle(LevelSoundEvent2Packet packet) {
+        return false;
+    }
+
+    default boolean handle(NetworkChunkPublisherUpdatePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SpawnParticleEffectPacket packet) {
+        return false;
+    }
 }

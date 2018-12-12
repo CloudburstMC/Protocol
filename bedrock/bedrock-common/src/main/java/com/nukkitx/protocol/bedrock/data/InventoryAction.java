@@ -20,6 +20,7 @@ public class InventoryAction {
         GLOBAL(1),
         WORLD(2),
         CREATIVE(3),
+        CRAFT_SLOT(100),
         CRAFT(99999);
 
         private static final TIntObjectMap<Type> BY_ID = new TIntObjectHashMap<>(5);

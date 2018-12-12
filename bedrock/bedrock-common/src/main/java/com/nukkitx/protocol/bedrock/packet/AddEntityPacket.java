@@ -20,6 +20,7 @@ public class AddEntityPacket extends BedrockPacket {
     private final List<EntityLink> entityLinks = new ArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
+    private String identifier;
     private int entityType;
     private Vector3f position;
     private Vector3f motion;

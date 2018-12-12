@@ -58,6 +58,8 @@ public class StartGamePacket extends BedrockPacket {
     private boolean resourcePackLocked;
     private boolean fromLockedWorldTemplate;
     private boolean usingMsaGamertagsOnly;
+    private boolean fromWorldTemplate;
+    private boolean worldTemplateOptionLocked;
     // Level settings end
     private String levelId;
     private String worldName;
