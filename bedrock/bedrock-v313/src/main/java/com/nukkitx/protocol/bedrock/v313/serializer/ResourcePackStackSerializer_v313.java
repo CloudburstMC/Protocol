@@ -17,6 +17,7 @@ public class ResourcePackStackSerializer_v313 implements PacketSerializer<Resour
         buffer.writeBoolean(packet.isForcedToAccept());
         BedrockUtils.writeArray(buffer, packet.getBehaviorPacks(), BedrockUtils::writePackInstanceEntry);
         BedrockUtils.writeArray(buffer, packet.getResourcePacks(), BedrockUtils::writePackInstanceEntry);
+        buffer.writeBoolean(packet.isExperimental());
     }
 
     @Override
@@ -24,5 +25,6 @@ public class ResourcePackStackSerializer_v313 implements PacketSerializer<Resour
         packet.setForcedToAccept(buffer.readBoolean());
         BedrockUtils.readArray(buffer, packet.getBehaviorPacks(), BedrockUtils::readPackInstanceEntry);
         BedrockUtils.readArray(buffer, packet.getResourcePacks(), BedrockUtils::readPackInstanceEntry);
+        packet.setExperimental(buffer.readBoolean());
     }
 }
