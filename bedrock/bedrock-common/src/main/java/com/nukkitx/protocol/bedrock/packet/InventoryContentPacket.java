@@ -6,13 +6,10 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InventoryContentPacket extends BedrockPacket {
-    private final List<Item> contents = new ArrayList<>();
+    private final Item[] contents;
     private int windowId;
 
     @Override
