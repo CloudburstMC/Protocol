@@ -27,6 +27,7 @@ public class UpdateTradeSerializer_v313 implements PacketSerializer<UpdateTradeP
         buffer.writeByte(packet.getWindowType());
         VarInts.writeInt(buffer, packet.getUnknown0());
         VarInts.writeInt(buffer, packet.getUnknown1());
+        VarInts.writeInt(buffer, packet.getUnknown2());
         buffer.writeBoolean(packet.isWilling());
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
@@ -44,6 +45,7 @@ public class UpdateTradeSerializer_v313 implements PacketSerializer<UpdateTradeP
         packet.setWindowType(buffer.readUnsignedByte());
         packet.setUnknown0(VarInts.readInt(buffer));
         packet.setUnknown1(VarInts.readInt(buffer));
+        packet.setUnknown2(VarInts.readInt(buffer));
         packet.setWilling(buffer.readBoolean());
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));

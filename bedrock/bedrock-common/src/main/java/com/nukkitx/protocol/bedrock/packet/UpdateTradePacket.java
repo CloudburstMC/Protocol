@@ -13,6 +13,7 @@ public class UpdateTradePacket extends BedrockPacket {
     private short windowType;
     private int unknown0; // Couldn't find anything on this one.
     private int unknown1; // Something to do with AI and randomness?
+    private int unknown2;
     private boolean willing;
     private long traderUniqueEntityId;
     private long playerUniqueEntityId;
