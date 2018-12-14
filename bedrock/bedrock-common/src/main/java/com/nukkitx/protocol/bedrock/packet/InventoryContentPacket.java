@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InventoryContentPacket extends BedrockPacket {
-    private final Item[] contents;
+    private Item[] contents;
     private int windowId;
 
     @Override
