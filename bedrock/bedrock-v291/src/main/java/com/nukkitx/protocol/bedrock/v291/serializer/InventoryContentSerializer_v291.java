@@ -18,9 +18,10 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
     public void serialize(ByteBuf buffer, InventoryContentPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getWindowId());
 
-        Item[] contents = new Item[VarInts.readUnsignedInt(buffer)];
-        for (int i = 0; i < contents.length; i++) {
-            contents[i] = BedrockUtils.readItemInstance(buffer);
+        Item[] contents = packet.getContents();
+        VarInts.writeUnsignedInt(buffer, contents.length);
+        for (Item content : contents) {
+            BedrockUtils.writeItemInstance(buffer, content);
         }
     }
 
@@ -28,10 +29,9 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
     public void deserialize(ByteBuf buffer, InventoryContentPacket packet) {
         packet.setWindowId(VarInts.readUnsignedInt(buffer));
 
-        Item[] contents = packet.getContents();
-        VarInts.writeUnsignedInt(buffer, contents.length);
-        for (Item content : contents) {
-            BedrockUtils.writeItemInstance(buffer, content);
+        Item[] contents = new Item[VarInts.readUnsignedInt(buffer)];
+        for (int i = 0; i < contents.length; i++) {
+            contents[i] = BedrockUtils.readItemInstance(buffer);
         }
     }
 }
