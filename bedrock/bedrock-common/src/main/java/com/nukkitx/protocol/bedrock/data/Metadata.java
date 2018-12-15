@@ -1,14 +1,12 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import com.flowpowered.math.vector.Vector3f;
-import com.flowpowered.math.vector.Vector3i;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public enum Metadata {
-    FLAGS(Type.LONG),
+    FLAGS(Type.FLAGS),
     HEALTH(Type.INT),
     VARIANT(Type.INT),
     COLOR(Type.BYTE),
@@ -153,20 +151,15 @@ public enum Metadata {
 
     @RequiredArgsConstructor
     public enum Type {
-        BYTE(Byte.class),
-        SHORT(Short.class),
-        INT(Integer.class),
-        FLOAT(Float.class),
-        STRING(String.class),
-        ITEM(Item.class),
-        VECTOR3I(Vector3i.class),
-        LONG(Long.class),
-        VECTOR3F(Vector3f.class);
-
-        private final Class clazz;
-
-        public Class typeClass() {
-            return clazz;
-        }
+        FLAGS,
+        BYTE,
+        SHORT,
+        INT,
+        FLOAT,
+        STRING,
+        ITEM,
+        VECTOR3I,
+        LONG,
+        VECTOR3F
     }
 }

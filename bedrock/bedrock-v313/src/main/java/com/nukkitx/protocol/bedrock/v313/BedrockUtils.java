@@ -174,6 +174,7 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(58, Flag.PREGNANT);
         METADATA_FLAGS.put(59, Flag.LAYING_EGG);
 
+        METADATA_TYPES.put(7, Type.FLAGS);
         METADATA_TYPES.put(0, Type.BYTE);
         METADATA_TYPES.put(1, Type.SHORT);
         METADATA_TYPES.put(2, Type.INT);
@@ -727,6 +728,9 @@ public final class BedrockUtils {
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
                     break;
+                case FLAGS:
+                    object = MetadataFlags.create(VarInts.readLong(buffer), METADATA_FLAGS);
+                    break;
                 case LONG:
                     object = VarInts.readLong(buffer);
                     break;
@@ -753,10 +757,10 @@ public final class BedrockUtils {
         for (Map.Entry<Metadata, Object> entry : metadataDictionary.entrySet()) {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, METADATAS.get(entry.getKey()));
-            Type type = entry.getKey().getType();
+            Object object = entry.getValue();
+            Metadata.Type type = MetadataDictionary.getType(object);
             VarInts.writeUnsignedInt(buffer, METADATA_TYPES.get(type));
 
-            Object object = entry.getValue();
             switch (type) {
                 case BYTE:
                     buffer.writeByte((byte) object);
@@ -779,6 +783,8 @@ public final class BedrockUtils {
                 case VECTOR3I:
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);
                     break;
+                case FLAGS:
+                    object = ((MetadataFlags) object).get(METADATA_FLAGS);
                 case LONG:
                     VarInts.writeLong(buffer, (long) object);
                     break;
