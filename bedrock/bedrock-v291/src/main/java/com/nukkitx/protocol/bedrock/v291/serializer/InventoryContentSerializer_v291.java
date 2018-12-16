@@ -33,5 +33,6 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
         for (int i = 0; i < contents.length; i++) {
             contents[i] = BedrockUtils.readItemInstance(buffer);
         }
+        packet.setContents(contents);
     }
 }
