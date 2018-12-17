@@ -30,7 +30,7 @@ __[JavaDocs](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/javadoc/
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
