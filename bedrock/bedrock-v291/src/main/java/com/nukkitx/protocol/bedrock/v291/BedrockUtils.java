@@ -613,10 +613,10 @@ public final class BedrockUtils {
         InventorySource source = readInventorySource(buffer);
 
         int slot = VarInts.readUnsignedInt(buffer);
-        Item oldItem = readItemInstance(buffer);
-        Item newItem = readItemInstance(buffer);
+        Item fromItem = readItemInstance(buffer);
+        Item toItem = readItemInstance(buffer);
 
-        return new InventoryAction(source, slot, oldItem, newItem);
+        return new InventoryAction(source, slot, fromItem, toItem);
     }
 
     public static void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
@@ -626,8 +626,8 @@ public final class BedrockUtils {
         writeInventorySource(buffer, action.getSource());
 
         VarInts.writeUnsignedInt(buffer, action.getSlot());
-        writeItemInstance(buffer, action.getOldItem());
-        writeItemInstance(buffer, action.getNewItem());
+        writeItemInstance(buffer, action.getFromItem());
+        writeItemInstance(buffer, action.getToItem());
     }
 
     public static InventorySource readInventorySource(ByteBuf buffer) {
