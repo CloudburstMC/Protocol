@@ -3,8 +3,8 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.InventoryAction;
 import com.nukkitx.protocol.bedrock.data.Item;
-import com.nukkitx.protocol.bedrock.data.NetworkInventoryAction;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InventoryTransactionPacket extends BedrockPacket {
-    private final List<NetworkInventoryAction> actions = new ArrayList<>();
+    private final List<InventoryAction> actions = new ArrayList<>();
     private Type transactionType;
     private int actionType;
     private long runtimeEntityId;
