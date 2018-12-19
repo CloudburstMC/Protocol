@@ -607,7 +607,7 @@ public final class BedrockUtils {
         }
     }
 
-    public static InventoryAction readInventoryAction(ByteBuf buffer) {
+    public static NetworkInventoryAction readInventoryAction(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         InventorySource source = readInventorySource(buffer);
@@ -616,10 +616,10 @@ public final class BedrockUtils {
         Item oldItem = readItemInstance(buffer);
         Item newItem = readItemInstance(buffer);
 
-        return new InventoryAction(source, slot, oldItem, newItem);
+        return new NetworkInventoryAction(source, slot, oldItem, newItem);
     }
 
-    public static void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
+    public static void writeInventoryAction(ByteBuf buffer, NetworkInventoryAction action) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(action, "action");
 

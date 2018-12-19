@@ -34,7 +34,7 @@ public enum ContainerId {
     OFFHAND(119),
     ARMOR(120),
     CREATIVE(121),
-    HUD(122),
+    HOTBAR(122),
     FIXED_INVENTORY(123),
     CURSOR(124);
 
