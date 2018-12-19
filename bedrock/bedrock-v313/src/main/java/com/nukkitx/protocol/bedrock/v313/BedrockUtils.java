@@ -610,48 +610,69 @@ public final class BedrockUtils {
     public static InventoryAction readInventoryAction(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
-        InventoryAction.Type type = InventoryAction.Type.byId(VarInts.readUnsignedInt(buffer));
-        int id = 0;
-        int flags = 0;
-
-        switch (type) {
-            case CONTAINER:
-            case CRAFT:
-            case CRAFT_SLOT:
-                id = VarInts.readInt(buffer);
-                break;
-            case WORLD:
-                flags = VarInts.readUnsignedInt(buffer);
-                break;
-        }
+        InventorySource source = readInventorySource(buffer);
 
         int slot = VarInts.readUnsignedInt(buffer);
         Item oldItem = readItemInstance(buffer);
         Item newItem = readItemInstance(buffer);
 
-        return new InventoryAction(InventorySource.of(type, id), flags, slot, oldItem, newItem);
+        return new InventoryAction(source, slot, oldItem, newItem);
     }
 
     public static void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(action, "action");
 
-        VarInts.writeUnsignedInt(buffer, action.getSource().getType().id());
-
-        switch (action.getSource().getType()) {
-            case CONTAINER:
-            case CRAFT:
-            case CRAFT_SLOT:
-                VarInts.writeInt(buffer, action.getSource().getId());
-                break;
-            case WORLD:
-                VarInts.writeUnsignedInt(buffer, action.getFlags());
-                break;
-        }
+        writeInventorySource(buffer, action.getSource());
 
         VarInts.writeUnsignedInt(buffer, action.getSlot());
         writeItemInstance(buffer, action.getOldItem());
         writeItemInstance(buffer, action.getNewItem());
+    }
+
+    public static InventorySource readInventorySource(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+
+        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer));
+
+        switch (type) {
+            case CONTAINER:
+                ContainerId containerId = ContainerId.byId(VarInts.readInt(buffer));
+                return InventorySource.fromContainerWindowId(containerId);
+            case GLOBAL:
+                return InventorySource.fromGlobalInventory();
+            case WORLD_INTERACTION:
+                InventorySource.Flag flag = InventorySource.Flag.values()[VarInts.readUnsignedInt(buffer)];
+                return InventorySource.fromWorldInteraction(flag);
+            case CREATIVE:
+                return InventorySource.fromCreativeInventory();
+            case UNTRACKED_INTERACTION_UI:
+                containerId = ContainerId.byId(VarInts.readInt(buffer));
+                return InventorySource.fromUntrackedInteractionUI(containerId);
+            case NON_IMPLEMENTED_TODO:
+                containerId = ContainerId.byId(VarInts.readInt(buffer));
+                return InventorySource.fromNonImplementedTodo(containerId);
+            default:
+                return InventorySource.fromInvalid();
+        }
+    }
+
+    public static void writeInventorySource(ByteBuf buffer, InventorySource inventorySource) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(inventorySource, "inventorySource");
+
+        VarInts.writeUnsignedInt(buffer, inventorySource.getType().id());
+
+        switch (inventorySource.getType()) {
+            case CONTAINER:
+            case UNTRACKED_INTERACTION_UI:
+            case NON_IMPLEMENTED_TODO:
+                VarInts.writeInt(buffer, inventorySource.getContainerId().id());
+                break;
+            case WORLD_INTERACTION:
+                VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
+                break;
+        }
     }
 
     public static GameRule readGameRule(ByteBuf buffer) {
