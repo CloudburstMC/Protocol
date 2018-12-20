@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.data.ContainerId;
 import com.nukkitx.protocol.bedrock.data.Item;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
@@ -16,7 +17,7 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
 
     @Override
     public void serialize(ByteBuf buffer, InventoryContentPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getWindowId());
+        VarInts.writeUnsignedInt(buffer, packet.getContainerId().id());
 
         Item[] contents = packet.getContents();
         VarInts.writeUnsignedInt(buffer, contents.length);
@@ -27,7 +28,7 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
 
     @Override
     public void deserialize(ByteBuf buffer, InventoryContentPacket packet) {
-        packet.setWindowId(VarInts.readUnsignedInt(buffer));
+        packet.setContainerId(ContainerId.byId(VarInts.readUnsignedInt(buffer)));
 
         Item[] contents = new Item[VarInts.readUnsignedInt(buffer)];
         for (int i = 0; i < contents.length; i++) {
