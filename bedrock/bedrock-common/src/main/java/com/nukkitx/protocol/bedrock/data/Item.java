@@ -6,9 +6,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class Item {
+public final class Item {
     private static final String[] EMPTY = new String[0];
     public static final Item AIR = new Item(0, (short) 0, 0, null, EMPTY, EMPTY);
 
@@ -35,5 +38,26 @@ public class Item {
         Preconditions.checkNotNull(canBreak, "canBreak");
         Preconditions.checkArgument(count < 256, "count exceeds maximum of 255");
         return new Item(id, damage, count, tag, canPlace, canBreak);
+    }
+
+    public boolean isValid() {
+        return !isNull() && id != 0;
+    }
+
+    public boolean isNull() {
+        return count <= 0;
+    }
+
+    public boolean equals(Item other, boolean checkAmount, boolean checkMetadata, boolean checkUserdata) {
+        return (!checkAmount || count == other.count) &&
+                (!checkMetadata || damage == other.damage) &&
+                (!checkUserdata || (Objects.equals(tag, other.tag) && Arrays.equals(canPlace, other.canPlace) && Arrays.equals(canBreak, other.canBreak)));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Item)) return false;
+        return equals((Item) obj, true, true, true);
     }
 }
