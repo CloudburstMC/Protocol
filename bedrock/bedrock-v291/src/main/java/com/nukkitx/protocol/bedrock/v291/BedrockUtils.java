@@ -118,7 +118,7 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(1, Flag.SNEAKING);
         METADATA_FLAGS.put(2, Flag.RIDING);
         METADATA_FLAGS.put(3, Flag.SPRINTING);
-        METADATA_FLAGS.put(4, Flag.ACTION);
+        METADATA_FLAGS.put(4, Flag.USING_ITEM);
         METADATA_FLAGS.put(5, Flag.INVISIBLE);
         METADATA_FLAGS.put(6, Flag.TEMPTED);
         METADATA_FLAGS.put(7, Flag.IN_LOVE);
@@ -128,15 +128,15 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(11, Flag.BABY);
         METADATA_FLAGS.put(12, Flag.CONVERTING);
         METADATA_FLAGS.put(13, Flag.CRITICAL);
-        METADATA_FLAGS.put(14, Flag.CAN_SHOW_NAMETAG);
-        METADATA_FLAGS.put(15, Flag.ALWAYS_SHOW_NAMETAG);
-        METADATA_FLAGS.put(16, Flag.IMMOBILE);
+        METADATA_FLAGS.put(14, Flag.CAN_SHOW_NAME);
+        METADATA_FLAGS.put(15, Flag.ALWAYS_SHOW_NAME);
+        METADATA_FLAGS.put(16, Flag.NO_AI);
         METADATA_FLAGS.put(17, Flag.SILENT);
-        METADATA_FLAGS.put(18, Flag.WALLCLIMBING);
+        METADATA_FLAGS.put(18, Flag.WALL_CLIMBING);
         METADATA_FLAGS.put(19, Flag.CAN_CLIMB);
-        METADATA_FLAGS.put(20, Flag.SWIMMER);
+        METADATA_FLAGS.put(20, Flag.CAN_SWIM);
         METADATA_FLAGS.put(21, Flag.CAN_FLY);
-        METADATA_FLAGS.put(22, Flag.WALKER);
+        METADATA_FLAGS.put(22, Flag.CAN_WALK);
         METADATA_FLAGS.put(23, Flag.RESTING);
         METADATA_FLAGS.put(24, Flag.SITTING);
         METADATA_FLAGS.put(25, Flag.ANGRY);
@@ -152,26 +152,26 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(35, Flag.BREATHING);
         METADATA_FLAGS.put(36, Flag.CHESTED);
         METADATA_FLAGS.put(37, Flag.STACKABLE);
-        METADATA_FLAGS.put(38, Flag.SHOW_BASE);
-        METADATA_FLAGS.put(39, Flag.REARING);
-        METADATA_FLAGS.put(40, Flag.VIBRATING);
+        METADATA_FLAGS.put(38, Flag.SHOW_BOTTOM);
+        METADATA_FLAGS.put(39, Flag.STANDING);
+        METADATA_FLAGS.put(40, Flag.SHAKING);
         METADATA_FLAGS.put(41, Flag.IDLING);
-        METADATA_FLAGS.put(42, Flag.EVOKER_SPELL);
-        METADATA_FLAGS.put(43, Flag.CHARGE_ATTACK);
+        METADATA_FLAGS.put(42, Flag.CASTING);
+        METADATA_FLAGS.put(43, Flag.CHARGING);
         METADATA_FLAGS.put(44, Flag.WASD_CONTROLLED);
         METADATA_FLAGS.put(45, Flag.CAN_POWER_JUMP);
-        METADATA_FLAGS.put(46, Flag.LINGER);
+        METADATA_FLAGS.put(46, Flag.LINGERING);
         METADATA_FLAGS.put(47, Flag.HAS_COLLISION);
-        METADATA_FLAGS.put(48, Flag.AFFECTED_BY_GRAVITY);
+        METADATA_FLAGS.put(48, Flag.HAS_GRAVITY);
         METADATA_FLAGS.put(49, Flag.FIRE_IMMUNE);
         METADATA_FLAGS.put(50, Flag.DANCING);
         METADATA_FLAGS.put(51, Flag.ENCHANTED);
-        METADATA_FLAGS.put(52, Flag.SHOW_TRIDENT_ROPE);
-        METADATA_FLAGS.put(53, Flag.CONTAINER_PRIVATE);
-        METADATA_FLAGS.put(55, Flag.SPIN_ATTACK);
+        METADATA_FLAGS.put(52, Flag.RETURN_TRIDENT);
+        METADATA_FLAGS.put(53, Flag.CONTAINER_IS_PRIVATE);
+        METADATA_FLAGS.put(55, Flag.DAMAGE_NEARBY_MOBS);
         METADATA_FLAGS.put(56, Flag.SWIMMING);
         METADATA_FLAGS.put(57, Flag.BRIBED);
-        METADATA_FLAGS.put(58, Flag.PREGNANT);
+        METADATA_FLAGS.put(58, Flag.IS_PREGNANT);
         METADATA_FLAGS.put(59, Flag.LAYING_EGG);
 
         METADATA_TYPES.put(7, Type.FLAGS);
@@ -443,7 +443,7 @@ public final class BedrockUtils {
         }
 
         String[] canBreak = new String[VarInts.readInt(buffer)];
-        for (int i = 0; i < canPlace.length; i++) {
+        for (int i = 0; i < canBreak.length; i++) {
             canBreak[i] = readString(buffer);
         }
 
