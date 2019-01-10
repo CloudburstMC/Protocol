@@ -28,10 +28,10 @@ public class BossEventSerializer_v313 implements PacketSerializer<BossEventPacke
                 BedrockUtils.writeString(buffer, packet.getTitle());
                 buffer.writeFloatLE(packet.getHealthPercentage());
                 // fall through
-            case UNKNOWN:
-                buffer.writeShortLE(packet.getUnknown0());
+            case DARKEN_SKY:
+                buffer.writeShortLE(packet.getDarkenSky());
                 // fall through
-            case TEXTURE:
+            case OVERLAY:
                 VarInts.writeUnsignedInt(buffer, packet.getColor());
                 VarInts.writeUnsignedInt(buffer, packet.getOverlay());
                 break;
@@ -61,10 +61,10 @@ public class BossEventSerializer_v313 implements PacketSerializer<BossEventPacke
                 packet.setTitle(BedrockUtils.readString(buffer));
                 packet.setHealthPercentage(buffer.readFloatLE());
                 // fall through
-            case UNKNOWN:
-                packet.setUnknown0(buffer.readShortLE());
+            case DARKEN_SKY:
+                packet.setDarkenSky(buffer.readUnsignedShortLE());
                 // fall through
-            case TEXTURE:
+            case OVERLAY:
                 packet.setColor(VarInts.readUnsignedInt(buffer));
                 packet.setOverlay(VarInts.readUnsignedInt(buffer));
                 break;

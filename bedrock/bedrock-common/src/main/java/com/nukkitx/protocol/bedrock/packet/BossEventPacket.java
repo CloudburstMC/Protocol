@@ -13,7 +13,7 @@ public class BossEventPacket extends BedrockPacket {
     private long playerUniqueEntityId;
     private String title;
     private float healthPercentage;
-    private short unknown0;
+    private int darkenSky;
     private int color;
     private int overlay;
 
@@ -48,12 +48,12 @@ public class BossEventPacket extends BedrockPacket {
          */
         TITLE,
         /**
-         * Not sure on this. Includes color and overlay fields, plus an unknown short. TODO: check this
+         * Darken the sky when the boss bar is shown.
          */
-        UNKNOWN,
+        DARKEN_SKY,
         /**
          * Not implemented :( Intended to alter bar appearance, but these currently produce no effect on clientside whatsoever.
          */
-        TEXTURE
+        OVERLAY
     }
 }
