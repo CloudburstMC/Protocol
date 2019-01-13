@@ -12,6 +12,6 @@ public class BedrockCompat {
     public static BedrockPacketCodec COMPAT_CODEC = BedrockPacketCodec.builder()
             .headerSerializer(PacketHeaderSerializerCompat.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializerCompat.INSTANCE, 1)
-            .addCompatibleVersion(0)
+            .protocolVersion(0)
             .build();
 }
