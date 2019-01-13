@@ -8,13 +8,12 @@ import com.nukkitx.protocol.serializer.PacketSerializer;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +26,8 @@ import javax.annotation.concurrent.Immutable;
 public final class BedrockPacketCodec {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketCodec.class);
 
-    private final TIntSet compatibleVersions;
+    @Getter
+    private final int protocolVersion;
     private final PacketSerializer<BedrockPacket>[] serializers;
     private final TIntHashBiMap<Class<BedrockPacket>> idBiMap;
     private final PacketSerializer<PacketHeader> headerSerializer;
@@ -86,7 +86,7 @@ public final class BedrockPacketCodec {
     public static class Builder {
         private final TIntObjectMap<PacketSerializer<BedrockPacket>> serializers = new TIntObjectHashMap<>();
         private final TIntHashBiMap<Class<BedrockPacket>> idBiMap = new TIntHashBiMap<>((Class) UnknownPacket.class);
-        private final TIntSet compatibleVersions = new TIntHashSet();
+        private int protocolVersion = -1;
         private PacketSerializer<PacketHeader> headerSerializer = null;
 
         public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, PacketSerializer<T> packetSerializer, @Nonnegative int id) {
@@ -101,9 +101,9 @@ public final class BedrockPacketCodec {
             return this;
         }
 
-        public Builder addCompatibleVersion(@Nonnegative int protocolVersion) {
+        public Builder protocolVersion(@Nonnegative int protocolVersion) {
             Preconditions.checkArgument(protocolVersion >= 0, "protocolVersion cannot be negative");
-            compatibleVersions.add(protocolVersion);
+            this.protocolVersion = protocolVersion;
             return this;
         }
 
@@ -114,7 +114,7 @@ public final class BedrockPacketCodec {
         }
 
         public BedrockPacketCodec build() {
-            Preconditions.checkArgument(!compatibleVersions.isEmpty(), "Must have at least one compatible version");
+            Preconditions.checkArgument(protocolVersion < 0, "No protocol version defined");
             Preconditions.checkNotNull(headerSerializer, "headerSerializer cannot be null");
             int largestId = -1;
             for (int id : serializers.keys()) {
@@ -131,7 +131,7 @@ public final class BedrockPacketCodec {
                 iterator.advance();
                 serializers[iterator.key()] = iterator.value();
             }
-            return new BedrockPacketCodec(compatibleVersions, serializers, idBiMap, headerSerializer);
+            return new BedrockPacketCodec(protocolVersion, serializers, idBiMap, headerSerializer);
         }
     }
 }

@@ -8,7 +8,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Bedrock_v291 {
     public static BedrockPacketCodec V291_CODEC = BedrockPacketCodec.builder()
-            .addCompatibleVersion(291)
+            .protocolVersion(291)
             .headerSerializer(PacketHeaderSerializer_v291.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
