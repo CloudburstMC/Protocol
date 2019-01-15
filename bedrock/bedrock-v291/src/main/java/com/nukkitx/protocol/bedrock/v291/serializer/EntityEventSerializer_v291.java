@@ -2,8 +2,8 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
-import com.nukkitx.protocol.bedrock.util.TIntHashBiMap;
 import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;

@@ -45,7 +45,7 @@ public class StartGameSerializer_v313 implements PacketSerializer<StartGamePacke
         BedrockUtils.writeArray(buffer, packet.getGamerules(), BedrockUtils::writeGameRule);
         buffer.writeBoolean(packet.isBonusChestEnabled());
         buffer.writeBoolean(packet.isStartingWithMap());
-        buffer.writeBoolean(packet.isStartingWithMap());
+        buffer.writeBoolean(packet.isTrustingPlayers());
         VarInts.writeInt(buffer, packet.getDefaultPlayerPermission());
         VarInts.writeInt(buffer, packet.getXblBroadcastMode());
         buffer.writeIntLE(packet.getServerChunkTickRange());

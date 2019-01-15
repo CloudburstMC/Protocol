@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.data;
 
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.bedrock.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.ToString;

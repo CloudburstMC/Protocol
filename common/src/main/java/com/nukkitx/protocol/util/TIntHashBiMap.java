@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.util;
+package com.nukkitx.protocol.util;
 
 
 import com.nukkitx.network.util.Preconditions;
