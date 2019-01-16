@@ -114,7 +114,7 @@ public final class BedrockPacketCodec {
         }
 
         public BedrockPacketCodec build() {
-            Preconditions.checkArgument(protocolVersion < 0, "No protocol version defined");
+            Preconditions.checkArgument(protocolVersion >= 0, "No protocol version defined");
             Preconditions.checkNotNull(headerSerializer, "headerSerializer cannot be null");
             int largestId = -1;
             for (int id : serializers.keys()) {
