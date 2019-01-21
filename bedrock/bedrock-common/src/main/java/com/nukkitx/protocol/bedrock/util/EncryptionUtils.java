@@ -93,7 +93,7 @@ public class EncryptionUtils {
     /**
      * Verify the validity of the login chain data from the {@link com.nukkitx.protocol.bedrock.packet.LoginPacket}
      *
-     * @param chain array if JWS objects
+     * @param chain array of JWS objects
      * @return chain validity
      * @throws JOSEException            invalid JWS algorithm used
      * @throws ParseException           invalid JWS object
