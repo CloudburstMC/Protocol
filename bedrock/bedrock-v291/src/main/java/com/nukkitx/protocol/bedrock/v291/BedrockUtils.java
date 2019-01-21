@@ -546,7 +546,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(buffer, "buffer");
 
         List<ResourcePacksInfoPacket.Entry> entries = new ArrayList<>();
-        int length = buffer.readShortLE();
+        int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
             UUID packId = UUID.fromString(readString(buffer));
             String packVersion = readString(buffer);

@@ -36,6 +36,7 @@ public final class BedrockUtils {
     private static final TIntHashBiMap<Metadata> METADATAS = new TIntHashBiMap<>();
     private static final TIntHashBiMap<Metadata.Flag> METADATA_FLAGS = new TIntHashBiMap<>();
     private static final TIntHashBiMap<Metadata.Type> METADATA_TYPES = new TIntHashBiMap<>(9);
+    private static final byte[] EMPTY = new byte[0];
 
     static {
         METADATAS.put(0, FLAGS);
@@ -195,7 +196,7 @@ public final class BedrockUtils {
 
     public static void writeByteArray(ByteBuf buffer, byte[] bytes) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(bytes, "bytes");
+        if (bytes == null) bytes = EMPTY;
         VarInts.writeUnsignedInt(buffer, bytes.length);
         buffer.writeBytes(bytes);
     }
@@ -207,8 +208,7 @@ public final class BedrockUtils {
 
     public static void writeString(ByteBuf buffer, String string) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(string, "string");
-        writeByteArray(buffer, string.getBytes(StandardCharsets.UTF_8));
+        writeByteArray(buffer, string == null ? null : string.getBytes(StandardCharsets.UTF_8));
     }
 
     public static AsciiString readLEAsciiString(ByteBuf buffer) {
@@ -546,7 +546,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(buffer, "buffer");
 
         List<ResourcePacksInfoPacket.Entry> entries = new ArrayList<>();
-        int length = buffer.readShortLE();
+        int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
             UUID packId = UUID.fromString(readString(buffer));
             String packVersion = readString(buffer);

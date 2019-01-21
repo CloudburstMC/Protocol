@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.v313.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v313.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -39,7 +40,7 @@ public class StartGameSerializer_v313 implements PacketSerializer<StartGamePacke
         buffer.writeFloatLE(packet.getLightningLevel());
         buffer.writeBoolean(packet.isMultiplayerGame());
         buffer.writeBoolean(packet.isBroadcastingToLan());
-        buffer.writeBoolean(packet.isBroadcastingToXbl());
+        buffer.writeBoolean(packet.getXblBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
         buffer.writeBoolean(packet.isCommandsEnabled());
         buffer.writeBoolean(packet.isTexturePacksRequired());
         BedrockUtils.writeArray(buffer, packet.getGamerules(), BedrockUtils::writeGameRule);
@@ -47,11 +48,11 @@ public class StartGameSerializer_v313 implements PacketSerializer<StartGamePacke
         buffer.writeBoolean(packet.isStartingWithMap());
         buffer.writeBoolean(packet.isTrustingPlayers());
         VarInts.writeInt(buffer, packet.getDefaultPlayerPermission());
-        VarInts.writeInt(buffer, packet.getXblBroadcastMode());
+        VarInts.writeInt(buffer, packet.getXblBroadcastMode().ordinal());
         buffer.writeIntLE(packet.getServerChunkTickRange());
-        buffer.writeBoolean(packet.isBroadcastingToPlatform());
-        VarInts.writeInt(buffer, packet.getPlatformBroadcastMode());
-        buffer.writeBoolean(packet.isIntentOnXblBroadcast());
+        buffer.writeBoolean(packet.getPlatformBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
+        VarInts.writeInt(buffer, packet.getPlatformBroadcastMode().ordinal());
+        buffer.writeBoolean(packet.getXblBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
         buffer.writeBoolean(packet.isBehaviorPackLocked());
         buffer.writeBoolean(packet.isResourcePackLocked());
         buffer.writeBoolean(packet.isFromLockedWorldTemplate());
@@ -104,7 +105,7 @@ public class StartGameSerializer_v313 implements PacketSerializer<StartGamePacke
         packet.setLightningLevel(buffer.readFloatLE());
         packet.setMultiplayerGame(buffer.readBoolean());
         packet.setBroadcastingToLan(buffer.readBoolean());
-        packet.setBroadcastingToXbl(buffer.readBoolean());
+        buffer.readBoolean(); // broadcasting to XBL
         packet.setCommandsEnabled(buffer.readBoolean());
         packet.setTexturePacksRequired(buffer.readBoolean());
         BedrockUtils.readArray(buffer, packet.getGamerules(), BedrockUtils::readGameRule);
@@ -112,11 +113,11 @@ public class StartGameSerializer_v313 implements PacketSerializer<StartGamePacke
         packet.setStartingWithMap(buffer.readBoolean());
         packet.setTrustingPlayers(buffer.readBoolean());
         packet.setDefaultPlayerPermission(VarInts.readInt(buffer));
-        packet.setXblBroadcastMode(VarInts.readInt(buffer));
+        packet.setXblBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
         packet.setServerChunkTickRange(buffer.readIntLE());
-        packet.setBroadcastingToPlatform(buffer.readBoolean());
-        packet.setPlatformBroadcastMode(VarInts.readInt(buffer));
-        packet.setIntentOnXblBroadcast(buffer.readBoolean());
+        buffer.readBoolean(); // broadcasting to Platform
+        packet.setPlatformBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
+        buffer.readBoolean(); // Intent to broadcast XBL
         packet.setBehaviorPackLocked(buffer.readBoolean());
         packet.setResourcePackLocked(buffer.readBoolean());
         packet.setFromLockedWorldTemplate(buffer.readBoolean());
