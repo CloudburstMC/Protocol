@@ -815,4 +815,29 @@ public final class BedrockUtils {
             }
         }
     }
+
+    public static CommandEnumData readCommandEnumData(ByteBuf buffer, boolean soft) {
+        Preconditions.checkNotNull(buffer, "buffer");
+
+        String name = BedrockUtils.readString(buffer);
+
+        String[] values = new String[VarInts.readUnsignedInt(buffer)];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = BedrockUtils.readString(buffer);
+        }
+        return new CommandEnumData(name, values, soft);
+    }
+
+    public static void writeCommandEnumData(ByteBuf buffer, CommandEnumData enumData) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(enumData, "enumData");
+
+        BedrockUtils.writeString(buffer, enumData.getName());
+
+        String[] values = enumData.getValues();
+        VarInts.writeUnsignedInt(buffer, values.length);
+        for (String value : values) {
+            BedrockUtils.writeString(buffer, value);
+        }
+    }
 }

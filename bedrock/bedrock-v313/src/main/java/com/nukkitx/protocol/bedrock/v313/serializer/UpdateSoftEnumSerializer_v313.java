@@ -11,18 +11,15 @@ import lombok.NoArgsConstructor;
 public class UpdateSoftEnumSerializer_v313 implements PacketSerializer<UpdateSoftEnumPacket> {
     public static final UpdateSoftEnumSerializer_v313 INSTANCE = new UpdateSoftEnumSerializer_v313();
 
-
     @Override
     public void serialize(ByteBuf buffer, UpdateSoftEnumPacket packet) {
-        BedrockUtils.writeString(buffer, packet.getEnumName());
-        BedrockUtils.writeArray(buffer, packet.getValues(), BedrockUtils::writeString);
+        BedrockUtils.writeCommandEnumData(buffer, packet.getSoftEnum());
         buffer.writeByte(packet.getType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, UpdateSoftEnumPacket packet) {
-        packet.setEnumName(BedrockUtils.readString(buffer));
-        BedrockUtils.readArray(buffer, packet.getValues(), BedrockUtils::readString);
+        packet.setSoftEnum(BedrockUtils.readCommandEnumData(buffer, true));
         packet.setType(UpdateSoftEnumPacket.Type.values()[buffer.readUnsignedByte()]);
     }
 }
