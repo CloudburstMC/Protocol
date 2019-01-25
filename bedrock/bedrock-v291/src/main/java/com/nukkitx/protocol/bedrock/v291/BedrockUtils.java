@@ -747,7 +747,7 @@ public final class BedrockUtils {
                     object = BedrockUtils.readVector3i(buffer);
                     break;
                 case FLAGS:
-                    object = MetadataFlags.create(VarInts.readLong(buffer), METADATA_FLAGS);
+                    object = MetadataFlags.create(VarInts.readLong(buffer), 0, METADATA_FLAGS);
                     break;
                 case LONG:
                     object = VarInts.readLong(buffer);
@@ -802,7 +802,7 @@ public final class BedrockUtils {
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);
                     break;
                 case FLAGS:
-                    object = ((MetadataFlags) object).get(METADATA_FLAGS);
+                    object = ((MetadataFlags) object).get(0, METADATA_FLAGS);
                 case LONG:
                     VarInts.writeLong(buffer, (long) object);
                     break;
