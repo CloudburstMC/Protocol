@@ -17,9 +17,9 @@ public class MetadataFlags {
 
     private final Set<Metadata.Flag> flags = new HashSet<>();
 
-    public static MetadataFlags create(long value, TIntHashBiMap<Metadata.Flag> flagMappings) {
+    public static MetadataFlags create(long value, int index, TIntHashBiMap<Metadata.Flag> flagMappings) {
         MetadataFlags flags = new MetadataFlags();
-        for (int i = 0; i < 64; i++) {
+        for (int i = index * 64; i < index + 64; i++) {
             if ((value & (1 << i)) != 0) {
                 Metadata.Flag flag = flagMappings.get(i);
                 if (flag != null) {
@@ -39,7 +39,7 @@ public class MetadataFlags {
      * @param value value to be set to
      * @return whether there was a change
      */
-    public synchronized boolean setFlag(@Nonnull Metadata.Flag flag, boolean value) {
+    public boolean setFlag(@Nonnull Metadata.Flag flag, boolean value) {
         Preconditions.checkNotNull(flag, "flag");
         boolean contains = flags.contains(flag);
         if (contains && !value) {
@@ -58,17 +58,19 @@ public class MetadataFlags {
      * @param flag flag to get
      * @return value of flag
      */
-    public synchronized boolean getFlag(@Nonnull Metadata.Flag flag) {
+    public boolean getFlag(@Nonnull Metadata.Flag flag) {
         Preconditions.checkNotNull(flag, "flag");
         return flags.contains(flag);
     }
 
-    public synchronized long get(TIntHashBiMap<Metadata.Flag> flagMappings) {
+    public long get(int index, TIntHashBiMap<Metadata.Flag> flagMappings) {
         long value = 0;
+        final long lower = index * 64;
+        final long upper = lower + 64;
         for (Metadata.Flag flag : flags) {
-            int index = flagMappings.get(flag);
-            if (index >= 0) {
-                value |= 1 << index;
+            int flagIndex = flagMappings.get(flag);
+            if (flagIndex >= lower && flagIndex < upper) {
+                value |= 1 << (flagIndex & 0x3f);
             }
         }
         return value;
@@ -85,5 +87,15 @@ public class MetadataFlags {
     @Override
     public int hashCode() {
         return flags.hashCode();
+    }
+
+    public void merge(MetadataFlags flags) {
+        this.flags.addAll(flags.flags);
+    }
+
+    public MetadataFlags copy() {
+        MetadataFlags flags = new MetadataFlags();
+        flags.flags.addAll(this.flags);
+        return flags;
     }
 }
