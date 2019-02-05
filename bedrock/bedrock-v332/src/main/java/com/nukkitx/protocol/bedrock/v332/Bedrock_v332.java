@@ -25,7 +25,6 @@ public class Bedrock_v332 {
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v332.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v332.INSTANCE, 14)
             .registerPacket(AddItemEntityPacket.class, AddItemEntitySerializer_v332.INSTANCE, 15)
-            .registerPacket(AddHangingEntityPacket.class, AddHangingEntitySerializer_v332.INSTANCE, 16)
             .registerPacket(TakeItemEntityPacket.class, TakeItemEntitySerializer_v332.INSTANCE, 17)
             .registerPacket(MoveEntityAbsolutePacket.class, MoveEntityAbsoluteSerializer_v332.INSTANCE, 18)
             .registerPacket(MovePlayerPacket.class, MovePlayerSerializer_v332.INSTANCE, 19)
@@ -128,8 +127,9 @@ public class Bedrock_v332 {
             .registerPacket(ScriptCustomEventPacket.class, ScriptCustomEventSerializer_v332.INSTANCE, 117)
             .registerPacket(SpawnParticleEffectPacket.class, SpawnParticleEffectSerializer_v332.INSTANCE, 118)
             .registerPacket(AvailableEntityIdentifiersPacket.class, AvailableEntityIdentifiersSerializer_v332.INSTANCE, 119)
-            .registerPacket(LevelSoundEvent2Packet.class, LevelSoundEvent2Serializer_v332.INSTANCE, 120)
+            //.registerPacket(LevelSoundEvent2Packet.class, LevelSoundEvent2Serializer_v332.INSTANCE, 120) This packet is basically useless. No idea what the point of 3 versions of the same packet was meant to achieve
             .registerPacket(NetworkChunkPublisherUpdatePacket.class, NetworkChunkPublisherUpdateSerializer_v332.INSTANCE, 121)
             .registerPacket(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v332.INSTANCE, 122)
+            .registerPacket(LevelSoundEvent2Packet.class, LevelSoundEvent2Serializer_v332.INSTANCE, 123)
             .build();
 }

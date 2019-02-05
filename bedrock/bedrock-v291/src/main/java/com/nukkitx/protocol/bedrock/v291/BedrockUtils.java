@@ -474,8 +474,8 @@ public final class BedrockUtils {
         int afterSizeIndex = buffer.writerIndex();
 
         try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer))) {
-            CompoundTag tag = item.getTag();
-            if (tag != null) {
+            Tag<?> tag = item.getTag();
+            if (tag instanceof CompoundTag) {
                 stream.write(item.getTag());
             }
         } catch (IOException e) {
@@ -554,7 +554,7 @@ public final class BedrockUtils {
             String encryptionKey = readString(buffer);
             String subpackName = readString(buffer);
             String contentId = readString(buffer);
-            entries.add(new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, encryptionKey, subpackName, contentId));
+            entries.add(new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, encryptionKey, subpackName, contentId, false));
         }
         return entries;
     }

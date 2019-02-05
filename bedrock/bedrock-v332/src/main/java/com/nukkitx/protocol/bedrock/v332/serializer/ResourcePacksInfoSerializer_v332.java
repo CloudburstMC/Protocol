@@ -14,6 +14,7 @@ public class ResourcePacksInfoSerializer_v332 implements PacketSerializer<Resour
     @Override
     public void serialize(ByteBuf buffer, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
+        buffer.writeBoolean(packet.isUnknownBool());
         BedrockUtils.writePacksInfoEntries(buffer, packet.getBehaviorPackInfos());
         BedrockUtils.writePacksInfoEntries(buffer, packet.getResourcePackInfos());
     }
@@ -21,6 +22,7 @@ public class ResourcePacksInfoSerializer_v332 implements PacketSerializer<Resour
     @Override
     public void deserialize(ByteBuf buffer, ResourcePacksInfoPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
+        packet.setUnknownBool(buffer.readBoolean());
         packet.getBehaviorPackInfos().addAll(BedrockUtils.readPacksInfoEntries(buffer));
         packet.getResourcePackInfos().addAll(BedrockUtils.readPacksInfoEntries(buffer));
     }

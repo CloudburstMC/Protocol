@@ -230,7 +230,7 @@ public class LevelSoundEvent2Serializer_v332 implements PacketSerializer<LevelSo
 
     @Override
     public void serialize(ByteBuf buffer, LevelSoundEvent2Packet packet) {
-        buffer.writeByte(sounds.get(packet.getSound()));
+        VarInts.writeUnsignedInt(buffer, sounds.get(packet.getSound()));
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
         VarInts.writeInt(buffer, packet.getExtraData());
         BedrockUtils.writeString(buffer, packet.getIdentifier());
@@ -240,7 +240,7 @@ public class LevelSoundEvent2Serializer_v332 implements PacketSerializer<LevelSo
 
     @Override
     public void deserialize(ByteBuf buffer, LevelSoundEvent2Packet packet) {
-        packet.setSound(sounds.get(buffer.readUnsignedByte()));
+        packet.setSound(sounds.get(VarInts.readUnsignedInt(buffer)));
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setExtraData(VarInts.readInt(buffer));
         packet.setIdentifier(BedrockUtils.readString(buffer));

@@ -14,10 +14,12 @@ public class NetworkStackLatencySerializer_v332 implements PacketSerializer<Netw
     @Override
     public void serialize(ByteBuf buffer, NetworkStackLatencyPacket packet) {
         buffer.writeLongLE(packet.getTimestamp());
+        buffer.writeBoolean(packet.isSendBack());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, NetworkStackLatencyPacket packet) {
         packet.setTimestamp(buffer.readLongLE());
+        packet.setSendBack(buffer.readBoolean());
     }
 }

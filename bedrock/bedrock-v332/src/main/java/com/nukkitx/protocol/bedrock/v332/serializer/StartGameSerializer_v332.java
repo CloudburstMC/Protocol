@@ -106,11 +106,11 @@ public class StartGameSerializer_v332 implements PacketSerializer<StartGamePacke
         packet.setBroadcastingToLan(buffer.readBoolean());
         packet.setXblBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
         packet.setPlatformBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
+        packet.setCommandsEnabled(buffer.readBoolean());
         packet.setTexturePacksRequired(buffer.readBoolean());
         BedrockUtils.readArray(buffer, packet.getGamerules(), BedrockUtils::readGameRule);
         packet.setBonusChestEnabled(buffer.readBoolean());
         packet.setStartingWithMap(buffer.readBoolean());
-        packet.setTrustingPlayers(buffer.readBoolean());
         packet.setDefaultPlayerPermission(VarInts.readInt(buffer));
         packet.setServerChunkTickRange(buffer.readIntLE());
         packet.setBehaviorPackLocked(buffer.readBoolean());

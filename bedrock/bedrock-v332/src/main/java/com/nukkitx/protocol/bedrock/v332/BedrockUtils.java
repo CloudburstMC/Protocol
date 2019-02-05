@@ -3,8 +3,10 @@ package com.nukkitx.protocol.bedrock.v332;
 import com.flowpowered.math.vector.Vector2f;
 import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.nbt.CompoundTagBuilder;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
+import com.nukkitx.nbt.stream.NetworkDataInputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
@@ -12,11 +14,11 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
-import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.bedrock.v332.serializer.GameRulesChangedSerializer_v332;
 import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.AsciiString;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -423,18 +425,26 @@ public final class BedrockUtils {
         short damage = (short) (aux >> 8);
         if (damage == Short.MAX_VALUE) damage = -1;
         int count = aux & 0xff;
-        short nbtSize = buffer.readShortLE();
+        int nbtSize = buffer.readShortLE();
 
-        CompoundTag compoundTag = null;
-        if (nbtSize > 0) {
-            try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer.readSlice(nbtSize)))) {
+        List<CompoundTag> tags = new ArrayList<>();
+        try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
+            if (nbtSize > 0) {
                 Tag<?> tag = reader.readTag();
                 if (tag instanceof CompoundTag) {
-                    compoundTag = (CompoundTag) tag;
+                    tags.add((CompoundTag) tag);
                 }
-            } catch (IOException e) {
-                throw new IllegalStateException("Unable to load NBT data", e);
+            } else if (nbtSize == -1) {
+                int nbtTagCount = VarInts.readUnsignedInt(buffer);
+                for (int i = 0; i < nbtTagCount; i++) {
+                    Tag<?> tag = reader.readTag();
+                    if (tag instanceof CompoundTag) {
+                        tags.add((CompoundTag) tag);
+                    }
+                }
             }
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load NBT data", e);
         }
 
         String[] canPlace = new String[VarInts.readInt(buffer)];
@@ -445,6 +455,20 @@ public final class BedrockUtils {
         String[] canBreak = new String[VarInts.readInt(buffer)];
         for (int i = 0; i < canBreak.length; i++) {
             canBreak[i] = readString(buffer);
+        }
+
+        CompoundTag compoundTag = null;
+
+        if (tags.size() > 1) {
+            // Merge tags
+            CompoundTagBuilder builder = CompoundTagBuilder.builder();
+
+            for (CompoundTag tag : tags) {
+                tag.getValue().forEach((s, tag1) -> builder.tag(tag1));
+            }
+            compoundTag = builder.buildRootTag();
+        } else if (tags.size() == 1) {
+            compoundTag = tags.get(0);
         }
 
         return Item.of(id, damage, count, compoundTag, canPlace, canBreak);
@@ -474,8 +498,8 @@ public final class BedrockUtils {
         int afterSizeIndex = buffer.writerIndex();
 
         try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer))) {
-            CompoundTag tag = item.getTag();
-            if (tag != null) {
+            Tag<?> tag = item.getTag();
+            if (tag instanceof CompoundTag) {
                 stream.write(item.getTag());
             }
         } catch (IOException e) {
@@ -554,7 +578,9 @@ public final class BedrockUtils {
             String encryptionKey = readString(buffer);
             String subpackName = readString(buffer);
             String contentId = readString(buffer);
-            entries.add(new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, encryptionKey, subpackName, contentId));
+            boolean unknownBool = buffer.readBoolean();
+
+            entries.add(new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, encryptionKey, subpackName, contentId, unknownBool));
         }
         return entries;
     }
@@ -570,6 +596,7 @@ public final class BedrockUtils {
             writeString(buffer, packInfoEntry.getEncryptionKey());
             writeString(buffer, packInfoEntry.getSubpackName());
             writeString(buffer, packInfoEntry.getContentId());
+            buffer.writeBoolean(packInfoEntry.isUnknownBool());
         }
     }
 
