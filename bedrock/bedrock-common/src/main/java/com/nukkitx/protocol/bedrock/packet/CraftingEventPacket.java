@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.Item;
+import com.nukkitx.protocol.bedrock.data.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,8 +13,8 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CraftingEventPacket extends BedrockPacket {
-    private final List<Item> inputs = new ArrayList<>();
-    private final List<Item> outputs = new ArrayList<>();
+    private final List<ItemData> inputs = new ArrayList<>();
+    private final List<ItemData> outputs = new ArrayList<>();
     private byte windowId;
     private int type;
     private UUID uuid;

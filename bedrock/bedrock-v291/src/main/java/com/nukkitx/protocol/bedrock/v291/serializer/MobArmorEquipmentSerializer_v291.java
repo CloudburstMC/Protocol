@@ -16,18 +16,18 @@ public class MobArmorEquipmentSerializer_v291 implements PacketSerializer<MobArm
     @Override
     public void serialize(ByteBuf buffer, MobArmorEquipmentPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeItemInstance(buffer, packet.getHelmet());
-        BedrockUtils.writeItemInstance(buffer, packet.getChestplate());
-        BedrockUtils.writeItemInstance(buffer, packet.getLeggings());
-        BedrockUtils.writeItemInstance(buffer, packet.getBoots());
+        BedrockUtils.writeItemData(buffer, packet.getHelmet());
+        BedrockUtils.writeItemData(buffer, packet.getChestplate());
+        BedrockUtils.writeItemData(buffer, packet.getLeggings());
+        BedrockUtils.writeItemData(buffer, packet.getBoots());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, MobArmorEquipmentPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setHelmet(BedrockUtils.readItemInstance(buffer));
-        packet.setChestplate(BedrockUtils.readItemInstance(buffer));
-        packet.setLeggings(BedrockUtils.readItemInstance(buffer));
-        packet.setBoots(BedrockUtils.readItemInstance(buffer));
+        packet.setHelmet(BedrockUtils.readItemData(buffer));
+        packet.setChestplate(BedrockUtils.readItemData(buffer));
+        packet.setLeggings(BedrockUtils.readItemData(buffer));
+        packet.setBoots(BedrockUtils.readItemData(buffer));
     }
 }

@@ -28,7 +28,6 @@ public enum ContainerId {
     NONE(-1),
     INVENTORY(0),
     FIRST(1),
-
     LAST(100),
 
     OFFHAND(119),
@@ -53,7 +52,11 @@ public enum ContainerId {
     }
 
     public static ContainerId byId(int id) {
-        return BY_ID.get(id);
+        ContainerId containerId = BY_ID.get(id);
+        if (containerId == null) {
+            throw new IllegalArgumentException("Unknown container id " + id + " given");
+        }
+        return containerId;
     }
 
     public int id() {

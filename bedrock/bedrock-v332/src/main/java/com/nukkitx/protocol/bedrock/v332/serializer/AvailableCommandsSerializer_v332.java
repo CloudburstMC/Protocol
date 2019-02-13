@@ -9,6 +9,7 @@ import com.nukkitx.protocol.bedrock.data.CommandParamType;
 import com.nukkitx.protocol.bedrock.packet.AvailableCommandsPacket;
 import com.nukkitx.protocol.bedrock.v332.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,8 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
+
+import static com.nukkitx.protocol.bedrock.data.CommandParamData.Type.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AvailableCommandsSerializer_v332 implements PacketSerializer<AvailableCommandsPacket> {
@@ -26,6 +29,25 @@ public class AvailableCommandsSerializer_v332 implements PacketSerializer<Availa
     private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readByte;
     private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readShortLE;
     private static final ToIntFunction<ByteBuf> READ_INT = ByteBuf::readIntLE;
+    private static final TIntHashBiMap<CommandParamData.Type> PARAM_TYPES = new TIntHashBiMap<>();
+
+    static {
+        PARAM_TYPES.put(1, INT);
+        PARAM_TYPES.put(2, FLOAT);
+        PARAM_TYPES.put(3, VALUE);
+        PARAM_TYPES.put(4, WILDCARD_INT);
+        PARAM_TYPES.put(5, OPERATOR);
+        PARAM_TYPES.put(6, TARGET);
+        PARAM_TYPES.put(7, WILDCARD_TARGET);
+        PARAM_TYPES.put(15, FILE_PATH);
+        PARAM_TYPES.put(19, INT_RANGE);
+        PARAM_TYPES.put(28, STRING);
+        PARAM_TYPES.put(30, POSITION);
+        PARAM_TYPES.put(33, MESSAGE);
+        PARAM_TYPES.put(35, TEXT);
+        PARAM_TYPES.put(38, JSON);
+        PARAM_TYPES.put(45, COMMAND);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, AvailableCommandsPacket packet) {
@@ -120,14 +142,18 @@ public class AvailableCommandsSerializer_v332 implements PacketSerializer<Availa
                     if (param.getPostfix() != null) {
                         postfix = true;
                         index = postFixes.indexOf(param.getPostfix());
-                    }
-
-                    if (param.getEnumData() != null) {
+                    } else if (param.getEnumData() != null) {
                         if (param.getEnumData().isSoft()) {
                             softEnum = true;
+                            index = softEnums.indexOf(param.getEnumData());
                         } else {
                             enumData = true;
+                            index = enums.indexOf(param.getEnumData());
                         }
+                    } else if (param.getType() != null) {
+                        index = PARAM_TYPES.get(param.getType());
+                    } else {
+                        throw new IllegalStateException("No param type specified");
                     }
 
                     CommandParamType type = new CommandParamType(index, enumData, softEnum, postfix);
@@ -232,15 +258,15 @@ public class AvailableCommandsSerializer_v332 implements PacketSerializer<Availa
                         } else if (type.isSoftEnum()) {
                             enumData = softEnums.get(type.getValue());
                         } else {
-                            paramType = CommandParamData.Type.byId(type.getValue());
+                            paramType = PARAM_TYPES.get(type.getValue());
                         }
                     }
-                    overloads[i][i2] = new CommandParamData(name, optional, enumData, paramType, postfix);
+                    overloads[i][i2] = new CommandParamData(name, optional, enumData, paramType, postfix, Collections.emptyList());
                 }
             }
 
             packet.getCommands().add(new CommandData(command.getName(), command.getDescription(),
-                    flagList.toArray(new CommandData.Flag[0]), command.getPermission(), aliases, overloads));
+                    flagList, command.getPermission(), aliases, overloads));
         }
     }
 }

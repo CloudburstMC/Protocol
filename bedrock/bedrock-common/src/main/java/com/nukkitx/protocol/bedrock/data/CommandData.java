@@ -10,7 +10,7 @@ import java.util.Objects;
 public class CommandData {
     private final String name;
     private final String description;
-    private final Flag[] flags;
+    private final List<Flag> flags;
     private final byte permission;
     private final CommandEnumData aliases;
     private final CommandParamData[][] overloads;
@@ -28,7 +28,7 @@ public class CommandData {
         overloads.append("]\r\n");
 
         StringBuilder builder = new StringBuilder("CommandData(\r\n");
-        List objects = Arrays.asList("name=" + name, "description=" + description, "flags=" + Arrays.toString(flags), "permission=" + permission, "aliases=" + aliases, "overloads=" + overloads);
+        List objects = Arrays.asList("name=" + name, "description=" + description, "flags=" + Arrays.toString(flags.toArray()), "permission=" + permission, "aliases=" + aliases, "overloads=" + overloads);
 
         for (Object object : objects) {
             builder.append("    ").append(Objects.toString(object).replaceAll("\r\n", "\r\n    ")).append("\r\n");

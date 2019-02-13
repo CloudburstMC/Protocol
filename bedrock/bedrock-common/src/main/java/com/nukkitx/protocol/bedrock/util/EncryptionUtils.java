@@ -10,6 +10,8 @@ import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.util.NativeCodeFactory;
+import com.voxelwind.server.jni.CryptoUtil;
 import lombok.experimental.UtilityClass;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -30,7 +32,8 @@ import java.util.Base64;
 
 @UtilityClass
 public class EncryptionUtils {
-    public static final ECPublicKey MOJANG_PUBLIC_KEY;
+    private static final boolean CAN_USE_ENCRYPTION = CryptoUtil.isJCEUnlimitedStrength() || NativeCodeFactory.cipher.isLoaded();
+    private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final String MOJANG_PUBLIC_KEY_BASE64 =
             "MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE8ELkixyLcwlZryUQcu1TvPOmI2B7vX83ndnWRUaXm74wFfa5f/lwQNTfrLVHa2PmenpGI6JhIMUJaWZrjmMj90NoKNFSNBuKdm8rYiXsfaz3K36x/1U26HpG0ZxK/V1V";
@@ -194,5 +197,23 @@ public class EncryptionUtils {
         byte[] token = new byte[16];
         SECURE_RANDOM.nextBytes(token);
         return token;
+    }
+
+    /**
+     * Check whether java supports the encryption required to authenticate sessions.
+     *
+     * @return can use encryption
+     */
+    public static boolean canUseEncryption() {
+        return CAN_USE_ENCRYPTION;
+    }
+
+    /**
+     * Mojang's public key used to verify the JWT during login.
+     *
+     * @return Mojang's public EC key
+     */
+    public static ECPublicKey getMojangPublicKey() {
+        return MOJANG_PUBLIC_KEY;
     }
 }

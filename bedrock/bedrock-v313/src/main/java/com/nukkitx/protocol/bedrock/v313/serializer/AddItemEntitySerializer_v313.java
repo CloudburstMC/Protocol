@@ -16,7 +16,7 @@ public class AddItemEntitySerializer_v313 implements PacketSerializer<AddItemEnt
     public void serialize(ByteBuf buffer, AddItemEntityPacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeItemInstance(buffer, packet.getItemInstance());
+        BedrockUtils.writeItemData(buffer, packet.getItemInHand());
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
         BedrockUtils.writeVector3f(buffer, packet.getMotion());
         BedrockUtils.writeMetadata(buffer, packet.getMetadata());
@@ -27,7 +27,7 @@ public class AddItemEntitySerializer_v313 implements PacketSerializer<AddItemEnt
     public void deserialize(ByteBuf buffer, AddItemEntityPacket packet) {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setItemInstance(BedrockUtils.readItemInstance(buffer));
+        packet.setItemInHand(BedrockUtils.readItemData(buffer));
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setMotion(BedrockUtils.readVector3f(buffer));
         BedrockUtils.readMetadata(buffer, packet.getMetadata());

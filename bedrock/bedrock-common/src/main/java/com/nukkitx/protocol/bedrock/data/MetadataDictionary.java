@@ -21,7 +21,7 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
                 o instanceof Integer ||
                 o instanceof Float ||
                 o instanceof String ||
-                o instanceof Item ||
+                o instanceof ItemData ||
                 o instanceof Vector3i ||
                 o instanceof Long ||
                 o instanceof Vector3f;
@@ -41,7 +41,7 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
             return Metadata.Type.FLOAT;
         } else if (o instanceof String) {
             return Metadata.Type.STRING;
-        } else if (o instanceof Item) {
+        } else if (o instanceof ItemData) {
             return Metadata.Type.ITEM;
         } else if (o instanceof Vector3i) {
             return Metadata.Type.VECTOR3I;

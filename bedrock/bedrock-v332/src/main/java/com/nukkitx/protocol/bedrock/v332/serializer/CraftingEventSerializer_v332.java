@@ -19,9 +19,9 @@ public class CraftingEventSerializer_v332 implements PacketSerializer<CraftingEv
         VarInts.writeInt(buffer, packet.getType());
         BedrockUtils.writeUuid(buffer, packet.getUuid());
 
-        BedrockUtils.writeArray(buffer, packet.getInputs(), BedrockUtils::writeItemInstance);
+        BedrockUtils.writeArray(buffer, packet.getInputs(), BedrockUtils::writeItemData);
 
-        BedrockUtils.writeArray(buffer, packet.getOutputs(), BedrockUtils::writeItemInstance);
+        BedrockUtils.writeArray(buffer, packet.getOutputs(), BedrockUtils::writeItemData);
     }
 
     @Override
@@ -30,8 +30,8 @@ public class CraftingEventSerializer_v332 implements PacketSerializer<CraftingEv
         packet.setType(VarInts.readInt(buffer));
         packet.setUuid(BedrockUtils.readUuid(buffer));
 
-        BedrockUtils.readArray(buffer, packet.getInputs(), BedrockUtils::readItemInstance);
+        BedrockUtils.readArray(buffer, packet.getInputs(), BedrockUtils::readItemData);
 
-        BedrockUtils.readArray(buffer, packet.getOutputs(), BedrockUtils::readItemInstance);
+        BedrockUtils.readArray(buffer, packet.getOutputs(), BedrockUtils::readItemData);
     }
 }

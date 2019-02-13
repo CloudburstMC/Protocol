@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.ContainerId;
-import com.nukkitx.protocol.bedrock.data.Item;
+import com.nukkitx.protocol.bedrock.data.ItemData;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -19,10 +19,10 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
     public void serialize(ByteBuf buffer, InventoryContentPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId().id());
 
-        Item[] contents = packet.getContents();
+        ItemData[] contents = packet.getContents();
         VarInts.writeUnsignedInt(buffer, contents.length);
-        for (Item content : contents) {
-            BedrockUtils.writeItemInstance(buffer, content);
+        for (ItemData content : contents) {
+            BedrockUtils.writeItemData(buffer, content);
         }
     }
 
@@ -30,9 +30,9 @@ public class InventoryContentSerializer_v291 implements PacketSerializer<Invento
     public void deserialize(ByteBuf buffer, InventoryContentPacket packet) {
         packet.setContainerId(ContainerId.byId(VarInts.readUnsignedInt(buffer)));
 
-        Item[] contents = new Item[VarInts.readUnsignedInt(buffer)];
+        ItemData[] contents = new ItemData[VarInts.readUnsignedInt(buffer)];
         for (int i = 0; i < contents.length; i++) {
-            contents[i] = BedrockUtils.readItemInstance(buffer);
+            contents[i] = BedrockUtils.readItemData(buffer);
         }
         packet.setContents(contents);
     }

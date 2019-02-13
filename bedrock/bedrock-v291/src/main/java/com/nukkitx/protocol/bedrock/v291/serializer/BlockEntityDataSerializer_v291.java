@@ -21,7 +21,7 @@ public class BlockEntityDataSerializer_v291 implements PacketSerializer<BlockEnt
 
     @Override
     public void serialize(ByteBuf buffer, BlockEntityDataPacket packet) {
-        BedrockUtils.writeBlockPosition(buffer, packet.getBlockPostion());
+        BedrockUtils.writeBlockPosition(buffer, packet.getBlockPosition());
         try (NBTOutputStream writer = new NBTOutputStream(new NetworkDataOutputStream(new ByteBufOutputStream(buffer)))) {
             writer.write(packet.getData());
         } catch (IOException e) {
@@ -31,7 +31,7 @@ public class BlockEntityDataSerializer_v291 implements PacketSerializer<BlockEnt
 
     @Override
     public void deserialize(ByteBuf buffer, BlockEntityDataPacket packet) {
-        packet.setBlockPostion(BedrockUtils.readBlockPosition(buffer));
+        packet.setBlockPosition(BedrockUtils.readBlockPosition(buffer));
         try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
             packet.setData(reader.readTag());
         } catch (IOException e) {

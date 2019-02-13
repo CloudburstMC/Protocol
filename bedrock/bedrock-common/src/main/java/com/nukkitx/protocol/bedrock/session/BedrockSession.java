@@ -322,7 +322,9 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
 
     @Override
     public void onTimeout() {
-        player.onTimeout();
+        if (player != null) {
+            player.onTimeout();
+        }
 
         close();
     }

@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.flowpowered.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.Item;
+import com.nukkitx.protocol.bedrock.data.ItemData;
 import com.nukkitx.protocol.bedrock.data.MetadataDictionary;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class AddItemEntityPacket extends BedrockPacket {
     private final MetadataDictionary metadata = new MetadataDictionary();
     private long uniqueEntityId;
     private long runtimeEntityId;
-    private Item itemInstance;
+    private ItemData itemInHand;
     private Vector3f position;
     private Vector3f motion;
     private boolean fromFishing;

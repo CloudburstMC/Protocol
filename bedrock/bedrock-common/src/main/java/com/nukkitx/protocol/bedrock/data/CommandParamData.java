@@ -1,10 +1,10 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
+
+import java.util.List;
 
 @Value
 public class CommandParamData {
@@ -14,48 +14,43 @@ public class CommandParamData {
     private final CommandEnumData enumData;
     private final Type type;
     private final String postfix;
+    private final List<Option> options; // Bit flags. Gamerule command is the only one to use it.
 
     public enum Type {
-        INT(1),
-        FLOAT(2),
-        VALUE(3),
-        WILDCARD_INT(4),
-        OPERATOR(5),
-        TARGET(6),
-        WILDCARD_TARGET(7),
-        FILE_PATH(14),
-        INT_RANGE(18),
-        STRING(26),
-        POSITION(28),
-        MESSAGE(31),
-        TEXT(33),
-        JSON(36),
-        COMMAND(43);
+        INT,
+        FLOAT,
+        VALUE,
+        WILDCARD_INT,
+        OPERATOR,
+        TARGET,
+        WILDCARD_TARGET,
+        FILE_PATH,
+        INT_RANGE,
+        STRING,
+        POSITION,
+        MESSAGE,
+        TEXT,
+        JSON,
+        COMMAND
+    }
 
-        private static final TIntObjectMap<Type> BY_ID = new TIntObjectHashMap<>(15);
-
-        static {
-            for (Type type : values()) {
-                BY_ID.put(type.id, type);
-            }
-        }
-
-        @Getter
-        private final int id;
-
-        Type(int id) {
-            this.id = id;
-        }
-
-        public static Type byId(int id) {
-            return BY_ID.get(id);
-        }
+    public enum Option {
+        UNKNOWN_0
     }
 
     @Value
+    @RequiredArgsConstructor
     public static class Builder {
         private final String name;
         private final CommandParamType type;
         private final boolean optional;
+        private final byte options;
+
+        public Builder(String name, CommandParamType type, boolean optional) {
+            this.name = name;
+            this.type = type;
+            this.optional = optional;
+            this.options = 0;
+        }
     }
 }

@@ -17,7 +17,7 @@ public class AnimateSerializer_v291 implements PacketSerializer<AnimatePacket> {
 
     static {
         types.put(0, Action.NO_ACTION);
-        types.put(1, Action.SWING);
+        types.put(1, Action.SWING_ARM);
         types.put(3, Action.WAKE_UP);
         types.put(4, Action.CRITICAL_HIT);
         types.put(5, Action.MAGIC_CRITICAL_HIT);

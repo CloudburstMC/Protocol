@@ -25,6 +25,7 @@ public class StartGameSerializer_v332 implements PacketSerializer<StartGamePacke
         VarInts.writeInt(buffer, packet.getPlayerGamemode());
         BedrockUtils.writeVector3f(buffer, packet.getPlayerPosition());
         BedrockUtils.writeVector2f(buffer, packet.getRotation());
+
         // Level settings start
         VarInts.writeInt(buffer, packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
@@ -56,8 +57,8 @@ public class StartGameSerializer_v332 implements PacketSerializer<StartGamePacke
         buffer.writeBoolean(packet.isUsingMsaGamertagsOnly());
         buffer.writeBoolean(packet.isFromWorldTemplate());
         buffer.writeBoolean(packet.isWorldTemplateOptionLocked());
-
         // Level settings end
+
         BedrockUtils.writeString(buffer, packet.getLevelId());
         BedrockUtils.writeString(buffer, packet.getWorldName());
         BedrockUtils.writeString(buffer, packet.getPremiumWorldTemplateId());
@@ -88,6 +89,7 @@ public class StartGameSerializer_v332 implements PacketSerializer<StartGamePacke
         packet.setPlayerGamemode(VarInts.readInt(buffer));
         packet.setPlayerPosition(BedrockUtils.readVector3f(buffer));
         packet.setRotation(BedrockUtils.readVector2f(buffer));
+
         // Level settings start
         packet.setSeed(VarInts.readInt(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
@@ -120,6 +122,7 @@ public class StartGameSerializer_v332 implements PacketSerializer<StartGamePacke
         packet.setFromWorldTemplate(buffer.readBoolean());
         packet.setWorldTemplateOptionLocked(buffer.readBoolean());
         // Level settings end
+
         packet.setLevelId(BedrockUtils.readString(buffer));
         packet.setWorldName(BedrockUtils.readString(buffer));
         packet.setPremiumWorldTemplateId(BedrockUtils.readString(buffer));

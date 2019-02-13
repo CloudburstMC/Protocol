@@ -19,7 +19,7 @@ public class AnimatePacket extends BedrockPacket {
 
     public enum Action {
         NO_ACTION,
-        SWING,
+        SWING_ARM,
         WAKE_UP,
         CRITICAL_HIT,
         MAGIC_CRITICAL_HIT,

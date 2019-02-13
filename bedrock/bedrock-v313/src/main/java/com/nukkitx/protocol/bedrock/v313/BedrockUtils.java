@@ -411,13 +411,13 @@ public final class BedrockUtils {
         buffer.writeBoolean(entityLink.isImmediate());
     }
 
-    public static Item readItemInstance(ByteBuf buffer) {
+    public static ItemData readItemData(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         int id = VarInts.readInt(buffer);
         if (id == 0) {
             // We don't need to read anything extra.
-            return Item.AIR;
+            return ItemData.AIR;
         }
         int aux = VarInts.readInt(buffer);
         short damage = (short) (aux >> 8);
@@ -447,10 +447,10 @@ public final class BedrockUtils {
             canBreak[i] = readString(buffer);
         }
 
-        return Item.of(id, damage, count, compoundTag, canPlace, canBreak);
+        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak);
     }
 
-    public static void writeItemInstance(ByteBuf buffer, Item item) {
+    public static void writeItemData(ByteBuf buffer, ItemData item) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(item, "item");
 
@@ -458,7 +458,7 @@ public final class BedrockUtils {
         int id = item.getId();
         if (id == 0) {
             // We don't need to write anything extra.
-            buffer.writeShort(0);
+            buffer.writeByte(0);
             return;
         }
         VarInts.writeInt(buffer, id);
@@ -474,10 +474,7 @@ public final class BedrockUtils {
         int afterSizeIndex = buffer.writerIndex();
 
         try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer))) {
-            Tag<?> tag = item.getTag();
-            if (tag instanceof CompoundTag) {
-                stream.write(item.getTag());
-            }
+            stream.write(item.getTag());
         } catch (IOException e) {
             // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
             throw new IllegalStateException("Unable to save NBT data", e);
@@ -613,8 +610,8 @@ public final class BedrockUtils {
         InventorySource source = readInventorySource(buffer);
 
         int slot = VarInts.readUnsignedInt(buffer);
-        Item fromItem = readItemInstance(buffer);
-        Item toItem = readItemInstance(buffer);
+        ItemData fromItem = readItemData(buffer);
+        ItemData toItem = readItemData(buffer);
 
         return new InventoryAction(source, slot, fromItem, toItem);
     }
@@ -626,8 +623,8 @@ public final class BedrockUtils {
         writeInventorySource(buffer, action.getSource());
 
         VarInts.writeUnsignedInt(buffer, action.getSlot());
-        writeItemInstance(buffer, action.getFromItem());
-        writeItemInstance(buffer, action.getToItem());
+        writeItemData(buffer, action.getFromItem());
+        writeItemData(buffer, action.getToItem());
     }
 
     public static InventorySource readInventorySource(ByteBuf buffer) {
@@ -744,7 +741,7 @@ public final class BedrockUtils {
                     object = BedrockUtils.readString(buffer);
                     break;
                 case ITEM:
-                    object = BedrockUtils.readItemInstance(buffer);
+                    object = BedrockUtils.readItemData(buffer);
                     break;
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
@@ -799,7 +796,7 @@ public final class BedrockUtils {
                     BedrockUtils.writeString(buffer, (String) object);
                     break;
                 case ITEM:
-                    BedrockUtils.writeItemInstance(buffer, (Item) object);
+                    BedrockUtils.writeItemData(buffer, (ItemData) object);
                     break;
                 case VECTOR3I:
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);

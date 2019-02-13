@@ -22,7 +22,7 @@ public class AddPlayerSerializer_v291 implements PacketSerializer<AddPlayerPacke
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
         BedrockUtils.writeVector3f(buffer, packet.getMotion());
         BedrockUtils.writeVector3f(buffer, packet.getRotation());
-        BedrockUtils.writeItemInstance(buffer, packet.getHand());
+        BedrockUtils.writeItemData(buffer, packet.getHand());
         BedrockUtils.writeMetadata(buffer, packet.getMetadata());
         // Adventure Settings start
         VarInts.writeUnsignedInt(buffer, packet.getPlayerFlags());
@@ -46,7 +46,7 @@ public class AddPlayerSerializer_v291 implements PacketSerializer<AddPlayerPacke
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setMotion(BedrockUtils.readVector3f(buffer));
         packet.setRotation(BedrockUtils.readVector3f(buffer));
-        packet.setHand(BedrockUtils.readItemInstance(buffer));
+        packet.setHand(BedrockUtils.readItemData(buffer));
         BedrockUtils.readMetadata(buffer, packet.getMetadata());
         // Adventure Settings start
         packet.setPlayerFlags(VarInts.readUnsignedInt(buffer));

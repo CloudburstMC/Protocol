@@ -6,8 +6,8 @@ import lombok.Value;
 public class InventoryAction {
     private final InventorySource source;
     private final int slot;
-    private final Item fromItem;
-    private final Item toItem;
+    private final ItemData fromItem;
+    private final ItemData toItem;
 
     public InventoryAction reverse() {
         return new InventoryAction(source, slot, toItem, fromItem);

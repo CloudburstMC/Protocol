@@ -157,7 +157,8 @@ public enum Metadata {
         SCARED,
         IN_SCAFFOLDING,
         OVER_SCAFFOLDING,
-        FALL_THROUGH_SCAFFOLDING
+        FALL_THROUGH_SCAFFOLDING,
+        BLOCKING
     }
 
     @RequiredArgsConstructor

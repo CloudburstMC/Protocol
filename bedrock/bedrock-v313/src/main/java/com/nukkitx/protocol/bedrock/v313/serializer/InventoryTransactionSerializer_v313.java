@@ -28,7 +28,7 @@ public class InventoryTransactionSerializer_v313 implements PacketSerializer<Inv
                 BedrockUtils.writeBlockPosition(buffer, packet.getBlockPosition());
                 VarInts.writeInt(buffer, packet.getFace());
                 VarInts.writeInt(buffer, packet.getHotbarSlot());
-                BedrockUtils.writeItemInstance(buffer, packet.getItemInHand());
+                BedrockUtils.writeItemData(buffer, packet.getItemInHand());
                 BedrockUtils.writeVector3f(buffer, packet.getPlayerPosition());
                 BedrockUtils.writeVector3f(buffer, packet.getClickPosition());
                 break;
@@ -36,14 +36,14 @@ public class InventoryTransactionSerializer_v313 implements PacketSerializer<Inv
                 VarInts.writeUnsignedInt(buffer, packet.getRuntimeEntityId());
                 VarInts.writeUnsignedInt(buffer, packet.getActionType());
                 VarInts.writeInt(buffer, packet.getHotbarSlot());
-                BedrockUtils.writeItemInstance(buffer, packet.getItemInHand());
+                BedrockUtils.writeItemData(buffer, packet.getItemInHand());
                 BedrockUtils.writeVector3f(buffer, packet.getPlayerPosition());
                 BedrockUtils.writeVector3f(buffer, packet.getClickPosition());
                 break;
             case ITEM_RELEASE:
                 VarInts.writeUnsignedInt(buffer, packet.getActionType());
                 VarInts.writeInt(buffer, packet.getHotbarSlot());
-                BedrockUtils.writeItemInstance(buffer, packet.getItemInHand());
+                BedrockUtils.writeItemData(buffer, packet.getItemInHand());
                 BedrockUtils.writeVector3f(buffer, packet.getHeadPosition());
         }
     }
@@ -61,7 +61,7 @@ public class InventoryTransactionSerializer_v313 implements PacketSerializer<Inv
                 packet.setBlockPosition(BedrockUtils.readBlockPosition(buffer));
                 packet.setFace(VarInts.readInt(buffer));
                 packet.setHotbarSlot(VarInts.readInt(buffer));
-                packet.setItemInHand(BedrockUtils.readItemInstance(buffer));
+                packet.setItemInHand(BedrockUtils.readItemData(buffer));
                 packet.setPlayerPosition(BedrockUtils.readVector3f(buffer));
                 packet.setClickPosition(BedrockUtils.readVector3f(buffer));
                 break;
@@ -69,14 +69,14 @@ public class InventoryTransactionSerializer_v313 implements PacketSerializer<Inv
                 packet.setRuntimeEntityId(VarInts.readUnsignedInt(buffer));
                 packet.setActionType(VarInts.readUnsignedInt(buffer));
                 packet.setHotbarSlot(VarInts.readInt(buffer));
-                packet.setItemInHand(BedrockUtils.readItemInstance(buffer));
+                packet.setItemInHand(BedrockUtils.readItemData(buffer));
                 packet.setPlayerPosition(BedrockUtils.readVector3f(buffer));
                 packet.setClickPosition(BedrockUtils.readVector3f(buffer));
                 break;
             case ITEM_RELEASE:
                 packet.setActionType(VarInts.readUnsignedInt(buffer));
                 packet.setHotbarSlot(VarInts.readInt(buffer));
-                packet.setItemInHand(BedrockUtils.readItemInstance(buffer));
+                packet.setItemInHand(BedrockUtils.readItemData(buffer));
                 packet.setHeadPosition(BedrockUtils.readVector3f(buffer));
         }
     }

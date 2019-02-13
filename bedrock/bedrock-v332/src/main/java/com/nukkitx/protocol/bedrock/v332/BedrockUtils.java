@@ -3,10 +3,9 @@ package com.nukkitx.protocol.bedrock.v332;
 import com.flowpowered.math.vector.Vector2f;
 import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
-import com.nukkitx.nbt.CompoundTagBuilder;
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.stream.NetworkDataInputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
@@ -14,11 +13,12 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
-import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
+import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import com.nukkitx.protocol.bedrock.v332.serializer.GameRulesChangedSerializer_v332;
 import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.util.AsciiString;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -413,13 +413,13 @@ public final class BedrockUtils {
         buffer.writeBoolean(entityLink.isImmediate());
     }
 
-    public static Item readItemInstance(ByteBuf buffer) {
+    public static ItemData readItemData(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         int id = VarInts.readInt(buffer);
         if (id == 0) {
             // We don't need to read anything extra.
-            return Item.AIR;
+            return ItemData.AIR;
         }
         int aux = VarInts.readInt(buffer);
         short damage = (short) (aux >> 8);
@@ -427,24 +427,30 @@ public final class BedrockUtils {
         int count = aux & 0xff;
         int nbtSize = buffer.readShortLE();
 
-        List<CompoundTag> tags = new ArrayList<>();
-        try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
-            if (nbtSize > 0) {
+        CompoundTag compoundTag = null;
+        if (nbtSize > 0) {
+            try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer.readSlice(nbtSize)))) {
                 Tag<?> tag = reader.readTag();
                 if (tag instanceof CompoundTag) {
-                    tags.add((CompoundTag) tag);
+                    compoundTag = (CompoundTag) tag;
                 }
-            } else if (nbtSize == -1) {
+            } catch (IOException e) {
+                throw new IllegalStateException("Unable to load NBT data", e);
+            }
+        } else if (nbtSize == -1) {
+            try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
                 int nbtTagCount = VarInts.readUnsignedInt(buffer);
-                for (int i = 0; i < nbtTagCount; i++) {
+                if (nbtTagCount == 1) {
                     Tag<?> tag = reader.readTag();
                     if (tag instanceof CompoundTag) {
-                        tags.add((CompoundTag) tag);
+                        compoundTag = (CompoundTag) tag;
                     }
+                } else {
+                    throw new IllegalArgumentException("Expected 1 tag but got " + nbtTagCount);
                 }
+            } catch (IOException e) {
+                throw new IllegalStateException("Unable to load NBT data", e);
             }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load NBT data", e);
         }
 
         String[] canPlace = new String[VarInts.readInt(buffer)];
@@ -457,24 +463,10 @@ public final class BedrockUtils {
             canBreak[i] = readString(buffer);
         }
 
-        CompoundTag compoundTag = null;
-
-        if (tags.size() > 1) {
-            // Merge tags
-            CompoundTagBuilder builder = CompoundTagBuilder.builder();
-
-            for (CompoundTag tag : tags) {
-                tag.getValue().forEach((s, tag1) -> builder.tag(tag1));
-            }
-            compoundTag = builder.buildRootTag();
-        } else if (tags.size() == 1) {
-            compoundTag = tags.get(0);
-        }
-
-        return Item.of(id, damage, count, compoundTag, canPlace, canBreak);
+        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak);
     }
 
-    public static void writeItemInstance(ByteBuf buffer, Item item) {
+    public static void writeItemData(ByteBuf buffer, ItemData item) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(item, "item");
 
@@ -482,7 +474,7 @@ public final class BedrockUtils {
         int id = item.getId();
         if (id == 0) {
             // We don't need to write anything extra.
-            buffer.writeShort(0);
+            buffer.writeByte(0);
             return;
         }
         VarInts.writeInt(buffer, id);
@@ -492,22 +484,15 @@ public final class BedrockUtils {
         if (damage == -1) damage = Short.MAX_VALUE;
         VarInts.writeInt(buffer, (damage << 8) | (item.getCount() & 0xff));
 
-        // Remember this position, since we'll be writing the true NBT size here later:
-        int sizeIndex = buffer.writerIndex();
-        buffer.writeShort(0);
-        int afterSizeIndex = buffer.writerIndex();
+        buffer.writeShort(-1);
+        VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
 
-        try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer))) {
-            Tag<?> tag = item.getTag();
-            if (tag instanceof CompoundTag) {
-                stream.write(item.getTag());
-            }
+        try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
+            stream.write(item.getTag());
         } catch (IOException e) {
             // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
             throw new IllegalStateException("Unable to save NBT data", e);
         }
-        // Set to the written NBT size
-        buffer.setShortLE(sizeIndex, buffer.writerIndex() - afterSizeIndex);
 
         String[] canPlace = item.getCanPlace();
         VarInts.writeInt(buffer, canPlace.length);
@@ -596,7 +581,7 @@ public final class BedrockUtils {
             writeString(buffer, packInfoEntry.getEncryptionKey());
             writeString(buffer, packInfoEntry.getSubpackName());
             writeString(buffer, packInfoEntry.getContentId());
-            buffer.writeBoolean(packInfoEntry.isUnknownBool());
+            buffer.writeBoolean(packInfoEntry.isScripting());
         }
     }
 
@@ -640,8 +625,8 @@ public final class BedrockUtils {
         InventorySource source = readInventorySource(buffer);
 
         int slot = VarInts.readUnsignedInt(buffer);
-        Item fromItem = readItemInstance(buffer);
-        Item toItem = readItemInstance(buffer);
+        ItemData fromItem = readItemData(buffer);
+        ItemData toItem = readItemData(buffer);
 
         return new InventoryAction(source, slot, fromItem, toItem);
     }
@@ -653,8 +638,8 @@ public final class BedrockUtils {
         writeInventorySource(buffer, action.getSource());
 
         VarInts.writeUnsignedInt(buffer, action.getSlot());
-        writeItemInstance(buffer, action.getFromItem());
-        writeItemInstance(buffer, action.getToItem());
+        writeItemData(buffer, action.getFromItem());
+        writeItemData(buffer, action.getToItem());
     }
 
     public static InventorySource readInventorySource(ByteBuf buffer) {
@@ -771,7 +756,7 @@ public final class BedrockUtils {
                     object = BedrockUtils.readString(buffer);
                     break;
                 case ITEM:
-                    object = BedrockUtils.readItemInstance(buffer);
+                    object = BedrockUtils.readItemData(buffer);
                     break;
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
@@ -826,7 +811,7 @@ public final class BedrockUtils {
                     BedrockUtils.writeString(buffer, (String) object);
                     break;
                 case ITEM:
-                    BedrockUtils.writeItemInstance(buffer, (Item) object);
+                    BedrockUtils.writeItemData(buffer, (ItemData) object);
                     break;
                 case VECTOR3I:
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);

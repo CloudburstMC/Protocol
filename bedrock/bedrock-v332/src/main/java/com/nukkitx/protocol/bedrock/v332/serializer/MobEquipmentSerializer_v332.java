@@ -16,7 +16,7 @@ public class MobEquipmentSerializer_v332 implements PacketSerializer<MobEquipmen
     @Override
     public void serialize(ByteBuf buffer, MobEquipmentPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeItemInstance(buffer, packet.getItem());
+        BedrockUtils.writeItemData(buffer, packet.getItem());
         buffer.writeByte(packet.getInventorySlot());
         buffer.writeByte(packet.getHotbarSlot());
         buffer.writeByte(packet.getContainerId().id());
@@ -25,7 +25,7 @@ public class MobEquipmentSerializer_v332 implements PacketSerializer<MobEquipmen
     @Override
     public void deserialize(ByteBuf buffer, MobEquipmentPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setItem(BedrockUtils.readItemInstance(buffer));
+        packet.setItem(BedrockUtils.readItemData(buffer));
         packet.setInventorySlot(buffer.readUnsignedByte());
         packet.setHotbarSlot(buffer.readUnsignedByte());
         packet.setContainerId(ContainerId.byId(buffer.readByte()));
