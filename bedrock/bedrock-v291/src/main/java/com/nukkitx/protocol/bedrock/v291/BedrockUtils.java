@@ -743,11 +743,16 @@ public final class BedrockUtils {
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
                     break;
-                case FLAGS:
-                    object = MetadataFlags.create(VarInts.readLong(buffer), 0, METADATA_FLAGS);
-                    break;
                 case LONG:
                     object = VarInts.readLong(buffer);
+                    if (metadata == FLAGS) {
+                        MetadataFlags flags = metadataDictionary.getFlags();
+                        object = MetadataFlags.create((long) object, 0, METADATA_FLAGS);
+                        if (flags != null) {
+                            flags.merge((MetadataFlags) object);
+                            object = flags;
+                        }
+                    }
                     break;
                 case VECTOR3F:
                     object = BedrockUtils.readVector3f(buffer);

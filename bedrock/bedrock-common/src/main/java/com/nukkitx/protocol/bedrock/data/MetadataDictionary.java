@@ -5,8 +5,8 @@ import com.flowpowered.math.vector.Vector3i;
 import com.nukkitx.network.util.Preconditions;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumMap;
-import java.util.Optional;
 
 public class MetadataDictionary extends EnumMap<Metadata, Object> {
 
@@ -53,10 +53,10 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
         throw new IllegalArgumentException("Invalid type");
     }
 
-    @Nonnull
+    @Nullable
     @SuppressWarnings("unchecked")
-    public <T> Optional<T> get(Metadata metadata) {
-        return Optional.ofNullable((T) super.get(metadata));
+    public <T> T get(Metadata metadata) {
+        return (T) super.get(metadata);
     }
 
     @Override
@@ -66,5 +66,13 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
         Preconditions.checkArgument(isAcceptable(o), "%s is an unacceptable metadata type", o.getClass().getSimpleName());
 
         return super.put(metadata, o);
+    }
+
+    public MetadataFlags getFlags() {
+        return get(Metadata.FLAGS);
+    }
+
+    public void putFlags(@Nonnull MetadataFlags flags) {
+        put(Metadata.FLAGS, flags);
     }
 }
