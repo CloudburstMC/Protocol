@@ -23,7 +23,7 @@ public class MetadataFlags {
         final int upper = lower + 64;
         for (int i = lower; i < upper; i++) {
             int idx = i & 0x3f;
-            if ((value & (1 << idx)) != 0) {
+            if ((value & (1L << idx)) != 0) {
                 Metadata.Flag flag = flagMappings.get(i);
                 if (flag != null) {
                     flags.flags.add(flag);
@@ -68,12 +68,12 @@ public class MetadataFlags {
 
     public long get(int index, TIntHashBiMap<Metadata.Flag> flagMappings) {
         long value = 0;
-        final long lower = index * 64;
-        final long upper = lower + 64;
+        final int lower = index * 64;
+        final int upper = lower + 64;
         for (Metadata.Flag flag : flags) {
             int flagIndex = flagMappings.get(flag);
             if (flagIndex >= lower && flagIndex < upper) {
-                value |= 1 << (flagIndex & 0x3f);
+                value |= 1L << (flagIndex & 0x3f);
             }
         }
         return value;
