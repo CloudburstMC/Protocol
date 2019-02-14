@@ -19,8 +19,11 @@ public class MetadataFlags {
 
     public static MetadataFlags create(long value, int index, TIntHashBiMap<Metadata.Flag> flagMappings) {
         MetadataFlags flags = new MetadataFlags();
-        for (int i = index * 64; i < index + 64; i++) {
-            if ((value & (1 << i)) != 0) {
+        final int lower = index * 64;
+        final int upper = lower + 64;
+        for (int i = lower; i < upper; i++) {
+            int idx = i & 0x3f;
+            if ((value & (1 << idx)) != 0) {
                 Metadata.Flag flag = flagMappings.get(i);
                 if (flag != null) {
                     flags.flags.add(flag);
