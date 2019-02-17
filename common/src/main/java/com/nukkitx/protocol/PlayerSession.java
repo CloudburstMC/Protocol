@@ -1,16 +1,16 @@
 package com.nukkitx.protocol;
 
-import javax.annotation.Nullable;
+import com.nukkitx.network.util.DisconnectReason;
+
+import javax.annotation.Nonnull;
 
 public interface PlayerSession {
 
+    boolean isClosed();
+
     void close();
 
-    default void onDisconnect() {
-        onDisconnect(null);
-    }
+    void onDisconnect(@Nonnull DisconnectReason reason);
 
-    void onDisconnect(@Nullable String reason);
-
-    void onTimeout();
+    void onDisconnect(@Nonnull String reason);
 }

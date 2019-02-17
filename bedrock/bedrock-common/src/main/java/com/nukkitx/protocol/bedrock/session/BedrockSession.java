@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.session;
 
 import com.nukkitx.network.raknet.session.RakNetSession;
+import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.MinecraftSession;
 import com.nukkitx.protocol.PlayerSession;
@@ -68,6 +69,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     @Getter(AccessLevel.NONE)
     private SecretKey agreedKey;
     private int protocolVersion;
+    private volatile boolean closed = false;
     @Setter
     private volatile boolean logging = true;
 
@@ -106,7 +108,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     }
 
     private void checkForClosed() {
-        Preconditions.checkState(!connection.isClosed(), "Connection has been closed!");
+        Preconditions.checkState(!closed, "Connection has been closed!");
     }
 
     public void sendPacket(BedrockPacket packet) {
@@ -179,7 +181,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
     }
 
     public void onTick() {
-        if (connection.isClosed()) {
+        if (closed) {
             return;
         }
 
@@ -259,7 +261,10 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         return encryptionCipher != null;
     }
 
+    @Override
     public void close() {
+        checkForClosed();
+        closed = true;
         // Free native resources if required
         if (encryptionCipher != null) {
             encryptionCipher.free();
@@ -273,14 +278,19 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
             try {
                 agreedKey.destroy();
             } catch (DestroyFailedException e) {
-                throw new RuntimeException(e);
+                // Ignore - throws exception by default
             }
         }
+    }
 
-        // Make sure the player is closed properly
+    @Override
+    public void onDisconnect(DisconnectReason reason) {
         if (player != null) {
-            player.close();
+            player.onDisconnect(reason);
+        } else {
+            log.debug("Session {} was disconnected", getRemoteAddress().map(InetSocketAddress::toString).orElse("UNKNOWN"));
         }
+        close();
     }
 
     public void setClientData(ClientData clientData) {
@@ -308,25 +318,9 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         if (reason == null || hideReason) {
             packet.setDisconnectScreenHidden(true);
             reason = "disconnect.disconnected";
-        } else {
-            packet.setKickMessage(reason);
         }
-        sendPacketImmediately(packet);
-
-        if (player != null) {
-            player.onDisconnect(reason);
-        }
-
-        close();
-    }
-
-    @Override
-    public void onTimeout() {
-        if (player != null) {
-            player.onTimeout();
-        }
-
-        close();
+        packet.setKickMessage(reason);
+        sendPacket(packet);
     }
 
     public void onWrappedPacket(WrappedPacket<PLAYER> packet) throws Exception {
