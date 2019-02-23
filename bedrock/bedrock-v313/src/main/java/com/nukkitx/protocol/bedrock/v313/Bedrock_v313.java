@@ -104,7 +104,7 @@ public class Bedrock_v313 {
             .registerPacket(PurchaseReceiptPacket.class, PurchaseReceiptSerializer_v313.INSTANCE, 92)
             .registerPacket(PlayerSkinPacket.class, PlayerSkinSerializer_v313.INSTANCE, 93)
             .registerPacket(SubClientLoginPacket.class, SubClientLoginSerializer_v313.INSTANCE, 94)
-            .registerPacket(WSConnectPacket.class, WSConnectSerializer_v313.INSTANCE, 95)
+            .registerPacket(AutomationClientConnectPacket.class, AutomationClientConnectSerializer_v313.INSTANCE, 95)
             .registerPacket(SetLastHurtByPacket.class, SetLastHurtBySerializer_v313.INSTANCE, 96)
             .registerPacket(BookEditPacket.class, BookEditSerializer_v313.INSTANCE, 97)
             .registerPacket(NpcRequestPacket.class, NpcRequestSerializer_v313.INSTANCE, 98)

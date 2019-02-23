@@ -285,7 +285,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(WSConnectPacket packet) {
+    default boolean handle(AutomationClientConnectPacket packet) {
         return false;
     }
 
@@ -494,6 +494,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(SpawnParticleEffectPacket packet) {
+        return false;
+    }
+
+    default boolean handle(VideoStreamConnectPacket packet) {
         return false;
     }
 }
