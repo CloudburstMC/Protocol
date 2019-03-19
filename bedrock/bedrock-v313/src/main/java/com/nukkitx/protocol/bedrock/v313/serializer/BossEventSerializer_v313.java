@@ -42,7 +42,7 @@ public class BossEventSerializer_v313 implements PacketSerializer<BossEventPacke
                 BedrockUtils.writeString(buffer, packet.getTitle());
                 break;
             default:
-                throw new RuntimeException("BossEvent transactionType was unknown!");
+                throw new RuntimeException("BossEvent transactionType was unknownBool!");
         }
     }
 

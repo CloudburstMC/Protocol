@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 public class LecternUpdatePacket extends BedrockPacket {
     private int page;
     private Vector3i blockPosition;
-    private boolean unknown;
+    private boolean unknownBool;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

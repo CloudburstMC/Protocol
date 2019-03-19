@@ -17,5 +17,6 @@
         <module>bedrock-v291</module>
         <module>bedrock-v313</module>
         <module>bedrock-v332</module>
+        <module>bedrock-v340</module>
     </modules>
 </project>

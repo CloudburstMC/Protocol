@@ -103,7 +103,7 @@ public class Bedrock_v332 {
             .registerPacket(PurchaseReceiptPacket.class, PurchaseReceiptSerializer_v332.INSTANCE, 92)
             .registerPacket(PlayerSkinPacket.class, PlayerSkinSerializer_v332.INSTANCE, 93)
             .registerPacket(SubClientLoginPacket.class, SubClientLoginSerializer_v332.INSTANCE, 94)
-            .registerPacket(WSConnectPacket.class, WSConnectSerializer_v332.INSTANCE, 95)
+            .registerPacket(AutomationClientConnectPacket.class, AutomationClientConnectSerializer_v332.INSTANCE, 95)
             .registerPacket(SetLastHurtByPacket.class, SetLastHurtBySerializer_v332.INSTANCE, 96)
             .registerPacket(BookEditPacket.class, BookEditSerializer_v332.INSTANCE, 97)
             .registerPacket(NpcRequestPacket.class, NpcRequestSerializer_v332.INSTANCE, 98)

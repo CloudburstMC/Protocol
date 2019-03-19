@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WSConnectPacket extends BedrockPacket {
+public class AutomationClientConnectPacket extends BedrockPacket {
     private String address;
 
     @Override
