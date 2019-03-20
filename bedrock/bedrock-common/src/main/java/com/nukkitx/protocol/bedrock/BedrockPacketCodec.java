@@ -28,6 +28,8 @@ public final class BedrockPacketCodec {
 
     @Getter
     private final int protocolVersion;
+    @Getter
+    private final String minecraftVersion;
     private final PacketSerializer<BedrockPacket>[] serializers;
     private final TIntHashBiMap<Class<BedrockPacket>> idBiMap;
     private final PacketSerializer<PacketHeader> headerSerializer;
@@ -87,6 +89,7 @@ public final class BedrockPacketCodec {
         private final TIntObjectMap<PacketSerializer<BedrockPacket>> serializers = new TIntObjectHashMap<>();
         private final TIntHashBiMap<Class<BedrockPacket>> idBiMap = new TIntHashBiMap<>((Class) UnknownPacket.class);
         private int protocolVersion = -1;
+        private String minecraftVersion = null;
         private PacketSerializer<PacketHeader> headerSerializer = null;
 
         public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, PacketSerializer<T> packetSerializer, @Nonnegative int id) {
@@ -107,6 +110,13 @@ public final class BedrockPacketCodec {
             return this;
         }
 
+        public Builder minecraftVersion(@Nonnull String minecraftVersion) {
+            Preconditions.checkNotNull(minecraftVersion, "minecraftVersion");
+            Preconditions.checkArgument(!minecraftVersion.isEmpty() && minecraftVersion.split("\\.").length > 2, "Invalid minecraftVersion");
+            this.minecraftVersion = minecraftVersion;
+            return this;
+        }
+
         public Builder headerSerializer(@Nonnull PacketSerializer<PacketHeader> headerSerializer) {
             Preconditions.checkNotNull(headerSerializer, "headerFactory");
             this.headerSerializer = headerSerializer;
@@ -115,6 +125,7 @@ public final class BedrockPacketCodec {
 
         public BedrockPacketCodec build() {
             Preconditions.checkArgument(protocolVersion >= 0, "No protocol version defined");
+            Preconditions.checkNotNull(minecraftVersion, "No Minecraft version defined");
             Preconditions.checkNotNull(headerSerializer, "headerSerializer cannot be null");
             int largestId = -1;
             for (int id : serializers.keys()) {
@@ -131,7 +142,7 @@ public final class BedrockPacketCodec {
                 iterator.advance();
                 serializers[iterator.key()] = iterator.value();
             }
-            return new BedrockPacketCodec(protocolVersion, serializers, idBiMap, headerSerializer);
+            return new BedrockPacketCodec(protocolVersion, minecraftVersion, serializers, idBiMap, headerSerializer);
         }
     }
 }

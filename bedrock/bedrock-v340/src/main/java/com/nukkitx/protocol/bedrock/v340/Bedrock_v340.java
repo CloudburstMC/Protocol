@@ -9,6 +9,7 @@ import lombok.experimental.UtilityClass;
 public class Bedrock_v340 {
     public static BedrockPacketCodec V340_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(340)
+            .minecraftVersion("1.10.0")
             .headerSerializer(PacketHeaderSerializer_v340.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v340.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v340.INSTANCE, 2)

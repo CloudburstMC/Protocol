@@ -13,5 +13,6 @@ public class BedrockCompat {
             .headerSerializer(PacketHeaderSerializerCompat.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializerCompat.INSTANCE, 1)
             .protocolVersion(0)
+            .minecraftVersion("0.0.0")
             .build();
 }
