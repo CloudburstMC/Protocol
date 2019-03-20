@@ -463,7 +463,12 @@ public final class BedrockUtils {
             canBreak[i] = readString(buffer);
         }
 
-        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak);
+        long blockingTicks = 0;
+        if (id == 513) { // TODO: 20/03/2019 We shouldn't be hardcoding this but it's what Microjang have made us do
+            blockingTicks = VarInts.readLong(buffer);
+        }
+
+        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak, blockingTicks);
     }
 
     public static void writeItemData(ByteBuf buffer, ItemData item) {
@@ -504,6 +509,10 @@ public final class BedrockUtils {
         VarInts.writeInt(buffer, canBreak.length);
         for (String aCanBreak : canBreak) {
             BedrockUtils.writeString(buffer, aCanBreak);
+        }
+
+        if (id == 513) { // TODO: 20/03/2019 We shouldn't be hardcoding this but it's what Microjang have made us do
+            VarInts.writeLong(buffer, item.getBlockingTicks());
         }
     }
 

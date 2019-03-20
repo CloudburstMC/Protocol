@@ -31,6 +31,7 @@ public class InventoryTransactionSerializer_v340 implements PacketSerializer<Inv
                 BedrockUtils.writeItemData(buffer, packet.getItemInHand());
                 BedrockUtils.writeVector3f(buffer, packet.getPlayerPosition());
                 BedrockUtils.writeVector3f(buffer, packet.getClickPosition());
+                VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
                 break;
             case ITEM_USE_ON_ENTITY:
                 VarInts.writeUnsignedInt(buffer, packet.getRuntimeEntityId());
@@ -64,6 +65,7 @@ public class InventoryTransactionSerializer_v340 implements PacketSerializer<Inv
                 packet.setItemInHand(BedrockUtils.readItemData(buffer));
                 packet.setPlayerPosition(BedrockUtils.readVector3f(buffer));
                 packet.setClickPosition(BedrockUtils.readVector3f(buffer));
+                packet.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
                 break;
             case ITEM_USE_ON_ENTITY:
                 packet.setRuntimeEntityId(VarInts.readUnsignedInt(buffer));

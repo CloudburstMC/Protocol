@@ -6,14 +6,16 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.Arrays;
 import java.util.Objects;
 
 @Value
+@Immutable
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemData {
     private static final String[] EMPTY = new String[0];
-    public static final ItemData AIR = new ItemData(0, (short) 0, 0, null, EMPTY, EMPTY);
+    public static final ItemData AIR = new ItemData(0, (short) 0, 0, null, EMPTY, EMPTY, 0);
 
     private final int id;
     private final short damage;
@@ -21,6 +23,7 @@ public final class ItemData {
     private final CompoundTag tag;
     private final String[] canPlace;
     private final String[] canBreak;
+    private final long blockingTicks;
 
     public static ItemData of(int id, short damage, int count) {
         return of(id, damage, count, null);
@@ -31,13 +34,17 @@ public final class ItemData {
     }
 
     public static ItemData of(int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak) {
+        return of(id, damage, count, tag, canPlace, canBreak, 0);
+    }
+
+    public static ItemData of(int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak, long blockingTicks) {
         if (id == 0) {
             return AIR;
         }
         Preconditions.checkNotNull(canPlace, "canPlace");
         Preconditions.checkNotNull(canBreak, "canBreak");
         Preconditions.checkArgument(count < 256, "count exceeds maximum of 255");
-        return new ItemData(id, damage, count, tag, canPlace, canBreak);
+        return new ItemData(id, damage, count, tag, canPlace, canBreak, blockingTicks);
     }
 
     public boolean isValid() {

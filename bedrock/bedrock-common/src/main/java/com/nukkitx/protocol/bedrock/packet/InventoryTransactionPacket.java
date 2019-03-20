@@ -26,6 +26,10 @@ public class InventoryTransactionPacket extends BedrockPacket {
     private Vector3f playerPosition;
     private Vector3f clickPosition;
     private Vector3f headPosition;
+    /**
+     * @apiNote 1.10+ ItemUseInventoryTransaction only
+     */
+    private int blockRuntimeId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
