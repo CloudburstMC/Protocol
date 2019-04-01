@@ -193,7 +193,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
         WrappedPacket<PLAYER> wrapper = new WrappedPacket<>();
         while ((packet = currentlyQueued.poll()) != null) {
             if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
-                // We hit a wrappable packet. Send the current wrapper and then send the un-wrappable packet.
+                // We hit a unencryptable packet. Send the current wrapper and then send the unencryptable packet.
                 if (!wrapper.getPackets().isEmpty()) {
                     sendWrapped(wrapper);
                     wrapper = new WrappedPacket<>();
@@ -207,6 +207,7 @@ public class BedrockSession<PLAYER extends PlayerSession> implements MinecraftSe
                 } catch (InterruptedException e) {
                     log.error("Interrupted", e);
                 }
+                continue;
             }
 
             wrapper.getPackets().add(packet);
