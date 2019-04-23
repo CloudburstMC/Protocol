@@ -293,6 +293,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(MapCreateLockedCopyPacket packet) {
+        return false;
+    }
+
     default boolean handle(MobEffectPacket packet) {
         return false;
     }
@@ -306,6 +310,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(NpcRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(OnScreenTextureAnimationPacket packet) {
         return false;
     }
 

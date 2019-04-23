@@ -15,13 +15,13 @@ public class LecternUpdateSerializer_v340 implements PacketSerializer<LecternUpd
     public void serialize(ByteBuf buffer, LecternUpdatePacket packet) {
         buffer.writeByte(packet.getPage());
         BedrockUtils.writeBlockPosition(buffer, packet.getBlockPosition());
-        buffer.writeBoolean(packet.isRemoveBook());
+        buffer.writeBoolean(packet.isDroppingBook());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, LecternUpdatePacket packet) {
         packet.setPage(buffer.readUnsignedByte());
         packet.setBlockPosition(BedrockUtils.readBlockPosition(buffer));
-        packet.setRemoveBook(buffer.readBoolean());
+        packet.setDroppingBook(buffer.readBoolean());
     }
 }

@@ -10,8 +10,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class LecternUpdatePacket extends BedrockPacket {
     private int page;
+    private int totalPages;
     private Vector3i blockPosition;
-    private boolean removeBook;
+    private boolean droppingBook;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

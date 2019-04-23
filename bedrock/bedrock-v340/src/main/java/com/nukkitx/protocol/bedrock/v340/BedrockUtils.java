@@ -627,6 +627,13 @@ public final class BedrockUtils {
         }
     }
 
+    public static <T> void writeArray(ByteBuf buffer, T[] array, BiConsumer<ByteBuf, T> biConsumer) {
+        VarInts.writeUnsignedInt(buffer, array.length);
+        for (T val : array) {
+            biConsumer.accept(buffer, val);
+        }
+    }
+
     public static InventoryAction readInventoryAction(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 

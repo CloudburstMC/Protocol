@@ -20,6 +20,7 @@ public class ClientboundMapItemDataPacket extends BedrockPacket {
     private final List<MapDecoration> decorations = new ArrayList<>();
     private long uniqueMapId;
     private int dimensionId;
+    private boolean locked;
     private int scale;
     private int height;
     private int width;
