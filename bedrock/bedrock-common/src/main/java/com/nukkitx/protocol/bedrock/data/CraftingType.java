@@ -8,5 +8,14 @@ public enum CraftingType {
     MULTI,
     SHULKER_BOX,
     SHAPELESS_CHEMISTRY,
-    SHAPED_CHEMISTRY
+    SHAPED_CHEMISTRY;
+
+    private static final CraftingType[] VALUES = values();
+
+    public static CraftingType byId(int id) {
+        if (id >= 0 && id < VALUES.length) {
+            return VALUES[id];
+        }
+        return null;
+    }
 }

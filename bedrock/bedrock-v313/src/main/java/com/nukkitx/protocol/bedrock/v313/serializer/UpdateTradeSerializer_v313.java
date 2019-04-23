@@ -25,9 +25,9 @@ public class UpdateTradeSerializer_v313 implements PacketSerializer<UpdateTradeP
     public void serialize(ByteBuf buffer, UpdateTradePacket packet) {
         buffer.writeByte(packet.getWindowId());
         buffer.writeByte(packet.getWindowType());
-        VarInts.writeInt(buffer, packet.getUnknown0());
-        VarInts.writeInt(buffer, packet.getUnknown1());
-        VarInts.writeInt(buffer, packet.getUnknown2());
+        VarInts.writeInt(buffer, packet.getUnknownInt());
+        VarInts.writeInt(buffer, packet.isScreen2() ? 40 : 0);
+        VarInts.writeInt(buffer, packet.getTradeTier());
         buffer.writeBoolean(packet.isWilling());
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
@@ -43,9 +43,9 @@ public class UpdateTradeSerializer_v313 implements PacketSerializer<UpdateTradeP
     public void deserialize(ByteBuf buffer, UpdateTradePacket packet) {
         packet.setWindowId(buffer.readUnsignedByte());
         packet.setWindowType(buffer.readUnsignedByte());
-        packet.setUnknown0(VarInts.readInt(buffer));
-        packet.setUnknown1(VarInts.readInt(buffer));
-        packet.setUnknown2(VarInts.readInt(buffer));
+        packet.setUnknownInt(VarInts.readInt(buffer));
+        packet.setScreen2(VarInts.readInt(buffer) >= 40);
+        packet.setTradeTier(VarInts.readInt(buffer));
         packet.setWilling(buffer.readBoolean());
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
