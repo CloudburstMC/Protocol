@@ -28,14 +28,14 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.nukkitx.protocol.bedrock.data.Metadata.*;
+import static com.nukkitx.protocol.bedrock.data.EntityData.*;
 
 @UtilityClass
 public final class BedrockUtils {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockUtils.class);
-    private static final TIntHashBiMap<Metadata> METADATAS = new TIntHashBiMap<>();
-    private static final TIntHashBiMap<Metadata.Flag> METADATA_FLAGS = new TIntHashBiMap<>();
-    private static final TIntHashBiMap<Metadata.Type> METADATA_TYPES = new TIntHashBiMap<>(9);
+    private static final TIntHashBiMap<EntityData> METADATAS = new TIntHashBiMap<>();
+    private static final TIntHashBiMap<EntityFlag> METADATA_FLAGS = new TIntHashBiMap<>();
+    private static final TIntHashBiMap<EntityData.Type> METADATA_TYPES = new TIntHashBiMap<>(9);
 
     static {
         METADATAS.put(0, FLAGS);
@@ -114,65 +114,65 @@ public final class BedrockUtils {
         METADATAS.put(85, PUFFERFISH_SIZE);
         METADATAS.put(87, AGENT_ID);
 
-        METADATA_FLAGS.put(0, Flag.ON_FIRE);
-        METADATA_FLAGS.put(1, Flag.SNEAKING);
-        METADATA_FLAGS.put(2, Flag.RIDING);
-        METADATA_FLAGS.put(3, Flag.SPRINTING);
-        METADATA_FLAGS.put(4, Flag.USING_ITEM);
-        METADATA_FLAGS.put(5, Flag.INVISIBLE);
-        METADATA_FLAGS.put(6, Flag.TEMPTED);
-        METADATA_FLAGS.put(7, Flag.IN_LOVE);
-        METADATA_FLAGS.put(8, Flag.SADDLED);
-        METADATA_FLAGS.put(9, Flag.POWERED);
-        METADATA_FLAGS.put(10, Flag.IGNITED);
-        METADATA_FLAGS.put(11, Flag.BABY);
-        METADATA_FLAGS.put(12, Flag.CONVERTING);
-        METADATA_FLAGS.put(13, Flag.CRITICAL);
-        METADATA_FLAGS.put(14, Flag.CAN_SHOW_NAME);
-        METADATA_FLAGS.put(15, Flag.ALWAYS_SHOW_NAME);
-        METADATA_FLAGS.put(16, Flag.NO_AI);
-        METADATA_FLAGS.put(17, Flag.SILENT);
-        METADATA_FLAGS.put(18, Flag.WALL_CLIMBING);
-        METADATA_FLAGS.put(19, Flag.CAN_CLIMB);
-        METADATA_FLAGS.put(20, Flag.CAN_SWIM);
-        METADATA_FLAGS.put(21, Flag.CAN_FLY);
-        METADATA_FLAGS.put(22, Flag.CAN_WALK);
-        METADATA_FLAGS.put(23, Flag.RESTING);
-        METADATA_FLAGS.put(24, Flag.SITTING);
-        METADATA_FLAGS.put(25, Flag.ANGRY);
-        METADATA_FLAGS.put(26, Flag.INTERESTED);
-        METADATA_FLAGS.put(27, Flag.CHARGED);
-        METADATA_FLAGS.put(28, Flag.TAMED);
-        METADATA_FLAGS.put(29, Flag.ORPHANED);
-        METADATA_FLAGS.put(30, Flag.LEASHED);
-        METADATA_FLAGS.put(31, Flag.SHEARED);
-        METADATA_FLAGS.put(32, Flag.GLIDING);
-        METADATA_FLAGS.put(33, Flag.ELDER);
-        METADATA_FLAGS.put(34, Flag.MOVING);
-        METADATA_FLAGS.put(35, Flag.BREATHING);
-        METADATA_FLAGS.put(36, Flag.CHESTED);
-        METADATA_FLAGS.put(37, Flag.STACKABLE);
-        METADATA_FLAGS.put(38, Flag.SHOW_BOTTOM);
-        METADATA_FLAGS.put(39, Flag.STANDING);
-        METADATA_FLAGS.put(40, Flag.SHAKING);
-        METADATA_FLAGS.put(41, Flag.IDLING);
-        METADATA_FLAGS.put(42, Flag.CASTING);
-        METADATA_FLAGS.put(43, Flag.CHARGING);
-        METADATA_FLAGS.put(44, Flag.WASD_CONTROLLED);
-        METADATA_FLAGS.put(45, Flag.CAN_POWER_JUMP);
-        METADATA_FLAGS.put(46, Flag.LINGERING);
-        METADATA_FLAGS.put(47, Flag.HAS_COLLISION);
-        METADATA_FLAGS.put(48, Flag.HAS_GRAVITY);
-        METADATA_FLAGS.put(49, Flag.FIRE_IMMUNE);
-        METADATA_FLAGS.put(50, Flag.DANCING);
-        METADATA_FLAGS.put(51, Flag.ENCHANTED);
-        METADATA_FLAGS.put(52, Flag.RETURN_TRIDENT);
-        METADATA_FLAGS.put(53, Flag.CONTAINER_IS_PRIVATE);
-        METADATA_FLAGS.put(55, Flag.DAMAGE_NEARBY_MOBS);
-        METADATA_FLAGS.put(56, Flag.SWIMMING);
-        METADATA_FLAGS.put(57, Flag.BRIBED);
-        METADATA_FLAGS.put(58, Flag.IS_PREGNANT);
-        METADATA_FLAGS.put(59, Flag.LAYING_EGG);
+        METADATA_FLAGS.put(0, EntityFlag.ON_FIRE);
+        METADATA_FLAGS.put(1, EntityFlag.SNEAKING);
+        METADATA_FLAGS.put(2, EntityFlag.RIDING);
+        METADATA_FLAGS.put(3, EntityFlag.SPRINTING);
+        METADATA_FLAGS.put(4, EntityFlag.USING_ITEM);
+        METADATA_FLAGS.put(5, EntityFlag.INVISIBLE);
+        METADATA_FLAGS.put(6, EntityFlag.TEMPTED);
+        METADATA_FLAGS.put(7, EntityFlag.IN_LOVE);
+        METADATA_FLAGS.put(8, EntityFlag.SADDLED);
+        METADATA_FLAGS.put(9, EntityFlag.POWERED);
+        METADATA_FLAGS.put(10, EntityFlag.IGNITED);
+        METADATA_FLAGS.put(11, EntityFlag.BABY);
+        METADATA_FLAGS.put(12, EntityFlag.CONVERTING);
+        METADATA_FLAGS.put(13, EntityFlag.CRITICAL);
+        METADATA_FLAGS.put(14, EntityFlag.CAN_SHOW_NAME);
+        METADATA_FLAGS.put(15, EntityFlag.ALWAYS_SHOW_NAME);
+        METADATA_FLAGS.put(16, EntityFlag.NO_AI);
+        METADATA_FLAGS.put(17, EntityFlag.SILENT);
+        METADATA_FLAGS.put(18, EntityFlag.WALL_CLIMBING);
+        METADATA_FLAGS.put(19, EntityFlag.CAN_CLIMB);
+        METADATA_FLAGS.put(20, EntityFlag.CAN_SWIM);
+        METADATA_FLAGS.put(21, EntityFlag.CAN_FLY);
+        METADATA_FLAGS.put(22, EntityFlag.CAN_WALK);
+        METADATA_FLAGS.put(23, EntityFlag.RESTING);
+        METADATA_FLAGS.put(24, EntityFlag.SITTING);
+        METADATA_FLAGS.put(25, EntityFlag.ANGRY);
+        METADATA_FLAGS.put(26, EntityFlag.INTERESTED);
+        METADATA_FLAGS.put(27, EntityFlag.CHARGED);
+        METADATA_FLAGS.put(28, EntityFlag.TAMED);
+        METADATA_FLAGS.put(29, EntityFlag.ORPHANED);
+        METADATA_FLAGS.put(30, EntityFlag.LEASHED);
+        METADATA_FLAGS.put(31, EntityFlag.SHEARED);
+        METADATA_FLAGS.put(32, EntityFlag.GLIDING);
+        METADATA_FLAGS.put(33, EntityFlag.ELDER);
+        METADATA_FLAGS.put(34, EntityFlag.MOVING);
+        METADATA_FLAGS.put(35, EntityFlag.BREATHING);
+        METADATA_FLAGS.put(36, EntityFlag.CHESTED);
+        METADATA_FLAGS.put(37, EntityFlag.STACKABLE);
+        METADATA_FLAGS.put(38, EntityFlag.SHOW_BOTTOM);
+        METADATA_FLAGS.put(39, EntityFlag.STANDING);
+        METADATA_FLAGS.put(40, EntityFlag.SHAKING);
+        METADATA_FLAGS.put(41, EntityFlag.IDLING);
+        METADATA_FLAGS.put(42, EntityFlag.CASTING);
+        METADATA_FLAGS.put(43, EntityFlag.CHARGING);
+        METADATA_FLAGS.put(44, EntityFlag.WASD_CONTROLLED);
+        METADATA_FLAGS.put(45, EntityFlag.CAN_POWER_JUMP);
+        METADATA_FLAGS.put(46, EntityFlag.LINGERING);
+        METADATA_FLAGS.put(47, EntityFlag.HAS_COLLISION);
+        METADATA_FLAGS.put(48, EntityFlag.HAS_GRAVITY);
+        METADATA_FLAGS.put(49, EntityFlag.FIRE_IMMUNE);
+        METADATA_FLAGS.put(50, EntityFlag.DANCING);
+        METADATA_FLAGS.put(51, EntityFlag.ENCHANTED);
+        METADATA_FLAGS.put(52, EntityFlag.RETURN_TRIDENT);
+        METADATA_FLAGS.put(53, EntityFlag.CONTAINER_IS_PRIVATE);
+        METADATA_FLAGS.put(55, EntityFlag.DAMAGE_NEARBY_MOBS);
+        METADATA_FLAGS.put(56, EntityFlag.SWIMMING);
+        METADATA_FLAGS.put(57, EntityFlag.BRIBED);
+        METADATA_FLAGS.put(58, EntityFlag.IS_PREGNANT);
+        METADATA_FLAGS.put(59, EntityFlag.LAYING_EGG);
 
         METADATA_TYPES.put(7, Type.FLAGS);
         METADATA_TYPES.put(0, Type.BYTE);
@@ -724,8 +724,8 @@ public final class BedrockUtils {
 
         for (int i = 0; i < length; i++) {
             int metadataInt = VarInts.readUnsignedInt(buffer);
-            Metadata metadata = METADATAS.get(metadataInt);
-            Metadata.Type type = METADATA_TYPES.get(VarInts.readUnsignedInt(buffer));
+            EntityData entityData = METADATAS.get(metadataInt);
+            EntityData.Type type = METADATA_TYPES.get(VarInts.readUnsignedInt(buffer));
 
             Object object;
             switch (type) {
@@ -752,11 +752,11 @@ public final class BedrockUtils {
                     break;
                 case LONG:
                     object = VarInts.readLong(buffer);
-                    if (metadata == FLAGS) {
-                        MetadataFlags flags = metadataDictionary.getFlags();
-                        object = MetadataFlags.create((long) object, 0, METADATA_FLAGS);
+                    if (entityData == FLAGS) {
+                        EntityFlags flags = metadataDictionary.getFlags();
+                        object = EntityFlags.create((long) object, 0, METADATA_FLAGS);
                         if (flags != null) {
-                            flags.merge((MetadataFlags) object);
+                            flags.merge((EntityFlags) object);
                             object = flags;
                         }
                     }
@@ -767,8 +767,8 @@ public final class BedrockUtils {
                 default:
                     throw new IllegalArgumentException("Unknown metadata type received");
             }
-            if (metadata != null) {
-                metadataDictionary.put(metadata, object);
+            if (entityData != null) {
+                metadataDictionary.put(entityData, object);
             } else {
                 log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
             }
@@ -781,11 +781,11 @@ public final class BedrockUtils {
 
         VarInts.writeUnsignedInt(buffer, metadataDictionary.size());
 
-        for (Map.Entry<Metadata, Object> entry : metadataDictionary.entrySet()) {
+        for (Map.Entry<EntityData, Object> entry : metadataDictionary.entrySet()) {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, METADATAS.get(entry.getKey()));
             Object object = entry.getValue();
-            Metadata.Type type = MetadataDictionary.getType(object);
+            EntityData.Type type = MetadataDictionary.getType(object);
             VarInts.writeUnsignedInt(buffer, METADATA_TYPES.get(type));
 
             switch (type) {
@@ -811,7 +811,7 @@ public final class BedrockUtils {
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);
                     break;
                 case FLAGS:
-                    object = ((MetadataFlags) object).get(0, METADATA_FLAGS);
+                    object = ((EntityFlags) object).get(0, METADATA_FLAGS);
                 case LONG:
                     VarInts.writeLong(buffer, (long) object);
                     break;

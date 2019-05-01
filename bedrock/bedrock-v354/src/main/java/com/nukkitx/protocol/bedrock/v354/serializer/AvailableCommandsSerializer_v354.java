@@ -11,6 +11,8 @@ import com.nukkitx.protocol.bedrock.v354.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +24,7 @@ import static com.nukkitx.protocol.bedrock.data.CommandParamData.Type.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AvailableCommandsSerializer_v354 implements PacketSerializer<AvailableCommandsPacket> {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(AvailableCommandsSerializer_v354.class);
     public static final AvailableCommandsSerializer_v354 INSTANCE = new AvailableCommandsSerializer_v354();
     private static final ObjIntConsumer<ByteBuf> WRITE_BYTE = ByteBuf::writeByte;
     private static final ObjIntConsumer<ByteBuf> WRITE_SHORT = ByteBuf::writeShortLE;
@@ -39,14 +42,14 @@ public class AvailableCommandsSerializer_v354 implements PacketSerializer<Availa
         PARAM_TYPES.put(5, OPERATOR);
         PARAM_TYPES.put(6, TARGET);
         PARAM_TYPES.put(7, WILDCARD_TARGET);
-        PARAM_TYPES.put(15, FILE_PATH);
-        PARAM_TYPES.put(19, INT_RANGE);
-        PARAM_TYPES.put(28, STRING);
-        PARAM_TYPES.put(30, POSITION);
-        PARAM_TYPES.put(33, MESSAGE);
-        PARAM_TYPES.put(35, TEXT);
-        PARAM_TYPES.put(38, JSON);
-        PARAM_TYPES.put(45, COMMAND);
+        PARAM_TYPES.put(14, FILE_PATH);
+        PARAM_TYPES.put(18, INT_RANGE);
+        PARAM_TYPES.put(27, STRING);
+        PARAM_TYPES.put(29, POSITION);
+        PARAM_TYPES.put(32, MESSAGE);
+        PARAM_TYPES.put(34, TEXT);
+        PARAM_TYPES.put(37, JSON);
+        PARAM_TYPES.put(44, COMMAND);
     }
 
     @Override
@@ -137,7 +140,7 @@ public class AvailableCommandsSerializer_v354 implements PacketSerializer<Availa
                 for (CommandParamData param : overload) {
                     BedrockUtils.writeString(buf, param.getName());
 
-                    int index = 0;
+                    int index;
                     boolean postfix = false;
                     boolean enumData = false;
                     boolean softEnum = false;
@@ -276,6 +279,9 @@ public class AvailableCommandsSerializer_v354 implements PacketSerializer<Availa
                             enumData = softEnums.get(type.getValue());
                         } else {
                             paramType = PARAM_TYPES.get(type.getValue());
+                            if (paramType == null) {
+                                log.debug("Unknown parameter type {} from {} in {}", type.getValue(), name, command.getName());
+                            }
                         }
                     }
                     overloads[i][i2] = new CommandParamData(name, optional, enumData, paramType, postfix, options);

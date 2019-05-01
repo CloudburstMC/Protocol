@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.wrapper;
+package com.nukkitx.protocol.bedrock.compressionhandler;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
@@ -6,23 +6,25 @@ import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.util.Zlib;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
-import lombok.Cleanup;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
-public class DefaultWrapperHandler implements WrapperHandler {
-    public static final DefaultWrapperHandler DEFAULT = new DefaultWrapperHandler();
+public class DefaultBedrockCompressionHandler implements BedrockCompressionHandler {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(DefaultBedrockCompressionHandler.class);
+    public static final DefaultBedrockCompressionHandler DEFAULT = new DefaultBedrockCompressionHandler();
 
     private final Zlib zlib;
 
-    private DefaultWrapperHandler() {
+    private DefaultBedrockCompressionHandler() {
         zlib = Zlib.DEFAULT;
     }
 
-    public DefaultWrapperHandler(int compression) {
+    public DefaultBedrockCompressionHandler(int compression) {
         zlib = new Zlib(compression);
     }
 
@@ -31,9 +33,16 @@ public class DefaultWrapperHandler implements WrapperHandler {
         ByteBuf source = PooledByteBufAllocator.DEFAULT.directBuffer();
         try {
             for (BedrockPacket packet : packets) {
-                @Cleanup("release") ByteBuf packetBuf = packetCodec.tryEncode(packet);
-                VarInts.writeUnsignedInt(source, packetBuf.readableBytes());
-                source.writeBytes(packetBuf);
+                ByteBuf packetBuf = null;
+                try {
+                    packetBuf = packetCodec.tryEncode(packet);
+                    VarInts.writeUnsignedInt(source, packetBuf.readableBytes());
+                    source.writeBytes(packetBuf);
+                } finally {
+                    if (packetBuf != null) {
+                        packetBuf.release();
+                    }
+                }
             }
             return zlib.deflate(source);
         } catch (DataFormatException e) {
