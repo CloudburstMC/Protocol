@@ -84,6 +84,7 @@ public class BedrockServer extends Bedrock {
             if (BedrockServer.this.handler != null) {
                 BedrockPong pong = BedrockServer.this.handler.onQuery(address);
                 if (pong != null) {
+                    pong.setServerId(BedrockServer.this.rakNetServer.getGuid());
                     return pong.toRakNet();
                 }
             }
