@@ -98,6 +98,9 @@ server.setHandler(new BedrockServerEventHandler() {
         // After receiving the LoginPacket, you need to set the correct packet codec for the client and continue. 
     }
 });
+
+// Start server up
+server.bind().join();
 ```
 
 ### Maven
