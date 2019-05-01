@@ -12,7 +12,7 @@ public class PacketHeaderSerializerCompat implements PacketSerializer<PacketHead
 
     @Override
     public void serialize(ByteBuf buffer, PacketHeader header) {
-        buffer.writeByte(header.getClientId());
+        buffer.writeByte(header.getPacketId());
     }
 
     @Override

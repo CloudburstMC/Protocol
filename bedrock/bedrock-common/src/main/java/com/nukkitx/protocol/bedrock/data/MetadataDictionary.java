@@ -8,14 +8,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-public class MetadataDictionary extends EnumMap<Metadata, Object> {
+public class MetadataDictionary extends EnumMap<EntityData, Object> {
 
     public MetadataDictionary() {
-        super(Metadata.class);
+        super(EntityData.class);
     }
 
     private static boolean isAcceptable(Object o) {
-        return o instanceof MetadataFlags ||
+        return o instanceof EntityFlags ||
                 o instanceof Byte ||
                 o instanceof Short ||
                 o instanceof Integer ||
@@ -28,51 +28,51 @@ public class MetadataDictionary extends EnumMap<Metadata, Object> {
     }
 
     @Nonnull
-    public static Metadata.Type getType(Object o) {
-        if (o instanceof MetadataFlags) {
-            return Metadata.Type.FLAGS;
+    public static EntityData.Type getType(Object o) {
+        if (o instanceof EntityFlags) {
+            return EntityData.Type.FLAGS;
         } else if (o instanceof Byte) {
-            return Metadata.Type.BYTE;
+            return EntityData.Type.BYTE;
         } else if (o instanceof Short) {
-            return Metadata.Type.SHORT;
+            return EntityData.Type.SHORT;
         } else if (o instanceof Integer) {
-            return Metadata.Type.INT;
+            return EntityData.Type.INT;
         } else if (o instanceof Float) {
-            return Metadata.Type.FLOAT;
+            return EntityData.Type.FLOAT;
         } else if (o instanceof String) {
-            return Metadata.Type.STRING;
+            return EntityData.Type.STRING;
         } else if (o instanceof ItemData) {
-            return Metadata.Type.ITEM;
+            return EntityData.Type.ITEM;
         } else if (o instanceof Vector3i) {
-            return Metadata.Type.VECTOR3I;
+            return EntityData.Type.VECTOR3I;
         } else if (o instanceof Long) {
-            return Metadata.Type.LONG;
+            return EntityData.Type.LONG;
         } else if (o instanceof Vector3f) {
-            return Metadata.Type.VECTOR3F;
+            return EntityData.Type.VECTOR3F;
         }
         throw new IllegalArgumentException("Invalid type");
     }
 
     @Nullable
     @SuppressWarnings("unchecked")
-    public <T> T get(Metadata metadata) {
-        return (T) super.get(metadata);
+    public <T> T get(EntityData entityData) {
+        return (T) super.get(entityData);
     }
 
     @Override
-    public Object put(@Nonnull Metadata metadata, @Nonnull Object o) {
-        Preconditions.checkNotNull(metadata, "dictionary");
+    public Object put(@Nonnull EntityData entityData, @Nonnull Object o) {
+        Preconditions.checkNotNull(entityData, "dictionary");
         Preconditions.checkNotNull(o, "o");
         Preconditions.checkArgument(isAcceptable(o), "%s is an unacceptable metadata type", o.getClass().getSimpleName());
 
-        return super.put(metadata, o);
+        return super.put(entityData, o);
     }
 
-    public MetadataFlags getFlags() {
-        return get(Metadata.FLAGS);
+    public EntityFlags getFlags() {
+        return get(EntityData.FLAGS);
     }
 
-    public void putFlags(@Nonnull MetadataFlags flags) {
-        put(Metadata.FLAGS, flags);
+    public void putFlags(@Nonnull EntityFlags flags) {
+        put(EntityData.FLAGS, flags);
     }
 }
