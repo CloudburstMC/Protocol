@@ -107,6 +107,16 @@ server.bind().join();
 
 ### Maven
 
+##### Protocol Versions:
+
+| Dependency | Minecraft Version |
+|:-:|:-:|
+| bedrock-v291 | 1.7.0 |
+| bedrock-v313 | 1.8.0 |
+| bedrock-v332 | 1.9.0 |
+| bedrock-v340 | 1.10.0 |
+| bedrock-v354 | 1.11.0 |
+
 ##### Repository:
 
 ```xml
