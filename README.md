@@ -16,6 +16,8 @@ __[JavaDocs](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/javadoc/
 
 ##### Creating a client
 ```java
+// This is the local address to bind to, not the remote one.
+// If bound to 127.0.0.1 any incoming packets from outside your computer will not be received.
 InetSocketAddress bindAddress = new InetSocketAddress("0.0.0.0", 12345);
 BedrockClient client = new BedrockClient(bindAddress);
 
@@ -111,7 +113,7 @@ server.bind().join();
     <repositories>
         <repository>
             <id>nukkitx-repo</id>
-            <url>https://repo.nukkitx.com/maven-snapshots/</url>
+            <url>https://repo.nukkitx.com/snapshots/</url>
         </repository>
     </repositories>
 ```
@@ -123,7 +125,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>2.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

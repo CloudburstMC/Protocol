@@ -13,16 +13,20 @@ import java.util.UUID;
 public class ResourcePackChunkRequestSerializer_v340 implements PacketSerializer<ResourcePackChunkRequestPacket> {
     public static final ResourcePackChunkRequestSerializer_v340 INSTANCE = new ResourcePackChunkRequestSerializer_v340();
 
-
     @Override
     public void serialize(ByteBuf buffer, ResourcePackChunkRequestPacket packet) {
-        BedrockUtils.writeString(buffer, packet.getPackId().toString());
+        String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
+        BedrockUtils.writeString(buffer, packInfo);
         buffer.writeIntLE(packet.getChunkIndex());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, ResourcePackChunkRequestPacket packet) {
-        packet.setPackId(UUID.fromString(BedrockUtils.readString(buffer)));
+        String[] packInfo = BedrockUtils.readString(buffer).split("_");
+        packet.setPackId(UUID.fromString(packInfo[0]));
+        if (packInfo.length > 1) {
+            packet.setPackVersion(packInfo[1]);
+        }
         packet.setChunkIndex(buffer.readIntLE());
     }
 }

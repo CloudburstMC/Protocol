@@ -14,9 +14,10 @@ import java.util.UUID;
 public class ResourcePackDataInfoSerializer_v340 implements PacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v340 INSTANCE = new ResourcePackDataInfoSerializer_v340();
 
-
     @Override
     public void serialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
+        String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
+        BedrockUtils.writeString(buffer, packInfo);
         BedrockUtils.writeString(buffer, packet.getPackId().toString());
         buffer.writeIntLE(packet.getMaxChunkSize());
         buffer.writeIntLE(packet.getChunkCount());
@@ -28,7 +29,11 @@ public class ResourcePackDataInfoSerializer_v340 implements PacketSerializer<Res
 
     @Override
     public void deserialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
-        packet.setPackId(UUID.fromString(BedrockUtils.readString(buffer)));
+        String[] packInfo = BedrockUtils.readString(buffer).split("_");
+        packet.setPackId(UUID.fromString(packInfo[0]));
+        if (packInfo.length > 1) {
+            packet.setPackVersion(packInfo[1]);
+        }
         packet.setMaxChunkSize(buffer.readIntLE());
         packet.setChunkCount(buffer.readIntLE());
         packet.setCompressedPackSize(buffer.readLongLE());

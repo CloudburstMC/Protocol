@@ -2,8 +2,8 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.flowpowered.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.EntityDataDictionary;
 import com.nukkitx.protocol.bedrock.data.ItemData;
-import com.nukkitx.protocol.bedrock.data.MetadataDictionary;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddItemEntityPacket extends BedrockPacket {
-    private final MetadataDictionary metadata = new MetadataDictionary();
+    private final EntityDataDictionary metadata = new EntityDataDictionary();
     private long uniqueEntityId;
     private long runtimeEntityId;
     private ItemData itemInHand;

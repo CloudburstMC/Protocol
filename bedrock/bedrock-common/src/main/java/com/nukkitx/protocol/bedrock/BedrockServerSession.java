@@ -1,24 +1,15 @@
 package com.nukkitx.protocol.bedrock;
 
 import com.nukkitx.network.raknet.RakNetSession;
-import com.nukkitx.network.raknet.RakNetState;
-import com.nukkitx.network.util.DisconnectReason;
+import com.nukkitx.protocol.MinecraftServerSession;
 import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-public class BedrockServerSession extends BedrockSession {
-    private final BedrockServer server;
+public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
 
-    BedrockServerSession(RakNetSession connection, BedrockServer server) {
+    public BedrockServerSession(RakNetSession connection) {
         super(connection);
-        this.server = server;
-    }
-
-    @Override
-    protected void setupConnection() {
-        this.connection.setListener(new ServerSessionListener());
     }
 
     @Override
@@ -40,30 +31,5 @@ public class BedrockServerSession extends BedrockSession {
         }
         packet.setKickMessage(reason);
         this.sendPacketImmediately(packet);
-    }
-
-    public BedrockServer getServer() {
-        return server;
-    }
-
-    @ParametersAreNonnullByDefault
-    private class ServerSessionListener extends BedrockSessionListener {
-
-        @Override
-        public void onSessionChangeState(RakNetState state) {
-            if (state == RakNetState.CONNECTED) {
-                BedrockServerSession.this.server.sessions.add(BedrockServerSession.this);
-                BedrockServerEventHandler handler = BedrockServerSession.this.server.getHandler();
-                if (handler != null) {
-                    handler.onSessionCreation(BedrockServerSession.this);
-                }
-            }
-        }
-
-        @Override
-        public void onDisconnect(DisconnectReason reason) {
-            BedrockServerSession.this.close(reason);
-            BedrockServerSession.this.server.sessions.remove(BedrockServerSession.this);
-        }
     }
 }

@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.MetadataDictionary;
+import com.nukkitx.protocol.bedrock.data.EntityDataDictionary;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SetEntityDataPacket extends BedrockPacket {
-    private final MetadataDictionary metadata = new MetadataDictionary();
+    private final EntityDataDictionary metadata = new EntityDataDictionary();
     private long runtimeEntityId;
 
     @Override

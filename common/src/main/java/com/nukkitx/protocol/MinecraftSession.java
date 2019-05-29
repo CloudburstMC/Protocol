@@ -1,16 +1,20 @@
 package com.nukkitx.protocol;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.net.InetSocketAddress;
 
-public interface MinecraftSession<PLAYER extends PlayerSession> {
+@ParametersAreNonnullByDefault
+public interface MinecraftSession<T extends MinecraftPacket> {
 
     boolean isClosed();
 
-    default void disconnect() {
-        disconnect(null);
-    }
+    void disconnect();
 
-    void disconnect(@Nullable String reason);
+    InetSocketAddress getAddress();
 
-    PLAYER getPlayer();
+    void sendPacket(T packet);
+
+    void sendPacketImmediately(T packet);
+
+    long getLatency();
 }

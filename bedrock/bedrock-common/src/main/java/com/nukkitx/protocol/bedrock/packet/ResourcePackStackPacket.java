@@ -8,7 +8,6 @@ import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -25,7 +24,7 @@ public class ResourcePackStackPacket extends BedrockPacket {
 
     @Value
     public static class Entry {
-        private final UUID packId;
+        private final String packId;
         private final String packVersion;
         private final String subpackName;
     }

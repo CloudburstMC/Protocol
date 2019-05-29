@@ -557,7 +557,7 @@ public final class BedrockUtils {
         List<ResourcePacksInfoPacket.Entry> entries = new ArrayList<>();
         int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
-            UUID packId = UUID.fromString(readString(buffer));
+            String packId = readString(buffer);
             String packVersion = readString(buffer);
             long packSize = buffer.readLongLE();
             String encryptionKey = readString(buffer);
@@ -575,7 +575,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(packInfoEntries, "packInfoEntries");
         buffer.writeShortLE(packInfoEntries.size());
         for (ResourcePacksInfoPacket.Entry packInfoEntry : packInfoEntries) {
-            writeString(buffer, packInfoEntry.getPackId().toString());
+            writeString(buffer, packInfoEntry.getPackId());
             writeString(buffer, packInfoEntry.getPackVersion());
             buffer.writeLongLE(packInfoEntry.getPackSize());
             writeString(buffer, packInfoEntry.getEncryptionKey());
@@ -588,7 +588,7 @@ public final class BedrockUtils {
     public static ResourcePackStackPacket.Entry readPackInstanceEntry(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
-        UUID packId = UUID.fromString(readString(buffer));
+        String packId = readString(buffer);
         String packVersion = readString(buffer);
         String subpackName = readString(buffer);
         return new ResourcePackStackPacket.Entry(packId, packVersion, subpackName);
@@ -598,7 +598,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(packInstanceEntry, "packInstanceEntry");
 
-        writeString(buffer, packInstanceEntry.getPackId().toString());
+        writeString(buffer, packInstanceEntry.getPackId());
         writeString(buffer, packInstanceEntry.getPackVersion());
         writeString(buffer, packInstanceEntry.getSubpackName());
     }
@@ -734,9 +734,9 @@ public final class BedrockUtils {
         }
     }
 
-    public static void readMetadata(ByteBuf buffer, MetadataDictionary metadataDictionary) {
+    public static void readMetadata(ByteBuf buffer, EntityDataDictionary entityDataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
+        Preconditions.checkNotNull(entityDataDictionary, "entityDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
 
@@ -771,7 +771,7 @@ public final class BedrockUtils {
                 case LONG:
                     object = VarInts.readLong(buffer);
                     if (entityData == FLAGS) {
-                        EntityFlags flags = metadataDictionary.getFlags();
+                        EntityFlags flags = entityDataDictionary.getFlags();
                         object = EntityFlags.create((long) object, 0, METADATA_FLAGS);
                         if (flags != null) {
                             flags.merge((EntityFlags) object);
@@ -786,24 +786,24 @@ public final class BedrockUtils {
                     throw new IllegalArgumentException("Unknown metadata type received");
             }
             if (entityData != null) {
-                metadataDictionary.put(entityData, object);
+                entityDataDictionary.put(entityData, object);
             } else {
                 log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
             }
         }
     }
 
-    public static void writeMetadata(ByteBuf buffer, MetadataDictionary metadataDictionary) {
+    public static void writeMetadata(ByteBuf buffer, EntityDataDictionary entityDataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
+        Preconditions.checkNotNull(entityDataDictionary, "entityDataDictionary");
 
-        VarInts.writeUnsignedInt(buffer, metadataDictionary.size());
+        VarInts.writeUnsignedInt(buffer, entityDataDictionary.size());
 
-        for (Map.Entry<EntityData, Object> entry : metadataDictionary.entrySet()) {
+        for (Map.Entry<EntityData, Object> entry : entityDataDictionary.entrySet()) {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, METADATAS.get(entry.getKey()));
             Object object = entry.getValue();
-            EntityData.Type type = MetadataDictionary.getType(object);
+            EntityData.Type type = EntityDataDictionary.getType(object);
             VarInts.writeUnsignedInt(buffer, METADATA_TYPES.get(type));
 
             switch (type) {

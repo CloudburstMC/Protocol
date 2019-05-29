@@ -2,9 +2,9 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.flowpowered.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.EntityDataDictionary;
 import com.nukkitx.protocol.bedrock.data.EntityLink;
 import com.nukkitx.protocol.bedrock.data.ItemData;
-import com.nukkitx.protocol.bedrock.data.MetadataDictionary;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddPlayerPacket extends BedrockPacket {
-    private final MetadataDictionary metadata = new MetadataDictionary();
+    private final EntityDataDictionary metadata = new EntityDataDictionary();
     private final List<EntityLink> entityLinks = new ArrayList<>();
     private UUID uuid;
     private String username;

@@ -1,20 +1,20 @@
 package com.nukkitx.protocol.bedrock;
 
 import com.nukkitx.network.raknet.RakNet;
+import com.nukkitx.protocol.MinecraftInterface;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.EventLoopGroup;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public abstract class Bedrock {
-    final Executor executor;
+public abstract class Bedrock implements MinecraftInterface {
+    final EventLoopGroup eventLoopGroup;
 
-    Bedrock(ScheduledExecutorService scheduler, Executor executor) {
-        this.executor = executor;
-        scheduler.scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
+    Bedrock(EventLoopGroup eventLoopGroup) {
+        this.eventLoopGroup = eventLoopGroup;
+        eventLoopGroup.scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
     }
 
     protected abstract void onTick();

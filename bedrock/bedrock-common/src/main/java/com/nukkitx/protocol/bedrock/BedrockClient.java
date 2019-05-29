@@ -2,31 +2,31 @@ package com.nukkitx.protocol.bedrock;
 
 import com.nukkitx.network.raknet.RakNet;
 import com.nukkitx.network.raknet.RakNetClient;
+import com.nukkitx.network.raknet.RakNetClientSession;
+import com.nukkitx.network.util.EventLoops;
+import io.netty.channel.EventLoopGroup;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class BedrockClient extends Bedrock {
     private final RakNetClient rakNetClient;
     BedrockClientSession session;
 
     public BedrockClient(InetSocketAddress bindAddress) {
-        this(bindAddress, Executors.newSingleThreadScheduledExecutor());
+        this(bindAddress, EventLoops.commonGroup());
     }
 
-    public BedrockClient(InetSocketAddress bindAddress, ScheduledExecutorService scheduler) {
-        this(bindAddress, scheduler, scheduler);
-    }
-
-    public BedrockClient(InetSocketAddress bindAddress, ScheduledExecutorService scheduler, Executor executor) {
-        super(scheduler, executor);
-        this.rakNetClient = new RakNetClient(bindAddress, scheduler, executor);
+    public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup eventLoopGroup) {
+        super(eventLoopGroup);
+        this.rakNetClient = new RakNetClient(bindAddress, eventLoopGroup);
     }
 
     @Override
     protected void onTick() {
         if (this.session != null) {
-            this.executor.execute(session::onTick);
+            this.eventLoopGroup.execute(session::onTick);
         }
     }
 
@@ -45,7 +45,9 @@ public class BedrockClient extends Bedrock {
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
         CompletableFuture<BedrockClientSession> sessionFuture = new CompletableFuture<>();
-        this.session = new BedrockClientSession(this.rakNetClient.connect(address), this, sessionFuture);
+        RakNetClientSession connection = this.rakNetClient.connect(address);
+        this.session = new BedrockClientSession(connection);
+        connection.setListener(new BedrockRakNetSessionListener.Client(this.session, connection, this));
         return sessionFuture;
     }
 

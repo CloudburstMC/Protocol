@@ -4,6 +4,10 @@ import com.nukkitx.network.raknet.RakNet;
 import com.nukkitx.network.raknet.RakNetServer;
 import com.nukkitx.network.raknet.RakNetServerListener;
 import com.nukkitx.network.raknet.RakNetServerSession;
+import com.nukkitx.network.util.EventLoops;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.socket.DatagramPacket;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -11,9 +15,6 @@ import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class BedrockServer extends Bedrock {
     private final RakNetServer rakNetServer;
@@ -25,16 +26,12 @@ public class BedrockServer extends Bedrock {
     }
 
     public BedrockServer(InetSocketAddress bindAddress, int maxThreads) {
-        this(bindAddress, maxThreads, Executors.newSingleThreadScheduledExecutor());
+        this(bindAddress, maxThreads, EventLoops.commonGroup());
     }
 
-    public BedrockServer(InetSocketAddress bindAddress, int maxThreads, ScheduledExecutorService scheduler) {
-        this(bindAddress, maxThreads, scheduler, scheduler);
-    }
-
-    public BedrockServer(InetSocketAddress bindAddress, int maxThreads, ScheduledExecutorService scheduler, Executor executor) {
-        super(scheduler, executor);
-        this.rakNetServer = new RakNetServer(bindAddress, maxThreads, scheduler, executor);
+    public BedrockServer(InetSocketAddress bindAddress, int maxThreads, EventLoopGroup eventLoopGroup) {
+        super(eventLoopGroup);
+        this.rakNetServer = new RakNetServer(bindAddress, maxThreads, eventLoopGroup);
         this.rakNetServer.setListener(new BedrockServerListener());
     }
 
@@ -63,10 +60,14 @@ public class BedrockServer extends Bedrock {
         this.rakNetServer.close();
     }
 
+    public boolean isClosed() {
+        return this.rakNetServer.isClosed();
+    }
+
     @Override
     protected void onTick() {
         for (BedrockServerSession session : sessions) {
-            this.executor.execute(session::onTick);
+            this.eventLoopGroup.execute(session::onTick);
         }
     }
 
@@ -92,8 +93,14 @@ public class BedrockServer extends Bedrock {
         }
 
         @Override
-        public void onSessionCreation(RakNetServerSession rakNetSession) {
-            new BedrockServerSession(rakNetSession, BedrockServer.this);
+        public void onSessionCreation(RakNetServerSession connection) {
+            BedrockServerSession session = new BedrockServerSession(connection);
+            connection.setListener(new BedrockRakNetSessionListener.Server(session, connection, BedrockServer.this));
+        }
+
+        @Override
+        public void onUnhandledDatagram(ChannelHandlerContext ctx, DatagramPacket packet) {
+
         }
     }
 }

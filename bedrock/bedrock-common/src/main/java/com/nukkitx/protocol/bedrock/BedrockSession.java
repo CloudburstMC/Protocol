@@ -1,10 +1,8 @@
 package com.nukkitx.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNetReliability;
-import com.nukkitx.network.raknet.RakNetSession;
-import com.nukkitx.network.raknet.RakNetSessionListener;
-import com.nukkitx.network.raknet.RakNetState;
+import com.nukkitx.network.SessionConnection;
 import com.nukkitx.network.util.DisconnectReason;
+import com.nukkitx.protocol.MinecraftSession;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
 import com.nukkitx.protocol.bedrock.compressionhandler.BedrockCompressionHandler;
@@ -13,7 +11,6 @@ import com.nukkitx.protocol.bedrock.handler.BatchHandler;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
 import com.nukkitx.protocol.util.NativeCodeFactory;
-import com.voxelwind.server.jni.hash.VoxelwindHash;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
@@ -21,24 +18,25 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import net.md_5.bungee.jni.cipher.BungeeCipher;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import javax.crypto.SecretKey;
 import javax.security.auth.DestroyFailedException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.zip.Adler32;
 
-public abstract class BedrockSession {
-    static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
-    private static final ThreadLocal<VoxelwindHash> hashLocal = ThreadLocal.withInitial(NativeCodeFactory.hash::newInstance);
+public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
+    private static final ThreadLocal<Adler32> checksumLocal = ThreadLocal.withInitial(Adler32::new);
 
     private final Queue<BedrockPacket> queuedPackets = new ConcurrentLinkedQueue<>();
     private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
-    final RakNetSession connection;
+    final SessionConnection<ByteBuf> connection;
     private BedrockPacketCodec packetCodec = BedrockCompat.COMPAT_CODEC;
     private Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private BedrockPacketHandler packetHandler;
@@ -50,12 +48,9 @@ public abstract class BedrockSession {
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    BedrockSession(RakNetSession connection) {
+    BedrockSession(SessionConnection<ByteBuf> connection) {
         this.connection = connection;
-        this.setupConnection();
     }
-
-    protected abstract void setupConnection();
 
     public void setPacketHandler(@Nonnull BedrockPacketHandler packetHandler) {
         this.packetHandler = packetHandler;
@@ -75,7 +70,8 @@ public abstract class BedrockSession {
         }
     }
 
-    public void sendPacket(BedrockPacket packet) {
+    @Override
+    public void sendPacket(@Nonnull BedrockPacket packet) {
         this.checkForClosed();
         Objects.requireNonNull(packet, "packet");
         if (log.isTraceEnabled() && this.logging) {
@@ -89,7 +85,8 @@ public abstract class BedrockSession {
         this.queuedPackets.add(packet);
     }
 
-    public void sendPacketImmediately(BedrockPacket packet) {
+    @Override
+    public void sendPacketImmediately(@Nonnull BedrockPacket packet) {
         this.checkForClosed();
         Objects.requireNonNull(packet, "packet");
 
@@ -123,16 +120,16 @@ public abstract class BedrockSession {
             if (this.encryptionCipher != null && encrypt) {
                 ByteBuf withTrailer = PooledByteBufAllocator.DEFAULT.directBuffer();
                 compressed.readerIndex(startIndex);
-                byte[] trailer = generateTrailer(compressed);
+                long trailer = this.generateTrailer(compressed);
                 compressed.readerIndex(startIndex);
                 withTrailer.writeBytes(compressed);
-                withTrailer.writeBytes(trailer);
+                withTrailer.writeLong(trailer);
 
                 encryptionCipher.cipher(withTrailer, finalPayload);
             } else {
                 finalPayload.writeBytes(compressed);
             }
-            this.connection.send(finalPayload, RakNetReliability.RELIABLE_ORDERED);
+            this.connection.send(finalPayload);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt package", e);
         } finally {
@@ -183,7 +180,6 @@ public abstract class BedrockSession {
     public void enableEncryption(@Nonnull SecretKey secretKey) {
         this.checkForClosed();
         log.debug("Encryption enabled.");
-        //noinspection ResultOfMethodCallIgnored
         Objects.requireNonNull(secretKey, "secretKey");
         if (!secretKey.getAlgorithm().equals("AES")) {
             throw new IllegalArgumentException("Invalid key algorithm");
@@ -206,29 +202,16 @@ public abstract class BedrockSession {
 
     }
 
-    private byte[] generateTrailer(ByteBuf buf) {
-        VoxelwindHash hash = hashLocal.get();
-        ByteBuf counterBuf = null;
-        ByteBuf keyBuf = null;
-        try {
-            counterBuf = PooledByteBufAllocator.DEFAULT.directBuffer(8);
-            keyBuf = PooledByteBufAllocator.DEFAULT.directBuffer(agreedKey.getEncoded().length);
-            counterBuf.writeLongLE(this.sentEncryptedPacketCount.getAndIncrement());
-            keyBuf.writeBytes(this.agreedKey.getEncoded());
+    private long generateTrailer(ByteBuf buf) {
+        Adler32 checksum = checksumLocal.get();
+        checksum.reset();
 
-            hash.update(counterBuf);
-            hash.update(buf);
-            hash.update(keyBuf);
-            byte[] digested = hash.digest();
-            return Arrays.copyOf(digested, 8);
-        } finally {
-            if (counterBuf != null) {
-                counterBuf.release();
-            }
-            if (keyBuf != null) {
-                keyBuf.release();
-            }
-        }
+        ByteBuffer counterBuf = ByteBuffer.allocateDirect(8).putLong(this.sentEncryptedPacketCount.getAndIncrement());
+        checksum.update(counterBuf);
+        checksum.update(buf.internalNioBuffer(buf.readerIndex(), buf.readableBytes()));
+        checksum.update(agreedKey.getEncoded());
+
+        return checksum.getValue();
     }
 
     public boolean isEncrypted() {
@@ -261,7 +244,7 @@ public abstract class BedrockSession {
         }
     }
 
-    private void onWrappedPacket(final ByteBuf wrappedData) {
+    public void onWrappedPacket(final ByteBuf wrappedData) {
         ByteBuf unwrappedData = null;
         try {
             if (this.isEncrypted()) {
@@ -328,20 +311,31 @@ public abstract class BedrockSession {
         this.disconnectHandlers.add(disconnectHandler);
     }
 
-    @ParametersAreNonnullByDefault
-    abstract class BedrockSessionListener implements RakNetSessionListener {
-
-        @Override
-        public void onUserPacket(ByteBuf packet) {
-            if (BedrockSession.this.connection.getState() != RakNetState.CONNECTED) {
-                // We shouldn't be receiving packets till the connection is full established.
-                return;
-            }
-
-            int packetId = packet.readUnsignedByte();
-            if (packetId == 0xfe /* Wrapper packet */) {
-                BedrockSession.this.onWrappedPacket(packet);
-            }
-        }
+    @Override
+    public long getLatency() {
+        return this.connection.getPing();
     }
+
+//    @ParametersAreNonnullByDefault
+//    abstract class BedrockSessionListener implements RakNetSessionListener {
+//
+//        @Override
+//        public void onEncapsulated(EncapsulatedPacket packet) {
+//            if (BedrockSession.this.connection.getState() != RakNetState.CONNECTED) {
+//                // We shouldn't be receiving packets till the connection is full established.
+//                return;
+//            }
+//            ByteBuf buffer = packet.getBuffer();
+//
+//            int packetId = buffer.readUnsignedByte();
+//            if (packetId == 0xfe /* Wrapper packet */) {
+//                BedrockSession.this.onWrappedPacket(buffer);
+//            }
+//        }
+//
+//        @Override
+//        public void onDirect(ByteBuf buf) {
+//            // We shouldn't be receiving direct datagram messages from the client whilst they are connected.
+//        }
+//    }
 }

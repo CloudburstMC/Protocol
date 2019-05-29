@@ -8,9 +8,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-public class MetadataDictionary extends EnumMap<EntityData, Object> {
+public class EntityDataDictionary extends EnumMap<EntityData, Object> {
 
-    public MetadataDictionary() {
+    public EntityDataDictionary() {
         super(EntityData.class);
     }
 
@@ -57,6 +57,21 @@ public class MetadataDictionary extends EnumMap<EntityData, Object> {
     @SuppressWarnings("unchecked")
     public <T> T get(EntityData entityData) {
         return (T) super.get(entityData);
+    }
+
+    public boolean contains(EntityData entityData) {
+        return this.containsKey(entityData);
+    }
+
+    @Nullable
+    public EntityData.Type getType(EntityData entityData) {
+        Object object = this.get(entityData);
+        if (object == null) {
+            // Try default type
+            return entityData.getType();
+        } else {
+            return EntityDataDictionary.getType(object);
+        }
     }
 
     @Override

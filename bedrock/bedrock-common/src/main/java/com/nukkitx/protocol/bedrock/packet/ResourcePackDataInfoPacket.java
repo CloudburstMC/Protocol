@@ -11,6 +11,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class ResourcePackDataInfoPacket extends BedrockPacket {
     private UUID packId;
+    private String packVersion;
     private int maxChunkSize;
     private int chunkCount;
     private long compressedPackSize;
