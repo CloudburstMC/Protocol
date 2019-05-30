@@ -11,6 +11,7 @@ import com.nukkitx.protocol.bedrock.handler.BatchHandler;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
 import com.nukkitx.protocol.util.NativeCodeFactory;
+import com.voxelwind.server.jni.hash.VoxelwindHash;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
@@ -21,18 +22,16 @@ import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
 import javax.security.auth.DestroyFailedException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
-import java.util.zip.Adler32;
 
 public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
-    private static final ThreadLocal<Adler32> checksumLocal = ThreadLocal.withInitial(Adler32::new);
+    private static final ThreadLocal<VoxelwindHash> hashLocal = ThreadLocal.withInitial(NativeCodeFactory.hash::newInstance);
 
     private final Queue<BedrockPacket> queuedPackets = new ConcurrentLinkedQueue<>();
     private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
@@ -112,18 +111,18 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     public void sendWrapped(ByteBuf compressed, boolean encrypt) {
         Objects.requireNonNull(compressed, "compressed");
-        ByteBuf finalPayload = null;
+        ByteBuf withTrailer = null;
         try {
             int startIndex = compressed.readerIndex();
-            finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer();
+            ByteBuf finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 9);
             finalPayload.writeByte(0xfe); // Wrapped packet ID
             if (this.encryptionCipher != null && encrypt) {
-                ByteBuf withTrailer = PooledByteBufAllocator.DEFAULT.directBuffer();
+                withTrailer = PooledByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 8);
                 compressed.readerIndex(startIndex);
-                long trailer = this.generateTrailer(compressed);
+                byte[] trailer = this.generateTrailer(compressed);
                 compressed.readerIndex(startIndex);
                 withTrailer.writeBytes(compressed);
-                withTrailer.writeLong(trailer);
+                withTrailer.writeBytes(trailer);
 
                 encryptionCipher.cipher(withTrailer, finalPayload);
             } else {
@@ -133,8 +132,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt package", e);
         } finally {
-            if (finalPayload != null) {
-                finalPayload.release();
+            if (withTrailer != null) {
+                withTrailer.release();
             }
         }
     }
@@ -154,7 +153,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
                 // We hit a unencryptable packet. Send the current wrapper and then send the unencryptable packet.
                 if (!toBatch.isEmpty()) {
-                    sendWrapped(toBatch, true);
+                    this.sendWrapped(toBatch, true);
                     toBatch = new ArrayDeque<>();
                 }
 
@@ -202,16 +201,29 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     }
 
-    private long generateTrailer(ByteBuf buf) {
-        Adler32 checksum = checksumLocal.get();
-        checksum.reset();
+    private byte[] generateTrailer(ByteBuf buf) {
+        VoxelwindHash hash = hashLocal.get();
+        ByteBuf counterBuf = null;
+        ByteBuf keyBuf = null;
+        try {
+            counterBuf = PooledByteBufAllocator.DEFAULT.directBuffer(8);
+            keyBuf = PooledByteBufAllocator.DEFAULT.directBuffer(agreedKey.getEncoded().length);
+            counterBuf.writeLongLE(this.sentEncryptedPacketCount.getAndIncrement());
+            keyBuf.writeBytes(this.agreedKey.getEncoded());
 
-        ByteBuffer counterBuf = ByteBuffer.allocateDirect(8).putLong(this.sentEncryptedPacketCount.getAndIncrement());
-        checksum.update(counterBuf);
-        checksum.update(buf.internalNioBuffer(buf.readerIndex(), buf.readableBytes()));
-        checksum.update(agreedKey.getEncoded());
-
-        return checksum.getValue();
+            hash.update(counterBuf);
+            hash.update(buf);
+            hash.update(keyBuf);
+            byte[] digested = hash.digest();
+            return Arrays.copyOf(digested, 8);
+        } finally {
+            if (counterBuf != null) {
+                counterBuf.release();
+            }
+            if (keyBuf != null) {
+                keyBuf.release();
+            }
+        }
     }
 
     public boolean isEncrypted() {
