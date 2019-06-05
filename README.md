@@ -35,13 +35,13 @@ client.ping(addressToPing).whenComplete((pong, throwable) -> {
         // Error occurred or timeout
         return;
     }
-    // Ping received.
+    // Pong received.
 });
 ```
 
 ##### Connecting to a Remote Server
 
-A `RakNetClient` can only have one session per instance. If you need more, create extra instances.
+A `BedrockClient` can only have one session per instance. If you need more, create extra instances.
 
 ```java
 InetSocketAddress addressToConnect = new InetSocketAddress("play.nukkitx.com", 19132);
