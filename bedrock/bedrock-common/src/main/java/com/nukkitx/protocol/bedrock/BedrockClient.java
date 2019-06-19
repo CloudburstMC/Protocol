@@ -44,10 +44,11 @@ public class BedrockClient extends Bedrock {
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        RakNetClientSession connection = this.rakNetClient.connect(address);
+        RakNetClientSession connection = this.rakNetClient.create(address);
         this.session = new BedrockClientSession(connection);
         BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session, connection, this);
         connection.setListener(listener);
+        connection.connect();
         return listener.future;
     }
 

@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock;
 
 import com.nukkitx.network.SessionConnection;
 import com.nukkitx.network.util.DisconnectReason;
+import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.MinecraftSession;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
@@ -71,21 +72,19 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     @Override
     public void sendPacket(@Nonnull BedrockPacket packet) {
-        this.checkForClosed();
-        Objects.requireNonNull(packet, "packet");
-        if (log.isTraceEnabled() && this.logging) {
-            String to = this.connection.getAddress().toString();
-            log.trace("Outbound {}: {}", to, packet);
-        }
-
-        // Verify that the packet ID exists.
-        this.packetCodec.getId(packet);
+        this.checkPacket(packet);
 
         this.queuedPackets.add(packet);
     }
 
     @Override
     public void sendPacketImmediately(@Nonnull BedrockPacket packet) {
+        this.checkPacket(packet);
+
+        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class));
+    }
+
+    private void checkPacket(BedrockPacket packet) {
         this.checkForClosed();
         Objects.requireNonNull(packet, "packet");
 
@@ -94,7 +93,10 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             log.trace("Outbound {}: {}", to, packet);
         }
 
-        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class));
+        Preconditions.checkState(this.packetCodec != BedrockCompat.COMPAT_CODEC, "No PacketCodec is set!");
+
+        // Verify that the packet ID exists.
+        this.packetCodec.getId(packet);
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
@@ -124,7 +126,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
                 withTrailer.writeBytes(compressed);
                 withTrailer.writeBytes(trailer);
 
-                encryptionCipher.cipher(withTrailer, finalPayload);
+                this.encryptionCipher.cipher(withTrailer, finalPayload);
             } else {
                 finalPayload.writeBytes(compressed);
             }
