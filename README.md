@@ -123,7 +123,7 @@ server.bind().join();
     <repositories>
         <repository>
             <id>nukkitx-repo</id>
-            <url>https://repo.nukkitx.com/snapshots/</url>
+            <url>https://repo.nukkitx.com/maven-releases/</url>
         </repository>
     </repositories>
 ```
