@@ -19,8 +19,8 @@ public class ResourcePackDataInfoSerializer_v354 implements PacketSerializer<Res
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
         BedrockUtils.writeString(buffer, packInfo);
         BedrockUtils.writeString(buffer, packet.getPackId().toString());
-        buffer.writeIntLE(packet.getMaxChunkSize());
-        buffer.writeIntLE(packet.getChunkCount());
+        buffer.writeIntLE((int) packet.getMaxChunkSize());
+        buffer.writeIntLE((int) packet.getChunkCount());
         buffer.writeLongLE(packet.getCompressedPackSize());
         byte[] hash = packet.getHash();
         VarInts.writeUnsignedInt(buffer, hash.length);

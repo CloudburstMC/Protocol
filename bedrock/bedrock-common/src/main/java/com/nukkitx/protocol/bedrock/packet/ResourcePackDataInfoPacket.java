@@ -12,10 +12,12 @@ import java.util.UUID;
 public class ResourcePackDataInfoPacket extends BedrockPacket {
     private UUID packId;
     private String packVersion;
-    private int maxChunkSize;
-    private int chunkCount;
+    private long maxChunkSize;
+    private long chunkCount;
     private long compressedPackSize;
     private byte[] hash;
+    private int unknown0;
+    private boolean unknown1;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

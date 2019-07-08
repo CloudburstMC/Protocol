@@ -114,5 +114,6 @@ public class CraftingDataSerializer_v313 implements PacketSerializer<CraftingDat
             }
             throw new IllegalArgumentException("Unhandled crafting data type: " + type);
         });
+        packet.setCleanRecipes(buffer.readBoolean());
     }
 }

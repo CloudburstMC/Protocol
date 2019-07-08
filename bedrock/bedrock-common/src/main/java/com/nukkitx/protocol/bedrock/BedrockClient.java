@@ -6,6 +6,8 @@ import com.nukkitx.network.raknet.RakNetClientSession;
 import com.nukkitx.network.util.EventLoops;
 import io.netty.channel.EventLoopGroup;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -44,12 +46,33 @@ public class BedrockClient extends Bedrock {
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        RakNetClientSession connection = this.rakNetClient.create(address);
-        this.session = new BedrockClientSession(connection);
-        BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session, connection, this);
-        connection.setListener(listener);
-        connection.connect();
-        return listener.future;
+        CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
+
+        this.ping(address).whenComplete((pong, throwable) -> {
+            if (throwable != null) {
+                future.completeExceptionally(throwable);
+                return;
+            }
+
+            int port;
+            if (address.getAddress() instanceof Inet4Address && pong.getIpv4Port() != -1) {
+                port = pong.getIpv4Port();
+            } else if (address.getAddress() instanceof Inet6Address && pong.getIpv6Port() != -1) {
+                port = pong.getIpv6Port();
+            } else {
+                port = address.getPort();
+            }
+
+            InetSocketAddress connectAddress = new InetSocketAddress(address.getAddress(), port);
+
+            RakNetClientSession connection = this.rakNetClient.create(connectAddress);
+            this.session = new BedrockClientSession(connection);
+            BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
+                    connection, this, future);
+            connection.setListener(listener);
+            connection.connect();
+        });
+        return future;
     }
 
     public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {

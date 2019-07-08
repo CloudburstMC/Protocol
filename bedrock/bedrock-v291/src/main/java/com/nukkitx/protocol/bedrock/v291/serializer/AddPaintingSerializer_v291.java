@@ -18,17 +18,17 @@ public class AddPaintingSerializer_v291 implements PacketSerializer<AddPaintingP
     public void serialize(ByteBuf buffer, AddPaintingPacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeVector3i(buffer, packet.getBlockPosition());
-        VarInts.writeInt(buffer, packet.getRotation());
-        BedrockUtils.writeString(buffer, packet.getTitle());
+        BedrockUtils.writeBlockPosition(buffer, packet.getPosition().toInt());
+        VarInts.writeInt(buffer, packet.getDirection());
+        BedrockUtils.writeString(buffer, packet.getName());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, AddPaintingPacket packet) {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setBlockPosition(BedrockUtils.readBlockPosition(buffer));
-        packet.setRotation(readInt(buffer));
-        packet.setTitle(BedrockUtils.readString(buffer));
+        packet.setPosition(BedrockUtils.readBlockPosition(buffer).toFloat());
+        packet.setDirection(readInt(buffer));
+        packet.setName(BedrockUtils.readString(buffer));
     }
 }

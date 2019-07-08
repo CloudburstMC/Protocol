@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 
-import static com.nukkitx.protocol.bedrock.packet.StartGamePacket.PaletteEntry;
+import static com.nukkitx.protocol.bedrock.packet.StartGamePacket.BlockPaletteEntry;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacket> {
@@ -70,9 +70,9 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
             buffer.writeBytes(packet.getCachedPalette());
             packet.getCachedPalette().release();
         } else {
-            Collection<PaletteEntry> paletteEntries = packet.getPaletteEntries();
+            Collection<BlockPaletteEntry> paletteEntries = packet.getPaletteEntries();
             VarInts.writeUnsignedInt(buffer, paletteEntries.size());
-            for (PaletteEntry entry : paletteEntries) {
+            for (BlockPaletteEntry entry : paletteEntries) {
                 BedrockUtils.writeString(buffer, entry.getIdentifier());
                 buffer.writeShortLE(entry.getMeta());
             }
@@ -131,7 +131,7 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         BedrockUtils.readArray(buffer, packet.getPaletteEntries(), buf -> {
             String identifier = BedrockUtils.readString(buffer);
             short meta = buffer.readShortLE();
-            return new PaletteEntry(identifier, meta);
+            return new BlockPaletteEntry(identifier, meta);
         });
 
         packet.setMultiplayerCorrelationId(BedrockUtils.readString(buffer));

@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.data;
 
 import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.network.util.Preconditions;
 
 import javax.annotation.Nonnull;
@@ -22,6 +23,7 @@ public class EntityDataDictionary extends EnumMap<EntityData, Object> {
                 o instanceof Float ||
                 o instanceof String ||
                 o instanceof ItemData ||
+                o instanceof CompoundTag ||
                 o instanceof Vector3i ||
                 o instanceof Long ||
                 o instanceof Vector3f;
@@ -41,8 +43,8 @@ public class EntityDataDictionary extends EnumMap<EntityData, Object> {
             return EntityData.Type.FLOAT;
         } else if (o instanceof String) {
             return EntityData.Type.STRING;
-        } else if (o instanceof ItemData) {
-            return EntityData.Type.ITEM;
+        } else if (o instanceof ItemData || o instanceof CompoundTag) {
+            return EntityData.Type.NBT;
         } else if (o instanceof Vector3i) {
             return EntityData.Type.VECTOR3I;
         } else if (o instanceof Long) {

@@ -18,15 +18,15 @@ public class AddHangingEntitySerializer_v291 implements PacketSerializer<AddHang
     public void serialize(ByteBuf buffer, AddHangingEntityPacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeVector3i(buffer, packet.getBlockPosition());
-        VarInts.writeInt(buffer, packet.getRotation());
+        BedrockUtils.writeBlockPosition(buffer, packet.getPosition().toInt());
+        VarInts.writeInt(buffer, packet.getDirection());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, AddHangingEntityPacket packet) {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setBlockPosition(BedrockUtils.readBlockPosition(buffer));
-        packet.setRotation(readInt(buffer));
+        packet.setPosition(BedrockUtils.readBlockPosition(buffer).toFloat());
+        packet.setDirection(readInt(buffer));
     }
 }

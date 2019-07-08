@@ -8,6 +8,7 @@ import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
 import com.nukkitx.protocol.bedrock.compressionhandler.BedrockCompressionHandler;
 import com.nukkitx.protocol.bedrock.compressionhandler.DefaultBedrockCompressionHandler;
+import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.handler.BatchHandler;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
@@ -275,8 +276,9 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
             Collection<BedrockPacket> packets = this.compressionHandler.decompressPackets(this.packetCodec, unwrappedData);
             this.batchedHandler.handle(this, unwrappedData, packets);
-        } catch (GeneralSecurityException e) {
-            // ignore
+        } catch (GeneralSecurityException ignore) {
+        } catch (PacketSerializeException e) {
+            log.warn("Error whilst decoding packets", e);
         } finally {
             if (unwrappedData != null && unwrappedData != wrappedData) {
                 unwrappedData.release();

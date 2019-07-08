@@ -38,6 +38,7 @@ public enum EntityData {
     POTION_AUX_VALUE(Type.SHORT),
     LEAD_HOLDER_EID(Type.LONG),
     SCALE(Type.FLOAT),
+    SKIN_ID(Type.STRING),
     INTERACTIVE_TAG(Type.STRING),
     NPC_SKIN_ID(Type.STRING),
     URL_TAG(Type.STRING),
@@ -94,7 +95,7 @@ public enum EntityData {
         INT,
         FLOAT,
         STRING,
-        ITEM,
+        NBT,
         VECTOR3I,
         LONG,
         VECTOR3F

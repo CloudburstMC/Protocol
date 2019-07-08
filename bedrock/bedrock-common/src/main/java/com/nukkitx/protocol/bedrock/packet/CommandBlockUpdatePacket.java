@@ -19,6 +19,8 @@ public class CommandBlockUpdatePacket extends BedrockPacket {
     private String lastOutput;
     private String name;
     private boolean outputTracked;
+    private long tickDelay;
+    private boolean executingOnFirstTick;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

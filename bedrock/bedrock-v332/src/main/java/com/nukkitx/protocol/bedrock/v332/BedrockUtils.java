@@ -182,7 +182,7 @@ public final class BedrockUtils {
         METADATA_TYPES.put(2, Type.INT);
         METADATA_TYPES.put(3, Type.FLOAT);
         METADATA_TYPES.put(4, Type.STRING);
-        METADATA_TYPES.put(5, Type.ITEM);
+        METADATA_TYPES.put(5, Type.NBT);
         METADATA_TYPES.put(6, Type.VECTOR3I);
         METADATA_TYPES.put(7, Type.LONG);
         METADATA_TYPES.put(8, Type.VECTOR3F);
@@ -429,7 +429,7 @@ public final class BedrockUtils {
 
         CompoundTag compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer.readSlice(nbtSize)))) {
+            try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer.readSlice(nbtSize)), true)) {
                 Tag<?> tag = reader.readTag();
                 if (tag instanceof CompoundTag) {
                     compoundTag = (CompoundTag) tag;
@@ -762,7 +762,7 @@ public final class BedrockUtils {
                 case STRING:
                     object = BedrockUtils.readString(buffer);
                     break;
-                case ITEM:
+                case NBT:
                     object = BedrockUtils.readItemData(buffer);
                     break;
                 case VECTOR3I:
@@ -822,8 +822,14 @@ public final class BedrockUtils {
                 case STRING:
                     BedrockUtils.writeString(buffer, (String) object);
                     break;
-                case ITEM:
-                    BedrockUtils.writeItemData(buffer, (ItemData) object);
+                case NBT:
+                    ItemData item;
+                    if (object instanceof CompoundTag) {
+                        item = ItemData.of(1, (short) 0, 1, (CompoundTag) object);
+                    } else {
+                        item = (ItemData) object;
+                    }
+                    BedrockUtils.writeItemData(buffer, item);
                     break;
                 case VECTOR3I:
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);

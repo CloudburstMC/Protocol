@@ -1,9 +1,8 @@
 package com.nukkitx.protocol.bedrock.v354.serializer;
 
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.stream.NetworkDataInputStream;
-import com.nukkitx.nbt.stream.NetworkDataOutputStream;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.UpdateEquipPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -26,7 +25,7 @@ public class UpdateEquipSerializer_v354 implements PacketSerializer<UpdateEquipP
         buffer.writeByte(packet.getWindowType());
         VarInts.writeInt(buffer, packet.getUnknown0());
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        try (NBTOutputStream writer = new NBTOutputStream(new NetworkDataOutputStream(new ByteBufOutputStream(buffer)))) {
+        try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
             writer.write(packet.getTag());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -39,7 +38,7 @@ public class UpdateEquipSerializer_v354 implements PacketSerializer<UpdateEquipP
         packet.setWindowType(buffer.readUnsignedByte());
         packet.setUnknown0(VarInts.readInt(buffer));
         packet.setUniqueEntityId(VarInts.readLong(buffer));
-        try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
             packet.setTag(reader.readTag());
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -26,7 +26,7 @@ public class MovePlayerSerializer_v332 implements PacketSerializer<MovePlayerPac
         VarInts.writeUnsignedLong(buffer, packet.getRidingRuntimeEntityId());
         if (packet.getMode() == Mode.TELEPORT) {
             buffer.writeIntLE(packet.getTeleportationCause().ordinal());
-            buffer.writeIntLE(packet.getUnknown0());
+            buffer.writeIntLE(packet.getEntityType());
         }
     }
 
@@ -39,8 +39,8 @@ public class MovePlayerSerializer_v332 implements PacketSerializer<MovePlayerPac
         packet.setOnGround(buffer.readBoolean());
         packet.setRidingRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         if (packet.getMode() == Mode.TELEPORT) {
-            packet.setTeleportationCause(TeleportationCause.values()[buffer.readIntLE()]);
-            packet.setUnknown0(buffer.readIntLE());
+            packet.setTeleportationCause(TeleportationCause.byId(buffer.readIntLE()));
+            packet.setEntityType(buffer.readIntLE());
         }
     }
 }

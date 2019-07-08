@@ -8,10 +8,7 @@ import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRule;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.buffer.ByteBuf;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -59,6 +56,7 @@ public class StartGamePacket extends BedrockPacket {
     private boolean usingMsaGamertagsOnly;
     private boolean fromWorldTemplate;
     private boolean worldTemplateOptionLocked;
+    private boolean onlySpawningV1Villagers;
     // Level settings end
     private String levelId;
     private String worldName;
@@ -67,7 +65,8 @@ public class StartGamePacket extends BedrockPacket {
     private long currentTick;
     private int enchantmentSeed;
     private ByteBuf cachedPalette;
-    private Collection<PaletteEntry> paletteEntries = new ArrayDeque<>();
+    private Collection<BlockPaletteEntry> paletteEntries = new ArrayDeque<>();
+    private Collection<ItemEntry> itemEntries = new ArrayDeque<>();
     private String multiplayerCorrelationId;
 
     @Override
@@ -76,8 +75,22 @@ public class StartGamePacket extends BedrockPacket {
     }
 
     @Value
-    public static class PaletteEntry {
+    @RequiredArgsConstructor
+    public static class BlockPaletteEntry {
         private final String identifier;
         private final short meta;
+        private final short legacyId;
+
+        public BlockPaletteEntry(String identifier, short meta) {
+            this.identifier = identifier;
+            this.meta = meta;
+            this.legacyId = -1;
+        }
+    }
+
+    @Value
+    public static class ItemEntry {
+        private final String identifier;
+        private final short id;
     }
 }

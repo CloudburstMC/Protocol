@@ -11,6 +11,8 @@ public class VideoStreamConnectPacket extends BedrockPacket {
     private String address;
     private float screenshotFrequency;
     private Action action;
+    private int width;
+    private int height;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

@@ -32,6 +32,7 @@ public class BedrockServer extends Bedrock {
     public BedrockServer(InetSocketAddress bindAddress, int maxThreads, EventLoopGroup eventLoopGroup) {
         super(eventLoopGroup);
         this.rakNetServer = new RakNetServer(bindAddress, maxThreads, eventLoopGroup);
+        this.rakNetServer.setProtocolVersion(-1);
         this.rakNetServer.setListener(new BedrockServerListener());
     }
 

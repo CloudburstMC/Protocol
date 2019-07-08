@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.event.EventData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,22 +10,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class EventPacket extends BedrockPacket {
     private long uniqueEntityId;
-    private int data;
-    private int type;
-
-    private int id;
-    private int cause;
-    private int unknown0;
-    private short unknown1;
-    private long mobEntityId;
-    private long unknownEid;
-    private String unknown2;
-    private String unknown3;
-    private String unknown4;
-    private int unknown5;
-    private int unknown6;
-    private String unknown7;
-    private boolean unknown8;
+    private byte unknown0;
+    private EventData eventData;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -43,7 +30,12 @@ public class EventPacket extends BedrockPacket {
         AGENT_COMMAND,
         AGENT_CREATED,
         PATTERN_REMOVED,
-        COMMAND_EXECUTED,
-        FISH_BUCKETED
+        SLASH_COMMAND_EXECUTED,
+        FISH_BUCKETED,
+        MOB_BORN,
+        PET_DIED,
+        CAULDRON_BLOCK_USED,
+        COMPOSTER_BLOCK_USED,
+        BELL_BLOCK_USED
     }
 }

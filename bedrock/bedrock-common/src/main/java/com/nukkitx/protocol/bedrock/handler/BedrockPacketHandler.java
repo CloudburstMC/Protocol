@@ -25,6 +25,18 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(ClientCacheBlobStatusPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ClientCacheMissResponsePacket packet) {
+        return false;
+    }
+
+    default boolean handle(ClientCacheStatusPacket packet) {
+        return false;
+    }
+
     default boolean handle(ClientToServerHandshakePacket packet) {
         return false;
     }
@@ -86,6 +98,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(LecternUpdatePacket packet) {
+        return false;
+    }
+
+    default boolean handle(LevelEventGenericPacket packet) {
         return false;
     }
 
@@ -269,7 +285,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(FullChunkDataPacket packet) {
+    default boolean handle(LevelChunkPacket packet) {
         return false;
     }
 
@@ -453,6 +469,14 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(StructureTemplateDataExportRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(StructureTemplateDataExportResponsePacket packet) {
+        return false;
+    }
+
     default boolean handle(TakeItemEntityPacket packet) {
         return false;
     }
@@ -466,6 +490,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(UpdateBlockPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdateBlockPropertiesPacket packet) {
         return false;
     }
 
