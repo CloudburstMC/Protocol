@@ -24,8 +24,8 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         byte[] hash = packet.getHash();
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
-        buffer.writeShortLE(packet.getUnknown0());
-        buffer.writeBoolean(packet.isUnknown1());
+        buffer.writeBoolean(packet.isPremium());
+        buffer.writeByte(packet.getType().ordinal());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
         buffer.readBytes(hash);
         packet.setHash(hash);
-        packet.setUnknown0(buffer.readUnsignedShortLE());
-        packet.setUnknown1(buffer.readBoolean());
+        packet.setPremium(buffer.readBoolean());
+        packet.setType(ResourcePackDataInfoPacket.Type.values()[buffer.readUnsignedByte()]);
     }
 }

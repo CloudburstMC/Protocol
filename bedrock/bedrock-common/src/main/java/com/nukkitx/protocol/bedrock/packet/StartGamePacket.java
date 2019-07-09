@@ -17,7 +17,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString(exclude = {"paletteEntries"})
+@ToString(exclude = {"paletteEntries", "itemEntries"})
 public class StartGamePacket extends BedrockPacket {
     private final List<GameRule> gamerules = new ArrayList<>();
     private long uniqueEntityId;

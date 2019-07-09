@@ -82,6 +82,12 @@ public class EntityDataDictionary extends EnumMap<EntityData, Object> {
         Preconditions.checkNotNull(o, "o");
         Preconditions.checkArgument(isAcceptable(o), "%s is an unacceptable metadata type", o.getClass().getSimpleName());
 
+        if (entityData == EntityData.FLAGS || entityData == EntityData.FLAGS_2) {
+            Preconditions.checkArgument(getType(o) == EntityData.Type.FLAGS, "Invalid class for flags");
+            this.putFlags((EntityFlags) o);
+            return null;
+        }
+
         return super.put(entityData, o);
     }
 
@@ -90,6 +96,12 @@ public class EntityDataDictionary extends EnumMap<EntityData, Object> {
     }
 
     public void putFlags(@Nonnull EntityFlags flags) {
-        put(EntityData.FLAGS, flags);
+        EntityFlags originalFlags = this.get(EntityData.FLAGS);
+        if (originalFlags != null) {
+            originalFlags.merge(flags);
+        } else {
+            super.put(EntityData.FLAGS, flags);
+            super.put(EntityData.FLAGS_2, flags);
+        }
     }
 }

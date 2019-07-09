@@ -73,49 +73,72 @@ public final class BedrockUtils {
         METADATAS.put(36, POTION_AUX_VALUE);
         METADATAS.put(37, LEAD_HOLDER_EID);
         METADATAS.put(38, SCALE);
-        METADATAS.put(39, INTERACTIVE_TAG);
-        METADATAS.put(40, NPC_SKIN_ID);
-        METADATAS.put(41, URL_TAG);
-        METADATAS.put(42, MAX_AIR);
-        METADATAS.put(43, MARK_VARIANT);
-        METADATAS.put(44, CONTAINER_TYPE);
-        METADATAS.put(45, CONTAINER_BASE_SIZE);
-        METADATAS.put(46, CONTAINER_EXTRA_SLOTS_PER_STRENGTH);
-        METADATAS.put(47, BLOCK_TARGET);
-        METADATAS.put(48, WITHER_INVULNERABLE_TICKS);
-        METADATAS.put(49, WITHER_TARGET_1);
-        METADATAS.put(50, WITHER_TARGET_2);
-        METADATAS.put(51, WITHER_TARGET_3);
-        METADATAS.put(53, BOUNDING_BOX_WIDTH);
-        METADATAS.put(54, BOUNDING_BOX_HEIGHT);
-        METADATAS.put(55, FUSE_LENGTH);
-        METADATAS.put(56, RIDER_SEAT_POSITION);
-        METADATAS.put(57, RIDER_ROTATION_LOCKED);
-        METADATAS.put(58, RIDER_MAX_ROTATION);
-        METADATAS.put(59, RIDER_MIN_ROTATION);
-        METADATAS.put(60, AREA_EFFECT_CLOUD_RADIUS);
-        METADATAS.put(61, AREA_EFFECT_CLOUD_WAITING);
-        METADATAS.put(62, AREA_EFFECT_CLOUD_PARTICLE_ID);
-        METADATAS.put(64, SHULKER_ATTACH_FACE);
-        METADATAS.put(66, SHULKER_ATTACH_POS);
-        METADATAS.put(67, TRADING_PLAYER_EID);
-        METADATAS.put(69, COMMAND_BLOCK_ENABLED); // Unsure
-        METADATAS.put(70, COMMAND_BLOCK_COMMAND);
-        METADATAS.put(71, COMMAND_BLOCK_LAST_OUTPUT);
-        METADATAS.put(72, COMMAND_BLOCK_TRACK_OUTPUT);
-        METADATAS.put(73, CONTROLLING_RIDER_SEAT_NUMBER);
-        METADATAS.put(74, STRENGTH);
-        METADATAS.put(75, MAX_STRENGTH);
-        METADATAS.put(76, EVOKER_SPELL_COLOR);
-        METADATAS.put(77, LIMITED_LIFE);
-        METADATAS.put(78, ARMOR_STAND_POSE_INDEX);
-        METADATAS.put(79, ENDER_CRYSTAL_TIME_OFFSET);
-        METADATAS.put(80, ALWAYS_SHOW_NAMETAG);
-        METADATAS.put(81, COLOR_2);
-        METADATAS.put(83, SCORE_TAG);
-        METADATAS.put(84, BALLOON_ATTACHED_ENTITY);
-        METADATAS.put(85, PUFFERFISH_SIZE);
-        METADATAS.put(87, AGENT_ID);
+        METADATAS.put(39, HAS_NPC_COMPONENT);
+        METADATAS.put(40, SKIN_ID);
+        METADATAS.put(41, NPC_SKIN_ID);
+        METADATAS.put(42, URL_TAG);
+        METADATAS.put(43, MAX_AIR);
+        METADATAS.put(44, MARK_VARIANT);
+        METADATAS.put(45, CONTAINER_TYPE);
+        METADATAS.put(46, CONTAINER_BASE_SIZE);
+        METADATAS.put(47, CONTAINER_EXTRA_SLOTS_PER_STRENGTH);
+
+        METADATAS.put(48, BLOCK_TARGET);
+        METADATAS.put(49, WITHER_INVULNERABLE_TICKS);
+        METADATAS.put(50, WITHER_TARGET_1);
+        METADATAS.put(51, WITHER_TARGET_2);
+        METADATAS.put(52, WITHER_TARGET_3);
+
+        METADATAS.put(54, BOUNDING_BOX_WIDTH);
+        METADATAS.put(55, BOUNDING_BOX_HEIGHT);
+        METADATAS.put(56, FUSE_LENGTH);
+        METADATAS.put(57, RIDER_SEAT_POSITION);
+        METADATAS.put(58, RIDER_ROTATION_LOCKED);
+        METADATAS.put(59, RIDER_MAX_ROTATION);
+        METADATAS.put(60, RIDER_MIN_ROTATION);
+        METADATAS.put(61, AREA_EFFECT_CLOUD_RADIUS);
+        METADATAS.put(62, AREA_EFFECT_CLOUD_WAITING);
+        METADATAS.put(63, AREA_EFFECT_CLOUD_PARTICLE_ID);
+
+        METADATAS.put(65, SHULKER_ATTACH_FACE);
+
+        METADATAS.put(67, SHULKER_ATTACH_POS);
+        METADATAS.put(68, TRADING_PLAYER_EID);
+
+        METADATAS.put(70, COMMAND_BLOCK_ENABLED); // Unsure
+        METADATAS.put(71, COMMAND_BLOCK_COMMAND);
+        METADATAS.put(72, COMMAND_BLOCK_LAST_OUTPUT);
+        METADATAS.put(73, COMMAND_BLOCK_TRACK_OUTPUT);
+        METADATAS.put(74, CONTROLLING_RIDER_SEAT_NUMBER);
+        METADATAS.put(75, STRENGTH);
+        METADATAS.put(76, MAX_STRENGTH);
+        METADATAS.put(77, EVOKER_SPELL_COLOR);
+        METADATAS.put(78, LIMITED_LIFE);
+        METADATAS.put(79, ARMOR_STAND_POSE_INDEX);
+        METADATAS.put(80, ENDER_CRYSTAL_TIME_OFFSET);
+        METADATAS.put(81, ALWAYS_SHOW_NAMETAG);
+        METADATAS.put(82, COLOR_2);
+        METADATAS.put(84, SCORE_TAG);
+        METADATAS.put(85, BALLOON_ATTACHED_ENTITY);
+        METADATAS.put(86, PUFFERFISH_SIZE);
+        METADATAS.put(87, BOAT_BUBBLE_TIME);
+        METADATAS.put(88, AGENT_ID);
+
+
+        METADATAS.put(91, EAT_COUNTER);
+        METADATAS.put(92, FLAGS_2);
+
+
+        METADATAS.put(95, AREA_EFFECT_CLOUD_DURATION);
+        METADATAS.put(96, AREA_EFFECT_CLOUD_SPAWN_TIME);
+        METADATAS.put(97, AREA_EFFECT_CLOUD_RADIUS_PER_TICK);
+        METADATAS.put(98, AREA_EFFECT_CLOUD_RADIUS_CHANGE_ON_PICKUP);
+        METADATAS.put(99, AREA_EFFECT_CLOUD_PICKUP_COUNT);
+        METADATAS.put(100, INTERACTIVE_TAG);
+        METADATAS.put(101, TRADE_TIER);
+        METADATAS.put(102, MAX_TRADE_TIER);
+        METADATAS.put(103, TRADE_XP);
+
 
         METADATA_FLAGS.put(0, EntityFlag.ON_FIRE);
         METADATA_FLAGS.put(1, EntityFlag.SNEAKING);
@@ -176,6 +199,32 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(57, EntityFlag.BRIBED);
         METADATA_FLAGS.put(58, EntityFlag.IS_PREGNANT);
         METADATA_FLAGS.put(59, EntityFlag.LAYING_EGG);
+        METADATA_FLAGS.put(60, EntityFlag.RIDER_CAN_PICK);
+        METADATA_FLAGS.put(61, EntityFlag.TRANSITION_SITTING);
+        METADATA_FLAGS.put(62, EntityFlag.EATING);
+        METADATA_FLAGS.put(63, EntityFlag.LAYING_DOWN);
+        METADATA_FLAGS.put(64, EntityFlag.SNEEZING);
+        METADATA_FLAGS.put(65, EntityFlag.TRUSTING);
+        METADATA_FLAGS.put(66, EntityFlag.ROLLING);
+        METADATA_FLAGS.put(67, EntityFlag.SCARED);
+        METADATA_FLAGS.put(68, EntityFlag.IN_SCAFFOLDING);
+        METADATA_FLAGS.put(69, EntityFlag.OVER_SCAFFOLDING);
+        METADATA_FLAGS.put(70, EntityFlag.FALL_THROUGH_SCAFFOLDING);
+        METADATA_FLAGS.put(71, EntityFlag.BLOCKING);
+        METADATA_FLAGS.put(72, EntityFlag.DISABLE_BLOCKING);
+
+
+        METADATA_FLAGS.put(75, EntityFlag.SLEEPING);
+
+        METADATA_FLAGS.put(77, EntityFlag.TRADE_INTEREST);
+        METADATA_FLAGS.put(78, EntityFlag.DOOR_BREAKER);
+        METADATA_FLAGS.put(79, EntityFlag.BREAKING_OBSTRUCTION);
+        METADATA_FLAGS.put(8, EntityFlag.DOOR_OPENER);
+        METADATA_FLAGS.put(81, EntityFlag.ILLAGER_CAPTAIN);
+        METADATA_FLAGS.put(82, EntityFlag.STUNNED);
+        METADATA_FLAGS.put(83, EntityFlag.ROARING);
+        METADATA_FLAGS.put(84, EntityFlag.DELAYED_ATTACKING);
+        METADATA_FLAGS.put(85, EntityFlag.AVOIDING_MOBS);
 
         METADATA_TYPES.put(7, Type.FLAGS);
         METADATA_TYPES.put(0, Type.BYTE);
@@ -490,14 +539,18 @@ public final class BedrockUtils {
         if (damage == -1) damage = Short.MAX_VALUE;
         VarInts.writeInt(buffer, (damage << 8) | (item.getCount() & 0xff));
 
-        buffer.writeShort(-1);
-        VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
+        if (item.getTag() != null) {
+            buffer.writeShort(-1);
+            VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
 
-        try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
-            stream.write(item.getTag());
-        } catch (IOException e) {
-            // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
-            throw new IllegalStateException("Unable to save NBT data", e);
+            try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
+                stream.write(item.getTag());
+            } catch (IOException e) {
+                // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
+                throw new IllegalStateException("Unable to save NBT data", e);
+            }
+        } else {
+            buffer.writeShortLE(0);
         }
 
         String[] canPlace = item.getCanPlace();
@@ -524,9 +577,8 @@ public final class BedrockUtils {
         int auxValue = 0;
         int stackSize = 0;
 
-        if (Integer.toUnsignedLong(id + 1) >= 2) {
+        if (id != 0) {
             auxValue = VarInts.readInt(buffer);
-            if (auxValue == 0x7fff) auxValue = -1;
             stackSize = VarInts.readInt(buffer);
         }
 
@@ -540,10 +592,8 @@ public final class BedrockUtils {
         int id = itemData.getId();
         VarInts.writeInt(buffer, id);
 
-        if (Integer.toUnsignedLong(id + 1) >= 2) {
-            int auxValue = itemData.getDamage();
-            if (auxValue == -1) auxValue = 0x7fff;
-            VarInts.writeInt(buffer, auxValue);
+        if (id != 0) {
+            VarInts.writeInt(buffer, itemData.getDamage());
             VarInts.writeInt(buffer, itemData.getCount());
         }
     }
@@ -784,6 +834,12 @@ public final class BedrockUtils {
             int metadataInt = VarInts.readUnsignedInt(buffer);
             EntityData entityData = METADATAS.get(metadataInt);
             EntityData.Type type = METADATA_TYPES.get(VarInts.readUnsignedInt(buffer));
+            if (entityData != null && entityData.isFlags()) {
+                if (type != Type.LONG) {
+                    throw new IllegalArgumentException("Expected long value for flags, got " + type.name());
+                }
+                type = Type.FLAGS;
+            }
 
             Object object;
             switch (type) {
@@ -816,8 +872,9 @@ public final class BedrockUtils {
                     object = BedrockUtils.readVector3i(buffer);
                     break;
                 case FLAGS:
-                    object = EntityFlags.create(VarInts.readLong(buffer), 0, METADATA_FLAGS);
-                    break;
+                    int index = entityData == FLAGS_2 ? 1 : 0;
+                    metadataDictionary.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
+                    continue;
                 case LONG:
                     object = VarInts.readLong(buffer);
                     break;
@@ -885,7 +942,8 @@ public final class BedrockUtils {
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);
                     break;
                 case FLAGS:
-                    object = ((EntityFlags) object).get(0, METADATA_FLAGS);
+                    int flagsIndex = entry.getKey() == FLAGS_2 ? 1 : 0;
+                    object = ((EntityFlags) object).get(flagsIndex, METADATA_FLAGS);
                 case LONG:
                     VarInts.writeLong(buffer, (long) object);
                     break;

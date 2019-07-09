@@ -80,6 +80,7 @@ public class StartGameSerializer_v361 implements PacketSerializer<StartGamePacke
         });
 
         BedrockUtils.writeString(buffer, packet.getMultiplayerCorrelationId());
+
     }
 
     @Override

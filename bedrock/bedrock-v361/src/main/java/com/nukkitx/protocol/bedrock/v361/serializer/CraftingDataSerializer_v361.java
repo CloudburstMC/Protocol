@@ -34,6 +34,7 @@ public class CraftingDataSerializer_v361 implements PacketSerializer<CraftingDat
                     BedrockUtils.writeArray(buf, craftingData.getOutputs(), BedrockUtils::writeItemData);
                     BedrockUtils.writeUuid(buf, craftingData.getUuid());
                     BedrockUtils.writeString(buf, craftingData.getCraftingTag());
+                    VarInts.writeInt(buf, craftingData.getPriority());
                     break;
                 case SHAPED:
                 case SHAPED_CHEMISTRY:
@@ -48,6 +49,7 @@ public class CraftingDataSerializer_v361 implements PacketSerializer<CraftingDat
                     BedrockUtils.writeArray(buf, craftingData.getOutputs(), BedrockUtils::writeItemData);
                     BedrockUtils.writeUuid(buf, craftingData.getUuid());
                     BedrockUtils.writeString(buf, craftingData.getCraftingTag());
+                    VarInts.writeInt(buf, craftingData.getPriority());
                     break;
                 case FURNACE:
                 case FURNACE_DATA:
@@ -72,8 +74,7 @@ public class CraftingDataSerializer_v361 implements PacketSerializer<CraftingDat
             int typeInt = VarInts.readInt(buf);
             CraftingType type = CraftingType.byId(typeInt);
             if (type == null) {
-                log.debug("Unknown recipe type: {}", typeInt);
-                return null;
+                throw new IllegalArgumentException("Unknown crafting type: " + typeInt);
             }
 
             switch (type) {

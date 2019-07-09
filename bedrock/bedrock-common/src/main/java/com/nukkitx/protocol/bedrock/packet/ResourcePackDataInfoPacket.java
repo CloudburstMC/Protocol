@@ -16,11 +16,22 @@ public class ResourcePackDataInfoPacket extends BedrockPacket {
     private long chunkCount;
     private long compressedPackSize;
     private byte[] hash;
-    private int unknown0;
-    private boolean unknown1;
+    private boolean premium;
+    private Type type;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public enum Type {
+        INVALID,
+        RESOURCE,
+        BEHAVIOR,
+        WORLD_TEMPLATE,
+        ADDON,
+        SKINS,
+        CACHED,
+        COPY_PROTECTED,
     }
 }

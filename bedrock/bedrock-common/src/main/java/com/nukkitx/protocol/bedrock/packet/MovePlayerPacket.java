@@ -37,8 +37,7 @@ public class MovePlayerPacket extends BedrockPacket {
         PROJECTILE,
         CHORUS_FRUIT,
         COMMAND,
-        BEHAVIOR,
-        COUNT;
+        BEHAVIOR;
 
         private static final InternalLogger log = InternalLoggerFactory.getInstance(TeleportationCause.class);
 

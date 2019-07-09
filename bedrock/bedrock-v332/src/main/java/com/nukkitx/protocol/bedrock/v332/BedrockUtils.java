@@ -72,7 +72,7 @@ public final class BedrockUtils {
         METADATAS.put(36, POTION_AUX_VALUE);
         METADATAS.put(37, LEAD_HOLDER_EID);
         METADATAS.put(38, SCALE);
-        METADATAS.put(39, INTERACTIVE_TAG);
+        METADATAS.put(39, HAS_NPC_COMPONENT);
         METADATAS.put(40, NPC_SKIN_ID);
         METADATAS.put(41, URL_TAG);
         METADATAS.put(42, MAX_AIR);
@@ -484,14 +484,18 @@ public final class BedrockUtils {
         if (damage == -1) damage = Short.MAX_VALUE;
         VarInts.writeInt(buffer, (damage << 8) | (item.getCount() & 0xff));
 
-        buffer.writeShort(-1);
-        VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
+        if (item.getTag() != null) {
+            buffer.writeShortLE(-1);
+            VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
 
-        try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
-            stream.write(item.getTag());
-        } catch (IOException e) {
-            // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
-            throw new IllegalStateException("Unable to save NBT data", e);
+            try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
+                stream.write(item.getTag());
+            } catch (IOException e) {
+                // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
+                throw new IllegalStateException("Unable to save NBT data", e);
+            }
+        } else {
+            buffer.writeShortLE(0);
         }
 
         String[] canPlace = item.getCanPlace();
@@ -744,6 +748,12 @@ public final class BedrockUtils {
             int metadataInt = VarInts.readUnsignedInt(buffer);
             EntityData entityData = METADATAS.get(metadataInt);
             EntityData.Type type = METADATA_TYPES.get(VarInts.readUnsignedInt(buffer));
+            if (entityData != null && entityData.isFlags()) {
+                if (type != Type.LONG) {
+                    throw new IllegalArgumentException("Expected long value for flags, got " + type.name());
+                }
+                type = Type.FLAGS;
+            }
 
             Object object;
             switch (type) {
@@ -768,16 +778,12 @@ public final class BedrockUtils {
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
                     break;
+                case FLAGS:
+                    int index = entityData == FLAGS_2 ? 1 : 0;
+                    entityDataDictionary.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
+                    continue;
                 case LONG:
                     object = VarInts.readLong(buffer);
-                    if (entityData == FLAGS) {
-                        EntityFlags flags = entityDataDictionary.getFlags();
-                        object = EntityFlags.create((long) object, 0, METADATA_FLAGS);
-                        if (flags != null) {
-                            flags.merge((EntityFlags) object);
-                            object = flags;
-                        }
-                    }
                     break;
                 case VECTOR3F:
                     object = BedrockUtils.readVector3f(buffer);
@@ -835,7 +841,8 @@ public final class BedrockUtils {
                     BedrockUtils.writeVector3i(buffer, (Vector3i) object);
                     break;
                 case FLAGS:
-                    object = ((EntityFlags) object).get(0, METADATA_FLAGS);
+                    int flagsIndex = entry.getKey() == FLAGS_2 ? 1 : 0;
+                    object = ((EntityFlags) object).get(flagsIndex, METADATA_FLAGS);
                 case LONG:
                     VarInts.writeLong(buffer, (long) object);
                     break;
