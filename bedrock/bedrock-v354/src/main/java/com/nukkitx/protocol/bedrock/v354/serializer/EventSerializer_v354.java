@@ -35,7 +35,7 @@ public class EventSerializer_v354 implements PacketSerializer<EventPacket> {
                 VarInts.writeInt(buffer, entityInteractEventData.getInteractionType());
                 VarInts.writeInt(buffer, entityInteractEventData.getLegacyEntityTypeId());
                 VarInts.writeInt(buffer, entityInteractEventData.getVariant());
-                buffer.writeShortLE(entityInteractEventData.getPaletteColor());
+                buffer.writeByte(entityInteractEventData.getPaletteColor());
                 break;
             case PORTAL_BUILT:
                 VarInts.writeInt(buffer, ((PortalBuiltEventData) eventData).getDimensionId());
@@ -107,7 +107,7 @@ public class EventSerializer_v354 implements PacketSerializer<EventPacket> {
                 MobBornEventData mobBornEventData = (MobBornEventData) eventData;
                 VarInts.writeInt(buffer, mobBornEventData.getLegacyEntityTypeId());
                 VarInts.writeInt(buffer, mobBornEventData.getVariant());
-                buffer.writeShortLE(mobBornEventData.getColor());
+                buffer.writeByte(mobBornEventData.getColor());
                 break;
             case PET_DIED:
                 PetDiedEventData petDiedEventData = (PetDiedEventData) eventData;
@@ -156,7 +156,7 @@ public class EventSerializer_v354 implements PacketSerializer<EventPacket> {
                 int interactionType = VarInts.readInt(buffer);
                 int legacyEntityTypeId = VarInts.readInt(buffer);
                 int variant = VarInts.readInt(buffer);
-                int paletteColor = buffer.readUnsignedShortLE();
+                int paletteColor = buffer.readUnsignedByte();
                 data = new EntityInteractEventData(interactionType, legacyEntityTypeId, variant, paletteColor);
                 break;
             case PORTAL_BUILT:
@@ -231,7 +231,7 @@ public class EventSerializer_v354 implements PacketSerializer<EventPacket> {
             case MOB_BORN:
                 legacyEntityTypeId = VarInts.readInt(buffer);
                 variant = VarInts.readInt(buffer);
-                color = buffer.readUnsignedShortLE();
+                color = buffer.readUnsignedByte();
                 data = new MobBornEventData(legacyEntityTypeId, variant, color);
                 break;
             case PET_DIED:
