@@ -40,12 +40,14 @@ public abstract class BedrockRakNetSessionListener implements RakNetSessionListe
 
     @ParametersAreNonnullByDefault
     public static class Client extends BedrockRakNetSessionListener {
-        CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
+        CompletableFuture<BedrockClientSession> future;
         private final BedrockClient client;
 
-        Client(BedrockClientSession session, RakNetSession connection, BedrockClient client) {
+        Client(BedrockClientSession session, RakNetSession connection, BedrockClient client,
+               CompletableFuture<BedrockClientSession> future) {
             super(session, connection);
             this.client = client;
+            this.future = future;
         }
 
         @Override

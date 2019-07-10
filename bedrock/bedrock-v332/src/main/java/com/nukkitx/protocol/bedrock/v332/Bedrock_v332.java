@@ -67,7 +67,7 @@ public class Bedrock_v332 {
             .registerPacket(AdventureSettingsPacket.class, AdventureSettingsSerializer_v332.INSTANCE, 55)
             .registerPacket(BlockEntityDataPacket.class, BlockEntityDataSerializer_v332.INSTANCE, 56)
             .registerPacket(PlayerInputPacket.class, PlayerInputSerializer_v332.INSTANCE, 57)
-            .registerPacket(FullChunkDataPacket.class, FullChunkDataSerializer_v332.INSTANCE, 58)
+            .registerPacket(LevelChunkPacket.class, FullChunkDataSerializer_v332.INSTANCE, 58)
             .registerPacket(SetCommandsEnabledPacket.class, SetCommandsEnabledSerializer_v332.INSTANCE, 59)
             .registerPacket(SetDifficultyPacket.class, SetDifficultySerializer_v332.INSTANCE, 60)
             .registerPacket(ChangeDimensionPacket.class, ChangeDimensionSerializer_v332.INSTANCE, 61)

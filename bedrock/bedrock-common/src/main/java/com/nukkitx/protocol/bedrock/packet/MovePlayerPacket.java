@@ -3,6 +3,8 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.flowpowered.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +18,7 @@ public class MovePlayerPacket extends BedrockPacket {
     private boolean onGround;
     private long ridingRuntimeEntityId;
     private TeleportationCause teleportationCause;
-    private int unknown0;
+    private int entityType;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -35,7 +37,18 @@ public class MovePlayerPacket extends BedrockPacket {
         PROJECTILE,
         CHORUS_FRUIT,
         COMMAND,
-        BEHAVIOR,
-        COUNT
+        BEHAVIOR;
+
+        private static final InternalLogger log = InternalLoggerFactory.getInstance(TeleportationCause.class);
+
+        private static final TeleportationCause[] VALUES = values();
+
+        public static TeleportationCause byId(int id) {
+            if (id >= 0 && id < VALUES.length) {
+                return VALUES[id];
+            }
+            log.debug("Unknown teleportation cause ID: {}", id);
+            return UNKNOWN;
+        }
     }
 }

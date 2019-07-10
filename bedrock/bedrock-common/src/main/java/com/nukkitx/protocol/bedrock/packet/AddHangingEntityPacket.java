@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.flowpowered.math.vector.Vector3i;
+import com.flowpowered.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
@@ -11,8 +11,8 @@ import lombok.EqualsAndHashCode;
 public class AddHangingEntityPacket extends BedrockPacket {
     private long uniqueEntityId;
     private long runtimeEntityId;
-    private Vector3i blockPosition;
-    private int rotation;
+    private Vector3f position;
+    private int direction;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

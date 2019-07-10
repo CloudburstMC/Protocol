@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum EntityData {
-    FLAGS(Type.FLAGS),
+    FLAGS(Type.FLAGS, true),
     HEALTH(Type.INT),
     VARIANT(Type.INT),
     COLOR(Type.BYTE),
@@ -38,7 +38,8 @@ public enum EntityData {
     POTION_AUX_VALUE(Type.SHORT),
     LEAD_HOLDER_EID(Type.LONG),
     SCALE(Type.FLOAT),
-    INTERACTIVE_TAG(Type.STRING),
+    HAS_NPC_COMPONENT(Type.BYTE),
+    SKIN_ID(Type.STRING),
     NPC_SKIN_ID(Type.STRING),
     URL_TAG(Type.STRING),
     MAX_AIR(Type.SHORT),
@@ -82,9 +83,31 @@ public enum EntityData {
     SCORE_TAG(Type.STRING),
     BALLOON_ATTACHED_ENTITY(Type.LONG),
     PUFFERFISH_SIZE(Type.BYTE),
-    AGENT_ID(Type.LONG);
+    BOAT_BUBBLE_TIME(Type.INT),
+    AGENT_ID(Type.LONG),
+
+
+    EAT_COUNTER(Type.INT),
+    FLAGS_2(Type.FLAGS, true),
+
+
+    AREA_EFFECT_CLOUD_DURATION(Type.INT),
+    AREA_EFFECT_CLOUD_SPAWN_TIME(Type.INT),
+    AREA_EFFECT_CLOUD_RADIUS_PER_TICK(Type.FLOAT),
+    AREA_EFFECT_CLOUD_RADIUS_CHANGE_ON_PICKUP(Type.FLOAT),
+    AREA_EFFECT_CLOUD_PICKUP_COUNT(Type.INT),
+    INTERACTIVE_TAG(Type.STRING),
+    TRADE_TIER(Type.INT),
+    MAX_TRADE_TIER(Type.INT),
+    TRADE_XP(Type.INT);
 
     private final Type type;
+    private final boolean flags;
+
+    EntityData(Type type) {
+        this.type = type;
+        this.flags = false;
+    }
 
     @RequiredArgsConstructor
     public enum Type {
@@ -94,7 +117,7 @@ public enum EntityData {
         INT,
         FLOAT,
         STRING,
-        ITEM,
+        NBT,
         VECTOR3I,
         LONG,
         VECTOR3F

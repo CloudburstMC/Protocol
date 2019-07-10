@@ -13,14 +13,14 @@ public class SpawnParticleEffectSerializer_v332 implements PacketSerializer<Spaw
 
     @Override
     public void serialize(ByteBuf buffer, SpawnParticleEffectPacket packet) {
-        buffer.writeShortLE(packet.getDimensionId());
+        buffer.writeByte(packet.getDimensionId());
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
         BedrockUtils.writeString(buffer, packet.getIdentifier());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, SpawnParticleEffectPacket packet) {
-        packet.setDimensionId(buffer.readUnsignedShortLE());
+        packet.setDimensionId(buffer.readUnsignedByte());
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setIdentifier(BedrockUtils.readString(buffer));
     }

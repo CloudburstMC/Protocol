@@ -44,6 +44,7 @@ public class PlayerActionPacket extends BedrockPacket {
         START_SWIMMING,
         STOP_SWIMMING,
         START_SPIN_ATTACK,
-        STOP_SPIN_ATTACK
+        STOP_SPIN_ATTACK,
+        BLOCK_INTERACT
     }
 }

@@ -1,9 +1,8 @@
 package com.nukkitx.protocol.bedrock.v313.serializer;
 
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.stream.NetworkDataInputStream;
-import com.nukkitx.nbt.stream.NetworkDataOutputStream;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.UpdateTradePacket;
 import com.nukkitx.protocol.bedrock.v313.BedrockUtils;
@@ -32,7 +31,7 @@ public class UpdateTradeSerializer_v313 implements PacketSerializer<UpdateTradeP
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
         BedrockUtils.writeString(buffer, packet.getDisplayName());
-        try (NBTOutputStream writer = new NBTOutputStream(new NetworkDataOutputStream(new ByteBufOutputStream(buffer)))) {
+        try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
             writer.write(packet.getOffers());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -50,7 +49,7 @@ public class UpdateTradeSerializer_v313 implements PacketSerializer<UpdateTradeP
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
         packet.setDisplayName(BedrockUtils.readString(buffer));
-        try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
             packet.setOffers(reader.readTag());
         } catch (IOException e) {
             throw new RuntimeException(e);

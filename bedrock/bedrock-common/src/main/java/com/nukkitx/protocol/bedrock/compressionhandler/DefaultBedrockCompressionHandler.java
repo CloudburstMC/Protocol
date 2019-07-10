@@ -3,8 +3,10 @@ package com.nukkitx.protocol.bedrock.compressionhandler;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
+import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.util.Zlib;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -38,6 +40,8 @@ public class DefaultBedrockCompressionHandler implements BedrockCompressionHandl
                     packetBuf = packetCodec.tryEncode(packet);
                     VarInts.writeUnsignedInt(source, packetBuf.readableBytes());
                     source.writeBytes(packetBuf);
+                } catch (PacketSerializeException e) {
+                    log.debug("Error occurred whilst encoding " + packet.getClass().getSimpleName(), e);
                 } finally {
                     if (packetBuf != null) {
                         packetBuf.release();
@@ -67,8 +71,13 @@ public class DefaultBedrockCompressionHandler implements BedrockCompressionHandl
                     throw new DataFormatException("Contained packet is empty.");
                 }
 
-                BedrockPacket pkg = packetCodec.tryDecode(data);
-                packets.add(pkg);
+                try {
+                    BedrockPacket pkg = packetCodec.tryDecode(data);
+                    packets.add(pkg);
+                } catch (PacketSerializeException e) {
+                    log.debug("Error occurred whilst decoding packet", e);
+                    log.trace("Packet contents\n{}", ByteBufUtil.prettyHexDump(data.readerIndex(0)));
+                }
             }
         } catch (DataFormatException e) {
             throw new RuntimeException("Unable to inflate buffer data", e);

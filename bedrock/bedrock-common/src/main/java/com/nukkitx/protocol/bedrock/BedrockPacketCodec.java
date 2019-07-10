@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock;
 
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.packet.PacketHeader;
 import com.nukkitx.protocol.bedrock.packet.UnknownPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -38,7 +39,7 @@ public final class BedrockPacketCodec {
         return new Builder();
     }
 
-    public BedrockPacket tryDecode(ByteBuf buf) {
+    public BedrockPacket tryDecode(ByteBuf buf) throws PacketSerializeException {
         PacketHeader header = new PacketHeader();
 
         headerSerializer.deserialize(buf, header);
@@ -51,7 +52,11 @@ public final class BedrockPacketCodec {
         }
         packet.setHeader(header);
 
-        serializers[header.getPacketId()].deserialize(buf, packet);
+        try {
+            serializers[header.getPacketId()].deserialize(buf, packet);
+        } catch (Exception e) {
+            throw new PacketSerializeException("Error whilst deserializing " + packet.getClass().getSimpleName(), e);
+        }
 
         if (log.isDebugEnabled() && buf.isReadable()) {
             log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
@@ -59,7 +64,7 @@ public final class BedrockPacketCodec {
         return packet;
     }
 
-    public ByteBuf tryEncode(BedrockPacket packet) {
+    public ByteBuf tryEncode(BedrockPacket packet) throws PacketSerializeException {
         PacketHeader header = packet.getHeader();
         if (header == null) {
             header = new PacketHeader();
@@ -68,8 +73,12 @@ public final class BedrockPacketCodec {
         header.setPacketId(packetId);
 
         ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer();
-        headerSerializer.serialize(buf, header);
-        serializers[packetId].serialize(buf, packet);
+        try {
+            headerSerializer.serialize(buf, header);
+            serializers[packetId].serialize(buf, packet);
+        } catch (Exception e) {
+            throw new PacketSerializeException("Error whilst serializing " + packet.getClass().getSimpleName(), e);
+        }
         return buf;
     }
 

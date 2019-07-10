@@ -1,9 +1,8 @@
 package com.nukkitx.protocol.bedrock.v340.serializer;
 
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.stream.NetworkDataInputStream;
-import com.nukkitx.nbt.stream.NetworkDataOutputStream;
 import com.nukkitx.protocol.bedrock.packet.AvailableEntityIdentifiersPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
@@ -20,7 +19,7 @@ public class AvailableEntityIdentifiersSerializer_v340 implements PacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, AvailableEntityIdentifiersPacket packet) {
-        try (NBTOutputStream writer = new NBTOutputStream(new NetworkDataOutputStream(new ByteBufOutputStream(buffer)))) {
+        try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
             writer.write(packet.getTag());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -29,7 +28,7 @@ public class AvailableEntityIdentifiersSerializer_v340 implements PacketSerializ
 
     @Override
     public void deserialize(ByteBuf buffer, AvailableEntityIdentifiersPacket packet) {
-        try (NBTInputStream reader = new NBTInputStream(new NetworkDataInputStream(new ByteBufInputStream(buffer)))) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
             packet.setTag(reader.readTag());
         } catch (IOException e) {
             throw new RuntimeException(e);
