@@ -3,6 +3,7 @@
 ### Introduction
 
 A protocol library for Minecraft that supports multiple versions. (Currently Bedrock Edition only)
+Typo: Read this: https://github.com/NukkitX/Protocol/issues/10
 
 ### Links
 
