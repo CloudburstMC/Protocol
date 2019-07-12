@@ -128,8 +128,9 @@ public class CraftingDataSerializer_v361 implements PacketSerializer<CraftingDat
                 case MULTI:
                     uuid = BedrockUtils.readUuid(buf);
                     return CraftingData.fromMulti(uuid);
+                default:
+                    throw new IllegalArgumentException("Unhandled crafting data type: " + type);
             }
-            throw new IllegalArgumentException("Unhandled crafting data type: " + type);
         });
         packet.setCleanRecipes(buffer.readBoolean());
     }

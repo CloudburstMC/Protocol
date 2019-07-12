@@ -116,6 +116,7 @@ server.bind().join();
 | bedrock-v332 | 1.9.0 |
 | bedrock-v340 | 1.10.0 |
 | bedrock-v354 | 1.11.0 |
+| bedrock-v361 | 1.12.0 |
 
 ##### Repository:
 
@@ -135,7 +136,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.1.0</version>
+            <version>2.1.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

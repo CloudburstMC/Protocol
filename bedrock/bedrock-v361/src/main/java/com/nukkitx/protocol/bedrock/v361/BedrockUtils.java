@@ -14,7 +14,6 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
-import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import com.nukkitx.protocol.bedrock.v361.serializer.GameRulesChangedSerializer_v361;
 import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
@@ -297,14 +296,14 @@ public final class BedrockUtils {
 
     public static UUID readUuid(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return new UUID(buffer.readLong(), buffer.readLong());
+        return new UUID(buffer.readLongLE(), buffer.readLongLE());
     }
 
     public static void writeUuid(ByteBuf buffer, UUID uuid) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(uuid, "uuid");
-        buffer.writeLong(uuid.getMostSignificantBits());
-        buffer.writeLong(uuid.getLeastSignificantBits());
+        buffer.writeLongLE(uuid.getMostSignificantBits());
+        buffer.writeLongLE(uuid.getLeastSignificantBits());
     }
 
     public static Vector3f readVector3f(ByteBuf buffer) {
@@ -479,11 +478,12 @@ public final class BedrockUtils {
 
         CompoundTag compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer.readSlice(nbtSize)), true)) {
+            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
                 Tag<?> tag = reader.readTag();
                 if (tag instanceof CompoundTag) {
                     compoundTag = (CompoundTag) tag;
                 }
+            } catch (IllegalArgumentException ignored) {
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
@@ -498,6 +498,7 @@ public final class BedrockUtils {
                 } else {
                     throw new AssertionError("Expected 1 tag but got " + nbtTagCount);
                 }
+            } catch (IllegalArgumentException ignored) {
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
@@ -579,6 +580,7 @@ public final class BedrockUtils {
 
         if (id != 0) {
             auxValue = VarInts.readInt(buffer);
+            if (auxValue == 0x7fff) auxValue = -1;
             stackSize = VarInts.readInt(buffer);
         }
 
@@ -593,7 +595,9 @@ public final class BedrockUtils {
         VarInts.writeInt(buffer, id);
 
         if (id != 0) {
-            VarInts.writeInt(buffer, itemData.getDamage());
+            int damage = itemData.getDamage();
+            if (damage == -1) damage = 0x7fff;
+            VarInts.writeInt(buffer, damage);
             VarInts.writeInt(buffer, itemData.getCount());
         }
     }

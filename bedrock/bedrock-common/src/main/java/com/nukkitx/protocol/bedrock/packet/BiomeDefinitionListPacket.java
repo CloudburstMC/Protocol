@@ -5,10 +5,8 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
-@ToString(exclude = {"tag"})
 @EqualsAndHashCode(callSuper = true)
 public class BiomeDefinitionListPacket extends BedrockPacket {
     private Tag<?> tag;

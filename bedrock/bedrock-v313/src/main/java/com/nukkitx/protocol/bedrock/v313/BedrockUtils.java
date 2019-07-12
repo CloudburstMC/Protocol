@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v313;
 import com.flowpowered.math.vector.Vector2f;
 import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
@@ -12,11 +13,11 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
-import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.bedrock.v313.serializer.GameRulesChangedSerializer_v313;
 import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.AsciiString;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -427,7 +428,7 @@ public final class BedrockUtils {
 
         CompoundTag compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = new NBTInputStream(new LittleEndianByteBufInputStream(buffer.readSlice(nbtSize)), true)) {
+            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
                 Tag<?> tag = reader.readTag();
                 if (tag instanceof CompoundTag) {
                     compoundTag = (CompoundTag) tag;
@@ -474,7 +475,7 @@ public final class BedrockUtils {
 
         if (item.getTag() != null) {
             int afterSizeIndex = buffer.writerIndex();
-            try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer), true)) {
+            try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer))) {
                 stream.write(item.getTag());
             } catch (IOException e) {
                 // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...

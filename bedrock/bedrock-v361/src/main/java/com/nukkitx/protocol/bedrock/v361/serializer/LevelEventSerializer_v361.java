@@ -74,8 +74,9 @@ public class LevelEventSerializer_v361 implements PacketSerializer<LevelEventPac
         events.put(3507, Event.CAULDRON_TAKE_WATER);
         events.put(3508, Event.CAULDRON_ADD_DYE);
         events.put(3509, Event.CAULDRON_CLEAN_BANNER);
-        events.put(3610, Event.BLOCK_START_BREAK);
-        events.put(3611, Event.BLOCK_STOP_BREAK);
+        events.put(3600, Event.BLOCK_START_BREAK);
+        events.put(3601, Event.BLOCK_STOP_BREAK);
+        events.put(3602, Event.BLOCK_CONTINUE_BREAK);
         events.put(4000, Event.SET_DATA);
         events.put(9800, Event.PLAYERS_SLEEPING);
     }

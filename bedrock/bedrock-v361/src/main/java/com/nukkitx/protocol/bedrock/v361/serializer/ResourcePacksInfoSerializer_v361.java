@@ -14,16 +14,16 @@ public class ResourcePacksInfoSerializer_v361 implements PacketSerializer<Resour
     @Override
     public void serialize(ByteBuf buffer, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
+        buffer.writeBoolean(packet.isScriptingEnabled());
         BedrockUtils.writePacksInfoEntries(buffer, packet.getBehaviorPackInfos());
         BedrockUtils.writePacksInfoEntries(buffer, packet.getResourcePackInfos());
-        buffer.writeBoolean(packet.isScripting());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, ResourcePacksInfoPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
+        packet.setScriptingEnabled(buffer.readBoolean());
         packet.getBehaviorPackInfos().addAll(BedrockUtils.readPacksInfoEntries(buffer));
         packet.getResourcePackInfos().addAll(BedrockUtils.readPacksInfoEntries(buffer));
-        packet.setScripting(buffer.readBoolean());
     }
 }

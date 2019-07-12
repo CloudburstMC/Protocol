@@ -15,7 +15,7 @@ public class ResourcePacksInfoPacket extends BedrockPacket {
     private final List<Entry> behaviorPackInfos = new ArrayList<>();
     private final List<Entry> resourcePackInfos = new ArrayList<>();
     private boolean forcedToAccept;
-    private boolean scripting;
+    private boolean scriptingEnabled;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

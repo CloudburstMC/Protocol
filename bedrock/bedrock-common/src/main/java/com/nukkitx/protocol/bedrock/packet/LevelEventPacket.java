@@ -74,6 +74,7 @@ public class LevelEventPacket extends BedrockPacket {
         CAULDRON_CLEAN_BANNER,
         BLOCK_START_BREAK,
         BLOCK_STOP_BREAK,
+        BLOCK_CONTINUE_BREAK,
         SET_DATA,
         PLAYERS_SLEEPING
     }
