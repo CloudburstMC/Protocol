@@ -1,14 +1,18 @@
 # Protocol
 
+[![License](https://img.shields.io/badge/license-LGPL-blue.svg)](LICENSE)
+[![Build Status](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/badge/icon)](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/)
+[![Discord](https://img.shields.io/discord/393465748535640064.svg)](https://discord.gg/seCw62a)
+
 ### Introduction
 
 A protocol library for Minecraft that supports multiple versions. (Currently Bedrock Edition only)
 
 ### Links
 
-__[Jenkins](https://ci.nukkitx.com/job/NukkitX/job/Protocol/)__
-
-__[JavaDocs](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/javadoc/index.html?overview-summary.html)__
+* __[Jenkins](https://ci.nukkitx.com/job/NukkitX/job/Protocol/)__
+* __[JavaDocs](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/javadoc/index.html?overview-summary.html)__
+* __[Discord](https://discord.gg/seCw62a)__
 
 ### Usage
 
