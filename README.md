@@ -40,7 +40,7 @@ client.ping(addressToPing).whenComplete((pong, throwable) -> {
         return;
     }
     // Pong received.
-});
+}).join(); // Join if you do not want this to be handled asynchronously.
 ```
 
 ##### Connecting to a Remote Server
@@ -62,7 +62,7 @@ client.connect(addressToConnect).whenComplete((session, throwable) -> {
     // Remember to set a packet handler so you receive incoming packets
     session.setPacketHandler(new FooBarPacketHandler());
     // Now send packets...
-});
+}).join(); // Join if you do not want this to be handled asynchronously.
 ```
 
 #### Server
@@ -97,7 +97,7 @@ server.setHandler(new BedrockServerEventHandler() {
     public void onSessionCreation(BedrockServerSession serverSession) {
         // Connection established
         // Add disconnect handler
-        session.addDisconnectHandler(() -> System.out.println("Disconnected"));
+        session.addDisconnectHandler((reason) -> System.out.println("Disconnected"));
         // Remember to set a packet handler so you receive incoming packets
         session.setPacketHandler(new FooBarPacketHandler());
         // By default, the server will use a compatible codec that will read any LoginPacket.
@@ -127,8 +127,12 @@ server.bind().join();
 ```xml
     <repositories>
         <repository>
-            <id>nukkitx-repo</id>
+            <id>nukkitx-repo-release</id>
             <url>https://repo.nukkitx.com/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>nukkitx-repo-snapshot</id>
+            <url>https://repo.nukkitx.com/maven-snapshots/</url>
         </repository>
     </repositories>
 ```
