@@ -56,9 +56,9 @@ client.connect(addressToConnect).whenComplete((session, throwable) -> {
     }
     // Connection established
     // Make sure to set the packet codec version you wish to use before sending out packets
-    session.setPacketCodec(Bedrock_v354.V354_CODEC);
+    session.setPacketCodec(Bedrock_v361.V361_CODEC);
     // Add disconnect handler
-    session.addDisconnectHandler(() -> System.out.println("Disconnected"));
+    session.addDisconnectHandler((reason) -> System.out.println("Disconnected"));
     // Remember to set a packet handler so you receive incoming packets
     session.setPacketHandler(new FooBarPacketHandler());
     // Now send packets...
@@ -79,7 +79,7 @@ pong.setMotd("My Server");
 pong.setPlayerCount(0);
 pong.setMaximumPlayerCount(20);
 pong.setGameType("Survival");
-pong.setProtocolVersion(Bedrock_v354.V354_CODEC.getProtocolVersion());
+pong.setProtocolVersion(Bedrock_v361.V361_CODEC.getProtocolVersion());
 
 server.setHandler(new BedrockServerEventHandler() {
     @Override
@@ -87,7 +87,6 @@ server.setHandler(new BedrockServerEventHandler() {
         return true; // Connection will be accepted
     }
     
-    @Nullable
     @Override
     public BedrockPong onQuery(InetSocketAddress address) {
         return pong;
@@ -149,3 +148,11 @@ server.bind().join();
         </dependency>
     </dependencies>
 ```
+
+#### Projects Using This Library
+
+* [__ProxyPass__ - Vanilla server man-in-the-middle proxy](https://github.com/NukkitX/ProxyPass)
+* [__DragonProxy__ - Allow Bedrock clients to join Java Edition servers](https://github.com/DragonetMC/DragonProxy)
+* [__Geyser__ - A bridge between Bedrock and Java Edition](https://github.com/GeyserMC/Geyser)
+
+_If you would like to add your project here, please create a pull request._
