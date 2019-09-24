@@ -77,6 +77,7 @@ public final class BedrockPacketCodec {
             headerSerializer.serialize(buf, header);
             serializers[packetId].serialize(buf, packet);
         } catch (Exception e) {
+            buf.release();
             throw new PacketSerializeException("Error whilst serializing " + packet.getClass().getSimpleName(), e);
         }
         return buf;

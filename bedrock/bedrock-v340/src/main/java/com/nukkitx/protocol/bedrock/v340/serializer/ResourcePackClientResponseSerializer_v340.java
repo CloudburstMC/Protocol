@@ -21,7 +21,7 @@ public class ResourcePackClientResponseSerializer_v340 implements PacketSerializ
         buffer.writeByte(packet.getStatus().ordinal());
 
         List<String> packIds = packet.getPackIds();
-        buffer.writeIntLE(packIds.size());
+        buffer.writeShortLE(packIds.size());
 
         for (String packId : packIds) {
             BedrockUtils.writeString(buffer, packId);
