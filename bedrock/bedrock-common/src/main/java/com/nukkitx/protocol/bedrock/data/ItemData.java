@@ -55,6 +55,11 @@ public final class ItemData {
         return count <= 0;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, damage, tag, canPlace, canBreak, blockingTicks);
+    }
+
     public boolean equals(ItemData other, boolean checkAmount, boolean checkMetadata, boolean checkUserdata) {
         return (!checkAmount || count == other.count) &&
                 (!checkMetadata || damage == other.damage) &&

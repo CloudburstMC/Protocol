@@ -10,8 +10,4 @@ public class CommandEnumData {
     @NonNull
     private final String[] values;
     private final boolean isSoft;
-
-    public int hashCode() {
-        return name.hashCode();
-    }
 }

@@ -27,7 +27,11 @@ public class InventoryTransactionPacket extends BedrockPacket {
     private Vector3f clickPosition;
     private Vector3f headPosition;
     /**
-     * @apiNote 1.10+ ItemUseInventoryTransaction only
+     * Runtime ID of block being picked.
+     * ItemUseInventoryTransaction only
+     *
+     * @param blockRuntimeId runtime ID of block
+     * @return runtime ID of block
      */
     private int blockRuntimeId;
 
