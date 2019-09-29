@@ -154,5 +154,6 @@ server.bind().join();
 * [__ProxyPass__ - Vanilla server man-in-the-middle proxy](https://github.com/NukkitX/ProxyPass)
 * [__DragonProxy__ - Allow Bedrock clients to join Java Edition servers](https://github.com/DragonetMC/DragonProxy)
 * [__Geyser__ - A bridge between Bedrock and Java Edition](https://github.com/GeyserMC/Geyser)
+* [__BedrockConnect__ - Allow Xbox/Switch Bedrock clients to add and join servers](https://github.com/Pugmatt/BedrockConnect)
 
 _If you would like to add your project here, please create a pull request._
