@@ -1,7 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.data.ContainerId;
 import com.nukkitx.protocol.bedrock.data.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
@@ -14,7 +13,7 @@ public class MobEquipmentPacket extends BedrockPacket {
     private ItemData item;
     private int inventorySlot;
     private int hotbarSlot;
-    private ContainerId containerId;
+    private int containerId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -16,10 +16,10 @@ public final class InventorySource {
     private static final InventorySource GLOBAL_SOURCE = new InventorySource(Type.GLOBAL, ContainerId.NONE, Flag.NONE);
     private static final InventorySource INVALID_SOURCE = new InventorySource(Type.INVALID, ContainerId.NONE, Flag.NONE);
     private final Type type;
-    private final ContainerId containerId;
+    private final int containerId;
     private final Flag flag;
 
-    public static InventorySource fromContainerWindowId(@Nonnull ContainerId containerId) {
+    public static InventorySource fromContainerWindowId(int containerId) {
         Preconditions.checkNotNull(containerId, "containerId");
         return new InventorySource(Type.CONTAINER, containerId, Flag.NONE);
     }
@@ -36,12 +36,12 @@ public final class InventorySource {
         return INVALID_SOURCE;
     }
 
-    public static InventorySource fromNonImplementedTodo(@Nonnull ContainerId containerId) {
+    public static InventorySource fromNonImplementedTodo(int containerId) {
         Preconditions.checkNotNull(containerId, "containerId");
         return new InventorySource(Type.NON_IMPLEMENTED_TODO, containerId, Flag.NONE);
     }
 
-    public static InventorySource fromUntrackedInteractionUI(@Nonnull ContainerId containerId) {
+    public static InventorySource fromUntrackedInteractionUI(int containerId) {
         Preconditions.checkNotNull(containerId, "containerId");
         return new InventorySource(Type.UNTRACKED_INTERACTION_UI, containerId, Flag.NONE);
     }
