@@ -1,7 +1,6 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
 import com.nukkitx.network.VarInts;
-import com.nukkitx.protocol.bedrock.data.ContainerId;
 import com.nukkitx.protocol.bedrock.packet.MobEquipmentPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -19,7 +18,7 @@ public class MobEquipmentSerializer_v361 implements PacketSerializer<MobEquipmen
         BedrockUtils.writeItemData(buffer, packet.getItem());
         buffer.writeByte(packet.getInventorySlot());
         buffer.writeByte(packet.getHotbarSlot());
-        buffer.writeByte(packet.getContainerId().id());
+        buffer.writeByte(packet.getContainerId());
     }
 
     @Override
@@ -28,6 +27,6 @@ public class MobEquipmentSerializer_v361 implements PacketSerializer<MobEquipmen
         packet.setItem(BedrockUtils.readItemData(buffer));
         packet.setInventorySlot(buffer.readUnsignedByte());
         packet.setHotbarSlot(buffer.readUnsignedByte());
-        packet.setContainerId(ContainerId.byId(buffer.readByte()));
+        packet.setContainerId(buffer.readByte());
     }
 }

@@ -715,7 +715,7 @@ public final class BedrockUtils {
 
         switch (type) {
             case CONTAINER:
-                ContainerId containerId = ContainerId.byId(VarInts.readInt(buffer));
+                int containerId = VarInts.readInt(buffer);
                 return InventorySource.fromContainerWindowId(containerId);
             case GLOBAL:
                 return InventorySource.fromGlobalInventory();
@@ -725,10 +725,10 @@ public final class BedrockUtils {
             case CREATIVE:
                 return InventorySource.fromCreativeInventory();
             case UNTRACKED_INTERACTION_UI:
-                containerId = ContainerId.byId(VarInts.readInt(buffer));
+                containerId = VarInts.readInt(buffer);
                 return InventorySource.fromUntrackedInteractionUI(containerId);
             case NON_IMPLEMENTED_TODO:
-                containerId = ContainerId.byId(VarInts.readInt(buffer));
+                containerId = VarInts.readInt(buffer);
                 return InventorySource.fromNonImplementedTodo(containerId);
             default:
                 return InventorySource.fromInvalid();
@@ -745,7 +745,7 @@ public final class BedrockUtils {
             case CONTAINER:
             case UNTRACKED_INTERACTION_UI:
             case NON_IMPLEMENTED_TODO:
-                VarInts.writeInt(buffer, inventorySource.getContainerId().id());
+                VarInts.writeInt(buffer, inventorySource.getContainerId());
                 break;
             case WORLD_INTERACTION:
                 VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
