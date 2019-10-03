@@ -3,7 +3,6 @@ package com.nukkitx.protocol.bedrock.v361.serializer;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.LevelEventGenericPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -33,7 +32,7 @@ public class LevelEventGenericSerializer_v361 implements PacketSerializer<LevelE
     public void deserialize(ByteBuf buffer, LevelEventGenericPacket packet) {
         packet.setEventId(VarInts.readInt(buffer));
         try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
-            packet.setTag((CompoundTag) reader.readTag());
+            packet.setTag(reader.readTag());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
