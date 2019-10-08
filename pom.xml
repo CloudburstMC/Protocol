@@ -131,6 +131,7 @@
                 <configuration>
                     <links>
                         <link>https://netty.io/4.1/api</link>
+                        <link>https://ci.nukkitx.com/job/NukkitX/job/math/job/master/javadoc</link>
                     </links>
                 </configuration>
             </plugin>

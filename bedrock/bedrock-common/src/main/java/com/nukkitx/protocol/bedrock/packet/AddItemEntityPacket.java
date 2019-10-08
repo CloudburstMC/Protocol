@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.flowpowered.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.EntityDataDictionary;
 import com.nukkitx.protocol.bedrock.data.ItemData;

@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector3i;
 import lombok.Getter;
 
 @Getter

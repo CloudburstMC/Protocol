@@ -31,9 +31,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.flowpowered</groupId>
-            <artifactId>flow-math</artifactId>
-            <version>1.0.3</version>
+            <groupId>com.nukkitx</groupId>
+            <artifactId>math</artifactId>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

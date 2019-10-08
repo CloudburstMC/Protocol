@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
-import com.flowpowered.math.vector.Vector3f;
-import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityDeltaPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
@@ -78,7 +78,7 @@ public class MoveEntityDeltaSerializer_v361 implements PacketSerializer<MoveEnti
         if ((flags & HAS_ROLL) != 0) {
             roll = BedrockUtils.readByteAngle(buffer);
         }
-        packet.setMovementDelta(new Vector3i(x, y, z));
-        packet.setRotationDelta(new Vector3f(pitch, yaw, roll));
+        packet.setMovementDelta(Vector3i.from(x, y, z));
+        packet.setRotationDelta(Vector3f.from(pitch, yaw, roll));
     }
 }

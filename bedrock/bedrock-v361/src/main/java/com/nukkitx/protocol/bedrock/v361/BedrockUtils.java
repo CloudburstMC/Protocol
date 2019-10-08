@@ -1,8 +1,8 @@
 package com.nukkitx.protocol.bedrock.v361;
 
-import com.flowpowered.math.vector.Vector2f;
-import com.flowpowered.math.vector.Vector3f;
-import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector2f;
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.CompoundTagBuilder;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
@@ -311,7 +311,7 @@ public final class BedrockUtils {
         float x = buffer.readFloatLE();
         float y = buffer.readFloatLE();
         float z = buffer.readFloatLE();
-        return new Vector3f(x, y, z);
+        return Vector3f.from(x, y, z);
     }
 
     public static void writeVector3f(ByteBuf buffer, Vector3f vector3f) {
@@ -326,7 +326,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(buffer, "buffer");
         float x = buffer.readFloatLE();
         float y = buffer.readFloatLE();
-        return new Vector2f(x, y);
+        return Vector2f.from(x, y);
     }
 
     public static void writeVector2f(ByteBuf buffer, Vector2f vector2f) {
@@ -343,7 +343,7 @@ public final class BedrockUtils {
         int y = VarInts.readInt(buffer);
         int z = VarInts.readInt(buffer);
 
-        return new Vector3i(x, y, z);
+        return Vector3i.from(x, y, z);
     }
 
     public static void writeVector3i(ByteBuf buffer, Vector3i vector3i) {
@@ -360,7 +360,7 @@ public final class BedrockUtils {
         int y = VarInts.readUnsignedInt(buffer);
         int z = VarInts.readInt(buffer);
 
-        return new Vector3i(x, y, z);
+        return Vector3i.from(x, y, z);
     }
 
     public static void writeBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
@@ -376,7 +376,7 @@ public final class BedrockUtils {
         float pitch = readByteAngle(buffer);
         float yaw = readByteAngle(buffer);
         float roll = readByteAngle(buffer);
-        return new Vector3f(pitch, yaw, roll);
+        return Vector3f.from(pitch, yaw, roll);
     }
 
     public static void writeByteRotation(ByteBuf buffer, Vector3f rotation) {

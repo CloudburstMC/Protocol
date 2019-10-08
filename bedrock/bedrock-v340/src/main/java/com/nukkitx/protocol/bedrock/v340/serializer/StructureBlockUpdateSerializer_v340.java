@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.v340.serializer;
 
-import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.StructureEditorData;
 import com.nukkitx.protocol.bedrock.data.StructureSettings;
