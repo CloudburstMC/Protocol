@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.SpawnParticleEffectPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -14,6 +15,7 @@ public class SpawnParticleEffectSerializer_v361 implements PacketSerializer<Spaw
     @Override
     public void serialize(ByteBuf buffer, SpawnParticleEffectPacket packet) {
         buffer.writeByte(packet.getDimensionId());
+        VarInts.writeLong(buffer, packet.getUniqueEntityId());
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
         BedrockUtils.writeString(buffer, packet.getIdentifier());
     }
@@ -21,6 +23,7 @@ public class SpawnParticleEffectSerializer_v361 implements PacketSerializer<Spaw
     @Override
     public void deserialize(ByteBuf buffer, SpawnParticleEffectPacket packet) {
         packet.setDimensionId(buffer.readUnsignedByte());
+        packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setIdentifier(BedrockUtils.readString(buffer));
     }

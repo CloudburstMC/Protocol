@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class SpawnParticleEffectPacket extends BedrockPacket {
     private int dimensionId;
+    private long uniqueEntityId = -1;
     private Vector3f position;
     private String identifier;
 
