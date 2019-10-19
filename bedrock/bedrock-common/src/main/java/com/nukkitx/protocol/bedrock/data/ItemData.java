@@ -61,7 +61,8 @@ public final class ItemData {
     }
 
     public boolean equals(ItemData other, boolean checkAmount, boolean checkMetadata, boolean checkUserdata) {
-        return (!checkAmount || count == other.count) &&
+        return id == other.id &&
+                (!checkAmount || count == other.count) &&
                 (!checkMetadata || damage == other.damage) &&
                 (!checkUserdata || (Objects.equals(tag, other.tag) && Arrays.equals(canPlace, other.canPlace) && Arrays.equals(canBreak, other.canBreak)));
     }
