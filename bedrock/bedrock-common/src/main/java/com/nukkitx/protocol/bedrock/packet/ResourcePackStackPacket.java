@@ -16,6 +16,7 @@ public class ResourcePackStackPacket extends BedrockPacket {
     private final List<Entry> behaviorPacks = new ArrayList<>();
     private final List<Entry> resourcePacks = new ArrayList<>();
     private boolean experimental;
+    private String gameVersion;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

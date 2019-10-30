@@ -13,6 +13,14 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(AnvilDamagePacket packet) {
+        return false;
+    }
+
+    default boolean handle(AvailableEntityIdentifiersPacket packet) {
+        return false;
+    }
+
     default boolean handle(BlockEntityDataPacket packet) {
         return false;
     }
@@ -49,11 +57,23 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(CompletedUsingItemPacket packet) {
+        return false;
+    }
+
     default boolean handle(ContainerClosePacket packet) {
         return false;
     }
 
     default boolean handle(CraftingEventPacket packet) {
+        return false;
+    }
+
+    default boolean handle(EducationSettingsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(EmotePacket packet) {
         return false;
     }
 
@@ -141,6 +161,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(MultiplayerSettingsPacket packet) {
+        return false;
+    }
+
     default boolean handle(NetworkStackLatencyPacket packet) {
         return false;
     }
@@ -150,6 +174,10 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(PlayerActionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerAuthInputPacket packet) {
         return false;
     }
 
@@ -202,10 +230,6 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(SubClientLoginPacket packet) {
-        return false;
-    }
-
-    default boolean handle(TextPacket packet) {
         return false;
     }
 
@@ -325,6 +349,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(NetworkSettingsPacket packet) {
+        return false;
+    }
+
     default boolean handle(NpcRequestPacket packet) {
         return false;
     }
@@ -433,6 +461,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(SettingsCommandPacket packet) {
+        return false;
+    }
+
     default boolean handle(SetTitlePacket packet) {
         return false;
     }
@@ -457,6 +489,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(SpawnParticleEffectPacket packet) {
+        return false;
+    }
+
     default boolean handle(StartGamePacket packet) {
         return false;
     }
@@ -478,6 +514,14 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(TakeItemEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(TextPacket packet) {
+        return false;
+    }
+
+    default boolean handle(TickSyncPacket packet) {
         return false;
     }
 
@@ -513,10 +557,6 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(AvailableEntityIdentifiersPacket packet) {
-        return false;
-    }
-
     default boolean handle(BiomeDefinitionListPacket packet) {
         return false;
     }
@@ -526,10 +566,6 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(NetworkChunkPublisherUpdatePacket packet) {
-        return false;
-    }
-
-    default boolean handle(SpawnParticleEffectPacket packet) {
         return false;
     }
 

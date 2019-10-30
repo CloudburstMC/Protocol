@@ -1,6 +1,8 @@
 package com.nukkitx.protocol.bedrock.v354.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.data.ImageData;
+import com.nukkitx.protocol.bedrock.data.SerializedSkin;
 import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
 import com.nukkitx.protocol.bedrock.v354.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -27,11 +29,14 @@ public class PlayerListSerializer_v354 implements PacketSerializer<PlayerListPac
             if (packet.getType() == Type.ADD) {
                 VarInts.writeLong(buffer, entry.getEntityId());
                 BedrockUtils.writeString(buffer, entry.getName());
-                BedrockUtils.writeString(buffer, entry.getSkinId());
-                BedrockUtils.writeByteArray(buffer, entry.getSkinData());
-                BedrockUtils.writeByteArray(buffer, entry.getCapeData());
-                BedrockUtils.writeString(buffer, entry.getGeometryName());
-                BedrockUtils.writeString(buffer, entry.getGeometryData());
+                SerializedSkin skin = entry.getSkin();
+                BedrockUtils.writeString(buffer, skin.getSkinId());
+                skin.getSkinData().checkLegacySkinSize();
+                BedrockUtils.writeByteArray(buffer, skin.getSkinData().getImage());
+                skin.getCapeData().checkLegacyCapeSize();
+                BedrockUtils.writeByteArray(buffer, skin.getCapeData().getImage());
+                BedrockUtils.writeString(buffer, skin.getSkinResourcePatch());
+                BedrockUtils.writeString(buffer, skin.getGeometryData());
                 BedrockUtils.writeString(buffer, entry.getXuid());
                 BedrockUtils.writeString(buffer, entry.getPlatformChatId());
             }
@@ -50,11 +55,12 @@ public class PlayerListSerializer_v354 implements PacketSerializer<PlayerListPac
             if (type == Type.ADD) {
                 entry.setEntityId(VarInts.readLong(buffer));
                 entry.setName(BedrockUtils.readString(buffer));
-                entry.setSkinId(BedrockUtils.readString(buffer));
-                entry.setSkinData(BedrockUtils.readByteArray(buffer));
-                entry.setCapeData(BedrockUtils.readByteArray(buffer));
-                entry.setGeometryName(BedrockUtils.readString(buffer));
-                entry.setGeometryData(BedrockUtils.readString(buffer));
+                String skinId = BedrockUtils.readString(buffer);
+                ImageData skinData = ImageData.of(BedrockUtils.readByteArray(buffer));
+                ImageData capeData = ImageData.of(64, 32, BedrockUtils.readByteArray(buffer));
+                String geometryName = BedrockUtils.readString(buffer);
+                String geometryData = BedrockUtils.readString(buffer);
+                entry.setSkin(SerializedSkin.of(skinId, skinData, capeData, geometryName, geometryData, false));
                 entry.setXuid(BedrockUtils.readString(buffer));
                 entry.setPlatformChatId(BedrockUtils.readString(buffer));
             }

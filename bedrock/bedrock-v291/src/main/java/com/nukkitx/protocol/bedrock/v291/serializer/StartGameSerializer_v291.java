@@ -1,5 +1,8 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
+import com.nukkitx.nbt.CompoundTagBuilder;
+import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
@@ -9,9 +12,8 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
-
-import static com.nukkitx.protocol.bedrock.packet.StartGamePacket.BlockPaletteEntry;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacket> {
@@ -65,17 +67,12 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         buffer.writeLongLE(packet.getCurrentTick());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
-        // cache palette for fast writing
-        if (packet.getCachedPalette() != null) {
-            buffer.writeBytes(packet.getCachedPalette());
-            packet.getCachedPalette().release();
-        } else {
-            Collection<BlockPaletteEntry> paletteEntries = packet.getPaletteEntries();
-            VarInts.writeUnsignedInt(buffer, paletteEntries.size());
-            for (BlockPaletteEntry entry : paletteEntries) {
-                BedrockUtils.writeString(buffer, entry.getIdentifier());
-                buffer.writeShortLE(entry.getMeta());
-            }
+        List<CompoundTag> palette = packet.getBlockPalette().getValue();
+        VarInts.writeUnsignedInt(buffer, palette.size());
+        for (CompoundTag entry : palette) {
+            CompoundTag blockTag = entry.getAsCompound("block");
+            BedrockUtils.writeString(buffer, blockTag.getAsString("name"));
+            buffer.writeShortLE(entry.getAsShort("meta"));
         }
 
         BedrockUtils.writeString(buffer, packet.getMultiplayerCorrelationId());
@@ -128,11 +125,17 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         packet.setCurrentTick(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
-        BedrockUtils.readArray(buffer, packet.getPaletteEntries(), buf -> {
-            String identifier = BedrockUtils.readString(buffer);
-            short meta = buffer.readShortLE();
-            return new BlockPaletteEntry(identifier, meta);
-        });
+        int paletteLength = VarInts.readUnsignedInt(buffer);
+        List<CompoundTag> palette = new ArrayList<>(paletteLength);
+        for (int i = 0; i < paletteLength; i++) {
+            palette.add(CompoundTagBuilder.builder()
+                    .tag(CompoundTagBuilder.builder()
+                            .stringTag("name", BedrockUtils.readString(buffer))
+                            .build("block"))
+                    .shortTag("meta", buffer.readShortLE())
+                    .buildRootTag());
+        }
+        packet.setBlockPalette(new ListTag<>("", CompoundTag.class, palette));
 
         packet.setMultiplayerCorrelationId(BedrockUtils.readString(buffer));
     }

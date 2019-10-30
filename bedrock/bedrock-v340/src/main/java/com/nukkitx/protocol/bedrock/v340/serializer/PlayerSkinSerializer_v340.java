@@ -1,5 +1,7 @@
 package com.nukkitx.protocol.bedrock.v340.serializer;
 
+import com.nukkitx.protocol.bedrock.data.ImageData;
+import com.nukkitx.protocol.bedrock.data.SerializedSkin;
 import com.nukkitx.protocol.bedrock.packet.PlayerSkinPacket;
 import com.nukkitx.protocol.bedrock.v340.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -15,26 +17,30 @@ public class PlayerSkinSerializer_v340 implements PacketSerializer<PlayerSkinPac
     @Override
     public void serialize(ByteBuf buffer, PlayerSkinPacket packet) {
         BedrockUtils.writeUuid(buffer, packet.getUuid());
-        BedrockUtils.writeString(buffer, packet.getSkinId());
-        BedrockUtils.writeString(buffer, packet.getNewSkinName());
-        BedrockUtils.writeString(buffer, packet.getOldSkinName());
-        BedrockUtils.writeByteArray(buffer, packet.getSkinData());
-        BedrockUtils.writeByteArray(buffer, packet.getCapeData());
-        BedrockUtils.writeString(buffer, packet.getGeometryName());
-        BedrockUtils.writeString(buffer, packet.getGeometryData());
-        buffer.writeBoolean(packet.isPremiumSkin());
+        SerializedSkin skin = packet.getSkin();
+        BedrockUtils.writeString(buffer, skin.getSkinId());
+        BedrockUtils.writeString(buffer, "");
+        BedrockUtils.writeString(buffer, "");
+        skin.getSkinData().checkLegacySkinSize();
+        BedrockUtils.writeByteArray(buffer, skin.getSkinData().getImage());
+        skin.getCapeData().checkLegacyCapeSize();
+        BedrockUtils.writeByteArray(buffer, skin.getCapeData().getImage());
+        BedrockUtils.writeString(buffer, skin.getSkinResourcePatch());
+        BedrockUtils.writeString(buffer, skin.getGeometryData());
+        buffer.writeBoolean(skin.isPremium());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, PlayerSkinPacket packet) {
         packet.setUuid(BedrockUtils.readUuid(buffer));
-        packet.setSkinId(BedrockUtils.readString(buffer));
-        packet.setNewSkinName(BedrockUtils.readString(buffer));
-        packet.setOldSkinName(BedrockUtils.readString(buffer));
-        packet.setSkinData(BedrockUtils.readByteArray(buffer));
-        packet.setCapeData(BedrockUtils.readByteArray(buffer));
-        packet.setGeometryName(BedrockUtils.readString(buffer));
-        packet.setGeometryData(BedrockUtils.readString(buffer));
-        packet.setPremiumSkin(buffer.readBoolean());
+        String skinId = BedrockUtils.readString(buffer);
+        BedrockUtils.readString(buffer); // new skin name
+        BedrockUtils.readString(buffer); // old skin name
+        ImageData skinData = ImageData.of(BedrockUtils.readByteArray(buffer));
+        ImageData capeData = ImageData.of(64, 32, BedrockUtils.readByteArray(buffer));
+        String geometryName = BedrockUtils.readString(buffer);
+        String geometryData = BedrockUtils.readString(buffer);
+        boolean premium = buffer.readBoolean();
+        packet.setSkin(SerializedSkin.of(skinId, skinData, capeData, geometryName, geometryData, premium));
     }
 }

@@ -10,6 +10,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class RespawnPacket extends BedrockPacket {
     private Vector3f position;
+    private int spawnState; // 0 server searching, 1 server ready, 3 client ready (server bound)
+    private long runtimeEntityId; // Only used server bound and pretty pointless
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

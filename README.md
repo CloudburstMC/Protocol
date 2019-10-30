@@ -120,6 +120,7 @@ server.bind().join();
 | bedrock-v340 | 1.10.0 |
 | bedrock-v354 | 1.11.0 |
 | bedrock-v361 | 1.12.0 |
+| bedrock-v388 | 1.13.0 |
 
 ##### Repository:
 

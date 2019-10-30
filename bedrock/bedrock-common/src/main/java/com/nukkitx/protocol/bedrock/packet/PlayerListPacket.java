@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.SerializedSkin;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,19 +27,17 @@ public class PlayerListPacket extends BedrockPacket {
         REMOVE
     }
 
-    @ToString(exclude = {"entityId", "name", "skinData", "capeData", "geometryData", "xuid", "platformChatId"})
-    @EqualsAndHashCode(exclude = {"skinData", "capeData", "geometryData"})
+    @ToString
     @Data
     public final static class Entry {
         private final UUID uuid;
         private long entityId;
         private String name;
-        private String skinId;
-        private byte[] skinData;
-        private byte[] capeData;
-        private String geometryName;
-        private String geometryData;
         private String xuid;
         private String platformChatId;
+        private int buildPlatform;
+        private SerializedSkin skin;
+        private boolean teacher;
+        private boolean host;
     }
 }

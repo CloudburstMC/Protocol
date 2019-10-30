@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.nukkitx</groupId>
             <artifactId>nbt</artifactId>
-            <version>1.3.2</version>
+            <version>1.3.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -35,7 +35,8 @@ public class CommandParamData {
     }
 
     public enum Option {
-        UNKNOWN_0
+        UNKNOWN_0,
+        UNKNOWN_1
     }
 
     @Value

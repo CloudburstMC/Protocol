@@ -3,11 +3,12 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRule;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import io.netty.buffer.ByteBuf;
 import lombok.*;
 
 import java.util.ArrayDeque;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString(exclude = {"paletteEntries", "itemEntries"})
+@ToString(exclude = {"itemEntries", "blockPalette"})
 public class StartGamePacket extends BedrockPacket {
     private final List<GameRule> gamerules = new ArrayList<>();
     private long uniqueEntityId;
@@ -57,15 +58,16 @@ public class StartGamePacket extends BedrockPacket {
     private boolean fromWorldTemplate;
     private boolean worldTemplateOptionLocked;
     private boolean onlySpawningV1Villagers;
+    private String vanillaVersion;
     // Level settings end
     private String levelId;
     private String worldName;
     private String premiumWorldTemplateId;
     private boolean trial;
+    private boolean movementServerAuthoritative;
     private long currentTick;
     private int enchantmentSeed;
-    private ByteBuf cachedPalette;
-    private Collection<BlockPaletteEntry> paletteEntries = new ArrayDeque<>();
+    private ListTag<CompoundTag> blockPalette;
     private Collection<ItemEntry> itemEntries = new ArrayDeque<>();
     private String multiplayerCorrelationId;
 

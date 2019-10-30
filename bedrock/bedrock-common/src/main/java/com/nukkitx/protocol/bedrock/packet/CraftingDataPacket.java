@@ -1,7 +1,9 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.data.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.CraftingData;
+import com.nukkitx.protocol.bedrock.data.PotionMixData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +17,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class CraftingDataPacket extends BedrockPacket {
     private final List<CraftingData> craftingData = new ArrayList<>();
+    private final List<PotionMixData> potionMixData = new ArrayList<>();
+    private final List<ContainerMixData> containerMixData = new ArrayList<>();
     private boolean cleanRecipes;
 
     @Override
