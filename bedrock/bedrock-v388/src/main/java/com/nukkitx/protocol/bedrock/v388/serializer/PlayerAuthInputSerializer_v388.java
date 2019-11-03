@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
+import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
@@ -20,6 +21,8 @@ public class PlayerAuthInputSerializer_v388 implements PacketSerializer<PlayerAu
         buffer.writeFloatLE(rotation.getX());
         buffer.writeFloatLE(rotation.getY());
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
+        buffer.writeFloatLE(packet.getMotion().getX());
+        buffer.writeFloatLE(packet.getMotion().getY());
         buffer.writeFloatLE(rotation.getZ());
         VarInts.writeUnsignedLong(buffer, packet.getInputData());
         VarInts.writeUnsignedInt(buffer, packet.getInputMode());
@@ -35,6 +38,7 @@ public class PlayerAuthInputSerializer_v388 implements PacketSerializer<PlayerAu
         float x = buffer.readFloatLE();
         float y = buffer.readFloatLE();
         packet.setPosition(BedrockUtils.readVector3f(buffer));
+        packet.setMotion(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
         float z = buffer.readFloatLE();
         packet.setRotation(Vector3f.from(x, y, z));
         packet.setInputData(VarInts.readUnsignedLong(buffer));
