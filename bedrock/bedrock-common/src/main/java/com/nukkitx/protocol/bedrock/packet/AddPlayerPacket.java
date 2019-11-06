@@ -33,6 +33,7 @@ public class AddPlayerPacket extends BedrockPacket {
     private int playerPermission;
     private int customFlags;
     private String deviceId;
+    private int buildPlatform;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

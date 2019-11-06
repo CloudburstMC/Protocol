@@ -35,7 +35,7 @@ public class StartGamePacket extends BedrockPacket {
     private Vector3i defaultSpawn;
     private boolean acheivementsDisabled;
     private int time;
-    private boolean eduLevel;
+    private int eduEditionOffers;
     private boolean eduFeaturesEnabled;
     private float rainLevel;
     private float lightningLevel;

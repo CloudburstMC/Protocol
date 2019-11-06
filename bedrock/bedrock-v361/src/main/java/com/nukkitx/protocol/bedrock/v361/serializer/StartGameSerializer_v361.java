@@ -36,7 +36,7 @@ public class StartGameSerializer_v361 implements PacketSerializer<StartGamePacke
         BedrockUtils.writeBlockPosition(buffer, packet.getDefaultSpawn());
         buffer.writeBoolean(packet.isAcheivementsDisabled());
         VarInts.writeInt(buffer, packet.getTime());
-        buffer.writeBoolean(packet.isEduLevel());
+        buffer.writeBoolean(packet.getEduEditionOffers() != 0);
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
         buffer.writeFloatLE(packet.getRainLevel());
         buffer.writeFloatLE(packet.getLightningLevel());
@@ -102,7 +102,7 @@ public class StartGameSerializer_v361 implements PacketSerializer<StartGamePacke
         packet.setDefaultSpawn(BedrockUtils.readBlockPosition(buffer));
         packet.setAcheivementsDisabled(buffer.readBoolean());
         packet.setTime(VarInts.readInt(buffer));
-        packet.setEduLevel(buffer.readBoolean());
+        packet.setEduEditionOffers(buffer.readBoolean() ? 1 : 0);
         packet.setEduFeaturesEnabled(buffer.readBoolean());
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());

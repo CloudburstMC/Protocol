@@ -43,13 +43,12 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
         PARAM_TYPES.put(6, TARGET);
         PARAM_TYPES.put(7, WILDCARD_TARGET);
         PARAM_TYPES.put(14, FILE_PATH);
-        PARAM_TYPES.put(18, INT_RANGE);
-        PARAM_TYPES.put(27, STRING);
-        PARAM_TYPES.put(29, POSITION);
-        PARAM_TYPES.put(32, MESSAGE);
-        PARAM_TYPES.put(34, TEXT);
-        PARAM_TYPES.put(37, JSON);
-        PARAM_TYPES.put(44, COMMAND);
+        PARAM_TYPES.put(29, STRING);
+        PARAM_TYPES.put(37, POSITION);
+        PARAM_TYPES.put(41, MESSAGE);
+        PARAM_TYPES.put(43, TEXT);
+        PARAM_TYPES.put(47, JSON);
+        PARAM_TYPES.put(54, COMMAND);
     }
 
     @Override
@@ -177,6 +176,8 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
         });
 
         BedrockUtils.writeArray(buffer, softEnums, BedrockUtils::writeCommandEnumData);
+
+        VarInts.writeUnsignedInt(buffer, 0); //TODO: Command Data value restraint
     }
 
     @Override
@@ -292,4 +293,6 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
                     flags, command.getPermission(), aliases, overloads));
         }
     }
+
+    //TODO: Command Data value restraint
 }

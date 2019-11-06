@@ -5,7 +5,6 @@ import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.ListTag;
-import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
@@ -43,7 +42,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
         BedrockUtils.writeBlockPosition(buffer, packet.getDefaultSpawn());
         buffer.writeBoolean(packet.isAcheivementsDisabled());
         VarInts.writeInt(buffer, packet.getTime());
-        buffer.writeBoolean(packet.isEduLevel());
+        VarInts.writeInt(buffer, packet.getEduEditionOffers());
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
         buffer.writeFloatLE(packet.getRainLevel());
         buffer.writeFloatLE(packet.getLightningLevel());
@@ -109,7 +108,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
         packet.setDefaultSpawn(BedrockUtils.readBlockPosition(buffer));
         packet.setAcheivementsDisabled(buffer.readBoolean());
         packet.setTime(VarInts.readInt(buffer));
-        packet.setEduLevel(buffer.readBoolean());
+        packet.setEduEditionOffers(VarInts.readInt(buffer));
         packet.setEduFeaturesEnabled(buffer.readBoolean());
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());

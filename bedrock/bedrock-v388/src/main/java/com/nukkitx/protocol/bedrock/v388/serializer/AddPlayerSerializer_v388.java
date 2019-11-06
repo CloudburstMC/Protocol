@@ -34,6 +34,7 @@ public class AddPlayerSerializer_v388 implements PacketSerializer<AddPlayerPacke
         // Adventure Settings end
         BedrockUtils.writeArray(buffer, packet.getEntityLinks(), BedrockUtils::writeEntityLink);
         BedrockUtils.writeString(buffer, packet.getDeviceId());
+        buffer.writeIntLE(packet.getBuildPlatform());
     }
 
     @Override
@@ -58,5 +59,6 @@ public class AddPlayerSerializer_v388 implements PacketSerializer<AddPlayerPacke
         // Adventure settings end
         BedrockUtils.readArray(buffer, packet.getEntityLinks(), BedrockUtils::readEntityLink);
         packet.setDeviceId(BedrockUtils.readString(buffer));
+        packet.setBuildPlatform(buffer.readIntLE());
     }
 }
