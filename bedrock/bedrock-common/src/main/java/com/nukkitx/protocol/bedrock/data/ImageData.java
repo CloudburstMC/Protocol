@@ -11,6 +11,8 @@ import java.util.Objects;
 @ToString(exclude = {"image"})
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class ImageData {
+    public static final ImageData EMPTY = new ImageData(0, 0, new byte[0]);
+
     private static final int PIXEL_SIZE = 4;
 
     private static final int SINGLE_SKIN_SIZE = 64 * 32 * PIXEL_SIZE;
@@ -30,6 +32,8 @@ public class ImageData {
     public static ImageData of(byte[] image) {
         Objects.requireNonNull(image, "image");
         switch (image.length) {
+            case 0:
+                return EMPTY;
             case SINGLE_SKIN_SIZE:
                 return new ImageData(64, 32, image);
             case DOUBLE_SKIN_SIZE:
@@ -56,7 +60,7 @@ public class ImageData {
     }
 
     public void checkLegacyCapeSize() {
-        if (image.length != SINGLE_SKIN_SIZE) {
+        if (image.length != 0 && image.length != SINGLE_SKIN_SIZE) {
             throw new IllegalArgumentException("Invalid legacy cape");
         }
     }
