@@ -33,7 +33,7 @@ public class StartGamePacket extends BedrockPacket {
     private int levelGamemode;
     private int difficulty;
     private Vector3i defaultSpawn;
-    private boolean acheivementsDisabled;
+    private boolean achievementsDisabled;
     private int time;
     private int eduEditionOffers;
     private boolean eduFeaturesEnabled;
