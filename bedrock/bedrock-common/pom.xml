@@ -33,7 +33,6 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.build.directory}/delombok/main</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.projectlombok</groupId>

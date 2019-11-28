@@ -40,7 +40,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
         VarInts.writeInt(buffer, packet.getLevelGamemode());
         VarInts.writeInt(buffer, packet.getDifficulty());
         BedrockUtils.writeBlockPosition(buffer, packet.getDefaultSpawn());
-        buffer.writeBoolean(packet.isAcheivementsDisabled());
+        buffer.writeBoolean(packet.isAchievementsDisabled());
         VarInts.writeInt(buffer, packet.getTime());
         VarInts.writeInt(buffer, packet.getEduEditionOffers());
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
@@ -106,7 +106,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
         packet.setLevelGamemode(VarInts.readInt(buffer));
         packet.setDifficulty(VarInts.readInt(buffer));
         packet.setDefaultSpawn(BedrockUtils.readBlockPosition(buffer));
-        packet.setAcheivementsDisabled(buffer.readBoolean());
+        packet.setAchievementsDisabled(buffer.readBoolean());
         packet.setTime(VarInts.readInt(buffer));
         packet.setEduEditionOffers(VarInts.readInt(buffer));
         packet.setEduFeaturesEnabled(buffer.readBoolean());
