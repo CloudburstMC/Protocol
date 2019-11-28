@@ -218,7 +218,7 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(77, EntityFlag.TRADE_INTEREST);
         METADATA_FLAGS.put(78, EntityFlag.DOOR_BREAKER);
         METADATA_FLAGS.put(79, EntityFlag.BREAKING_OBSTRUCTION);
-        METADATA_FLAGS.put(8, EntityFlag.DOOR_OPENER);
+        METADATA_FLAGS.put(80, EntityFlag.DOOR_OPENER);
         METADATA_FLAGS.put(81, EntityFlag.ILLAGER_CAPTAIN);
         METADATA_FLAGS.put(82, EntityFlag.STUNNED);
         METADATA_FLAGS.put(83, EntityFlag.ROARING);
