@@ -8,22 +8,23 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ContainerSetDataPacket extends BedrockPacket {
+
+    public static final int FURNACE_TICK_COUNT = 0;
+    public static final int FURNACE_LIT_TIME = 1;
+    public static final int FURNACE_LIT_DURATION = 2;
+    public static final int FURNACE_STORED_XP = 3;
+    public static final int FURNACE_FUEL_AUX = 4;
+
+    public static final int BREWING_STAND_BREW_TIME = 0;
+    public static final int BREWING_STAND_FUEL_AMOUNT = 1;
+    public static final int BREWING_STAND_FUEL_TOTAL = 2;
+
     private byte windowId;
-    private Property property;
+    private int property;
     private int value;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
-    }
-
-    public enum Property {
-        FURNACE_TICK_COUNT,
-        FURNACE_LIT_TIME,
-        FURNACE_LIT_DURATION,
-        FURNACE_FUEL_AUX,
-        BREWING_STAND_BREW_TIME,
-        BREWING_STAND_FUEL_AMOUNT,
-        BREWING_STAND_FUEL_TOTAL
     }
 }
