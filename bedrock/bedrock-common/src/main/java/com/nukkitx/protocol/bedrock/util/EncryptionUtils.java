@@ -45,7 +45,7 @@ public class EncryptionUtils {
             KEY_PAIR_GEN.initialize(new ECGenParameterSpec("secp384r1"));
             MOJANG_PUBLIC_KEY = generateKey(MOJANG_PUBLIC_KEY_BASE64);
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeySpecException e) {
-            throw new AssertionError("Unable to initialize required encryption");
+            throw new AssertionError("Unable to initialize required encryption", e);
         }
     }
 
