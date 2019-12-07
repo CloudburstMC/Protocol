@@ -97,7 +97,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         Preconditions.checkState(this.packetCodec != BedrockCompat.COMPAT_CODEC, "No PacketCodec is set!");
 
         // Verify that the packet ID exists.
-        this.packetCodec.getId(packet);
+        this.packetCodec.getId(packet.getClass());
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {

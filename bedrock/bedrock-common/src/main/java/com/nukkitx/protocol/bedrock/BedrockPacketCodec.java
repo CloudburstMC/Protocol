@@ -11,6 +11,7 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
@@ -32,7 +33,7 @@ public final class BedrockPacketCodec {
     @Getter
     private final String minecraftVersion;
     private final PacketSerializer<BedrockPacket>[] serializers;
-    private final TIntHashBiMap<Class<BedrockPacket>> idBiMap;
+    private final TIntHashBiMap<Class<? extends BedrockPacket>> idBiMap;
     private final PacketSerializer<PacketHeader> headerSerializer;
 
     public static Builder builder() {
@@ -64,28 +65,35 @@ public final class BedrockPacketCodec {
         return packet;
     }
 
+    @SuppressWarnings("unchecked")
     public ByteBuf tryEncode(BedrockPacket packet) throws PacketSerializeException {
-        PacketHeader header = packet.getHeader();
-        if (header == null) {
-            header = new PacketHeader();
-        }
-        int packetId = getId(packet);
-        header.setPacketId(packetId);
-
         ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer();
         try {
+            PacketHeader header = packet.getHeader();
+            if (header == null) {
+                header = new PacketHeader();
+            }
+
+            PacketSerializer<BedrockPacket> serializer;
+            if (packet instanceof UnknownPacket) {
+                serializer = (PacketSerializer<BedrockPacket>) packet;
+            } else {
+                int packetId = getId(packet.getClass());
+                header.setPacketId(packetId);
+                serializer = serializers[packetId];
+            }
             headerSerializer.serialize(buf, header);
-            serializers[packetId].serialize(buf, packet);
+            serializer.serialize(buf, packet);
         } catch (Exception e) {
             buf.release();
             throw new PacketSerializeException("Error whilst serializing " + packet.getClass().getSimpleName(), e);
+        } finally {
+            ReferenceCountUtil.release(packet);
         }
         return buf;
     }
 
-    @SuppressWarnings("unchecked")
-    public int getId(BedrockPacket packet) {
-        Class<BedrockPacket> clazz = (Class<BedrockPacket>) packet.getClass();
+    public int getId(Class<? extends BedrockPacket> clazz) {
         int id = idBiMap.get(clazz);
         if (id == -1) {
             throw new IllegalArgumentException("Packet ID for " + clazz.getName() + " does not exist.");
@@ -97,7 +105,7 @@ public final class BedrockPacketCodec {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
         private final TIntObjectMap<PacketSerializer<BedrockPacket>> serializers = new TIntObjectHashMap<>();
-        private final TIntHashBiMap<Class<BedrockPacket>> idBiMap = new TIntHashBiMap<>((Class) UnknownPacket.class);
+        private final TIntHashBiMap<Class<? extends BedrockPacket>> idBiMap = new TIntHashBiMap<>((Class) UnknownPacket.class);
         private int protocolVersion = -1;
         private String minecraftVersion = null;
         private PacketSerializer<PacketHeader> headerSerializer = null;

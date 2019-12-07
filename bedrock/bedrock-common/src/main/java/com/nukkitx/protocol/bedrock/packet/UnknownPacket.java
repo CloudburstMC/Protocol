@@ -5,12 +5,13 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import io.netty.util.ReferenceCounted;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class UnknownPacket extends BedrockPacket implements PacketSerializer<UnknownPacket> {
+public final class UnknownPacket extends BedrockPacket implements PacketSerializer<UnknownPacket>, ReferenceCounted {
     private ByteBuf payload;
 
     @Override
@@ -31,5 +32,55 @@ public final class UnknownPacket extends BedrockPacket implements PacketSerializ
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return false;
+    }
+
+    @Override
+    public int refCnt() {
+        if (this.payload == null) {
+            return 0;
+        }
+        return payload.refCnt();
+    }
+
+    @Override
+    public UnknownPacket retain() {
+        if (this.payload != null) {
+            this.payload.retain();
+        }
+        return this;
+    }
+
+    @Override
+    public UnknownPacket retain(int increment) {
+        if (this.payload != null) {
+            this.payload.retain(increment);
+        }
+        return this;
+    }
+
+    @Override
+    public UnknownPacket touch() {
+        if (this.payload != null) {
+            this.payload.touch();
+        }
+        return this;
+    }
+
+    @Override
+    public UnknownPacket touch(Object hint) {
+        if (this.payload != null) {
+            this.payload.touch(hint);
+        }
+        return this;
+    }
+
+    @Override
+    public boolean release() {
+        return this.payload == null || this.payload.release();
+    }
+
+    @Override
+    public boolean release(int decrement) {
+        return this.payload == null || this.payload.release(decrement);
     }
 }
