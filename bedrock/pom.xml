@@ -21,5 +21,6 @@
         <module>bedrock-v354</module>
         <module>bedrock-v361</module>
         <module>bedrock-v388</module>
+        <module>bedrock-v389</module>
     </modules>
 </project>
