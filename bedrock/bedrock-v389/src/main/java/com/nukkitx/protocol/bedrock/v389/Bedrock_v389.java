@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v389;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
+import com.nukkitx.protocol.bedrock.v389.serializer.EventSerializer_v389;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -74,7 +75,7 @@ public class Bedrock_v389 {
             .registerPacket(SetPlayerGameTypePacket.class, SetPlayerGameTypeSerializer_v388.INSTANCE, 62)
             .registerPacket(PlayerListPacket.class, PlayerListSerializer_v388.INSTANCE, 63)
             .registerPacket(SimpleEventPacket.class, SimpleEventSerializer_v388.INSTANCE, 64)
-            .registerPacket(EventPacket.class, EventSerializer_v388.INSTANCE, 65)
+            .registerPacket(EventPacket.class, EventSerializer_v389.INSTANCE, 65)
             .registerPacket(SpawnExperienceOrbPacket.class, SpawnExperienceOrbSerializer_v388.INSTANCE, 66)
             .registerPacket(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v388.INSTANCE, 67)
             .registerPacket(MapInfoRequestPacket.class, MapInfoRequestSerializer_v388.INSTANCE, 68)

@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v388.serializer;
+package com.nukkitx.protocol.bedrock.v389.serializer;
 
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EventSerializer_v388 implements PacketSerializer<EventPacket> {
-    public static final EventSerializer_v388 INSTANCE = new EventSerializer_v388();
+public class EventSerializer_v389 implements PacketSerializer<EventPacket> {
+    public static final EventSerializer_v389 INSTANCE = new EventSerializer_v389();
 
     private static final EventDataType[] VALUES = EventDataType.values();
 
@@ -157,6 +157,9 @@ public class EventSerializer_v388 implements PacketSerializer<EventPacket> {
                 buffer.writeFloatLE(movementThresholdEventData.getPlayerMovementScoreThreshold());
                 buffer.writeFloatLE(movementThresholdEventData.getPlayerMovementDistanceThreshold());
                 VarInts.writeInt(buffer, movementThresholdEventData.getPlayerMovementDurationThreshold());
+                break;
+            case EXTRACT_HONEY:
+                // No extra data
                 break;
         }
     }
@@ -306,9 +309,13 @@ public class EventSerializer_v388 implements PacketSerializer<EventPacket> {
                 data = new MovementThresholdEventData(unknownFloat0, unknownFloat1, playerMovementScoreThreshold,
                         playerMovementDistanceThreshold, playerMovementDurationThreshold);
                 break;
+            case EXTRACT_HONEY:
+                data = ExtractHoneyEventData.INSTANCE;
+                break;
             default:
                 throw new IllegalArgumentException("Unknown EventDataType");
         }
         packet.setEventData(data);
     }
 }
+
