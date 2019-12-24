@@ -14,9 +14,10 @@ import java.util.UUID;
 public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v361 INSTANCE = new ResourcePackDataInfoSerializer_v361();
 
-
     @Override
     public void serialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
+        String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
+        BedrockUtils.writeString(buffer, packInfo);
         BedrockUtils.writeString(buffer, packet.getPackId().toString());
         buffer.writeIntLE((int) packet.getMaxChunkSize());
         buffer.writeIntLE((int) packet.getChunkCount());
@@ -24,20 +25,20 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         byte[] hash = packet.getHash();
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
-        buffer.writeBoolean(packet.isPremium());
-        buffer.writeByte(packet.getType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
-        packet.setPackId(UUID.fromString(BedrockUtils.readString(buffer)));
+        String[] packInfo = BedrockUtils.readString(buffer).split("_");
+        packet.setPackId(UUID.fromString(packInfo[0]));
+        if (packInfo.length > 1) {
+            packet.setPackVersion(packInfo[1]);
+        }
         packet.setMaxChunkSize(buffer.readUnsignedIntLE());
         packet.setChunkCount(buffer.readUnsignedIntLE());
         packet.setCompressedPackSize(buffer.readLongLE());
         byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
         buffer.readBytes(hash);
         packet.setHash(hash);
-        packet.setPremium(buffer.readBoolean());
-        packet.setType(ResourcePackDataInfoPacket.Type.values()[buffer.readUnsignedByte()]);
     }
 }
