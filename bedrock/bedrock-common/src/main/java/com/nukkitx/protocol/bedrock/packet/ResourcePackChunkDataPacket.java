@@ -4,11 +4,13 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(exclude = {"data"})
 public class ResourcePackChunkDataPacket extends BedrockPacket {
     private UUID packId;
     private int chunkIndex;
