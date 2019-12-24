@@ -4,15 +4,31 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import static com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket.Type.*;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v361 INSTANCE = new ResourcePackDataInfoSerializer_v361();
+
+    public static final TIntHashBiMap<ResourcePackDataInfoPacket.Type> TYPES = new TIntHashBiMap<>(INVALID);
+
+    static {
+        TYPES.put(0, INVALID);
+        TYPES.put(1, RESOURCE);
+        TYPES.put(2, BEHAVIOR);
+        TYPES.put(3, WORLD_TEMPLATE);
+        TYPES.put(4, ADDON);
+        TYPES.put(5, SKINS);
+        TYPES.put(6, CACHED);
+        TYPES.put(7, COPY_PROTECTED);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
@@ -25,6 +41,8 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         byte[] hash = packet.getHash();
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
+        buffer.writeBoolean(packet.isPremium());
+        buffer.writeByte(TYPES.get(packet.getType()));
     }
 
     @Override
@@ -40,5 +58,7 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
         buffer.readBytes(hash);
         packet.setHash(hash);
+        packet.setPremium(buffer.readBoolean());
+        packet.setType(TYPES.get(buffer.readUnsignedByte()));
     }
 }

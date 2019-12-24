@@ -33,5 +33,6 @@ public class ResourcePackDataInfoPacket extends BedrockPacket {
         SKINS,
         CACHED,
         COPY_PROTECTED,
+        PERSONA_PIECE
     }
 }
