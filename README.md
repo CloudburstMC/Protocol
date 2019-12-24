@@ -56,7 +56,7 @@ client.connect(addressToConnect).whenComplete((session, throwable) -> {
     }
     // Connection established
     // Make sure to set the packet codec version you wish to use before sending out packets
-    session.setPacketCodec(Bedrock_v361.V361_CODEC);
+    session.setPacketCodec(Bedrock_v389.V389_CODEC);
     // Add disconnect handler
     session.addDisconnectHandler((reason) -> System.out.println("Disconnected"));
     // Remember to set a packet handler so you receive incoming packets
@@ -79,7 +79,7 @@ pong.setMotd("My Server");
 pong.setPlayerCount(0);
 pong.setMaximumPlayerCount(20);
 pong.setGameType("Survival");
-pong.setProtocolVersion(Bedrock_v361.V361_CODEC.getProtocolVersion());
+pong.setProtocolVersion(Bedrock_v389.V389_CODEC.getProtocolVersion());
 
 server.setHandler(new BedrockServerEventHandler() {
     @Override
@@ -121,6 +121,7 @@ server.bind().join();
 | bedrock-v354 | 1.11.0 |
 | bedrock-v361 | 1.12.0 |
 | bedrock-v388 | 1.13.0 |
+| bedrock-v389 | 1.14.x |
 
 ##### Repository:
 
