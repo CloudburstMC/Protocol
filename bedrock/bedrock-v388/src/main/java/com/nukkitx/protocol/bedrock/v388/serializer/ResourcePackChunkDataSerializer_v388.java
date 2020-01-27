@@ -13,24 +13,24 @@ import java.util.UUID;
 public class ResourcePackChunkDataSerializer_v388 implements PacketSerializer<ResourcePackChunkDataPacket> {
     public static final ResourcePackChunkDataSerializer_v388 INSTANCE = new ResourcePackChunkDataSerializer_v388();
 
-
     @Override
     public void serialize(ByteBuf buffer, ResourcePackChunkDataPacket packet) {
-        BedrockUtils.writeString(buffer, packet.getPackId().toString());
+        String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
+        BedrockUtils.writeString(buffer, packInfo);
         buffer.writeIntLE(packet.getChunkIndex());
         buffer.writeLongLE(packet.getProgress());
-        byte[] data = packet.getData();
-        buffer.writeIntLE(data.length);
-        buffer.writeBytes(data);
+        BedrockUtils.writeByteArray(buffer, packet.getData());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, ResourcePackChunkDataPacket packet) {
-        packet.setPackId(UUID.fromString(BedrockUtils.readString(buffer)));
+        String[] packInfo = BedrockUtils.readString(buffer).split("_");
+        packet.setPackId(UUID.fromString(packInfo[0]));
+        if (packInfo.length > 1) {
+            packet.setPackVersion(packInfo[1]);
+        }
         packet.setChunkIndex(buffer.readIntLE());
         packet.setProgress(buffer.readLongLE());
-        byte[] data = new byte[buffer.readIntLE()];
-        buffer.readBytes(data);
-        packet.setData(data);
+        packet.setData(BedrockUtils.readByteArray(buffer));
     }
 }

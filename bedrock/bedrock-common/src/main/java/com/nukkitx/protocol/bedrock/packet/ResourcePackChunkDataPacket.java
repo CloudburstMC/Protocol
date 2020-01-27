@@ -13,6 +13,7 @@ import java.util.UUID;
 @ToString(exclude = {"data"})
 public class ResourcePackChunkDataPacket extends BedrockPacket {
     private UUID packId;
+    private String packVersion;
     private int chunkIndex;
     private long progress;
     private byte[] data;
