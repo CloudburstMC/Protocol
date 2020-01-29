@@ -101,7 +101,9 @@ public class BedrockServer extends Bedrock {
 
         @Override
         public void onUnhandledDatagram(ChannelHandlerContext ctx, DatagramPacket packet) {
-
+            if (BedrockServer.this.handler != null) {
+                BedrockServer.this.handler.onUnhandledDatagram(ctx, packet);
+            }
         }
     }
 }
