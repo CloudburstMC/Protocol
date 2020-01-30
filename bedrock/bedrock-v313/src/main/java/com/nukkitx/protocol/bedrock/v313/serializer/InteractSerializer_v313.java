@@ -12,23 +12,24 @@ import lombok.NoArgsConstructor;
 public class InteractSerializer_v313 implements PacketSerializer<InteractPacket> {
     public static final InteractSerializer_v313 INSTANCE = new InteractSerializer_v313();
 
+    private static final InteractPacket.Action[] ACTIONS = InteractPacket.Action.values();
 
     @Override
     public void serialize(ByteBuf buffer, InteractPacket packet) {
-        buffer.writeByte(packet.getAction());
+        buffer.writeByte(packet.getAction().ordinal());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
 
-        if (packet.getAction() == 4/*Action.MOUSEOVER*/) {
+        if (packet.getAction() == InteractPacket.Action.MOUSEOVER) {
             BedrockUtils.writeVector3f(buffer, packet.getMousePosition());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, InteractPacket packet) {
-        packet.setAction(buffer.readByte());
+        packet.setAction(ACTIONS[buffer.readUnsignedByte()]);
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
 
-        if (packet.getAction() == 4/*Action.MOUSEOVER*/) {
+        if (packet.getAction() == InteractPacket.Action.MOUSEOVER) {
             packet.setMousePosition(BedrockUtils.readVector3f(buffer));
         }
     }

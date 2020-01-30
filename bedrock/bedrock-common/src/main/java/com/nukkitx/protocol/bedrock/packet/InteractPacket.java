@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InteractPacket extends BedrockPacket {
-    private int action;
+    private Action action;
     private long runtimeEntityId;
     private Vector3f mousePosition;
 
