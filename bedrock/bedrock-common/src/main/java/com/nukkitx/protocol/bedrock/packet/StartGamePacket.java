@@ -6,8 +6,10 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRule;
+import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.*;
 
@@ -49,7 +51,7 @@ public class StartGamePacket extends BedrockPacket {
     private boolean bonusChestEnabled;
     private boolean startingWithMap;
     private boolean trustingPlayers;
-    private int defaultPlayerPermission;
+    private PlayerPermission defaultPlayerPermission;
     private int serverChunkTickRange;
     private boolean behaviorPackLocked;
     private boolean resourcePackLocked;
@@ -74,6 +76,10 @@ public class StartGamePacket extends BedrockPacket {
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.START_GAME_PACKET;
     }
 
     @Value

@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -23,6 +24,10 @@ public class MovePlayerPacket extends BedrockPacket {
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.MOVE_PLAYER;
     }
 
     public enum Mode {

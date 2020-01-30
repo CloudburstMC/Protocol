@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.InventoryAction;
 import com.nukkitx.protocol.bedrock.data.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -38,6 +39,10 @@ public class InventoryTransactionPacket extends BedrockPacket {
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.INVENTORY_TRANSACTION;
     }
 
     public enum Type {

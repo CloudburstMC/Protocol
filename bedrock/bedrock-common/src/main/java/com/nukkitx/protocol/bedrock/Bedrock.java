@@ -19,7 +19,7 @@ public abstract class Bedrock implements MinecraftInterface {
 
     protected abstract void onTick();
 
-    abstract RakNet getRakNet();
+    public abstract RakNet getRakNet();
 
     public InetSocketAddress getBindAddress() {
         return this.getRakNet().getBindAddress();

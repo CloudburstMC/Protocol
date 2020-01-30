@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
@@ -15,5 +16,9 @@ public class ClientCacheMissResponsePacket extends BedrockPacket {
     @Override
     public boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.CLIENT_CACHE_MISS_RESPONSE;
     }
 }

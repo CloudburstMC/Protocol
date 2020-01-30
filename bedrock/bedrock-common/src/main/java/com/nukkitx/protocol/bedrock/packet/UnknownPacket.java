@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
@@ -32,6 +33,10 @@ public final class UnknownPacket extends BedrockPacket implements PacketSerializ
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return false;
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.UNKNOWN;
     }
 
     @Override

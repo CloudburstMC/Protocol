@@ -5,6 +5,7 @@ import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
+import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v340.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -19,6 +20,7 @@ import java.util.List;
 public class StartGameSerializer_v340 implements PacketSerializer<StartGamePacket> {
     public static final StartGameSerializer_v340 INSTANCE = new StartGameSerializer_v340();
 
+    private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
     @Override
     public void serialize(ByteBuf buffer, StartGamePacket packet) {
@@ -50,7 +52,7 @@ public class StartGameSerializer_v340 implements PacketSerializer<StartGamePacke
         BedrockUtils.writeArray(buffer, packet.getGamerules(), BedrockUtils::writeGameRule);
         buffer.writeBoolean(packet.isBonusChestEnabled());
         buffer.writeBoolean(packet.isStartingWithMap());
-        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission());
+        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission().ordinal());
         buffer.writeIntLE(packet.getServerChunkTickRange());
         buffer.writeBoolean(packet.isBehaviorPackLocked());
         buffer.writeBoolean(packet.isResourcePackLocked());
@@ -108,7 +110,7 @@ public class StartGameSerializer_v340 implements PacketSerializer<StartGamePacke
         BedrockUtils.readArray(buffer, packet.getGamerules(), BedrockUtils::readGameRule);
         packet.setBonusChestEnabled(buffer.readBoolean());
         packet.setStartingWithMap(buffer.readBoolean());
-        packet.setDefaultPlayerPermission(VarInts.readInt(buffer));
+        packet.setDefaultPlayerPermission(PLAYER_PERMISSIONS[VarInts.readInt(buffer)]);
         packet.setServerChunkTickRange(buffer.readIntLE());
         packet.setBehaviorPackLocked(buffer.readBoolean());
         packet.setResourcePackLocked(buffer.readBoolean());

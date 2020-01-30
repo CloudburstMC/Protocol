@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,5 +24,9 @@ public class UpdateTradePacket extends BedrockPacket {
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.UPDATE_TRADE;
     }
 }

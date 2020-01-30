@@ -112,7 +112,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    public void sendWrapped(ByteBuf compressed, boolean encrypt) {
+    public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt) {
         Objects.requireNonNull(compressed, "compressed");
         ByteBuf withTrailer = null;
         try {
@@ -179,7 +179,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    public void enableEncryption(@Nonnull SecretKey secretKey) {
+    public synchronized void enableEncryption(@Nonnull SecretKey secretKey) {
         this.checkForClosed();
         log.debug("Encryption enabled.");
         Objects.requireNonNull(secretKey, "secretKey");

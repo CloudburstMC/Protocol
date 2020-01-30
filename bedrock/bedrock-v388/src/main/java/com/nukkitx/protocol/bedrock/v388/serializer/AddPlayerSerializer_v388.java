@@ -24,14 +24,7 @@ public class AddPlayerSerializer_v388 implements PacketSerializer<AddPlayerPacke
         BedrockUtils.writeVector3f(buffer, packet.getRotation());
         BedrockUtils.writeItemData(buffer, packet.getHand());
         BedrockUtils.writeMetadata(buffer, packet.getMetadata());
-        // Adventure Settings start
-        VarInts.writeUnsignedInt(buffer, packet.getPlayerFlags());
-        VarInts.writeUnsignedInt(buffer, packet.getCommandPermission());
-        VarInts.writeUnsignedInt(buffer, packet.getWorldFlags());
-        VarInts.writeUnsignedInt(buffer, packet.getPlayerPermission());
-        VarInts.writeUnsignedInt(buffer, packet.getCustomFlags());
-        buffer.writeLongLE(packet.getUniqueEntityId());
-        // Adventure Settings end
+        AdventureSettingsSerializer_v388.INSTANCE.serialize(buffer, packet.getAdventureSettings());
         BedrockUtils.writeArray(buffer, packet.getEntityLinks(), BedrockUtils::writeEntityLink);
         BedrockUtils.writeString(buffer, packet.getDeviceId());
         buffer.writeIntLE(packet.getBuildPlatform());
@@ -49,14 +42,7 @@ public class AddPlayerSerializer_v388 implements PacketSerializer<AddPlayerPacke
         packet.setRotation(BedrockUtils.readVector3f(buffer));
         packet.setHand(BedrockUtils.readItemData(buffer));
         BedrockUtils.readMetadata(buffer, packet.getMetadata());
-        // Adventure Settings start
-        packet.setPlayerFlags(VarInts.readUnsignedInt(buffer));
-        packet.setCommandPermission(VarInts.readUnsignedInt(buffer));
-        packet.setWorldFlags(VarInts.readUnsignedInt(buffer));
-        packet.setPlayerPermission(VarInts.readUnsignedInt(buffer));
-        packet.setCustomFlags(VarInts.readUnsignedInt(buffer));
-        buffer.readLongLE(); // Ignore
-        // Adventure settings end
+        AdventureSettingsSerializer_v388.INSTANCE.deserialize(buffer, packet.getAdventureSettings());
         BedrockUtils.readArray(buffer, packet.getEntityLinks(), BedrockUtils::readEntityLink);
         packet.setDeviceId(BedrockUtils.readString(buffer));
         packet.setBuildPlatform(buffer.readIntLE());

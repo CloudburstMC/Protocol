@@ -11,7 +11,6 @@ import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.bedrock.Bedrock;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
@@ -829,7 +828,7 @@ public final class BedrockUtils {
         }
     }
 
-    public static void readMetadata(ByteBuf buffer, EntityDataDictionary metadataDictionary) {
+    public static void readMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
 
@@ -897,7 +896,7 @@ public final class BedrockUtils {
         }
     }
 
-    public static void writeMetadata(ByteBuf buffer, EntityDataDictionary metadataDictionary) {
+    public static void writeMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
 
@@ -907,7 +906,7 @@ public final class BedrockUtils {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, METADATAS.get(entry.getKey()));
             Object object = entry.getValue();
-            EntityData.Type type = EntityDataDictionary.getType(object);
+            EntityData.Type type = EntityData.Type.from(object);
             VarInts.writeUnsignedInt(buffer, METADATA_TYPES.get(type));
 
             switch (type) {

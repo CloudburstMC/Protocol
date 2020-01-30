@@ -5,6 +5,7 @@ import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
+import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -19,6 +20,7 @@ import java.util.List;
 public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacket> {
     public static final StartGameSerializer_v291 INSTANCE = new StartGameSerializer_v291();
 
+    private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
     @Override
     public void serialize(ByteBuf buffer, StartGamePacket packet) {
@@ -49,7 +51,7 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         buffer.writeBoolean(packet.isBonusChestEnabled());
         buffer.writeBoolean(packet.isStartingWithMap());
         buffer.writeBoolean(packet.isTrustingPlayers());
-        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission());
+        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission().ordinal());
         VarInts.writeInt(buffer, packet.getXblBroadcastMode().ordinal());
         buffer.writeIntLE(packet.getServerChunkTickRange());
         buffer.writeBoolean(packet.getPlatformBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
@@ -107,7 +109,7 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         packet.setBonusChestEnabled(buffer.readBoolean());
         packet.setStartingWithMap(buffer.readBoolean());
         packet.setTrustingPlayers(buffer.readBoolean());
-        packet.setDefaultPlayerPermission(VarInts.readInt(buffer));
+        packet.setDefaultPlayerPermission(PLAYER_PERMISSIONS[VarInts.readInt(buffer)]);
         packet.setXblBroadcastMode(GamePublishSetting.byId(VarInts.readInt(buffer)));
         packet.setServerChunkTickRange(buffer.readIntLE());
         buffer.readBoolean(); // Broadcasting to Platform

@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.CraftingData;
 import com.nukkitx.protocol.bedrock.data.PotionMixData;
@@ -24,5 +25,9 @@ public class CraftingDataPacket extends BedrockPacket {
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.CRAFTING_DATA;
     }
 }

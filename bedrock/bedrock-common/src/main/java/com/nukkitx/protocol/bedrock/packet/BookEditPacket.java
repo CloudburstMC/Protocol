@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BookEditPacket extends BedrockPacket {
-    private Type type;
+    private Action action;
     private int inventorySlot;
     private int pageNumber;
     private int secondaryPageNumber;
@@ -23,7 +24,11 @@ public class BookEditPacket extends BedrockPacket {
         return handler.handle(this);
     }
 
-    public enum Type {
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.BOOK_EDIT;
+    }
+
+    public enum Action {
         REPLACE_PAGE,
         ADD_PAGE,
         DELETE_PAGE,

@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.SerializedSkin;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
@@ -15,14 +16,18 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class PlayerListPacket extends BedrockPacket {
     private final List<Entry> entries = new ArrayList<>();
-    private Type type;
+    private Action action;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
-    public enum Type {
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.PLAYER_LIST;
+    }
+
+    public enum Action {
         ADD,
         REMOVE
     }

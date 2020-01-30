@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNet;
 import com.nukkitx.network.raknet.RakNetClient;
 import com.nukkitx.network.raknet.RakNetClientSession;
 import com.nukkitx.network.util.EventLoops;
@@ -33,7 +32,7 @@ public class BedrockClient extends Bedrock {
     }
 
     @Override
-    RakNet getRakNet() {
+    public RakNetClient getRakNet() {
         return this.rakNetClient;
     }
 

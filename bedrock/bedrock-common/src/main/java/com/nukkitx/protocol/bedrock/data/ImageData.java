@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 @Getter
@@ -63,5 +66,20 @@ public class ImageData {
         if (image.length != 0 && image.length != SINGLE_SKIN_SIZE) {
             throw new IllegalArgumentException("Invalid legacy cape");
         }
+    }
+
+    private static ImageData parseBufferedImage(BufferedImage image) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                Color color = new Color(image.getRGB(x, y), true);
+                outputStream.write(color.getRed());
+                outputStream.write(color.getGreen());
+                outputStream.write(color.getBlue());
+                outputStream.write(color.getAlpha());
+            }
+        }
+        image.flush();
+        return new ImageData(image.getWidth(), image.getHeight(), outputStream.toByteArray());
     }
 }

@@ -25,7 +25,7 @@ public class PlayerSkinSerializer_v361 implements PacketSerializer<PlayerSkinPac
         BedrockUtils.writeByteArray(buffer, skin.getSkinData().getImage());
         skin.getCapeData().checkLegacyCapeSize();
         BedrockUtils.writeByteArray(buffer, skin.getCapeData().getImage());
-        BedrockUtils.writeString(buffer, skin.getSkinResourcePatch());
+        BedrockUtils.writeString(buffer, skin.getGeometryName());
         BedrockUtils.writeString(buffer, skin.getGeometryData());
         buffer.writeBoolean(skin.isPremium());
     }

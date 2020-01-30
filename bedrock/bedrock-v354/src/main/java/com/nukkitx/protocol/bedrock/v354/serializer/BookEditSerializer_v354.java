@@ -8,26 +8,26 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import static com.nukkitx.protocol.bedrock.packet.BookEditPacket.Type;
+import static com.nukkitx.protocol.bedrock.packet.BookEditPacket.Action;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookEditSerializer_v354 implements PacketSerializer<BookEditPacket> {
     public static final BookEditSerializer_v354 INSTANCE = new BookEditSerializer_v354();
-    private static final TIntHashBiMap<Type> types = new TIntHashBiMap<>();
+    private static final TIntHashBiMap<Action> types = new TIntHashBiMap<>();
 
     static {
-        types.put(0, Type.REPLACE_PAGE);
-        types.put(1, Type.ADD_PAGE);
-        types.put(2, Type.DELETE_PAGE);
-        types.put(3, Type.SWAP_PAGES);
-        types.put(4, Type.SIGN_BOOK);
+        types.put(0, Action.REPLACE_PAGE);
+        types.put(1, Action.ADD_PAGE);
+        types.put(2, Action.DELETE_PAGE);
+        types.put(3, Action.SWAP_PAGES);
+        types.put(4, Action.SIGN_BOOK);
     }
 
     @Override
     public void serialize(ByteBuf buffer, BookEditPacket packet) {
-        buffer.writeByte(packet.getType().ordinal());
+        buffer.writeByte(packet.getAction().ordinal());
         buffer.writeByte(packet.getInventorySlot());
-        switch (packet.getType()) {
+        switch (packet.getAction()) {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 buffer.writeByte(packet.getPageNumber());
@@ -51,9 +51,9 @@ public class BookEditSerializer_v354 implements PacketSerializer<BookEditPacket>
 
     @Override
     public void deserialize(ByteBuf buffer, BookEditPacket packet) {
-        packet.setType(types.get(buffer.readUnsignedByte()));
+        packet.setAction(types.get(buffer.readUnsignedByte()));
         packet.setInventorySlot(buffer.readUnsignedByte());
-        switch (packet.getType()) {
+        switch (packet.getAction()) {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 packet.setPageNumber(buffer.readUnsignedByte());

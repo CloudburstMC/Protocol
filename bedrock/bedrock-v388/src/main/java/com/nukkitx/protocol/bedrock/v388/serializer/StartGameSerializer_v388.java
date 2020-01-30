@@ -7,14 +7,13 @@ import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
+import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +23,7 @@ import java.io.IOException;
 public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacket> {
     public static final StartGameSerializer_v388 INSTANCE = new StartGameSerializer_v388();
 
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(StartGameSerializer_v388.class);
+    private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
     @Override
     public void serialize(ByteBuf buffer, StartGamePacket packet) {
@@ -56,7 +55,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
         BedrockUtils.writeArray(buffer, packet.getGamerules(), BedrockUtils::writeGameRule);
         buffer.writeBoolean(packet.isBonusChestEnabled());
         buffer.writeBoolean(packet.isStartingWithMap());
-        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission());
+        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission().ordinal());
         buffer.writeIntLE(packet.getServerChunkTickRange());
         buffer.writeBoolean(packet.isBehaviorPackLocked());
         buffer.writeBoolean(packet.isResourcePackLocked());
@@ -92,6 +91,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void deserialize(ByteBuf buffer, StartGamePacket packet) {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
@@ -122,7 +122,7 @@ public class StartGameSerializer_v388 implements PacketSerializer<StartGamePacke
         BedrockUtils.readArray(buffer, packet.getGamerules(), BedrockUtils::readGameRule);
         packet.setBonusChestEnabled(buffer.readBoolean());
         packet.setStartingWithMap(buffer.readBoolean());
-        packet.setDefaultPlayerPermission(VarInts.readInt(buffer));
+        packet.setDefaultPlayerPermission(PLAYER_PERMISSIONS[VarInts.readInt(buffer)]);
         packet.setServerChunkTickRange(buffer.readIntLE());
         packet.setBehaviorPackLocked(buffer.readBoolean());
         packet.setResourcePackLocked(buffer.readBoolean());

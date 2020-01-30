@@ -12,4 +12,6 @@ public abstract class BedrockPacket implements MinecraftPacket {
     private PacketHeader header;
 
     public abstract boolean handle(BedrockPacketHandler handler);
+
+    public abstract BedrockPacketType getPacketType();
 }

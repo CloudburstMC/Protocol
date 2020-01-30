@@ -8,8 +8,8 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import static com.nukkitx.protocol.bedrock.packet.PlayerListPacket.Action;
 import static com.nukkitx.protocol.bedrock.packet.PlayerListPacket.Entry;
-import static com.nukkitx.protocol.bedrock.packet.PlayerListPacket.Type;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlayerListSerializer_v388 implements PacketSerializer<PlayerListPacket> {
@@ -17,13 +17,13 @@ public class PlayerListSerializer_v388 implements PacketSerializer<PlayerListPac
 
     @Override
     public void serialize(ByteBuf buffer, PlayerListPacket packet) {
-        buffer.writeByte(packet.getType().ordinal());
+        buffer.writeByte(packet.getAction().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getEntries().size());
 
         for (Entry entry : packet.getEntries()) {
             BedrockUtils.writeUuid(buffer, entry.getUuid());
 
-            if (packet.getType() == Type.ADD) {
+            if (packet.getAction() == Action.ADD) {
                 VarInts.writeLong(buffer, entry.getEntityId());
                 BedrockUtils.writeString(buffer, entry.getName());
                 BedrockUtils.writeString(buffer, entry.getXuid());
@@ -38,14 +38,14 @@ public class PlayerListSerializer_v388 implements PacketSerializer<PlayerListPac
 
     @Override
     public void deserialize(ByteBuf buffer, PlayerListPacket packet) {
-        Type type = Type.values()[buffer.readUnsignedByte()];
-        packet.setType(type);
+        Action action = Action.values()[buffer.readUnsignedByte()];
+        packet.setAction(action);
         int length = VarInts.readUnsignedInt(buffer);
 
         for (int i = 0; i < length; i++) {
             Entry entry = new Entry(BedrockUtils.readUuid(buffer));
 
-            if (type == Type.ADD) {
+            if (action == PlayerListPacket.Action.ADD) {
                 entry.setEntityId(VarInts.readLong(buffer));
                 entry.setName(BedrockUtils.readString(buffer));
                 entry.setXuid(BedrockUtils.readString(buffer));

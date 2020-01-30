@@ -1,7 +1,12 @@
 package com.nukkitx.protocol.bedrock.data;
 
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.nbt.tag.CompoundTag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import javax.annotation.Nonnull;
 
 @Getter
 @RequiredArgsConstructor
@@ -120,6 +125,32 @@ public enum EntityData {
         NBT,
         VECTOR3I,
         LONG,
-        VECTOR3F
+        VECTOR3F;
+
+        @Nonnull
+        public static Type from(Object o) {
+            if (o instanceof EntityFlags) {
+                return EntityData.Type.FLAGS;
+            } else if (o instanceof Byte) {
+                return EntityData.Type.BYTE;
+            } else if (o instanceof Short) {
+                return EntityData.Type.SHORT;
+            } else if (o instanceof Integer) {
+                return EntityData.Type.INT;
+            } else if (o instanceof Float) {
+                return EntityData.Type.FLOAT;
+            } else if (o instanceof String) {
+                return EntityData.Type.STRING;
+            } else if (o instanceof ItemData || o instanceof CompoundTag) {
+                return EntityData.Type.NBT;
+            } else if (o instanceof Vector3i) {
+                return EntityData.Type.VECTOR3I;
+            } else if (o instanceof Long) {
+                return EntityData.Type.LONG;
+            } else if (o instanceof Vector3f) {
+                return EntityData.Type.VECTOR3F;
+            }
+            throw new IllegalArgumentException("Invalid type");
+        }
     }
 }

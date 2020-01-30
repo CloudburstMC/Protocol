@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNet;
 import com.nukkitx.network.raknet.RakNetServer;
 import com.nukkitx.network.raknet.RakNetServerListener;
 import com.nukkitx.network.raknet.RakNetServerSession;
@@ -45,7 +44,7 @@ public class BedrockServer extends Bedrock {
     }
 
     @Override
-    RakNet getRakNet() {
+    public RakNetServer getRakNet() {
         return this.rakNetServer;
     }
 

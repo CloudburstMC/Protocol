@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import static com.nukkitx.protocol.bedrock.packet.SetScoreboardIdentityPacket.Action;
 import static com.nukkitx.protocol.bedrock.packet.SetScoreboardIdentityPacket.Entry;
-import static com.nukkitx.protocol.bedrock.packet.SetScoreboardIdentityPacket.Type;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SetScoreboardIdentitySerializer_v361 implements PacketSerializer<SetScoreboardIdentityPacket> {
@@ -20,11 +20,11 @@ public class SetScoreboardIdentitySerializer_v361 implements PacketSerializer<Se
 
     @Override
     public void serialize(ByteBuf buffer, SetScoreboardIdentityPacket packet) {
-        Type type = packet.getType();
-        buffer.writeByte(type.ordinal());
+        SetScoreboardIdentityPacket.Action action = packet.getAction();
+        buffer.writeByte(action.ordinal());
         BedrockUtils.writeArray(buffer, packet.getEntries(), (buf, entry) -> {
             VarInts.writeLong(buffer, entry.getScoreboardId());
-            if (type == Type.ADD) {
+            if (action == SetScoreboardIdentityPacket.Action.ADD) {
                 BedrockUtils.writeUuid(buffer, entry.getUuid());
             }
         });
@@ -32,12 +32,12 @@ public class SetScoreboardIdentitySerializer_v361 implements PacketSerializer<Se
 
     @Override
     public void deserialize(ByteBuf buffer, SetScoreboardIdentityPacket packet) {
-        Type type = Type.values()[buffer.readUnsignedByte()];
-        packet.setType(type);
+        Action action = Action.values()[buffer.readUnsignedByte()];
+        packet.setAction(action);
         BedrockUtils.readArray(buffer, packet.getEntries(), buf -> {
             long scoreboardId = VarInts.readLong(buffer);
             UUID uuid = null;
-            if (type == Type.ADD) {
+            if (action == Action.ADD) {
                 uuid = BedrockUtils.readUuid(buffer);
             }
             return new Entry(scoreboardId, uuid);

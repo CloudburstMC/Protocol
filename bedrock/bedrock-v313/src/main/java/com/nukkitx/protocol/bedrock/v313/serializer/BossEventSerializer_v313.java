@@ -8,8 +8,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import static com.nukkitx.protocol.bedrock.packet.BossEventPacket.Type;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BossEventSerializer_v313 implements PacketSerializer<BossEventPacket> {
     public static final BossEventSerializer_v313 INSTANCE = new BossEventSerializer_v313();
@@ -17,9 +15,9 @@ public class BossEventSerializer_v313 implements PacketSerializer<BossEventPacke
     @Override
     public void serialize(ByteBuf buffer, BossEventPacket packet) {
         VarInts.writeLong(buffer, packet.getBossUniqueEntityId());
-        VarInts.writeUnsignedInt(buffer, packet.getType().ordinal());
+        VarInts.writeUnsignedInt(buffer, packet.getAction().ordinal());
 
-        switch (packet.getType()) {
+        switch (packet.getAction()) {
             case REGISTER_PLAYER:
             case UNREGISTER_PLAYER:
                 VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
@@ -49,10 +47,10 @@ public class BossEventSerializer_v313 implements PacketSerializer<BossEventPacke
     @Override
     public void deserialize(ByteBuf buffer, BossEventPacket packet) {
         packet.setBossUniqueEntityId(VarInts.readInt(buffer));
-        Type type = Type.values()[VarInts.readUnsignedInt(buffer)];
-        packet.setType(type);
+        BossEventPacket.Action action = BossEventPacket.Action.values()[VarInts.readUnsignedInt(buffer)];
+        packet.setAction(action);
 
-        switch (type) {
+        switch (action) {
             case REGISTER_PLAYER:
             case UNREGISTER_PLAYER:
                 packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));

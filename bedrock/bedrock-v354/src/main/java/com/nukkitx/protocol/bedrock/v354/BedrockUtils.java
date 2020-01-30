@@ -793,9 +793,9 @@ public final class BedrockUtils {
         }
     }
 
-    public static void readMetadata(ByteBuf buffer, EntityDataDictionary entityDataDictionary) {
+    public static void readMetadata(ByteBuf buffer, EntityDataMap entityDataMap) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(entityDataDictionary, "entityDataDictionary");
+        Preconditions.checkNotNull(entityDataMap, "entityDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
 
@@ -835,7 +835,7 @@ public final class BedrockUtils {
                     break;
                 case FLAGS:
                     int index = entityData == FLAGS_2 ? 1 : 0;
-                    entityDataDictionary.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
+                    entityDataMap.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
                     continue;
                 case LONG:
                     object = VarInts.readLong(buffer);
@@ -847,24 +847,24 @@ public final class BedrockUtils {
                     throw new IllegalArgumentException("Unknown metadata type received");
             }
             if (entityData != null) {
-                entityDataDictionary.put(entityData, object);
+                entityDataMap.put(entityData, object);
             } else {
                 log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
             }
         }
     }
 
-    public static void writeMetadata(ByteBuf buffer, EntityDataDictionary entityDataDictionary) {
+    public static void writeMetadata(ByteBuf buffer, EntityDataMap entityDataMap) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(entityDataDictionary, "entityDataDictionary");
+        Preconditions.checkNotNull(entityDataMap, "entityDataDictionary");
 
-        VarInts.writeUnsignedInt(buffer, entityDataDictionary.size());
+        VarInts.writeUnsignedInt(buffer, entityDataMap.size());
 
-        for (Map.Entry<EntityData, Object> entry : entityDataDictionary.entrySet()) {
+        for (Map.Entry<EntityData, Object> entry : entityDataMap.entrySet()) {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, METADATAS.get(entry.getKey()));
             Object object = entry.getValue();
-            EntityData.Type type = EntityDataDictionary.getType(object);
+            EntityData.Type type = EntityData.Type.from(object);
             VarInts.writeUnsignedInt(buffer, METADATA_TYPES.get(type));
 
             switch (type) {

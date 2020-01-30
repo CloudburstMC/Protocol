@@ -10,8 +10,8 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import static com.nukkitx.protocol.bedrock.packet.PlayerListPacket.Action;
 import static com.nukkitx.protocol.bedrock.packet.PlayerListPacket.Entry;
-import static com.nukkitx.protocol.bedrock.packet.PlayerListPacket.Type;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlayerListSerializer_v332 implements PacketSerializer<PlayerListPacket> {
@@ -20,13 +20,13 @@ public class PlayerListSerializer_v332 implements PacketSerializer<PlayerListPac
 
     @Override
     public void serialize(ByteBuf buffer, PlayerListPacket packet) {
-        buffer.writeByte(packet.getType().ordinal());
+        buffer.writeByte(packet.getAction().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getEntries().size());
 
         for (Entry entry : packet.getEntries()) {
             BedrockUtils.writeUuid(buffer, entry.getUuid());
 
-            if (packet.getType() == Type.ADD) {
+            if (packet.getAction() == PlayerListPacket.Action.ADD) {
                 VarInts.writeLong(buffer, entry.getEntityId());
                 BedrockUtils.writeString(buffer, entry.getName());
                 SerializedSkin skin = entry.getSkin();
@@ -35,7 +35,7 @@ public class PlayerListSerializer_v332 implements PacketSerializer<PlayerListPac
                 BedrockUtils.writeByteArray(buffer, skin.getSkinData().getImage());
                 skin.getCapeData().checkLegacyCapeSize();
                 BedrockUtils.writeByteArray(buffer, skin.getCapeData().getImage());
-                BedrockUtils.writeString(buffer, skin.getSkinResourcePatch());
+                BedrockUtils.writeString(buffer, skin.getGeometryName());
                 BedrockUtils.writeString(buffer, skin.getGeometryData());
                 BedrockUtils.writeString(buffer, entry.getXuid());
                 BedrockUtils.writeString(buffer, entry.getPlatformChatId());
@@ -45,14 +45,14 @@ public class PlayerListSerializer_v332 implements PacketSerializer<PlayerListPac
 
     @Override
     public void deserialize(ByteBuf buffer, PlayerListPacket packet) {
-        Type type = Type.values()[buffer.readUnsignedByte()];
-        packet.setType(type);
+        Action action = Action.values()[buffer.readUnsignedByte()];
+        packet.setAction(action);
         int length = VarInts.readUnsignedInt(buffer);
 
         for (int i = 0; i < length; i++) {
             Entry entry = new Entry(BedrockUtils.readUuid(buffer));
 
-            if (type == Type.ADD) {
+            if (action == Action.ADD) {
                 entry.setEntityId(VarInts.readLong(buffer));
                 entry.setName(BedrockUtils.readString(buffer));
                 String skinId = BedrockUtils.readString(buffer);
