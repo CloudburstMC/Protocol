@@ -3,16 +3,20 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RespawnPacket extends BedrockPacket {
+public class LevelSoundEvent1Packet extends BedrockPacket {
+    private SoundEvent sound;
     private Vector3f position;
-    private State state;
-    private long runtimeEntityId; // Only used server bound and pretty pointless
+    private int extraData;
+    private int pitch;
+    private boolean babySound;
+    private boolean relativeVolumeDisabled;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -20,12 +24,6 @@ public class RespawnPacket extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.RESPAWN;
-    }
-
-    public enum State {
-        SERVER_SEARCHING,
-        SERVER_READY,
-        CLIENT_READY
+        return BedrockPacketType.LEVEL_SOUND_EVENT;
     }
 }

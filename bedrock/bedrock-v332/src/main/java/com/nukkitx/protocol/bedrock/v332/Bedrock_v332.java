@@ -33,7 +33,7 @@ public class Bedrock_v332 {
             .registerPacket(UpdateBlockPacket.class, UpdateBlockSerializer_v332.INSTANCE, 21)
             .registerPacket(AddPaintingPacket.class, AddPaintingSerializer_v332.INSTANCE, 22)
             .registerPacket(ExplodePacket.class, ExplodeSerializer_v332.INSTANCE, 23)
-            .registerPacket(LevelSoundEventPacket.class, LevelSoundEventSerializer_v332.INSTANCE, 24)
+            .registerPacket(LevelSoundEvent1Packet.class, LevelSoundEvent1Serializer_v332.INSTANCE, 24)
             .registerPacket(LevelEventPacket.class, LevelEventSerializer_v332.INSTANCE, 25)
             .registerPacket(BlockEventPacket.class, BlockEventSerializer_v332.INSTANCE, 26)
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v332.INSTANCE, 27)

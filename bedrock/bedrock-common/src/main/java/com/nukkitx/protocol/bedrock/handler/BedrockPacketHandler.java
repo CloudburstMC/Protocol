@@ -125,11 +125,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(LevelSoundEventPacket packet) {
+    default boolean handle(LevelSoundEvent1Packet packet) {
         return false;
     }
 
-    default boolean handle(LevelSoundEvent3Packet packet) {
+    default boolean handle(LevelSoundEventPacket packet) {
         return false;
     }
 

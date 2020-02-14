@@ -193,6 +193,10 @@ public class SerializedSkin {
         }
 
         public SerializedSkin build() {
+            if (fullSkinId == null) {
+                fullSkinId = skinId + capeId;
+            }
+
             if (skinResourcePatch == null) {
                 return SerializedSkin.of(skinId, geometryName, skinData, animations, capeData, geometryData,
                         animationData, premium, persona, capeOnClassic, capeId, fullSkinId);

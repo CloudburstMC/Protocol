@@ -73,10 +73,10 @@ public class StartGameSerializer_v361 implements PacketSerializer<StartGamePacke
         List<CompoundTag> palette = packet.getBlockPalette().getValue();
         VarInts.writeUnsignedInt(buffer, palette.size());
         for (CompoundTag entry : palette) {
-            CompoundTag blockTag = entry.getAsCompound("block");
-            BedrockUtils.writeString(buffer, blockTag.getAsString("name"));
-            buffer.writeShortLE(entry.getAsShort("meta"));
-            buffer.writeShortLE(entry.getAsShort("id"));
+            CompoundTag blockTag = entry.getCompound("block");
+            BedrockUtils.writeString(buffer, blockTag.getString("name"));
+            buffer.writeShortLE(entry.getShort("meta"));
+            buffer.writeShortLE(entry.getShort("id"));
         }
 
         BedrockUtils.writeArray(buffer, packet.getItemEntries(), (buf, entry) -> {

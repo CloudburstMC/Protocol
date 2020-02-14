@@ -33,7 +33,7 @@ public class Bedrock_v340 {
             .registerPacket(UpdateBlockPacket.class, UpdateBlockSerializer_v340.INSTANCE, 21)
             .registerPacket(AddPaintingPacket.class, AddPaintingSerializer_v340.INSTANCE, 22)
             .registerPacket(ExplodePacket.class, ExplodeSerializer_v340.INSTANCE, 23)
-            .registerPacket(LevelSoundEventPacket.class, LevelSoundEventSerializer_v340.INSTANCE, 24)
+            .registerPacket(LevelSoundEvent1Packet.class, LevelSoundEvent1Serializer_v340.INSTANCE, 24)
             .registerPacket(LevelEventPacket.class, LevelEventSerializer_v340.INSTANCE, 25)
             .registerPacket(BlockEventPacket.class, BlockEventSerializer_v340.INSTANCE, 26)
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v340.INSTANCE, 27)
@@ -131,7 +131,7 @@ public class Bedrock_v340 {
             .registerPacket(LevelSoundEvent2Packet.class, LevelSoundEvent2Serializer_v340.INSTANCE, 120)
             .registerPacket(NetworkChunkPublisherUpdatePacket.class, NetworkChunkPublisherUpdateSerializer_v340.INSTANCE, 121)
             .registerPacket(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v340.INSTANCE, 122)
-            .registerPacket(LevelSoundEvent3Packet.class, LevelSoundEvent3Serializer_v340.INSTANCE, 123)
+            .registerPacket(LevelSoundEventPacket.class, LevelSoundEvent3Serializer_v340.INSTANCE, 123)
             .registerPacket(LecternUpdatePacket.class, LecternUpdateSerializer_v340.INSTANCE, 124)
             .registerPacket(VideoStreamConnectPacket.class, VideoStreamConnectSerializer_v340.INSTANCE, 125)
             .build();

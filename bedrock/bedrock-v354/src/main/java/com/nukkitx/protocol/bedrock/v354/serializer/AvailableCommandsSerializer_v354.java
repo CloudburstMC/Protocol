@@ -228,9 +228,9 @@ public class AvailableCommandsSerializer_v354 implements PacketSerializer<Availa
                     CommandParamType type = CommandParamType.deserialize(buf.readIntLE());
 
                     boolean optional = buf.readBoolean();
-                    byte unknownByte = buf.readByte();
+                    byte options = buf.readByte();
 
-                    overloads[i][i2] = new CommandParamData.Builder(parameterName, type, optional, unknownByte);
+                    overloads[i][i2] = new CommandParamData.Builder(parameterName, type, optional, options);
                 }
             }
             return new CommandData.Builder(name, description, flags, permissions, aliasesIndex, overloads);

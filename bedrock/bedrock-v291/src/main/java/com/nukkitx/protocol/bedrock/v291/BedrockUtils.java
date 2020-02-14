@@ -614,7 +614,7 @@ public final class BedrockUtils {
         }
     }
 
-    public static InventoryAction readInventoryAction(ByteBuf buffer) {
+    public static InventoryActionData readInventoryAction(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         InventorySource source = readInventorySource(buffer);
@@ -623,10 +623,10 @@ public final class BedrockUtils {
         ItemData fromItem = readItemData(buffer);
         ItemData toItem = readItemData(buffer);
 
-        return new InventoryAction(source, slot, fromItem, toItem);
+        return new InventoryActionData(source, slot, fromItem, toItem);
     }
 
-    public static void writeInventoryAction(ByteBuf buffer, InventoryAction action) {
+    public static void writeInventoryAction(ByteBuf buffer, InventoryActionData action) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(action, "action");
 
@@ -679,7 +679,7 @@ public final class BedrockUtils {
         }
     }
 
-    public static GameRule readGameRule(ByteBuf buffer) {
+    public static GameRuleData readGameRule(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         String name = BedrockUtils.readString(buffer);
@@ -687,16 +687,16 @@ public final class BedrockUtils {
 
         switch (type) {
             case 1:
-                return new GameRule<>(name, buffer.readBoolean());
+                return new GameRuleData<>(name, buffer.readBoolean());
             case 2:
-                return new GameRule<>(name, VarInts.readUnsignedInt(buffer));
+                return new GameRuleData<>(name, VarInts.readUnsignedInt(buffer));
             case 3:
-                return new GameRule<>(name, buffer.readFloatLE());
+                return new GameRuleData<>(name, buffer.readFloatLE());
         }
         throw new IllegalStateException("Invalid gamerule type received");
     }
 
-    public static void writeGameRule(ByteBuf buffer, GameRule gameRule) {
+    public static void writeGameRule(ByteBuf buffer, GameRuleData gameRule) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(gameRule, "gameRule");
 

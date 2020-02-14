@@ -17,14 +17,14 @@ public class RespawnSerializer_v388 implements PacketSerializer<RespawnPacket> {
     @Override
     public void serialize(ByteBuf buffer, RespawnPacket packet) {
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
-        buffer.writeByte(packet.getSpawnState().ordinal());
+        buffer.writeByte(packet.getState().ordinal());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, RespawnPacket packet) {
         packet.setPosition(BedrockUtils.readVector3f(buffer));
-        packet.setSpawnState(VALUES[buffer.readUnsignedByte()]);
+        packet.setState(VALUES[buffer.readUnsignedByte()]);
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
     }
 }

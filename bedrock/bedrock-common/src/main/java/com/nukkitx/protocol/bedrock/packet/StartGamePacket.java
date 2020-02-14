@@ -8,7 +8,7 @@ import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
-import com.nukkitx.protocol.bedrock.data.GameRule;
+import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.*;
@@ -22,7 +22,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(exclude = {"itemEntries", "blockPalette"})
 public class StartGamePacket extends BedrockPacket {
-    private final List<GameRule> gamerules = new ArrayList<>();
+    private final List<GameRuleData<?>> gamerules = new ArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
     private int playerGamemode;

@@ -35,14 +35,14 @@ public class CraftingData {
         this.priority = 0;
     }
 
-    public static CraftingData fromFurnaceData(int inputId, int inputDamage, ItemData input, String craftingTag) {
+    public static CraftingData fromFurnaceData(int inputId, int inputDamage, ItemData output, String craftingTag) {
         return new CraftingData(CraftingType.FURNACE_DATA, null, -1, -1, inputId, inputDamage,
-                new ItemData[]{input}, null, null, craftingTag, -1);
+                null, new ItemData[]{output}, null, craftingTag, -1);
     }
 
     public static CraftingData fromFurnace(int inputId, ItemData input, String craftingTag) {
         return new CraftingData(CraftingType.FURNACE, null, -1, -1, inputId, -1,
-                new ItemData[]{input}, null, null, craftingTag, -1);
+                null, new ItemData[]{input}, null, craftingTag, -1);
     }
 
     public static CraftingData fromShapeless(String recipeId, ItemData[] inputs, ItemData[] outputs, UUID uuid,

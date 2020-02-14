@@ -239,6 +239,8 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
 
         BedrockUtils.readArray(buffer, softEnums, buf -> BedrockUtils.readCommandEnumData(buffer, true));
 
+        log.debug("enum count {}, constraints {}", enums.size(), VarInts.readUnsignedInt(buffer));
+
         // Generate command data
 
         for (CommandData.Builder command : commands) {

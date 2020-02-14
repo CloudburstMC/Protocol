@@ -23,11 +23,11 @@ public class ImageData {
     private static final int SKIN_128_64_SIZE = 128 * 64 * PIXEL_SIZE;
     private static final int SKIN_128_128_SIZE = 128 * 128 * PIXEL_SIZE;
 
-    private final long width;
-    private final long height;
+    private final int width;
+    private final int height;
     private final byte[] image;
 
-    public static ImageData of(long width, long height, byte[] image) {
+    public static ImageData of(int width, int height, byte[] image) {
         Objects.requireNonNull(image, "image");
         return new ImageData(width, height, image);
     }

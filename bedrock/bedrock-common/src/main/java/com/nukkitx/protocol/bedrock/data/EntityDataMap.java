@@ -241,4 +241,9 @@ public class EntityDataMap implements Map<EntityData, Object> {
     public Set<Entry<EntityData, Object>> entrySet() {
         return this.map.entrySet();
     }
+
+    @Override
+    public String toString() {
+        return map.toString();
+    }
 }
