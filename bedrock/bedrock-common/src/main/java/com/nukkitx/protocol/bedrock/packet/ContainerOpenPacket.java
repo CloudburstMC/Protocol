@@ -13,7 +13,7 @@ public class ContainerOpenPacket extends BedrockPacket {
     private byte windowId;
     private byte type;
     private Vector3i blockPosition;
-    private long uniqueEntityId;
+    private long uniqueEntityId = -1;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
