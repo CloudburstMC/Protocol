@@ -25,7 +25,7 @@ public class InteractPacket extends BedrockPacket {
 
     public enum Action {
         NONE,
-        UNKNOWN_1,
+        INTERACT,
         DAMAGE,
         LEAVE_VEHICLE,
         MOUSEOVER,
