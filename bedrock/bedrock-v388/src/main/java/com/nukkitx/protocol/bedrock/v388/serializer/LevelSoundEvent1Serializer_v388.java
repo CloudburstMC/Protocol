@@ -267,7 +267,44 @@ public class LevelSoundEvent1Serializer_v388 implements PacketSerializer<LevelSo
         SOUNDS.put(252, AMBIENT_AGGRESSIVE);
         SOUNDS.put(253, AMBIENT_WORRIED);
         SOUNDS.put(254, CANT_BREED);
-        SOUNDS.put(255, UNDEFINED);
+        SOUNDS.put(255, SHIELD_BLOCK);
+        SOUNDS.put(256, LECTERN_PLACE_BOOK);
+        SOUNDS.put(257, GRINDSTONE_USE);
+        SOUNDS.put(258, BELL_RING);
+        SOUNDS.put(259, CAMPFIRE_CRACKLE);
+        SOUNDS.put(260, SOUND_ROAR);
+        SOUNDS.put(261, SOUND_STUN);
+        SOUNDS.put(262, SWEET_BERRIES_HURT);
+        SOUNDS.put(263, SWEET_BERRIES_PICK);
+        SOUNDS.put(264, TABLE_USE);
+        SOUNDS.put(265, STONECUTTER_USE);
+        SOUNDS.put(266, COMPOSTER_EMPTY);
+        SOUNDS.put(267, COMPOSTER_FILL);
+        SOUNDS.put(268, COMPOSTER_FILL_SUCCESS);
+        SOUNDS.put(269, COMPOSTER_READY);
+        SOUNDS.put(270, BARREL_OPEN);
+        SOUNDS.put(271, BARREL_CLOSE);
+        SOUNDS.put(272, RAID_HORN);
+        SOUNDS.put(273, LOOM_USE);
+        SOUNDS.put(274, AMBIENT_IN_RAID);
+        SOUNDS.put(275, UI_CARTOGRAPHY_TABLE_TAKE_RESULT);
+        SOUNDS.put(276, UI_STONECUTTER_TAKE_RESULT);
+        SOUNDS.put(277, UI_LOOM_TAKE_RESULT);
+        SOUNDS.put(278, BLOCK_SMOKER_SMOKE);
+        SOUNDS.put(279, BLASTFURNACE_FIRE_CRACKLE);
+        SOUNDS.put(280, SMITHING_TABLE_USE);
+        SOUNDS.put(281, SCREECH);
+        SOUNDS.put(282, SLEEP);
+        SOUNDS.put(283, FURNACE_LIT);
+        SOUNDS.put(284, CONVERT_MOOSHROOM);
+        SOUNDS.put(285, MILK_SUSPICIOUSLY);
+        SOUNDS.put(286, CELEBRATE);
+        SOUNDS.put(289, BEEHIVE_DRIP);
+        SOUNDS.put(290, BEEHIVE_ENTER);
+        SOUNDS.put(291, BEEHIVE_EXIT);
+        SOUNDS.put(292, BEEHIVE_WORK);
+        SOUNDS.put(293, BEEHIVE_SHEAR);
+        SOUNDS.put(295, UNDEFINED);
     }
 
     @Override
