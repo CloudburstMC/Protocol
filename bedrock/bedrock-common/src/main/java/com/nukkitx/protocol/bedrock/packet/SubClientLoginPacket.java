@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class SubClientLoginPacket extends BedrockPacket {
     private AsciiString chainData;
     private AsciiString skinData;

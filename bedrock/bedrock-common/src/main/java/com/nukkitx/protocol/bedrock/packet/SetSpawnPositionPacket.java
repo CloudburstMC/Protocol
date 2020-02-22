@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class SetSpawnPositionPacket extends BedrockPacket {
     private Type spawnType;
     private Vector3i blockPosition;

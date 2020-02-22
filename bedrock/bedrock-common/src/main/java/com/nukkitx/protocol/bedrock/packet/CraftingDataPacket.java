@@ -15,7 +15,7 @@ import java.util.List;
 
 @Data
 @ToString(exclude = {"craftingData"})
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class CraftingDataPacket extends BedrockPacket {
     private final List<CraftingData> craftingData = new ArrayList<>();
     private final List<PotionMixData> potionMixData = new ArrayList<>();

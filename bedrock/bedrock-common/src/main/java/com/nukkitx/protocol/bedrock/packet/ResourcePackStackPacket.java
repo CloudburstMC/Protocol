@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class ResourcePackStackPacket extends BedrockPacket {
     private boolean forcedToAccept;
     private final List<Entry> behaviorPacks = new ArrayList<>();

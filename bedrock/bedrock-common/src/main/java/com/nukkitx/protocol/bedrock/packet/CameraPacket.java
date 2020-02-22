@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class CameraPacket extends BedrockPacket {
     private long cameraUniqueEntityId;
     private long playerUniqueEntityId;

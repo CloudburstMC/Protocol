@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class StructureBlockUpdatePacket extends BedrockPacket {
     private Vector3i blockPosition;
     private StructureEditorData editorData;

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-@EqualsAndHashCode(callSuper = true, exclude = {"skinData"})
+@EqualsAndHashCode(callSuper = false, exclude = {"skinData"})
 @ToString(exclude = {"chainData", "skinData"})
 public class LoginPacket extends BedrockPacket {
     private int protocolVersion;

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class PlayerListPacket extends BedrockPacket {
     private final List<Entry> entries = new ArrayList<>();
     private Action action;

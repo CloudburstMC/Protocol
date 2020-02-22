@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class AdventureSettingsPacket extends BedrockPacket {
     private final Set<Flag> flags = new HashSet<>();
     private CommandPermission commandPermission;

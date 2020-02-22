@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class ClientCacheBlobStatusPacket extends BedrockPacket {
     private final TLongList acks = new TLongArrayList();
     private final TLongList naks = new TLongArrayList();

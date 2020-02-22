@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class SetLocalPlayerAsInitializedPacket extends BedrockPacket {
     private long runtimeEntityId;
 

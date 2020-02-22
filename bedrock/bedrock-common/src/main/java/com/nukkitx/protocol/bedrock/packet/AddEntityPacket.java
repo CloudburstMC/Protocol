@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class AddEntityPacket extends BedrockPacket {
     private final List<Attribute> attributes = new ArrayList<>();
     private final EntityDataMap metadata = new EntityDataMap();

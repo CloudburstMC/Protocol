@@ -10,7 +10,7 @@ import lombok.ToString;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString(exclude = {"data"})
 public class ResourcePackChunkDataPacket extends BedrockPacket {
     private UUID packId;
