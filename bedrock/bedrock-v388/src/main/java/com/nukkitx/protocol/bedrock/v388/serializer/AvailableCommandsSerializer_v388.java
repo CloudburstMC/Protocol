@@ -29,8 +29,8 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
     private static final ObjIntConsumer<ByteBuf> WRITE_BYTE = ByteBuf::writeByte;
     private static final ObjIntConsumer<ByteBuf> WRITE_SHORT = ByteBuf::writeShortLE;
     private static final ObjIntConsumer<ByteBuf> WRITE_INT = ByteBuf::writeIntLE;
-    private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readByte;
-    private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readShortLE;
+    private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readUnsignedByte;
+    private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readUnsignedShortLE;
     private static final ToIntFunction<ByteBuf> READ_INT = ByteBuf::readIntLE;
     private static final TIntHashBiMap<CommandParamData.Type> PARAM_TYPES = new TIntHashBiMap<>();
 
@@ -44,7 +44,7 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
         PARAM_TYPES.put(7, WILDCARD_TARGET);
         PARAM_TYPES.put(14, FILE_PATH);
         PARAM_TYPES.put(29, STRING);
-        PARAM_TYPES.put(37, POSITION);
+        PARAM_TYPES.put(38, POSITION);
         PARAM_TYPES.put(41, MESSAGE);
         PARAM_TYPES.put(43, TEXT);
         PARAM_TYPES.put(47, JSON);

@@ -26,8 +26,8 @@ public class AvailableCommandsSerializer_v313 implements PacketSerializer<Availa
     private static final ObjIntConsumer<ByteBuf> WRITE_BYTE = ByteBuf::writeByte;
     private static final ObjIntConsumer<ByteBuf> WRITE_SHORT = ByteBuf::writeShortLE;
     private static final ObjIntConsumer<ByteBuf> WRITE_INT = ByteBuf::writeIntLE;
-    private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readByte;
-    private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readShortLE;
+    private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readUnsignedByte;
+    private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readUnsignedShortLE;
     private static final ToIntFunction<ByteBuf> READ_INT = ByteBuf::readIntLE;
     private static final TIntHashBiMap<CommandParamData.Type> PARAM_TYPES = new TIntHashBiMap<>();
 
