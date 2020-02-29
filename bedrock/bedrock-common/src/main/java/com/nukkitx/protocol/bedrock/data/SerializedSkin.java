@@ -1,9 +1,6 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 
@@ -15,6 +12,7 @@ import static com.nukkitx.network.util.Preconditions.checkArgument;
 
 @Getter
 @ToString(exclude = {"geometryData"})
+@EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SerializedSkin {
     private static final int PIXEL_SIZE = 4;
