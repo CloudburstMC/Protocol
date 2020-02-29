@@ -89,10 +89,9 @@ public class StartGamePacket extends BedrockPacket {
         private final short meta;
         private final short legacyId;
 
+        @Deprecated
         public BlockPaletteEntry(String identifier, short meta) {
-            this.identifier = identifier;
-            this.meta = meta;
-            this.legacyId = -1;
+            this(identifier, meta, (short) -1);
         }
     }
 
