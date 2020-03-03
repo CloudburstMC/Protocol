@@ -16,12 +16,12 @@ public class SetEntityDataSerializer_v340 implements PacketSerializer<SetEntityD
     @Override
     public void serialize(ByteBuf buffer, SetEntityDataPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeMetadata(buffer, packet.getMetadata());
+        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, SetEntityDataPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        BedrockUtils.readMetadata(buffer, packet.getMetadata());
+        BedrockUtils.readEntityData(buffer, packet.getMetadata());
     }
 }

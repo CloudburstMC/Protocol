@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MobEffectPacket extends BedrockPacket {
     private long runtimeEntityId;
     private Event event;

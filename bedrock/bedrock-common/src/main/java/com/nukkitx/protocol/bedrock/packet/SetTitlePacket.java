@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class SetTitlePacket extends BedrockPacket {
     private Type type;
     private String text;

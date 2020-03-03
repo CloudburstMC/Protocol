@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class StructureTemplateDataExportResponsePacket extends BedrockPacket {
     private String name;
     private boolean save; // Unsure

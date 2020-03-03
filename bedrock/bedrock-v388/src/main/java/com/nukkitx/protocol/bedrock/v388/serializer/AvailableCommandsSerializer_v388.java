@@ -44,6 +44,7 @@ public class AvailableCommandsSerializer_v388 implements PacketSerializer<Availa
         PARAM_TYPES.put(7, WILDCARD_TARGET);
         PARAM_TYPES.put(14, FILE_PATH);
         PARAM_TYPES.put(29, STRING);
+        PARAM_TYPES.put(37, BLOCK_POSITION);
         PARAM_TYPES.put(38, POSITION);
         PARAM_TYPES.put(41, MESSAGE);
         PARAM_TYPES.put(43, TEXT);

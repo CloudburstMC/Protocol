@@ -21,7 +21,7 @@ public class AddEntitySerializer_v354 implements PacketSerializer<AddEntityPacke
         BedrockUtils.writeVector3f(buffer, packet.getMotion());
         BedrockUtils.writeVector3f(buffer, packet.getRotation());
         BedrockUtils.writeArray(buffer, packet.getAttributes(), BedrockUtils::writeEntityAttribute);
-        BedrockUtils.writeMetadata(buffer, packet.getMetadata());
+        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
         BedrockUtils.writeArray(buffer, packet.getEntityLinks(), BedrockUtils::writeEntityLink);
     }
 
@@ -34,7 +34,7 @@ public class AddEntitySerializer_v354 implements PacketSerializer<AddEntityPacke
         packet.setMotion(BedrockUtils.readVector3f(buffer));
         packet.setRotation(BedrockUtils.readVector3f(buffer));
         BedrockUtils.readArray(buffer, packet.getAttributes(), BedrockUtils::readEntityAttribute);
-        BedrockUtils.readMetadata(buffer, packet.getMetadata());
+        BedrockUtils.readEntityData(buffer, packet.getMetadata());
         BedrockUtils.readArray(buffer, packet.getEntityLinks(), BedrockUtils::readEntityLink);
     }
 }

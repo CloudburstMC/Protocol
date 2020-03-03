@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MoveEntityDeltaPacket extends BedrockPacket {
     private long runtimeEntityId;
     private Vector3i movementDelta;

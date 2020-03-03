@@ -389,12 +389,12 @@ public final class BedrockUtils {
 
     public static float readByteAngle(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return buffer.readByte() / 255f * 361f;
+        return buffer.readByte() * (360f / 256f);
     }
 
     public static void writeByteAngle(ByteBuf buffer, float angle) {
         Preconditions.checkNotNull(buffer, "buffer");
-        buffer.writeByte((byte) Math.ceil(angle / 361 * 255));
+        buffer.writeByte((byte) (angle / (360f / 256f)));
     }
 
     public static Attribute readEntityAttribute(ByteBuf buffer) {
@@ -641,9 +641,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(outputMessage, "outputMessage");
         buffer.writeBoolean(outputMessage.isInternal());
         writeString(buffer, outputMessage.getMessageId());
-        for (String parameter : outputMessage.getParameters()) {
-            writeString(buffer, parameter);
-        }
+        writeArray(buffer, outputMessage.getParameters(), BedrockUtils::writeString);
     }
 
     public static List<ResourcePacksInfoPacket.Entry> readPacksInfoEntries(ByteBuf buffer) {
@@ -828,7 +826,7 @@ public final class BedrockUtils {
         }
     }
 
-    public static void readMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
+    public static void readEntityData(ByteBuf buffer, EntityDataMap metadataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
 
@@ -877,7 +875,7 @@ public final class BedrockUtils {
                     break;
                 case FLAGS:
                     int index = entityData == FLAGS_2 ? 1 : 0;
-                    metadataDictionary.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
+                    metadataDictionary.getOrCreateFlags().set(VarInts.readLong(buffer), index, METADATA_FLAGS);
                     continue;
                 case LONG:
                     object = VarInts.readLong(buffer);
@@ -886,17 +884,17 @@ public final class BedrockUtils {
                     object = BedrockUtils.readVector3f(buffer);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown metadata type received");
+                    throw new IllegalArgumentException("Unknown entity data type received");
             }
             if (entityData != null) {
                 metadataDictionary.put(entityData, object);
             } else {
-                log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
+                log.debug("Unknown entity data: {} type {} value {}", metadataInt, type, object);
             }
         }
     }
 
-    public static void writeMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
+    public static void writeEntityData(ByteBuf buffer, EntityDataMap metadataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
 

@@ -30,6 +30,12 @@
             <version>4.41.2</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.nukkitx</groupId>
+            <artifactId>fastutil-lite</artifactId>
+            <version>8.1.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

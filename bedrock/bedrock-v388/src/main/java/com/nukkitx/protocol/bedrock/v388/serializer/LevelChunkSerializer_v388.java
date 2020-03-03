@@ -4,8 +4,8 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
 import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import gnu.trove.list.TLongList;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +21,7 @@ public class LevelChunkSerializer_v388 implements PacketSerializer<LevelChunkPac
         VarInts.writeUnsignedInt(buffer, packet.getSubChunksLength());
         buffer.writeBoolean(packet.isCachingEnabled());
         if (packet.isCachingEnabled()) {
-            TLongList blobIds = packet.getBlobIds();
+            LongList blobIds = packet.getBlobIds();
             VarInts.writeUnsignedInt(buffer, blobIds.size());
 
             blobIds.forEach(blobId -> {
@@ -41,7 +41,7 @@ public class LevelChunkSerializer_v388 implements PacketSerializer<LevelChunkPac
         packet.setCachingEnabled(buffer.readBoolean());
 
         if (packet.isCachingEnabled()) {
-            TLongList blobIds = packet.getBlobIds();
+            LongList blobIds = packet.getBlobIds();
             int length = VarInts.readUnsignedInt(buffer);
 
             for (int i = 0; i < length; i++) {

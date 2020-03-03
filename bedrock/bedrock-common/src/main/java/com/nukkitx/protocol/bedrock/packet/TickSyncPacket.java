@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  * Used to maintain synchronization with a server running in authoritative mode.
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class TickSyncPacket extends BedrockPacket {
     private long requestTimestamp;
     private long responseTimestamp;

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(callSuper = false)
 public class AddPaintingPacket extends AddHangingEntityPacket {
     private String name;

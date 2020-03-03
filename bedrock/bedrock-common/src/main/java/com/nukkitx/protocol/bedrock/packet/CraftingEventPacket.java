@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class CraftingEventPacket extends BedrockPacket {
     private final List<ItemData> inputs = new ArrayList<>();
     private final List<ItemData> outputs = new ArrayList<>();

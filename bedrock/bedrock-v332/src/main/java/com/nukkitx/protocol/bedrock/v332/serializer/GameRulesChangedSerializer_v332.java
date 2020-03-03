@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class GameRulesChangedSerializer_v332 implements PacketSerializer<GameRulesChangedPacket> {
     public static final GameRulesChangedSerializer_v332 INSTANCE = new GameRulesChangedSerializer_v332();
 
-    public static final TObjectIntMap<Class> RULE_TYPES = new TObjectIntHashMap<>(3, 0.5f, -1);
+    public static final TObjectIntMap<Class<?>> RULE_TYPES = new TObjectIntHashMap<>(3, 0.5f, -1);
 
     static {
         RULE_TYPES.put(Boolean.class, 1);

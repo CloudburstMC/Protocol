@@ -22,8 +22,8 @@ public class AdventureSettingsSerializer_v361 implements PacketSerializer<Advent
     private static final CommandPermission[] COMMAND_PERMISSIONS = CommandPermission.values();
     private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
-    private static final AdventureSettingsPacket.Flag[] FLAGS_1 = {IMMUTABLE_WORLD, NO_PVP, NO_PVM, null, NO_MVP, MAY_FLY, NO_CLIP, WORLD_BUILDER, FLYING};
-    private static final AdventureSettingsPacket.Flag[] FLAGS_2 = {MINE, DOORS_AND_SWITCHES, OPEN_CONTAINERS, ATTACK_PLAYERS, ATTACK_MOBS, OP, null, BUILD, SET_DEFAULT};
+    private static final AdventureSettingsPacket.Flag[] FLAGS_1 = {IMMUTABLE_WORLD, NO_PVP, NO_PVM, null, NO_MVP, AUTO_JUMP, MAY_FLY, NO_CLIP, WORLD_BUILDER, FLYING, MUTE};
+    private static final AdventureSettingsPacket.Flag[] FLAGS_2 = {MINE, DOORS_AND_SWITCHES, OPEN_CONTAINERS, ATTACK_PLAYERS, ATTACK_MOBS, OP, null, TELEPORT, BUILD, SET_DEFAULT};
 
     private static final TObjectIntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_1 = new TObjectIntHashMap<>();
     private static final TObjectIntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_2 = new TObjectIntHashMap<>();

@@ -23,7 +23,7 @@ public class AddPlayerSerializer_v313 implements PacketSerializer<AddPlayerPacke
         BedrockUtils.writeVector3f(buffer, packet.getMotion());
         BedrockUtils.writeVector3f(buffer, packet.getRotation());
         BedrockUtils.writeItemData(buffer, packet.getHand());
-        BedrockUtils.writeMetadata(buffer, packet.getMetadata());
+        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
         AdventureSettingsSerializer_v313.INSTANCE.serialize(buffer, packet.getAdventureSettings());
         BedrockUtils.writeArray(buffer, packet.getEntityLinks(), BedrockUtils::writeEntityLink);
         BedrockUtils.writeString(buffer, packet.getDeviceId());
@@ -40,7 +40,7 @@ public class AddPlayerSerializer_v313 implements PacketSerializer<AddPlayerPacke
         packet.setMotion(BedrockUtils.readVector3f(buffer));
         packet.setRotation(BedrockUtils.readVector3f(buffer));
         packet.setHand(BedrockUtils.readItemData(buffer));
-        BedrockUtils.readMetadata(buffer, packet.getMetadata());
+        BedrockUtils.readEntityData(buffer, packet.getMetadata());
         AdventureSettingsSerializer_v313.INSTANCE.deserialize(buffer, packet.getAdventureSettings());
         BedrockUtils.readArray(buffer, packet.getEntityLinks(), BedrockUtils::readEntityLink);
         packet.setDeviceId(BedrockUtils.readString(buffer));

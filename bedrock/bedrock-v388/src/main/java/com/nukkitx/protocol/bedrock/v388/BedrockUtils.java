@@ -3,7 +3,6 @@ package com.nukkitx.protocol.bedrock.v388;
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.CompoundTagBuilder;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
@@ -389,12 +388,12 @@ public final class BedrockUtils {
 
     public static float readByteAngle(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return buffer.readByte() / 255f * 388f;
+        return buffer.readByte() * (360f / 256f);
     }
 
     public static void writeByteAngle(ByteBuf buffer, float angle) {
         Preconditions.checkNotNull(buffer, "buffer");
-        buffer.writeByte((byte) Math.ceil(angle / 388 * 255));
+        buffer.writeByte((byte) (angle / (360f / 256f)));
     }
 
     public static Attribute readEntityAttribute(ByteBuf buffer) {
@@ -641,9 +640,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(outputMessage, "outputMessage");
         buffer.writeBoolean(outputMessage.isInternal());
         writeString(buffer, outputMessage.getMessageId());
-        for (String parameter : outputMessage.getParameters()) {
-            writeString(buffer, parameter);
-        }
+        writeArray(buffer, outputMessage.getParameters(), BedrockUtils::writeString);
     }
 
     public static List<ResourcePacksInfoPacket.Entry> readPacksInfoEntries(ByteBuf buffer) {
@@ -699,7 +696,6 @@ public final class BedrockUtils {
 
     public static <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
         int length = VarInts.readUnsignedInt(buffer);
-
 
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer));
@@ -828,9 +824,9 @@ public final class BedrockUtils {
         }
     }
 
-    public static void readMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
+    public static void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
+        Preconditions.checkNotNull(entityDataMap, "entityDataMap");
 
         int length = VarInts.readUnsignedInt(buffer);
 
@@ -870,14 +866,13 @@ public final class BedrockUtils {
                         throw new IllegalStateException("Error whilst decoding NBT entity data");
                     }
                     object = tag;
-                    log.debug("TAG \n{}", tag);
                     break;
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
                     break;
                 case FLAGS:
                     int index = entityData == FLAGS_2 ? 1 : 0;
-                    metadataDictionary.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
+                    entityDataMap.getOrCreateFlags().set(VarInts.readLong(buffer), index, METADATA_FLAGS);
                     continue;
                 case LONG:
                     object = VarInts.readLong(buffer);
@@ -886,17 +881,17 @@ public final class BedrockUtils {
                     object = BedrockUtils.readVector3f(buffer);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown metadata type received");
+                    throw new IllegalArgumentException("Unknown entity data type received");
             }
             if (entityData != null) {
-                metadataDictionary.put(entityData, object);
+                entityDataMap.put(entityData, object);
             } else {
-                log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
+                log.debug("Unknown entity data: {} type {} value {}", metadataInt, type, object);
             }
         }
     }
 
-    public static void writeMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
+    public static void writeEntityData(ByteBuf buffer, EntityDataMap metadataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
 
@@ -933,7 +928,7 @@ public final class BedrockUtils {
                         ItemData item = (ItemData) object;
                         tag = item.getTag();
                         if (tag == null) {
-                            tag = CompoundTagBuilder.builder().buildRootTag();
+                            tag = CompoundTag.EMPTY;
                         }
                     }
                     try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
