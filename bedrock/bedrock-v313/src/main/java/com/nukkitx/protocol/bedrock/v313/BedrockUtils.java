@@ -15,7 +15,7 @@ import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.bedrock.v313.serializer.GameRulesChangedSerializer_v313;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.AsciiString;
@@ -34,9 +34,9 @@ import static com.nukkitx.protocol.bedrock.data.EntityData.*;
 @UtilityClass
 public final class BedrockUtils {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockUtils.class);
-    private static final TIntHashBiMap<EntityData> METADATAS = new TIntHashBiMap<>();
-    private static final TIntHashBiMap<EntityFlag> METADATA_FLAGS = new TIntHashBiMap<>();
-    private static final TIntHashBiMap<EntityData.Type> METADATA_TYPES = new TIntHashBiMap<>(9);
+    private static final Int2ObjectBiMap<EntityData> METADATAS = new Int2ObjectBiMap<>();
+    private static final Int2ObjectBiMap<EntityFlag> METADATA_FLAGS = new Int2ObjectBiMap<>();
+    private static final Int2ObjectBiMap<Type> METADATA_TYPES = new Int2ObjectBiMap<>(9);
     private static final byte[] EMPTY = new byte[0];
 
     static {

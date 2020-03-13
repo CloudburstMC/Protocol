@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public enum ContainerType {
     UNTRACKED_UI_INTERACTION(-9),
@@ -29,7 +29,7 @@ public enum ContainerType {
     MATERIAL_REDUCER(22),
     LAB_TABLE(23);
 
-    public static final TIntObjectMap<ContainerType> BY_ID = new TIntObjectHashMap<>();
+    public static final Int2ObjectMap<ContainerType> BY_ID = new Int2ObjectOpenHashMap<>();
 
     static {
         for (ContainerType type : values()) {

@@ -42,7 +42,7 @@ public class ClientboundMapItemDataSerializer_v354 implements PacketSerializer<C
 
         if ((type & 0x8) != 0) {
             VarInts.writeUnsignedInt(buffer, trackedEntityIds.size());
-            for (long trackedEntityId : trackedEntityIds.toArray()) {
+            for (long trackedEntityId : trackedEntityIds) {
                 VarInts.writeLong(buffer, trackedEntityId);
             }
         }

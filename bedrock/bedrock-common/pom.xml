@@ -31,9 +31,15 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.nukkitx</groupId>
-            <artifactId>fastutil-lite</artifactId>
-            <version>8.1.1</version>
+            <groupId>com.nukkitx.fastutil</groupId>
+            <artifactId>fastutil-long-common</artifactId>
+            <version>8.3.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nukkitx.fastutil</groupId>
+            <artifactId>fastutil-long-object-maps</artifactId>
+            <version>8.3.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

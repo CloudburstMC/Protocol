@@ -24,10 +24,9 @@ public class LevelChunkSerializer_v361 implements PacketSerializer<LevelChunkPac
             LongList blobIds = packet.getBlobIds();
             VarInts.writeUnsignedInt(buffer, blobIds.size());
 
-            blobIds.forEach(blobId -> {
+            for (long blobId : blobIds) {
                 buffer.writeLongLE(blobId);
-                return true;
-            });
+            }
         }
 
         BedrockUtils.writeByteArray(buffer, packet.getData());
