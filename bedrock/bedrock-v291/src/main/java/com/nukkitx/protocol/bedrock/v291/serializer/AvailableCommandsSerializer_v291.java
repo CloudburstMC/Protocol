@@ -9,12 +9,16 @@ import com.nukkitx.protocol.bedrock.data.CommandParamType;
 import com.nukkitx.protocol.bedrock.packet.AvailableCommandsPacket;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
 
@@ -29,7 +33,7 @@ public class AvailableCommandsSerializer_v291 implements PacketSerializer<Availa
     private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readUnsignedByte;
     private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readUnsignedShortLE;
     private static final ToIntFunction<ByteBuf> READ_INT = ByteBuf::readIntLE;
-    private static final TIntHashBiMap<CommandParamData.Type> PARAM_TYPES = new TIntHashBiMap<>();
+    private static final Int2ObjectBiMap<CommandParamData.Type> PARAM_TYPES = new Int2ObjectBiMap<>();
 
     static {
         PARAM_TYPES.put(1, INT);
@@ -51,10 +55,10 @@ public class AvailableCommandsSerializer_v291 implements PacketSerializer<Availa
 
     @Override
     public void serialize(ByteBuf buffer, AvailableCommandsPacket packet) {
-        Set<String> enumValuesSet = new HashSet<>();
-        Set<String> postfixSet = new HashSet<>();
-        Set<CommandEnumData> enumsSet = new HashSet<>();
-        Set<CommandEnumData> softEnumsSet = new HashSet<>();
+        Set<String> enumValuesSet = new ObjectOpenHashSet<>();
+        Set<String> postfixSet = new ObjectOpenHashSet<>();
+        Set<CommandEnumData> enumsSet = new ObjectOpenHashSet<>();
+        Set<CommandEnumData> softEnumsSet = new ObjectOpenHashSet<>();
 
         // Get all enum values
         for (CommandData data : packet.getCommands()) {

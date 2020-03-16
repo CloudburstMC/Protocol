@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AddPlayerPacket extends BedrockPacket {
     private final EntityDataMap metadata = new EntityDataMap();
     private final List<EntityLink> entityLinks = new ArrayList<>();

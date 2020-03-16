@@ -4,7 +4,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import static com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket.Typ
 public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v361 INSTANCE = new ResourcePackDataInfoSerializer_v361();
 
-    public static final TIntHashBiMap<ResourcePackDataInfoPacket.Type> TYPES = new TIntHashBiMap<>(INVALID);
+    public static final Int2ObjectBiMap<ResourcePackDataInfoPacket.Type> TYPES = new Int2ObjectBiMap<>(INVALID);
 
     static {
         TYPES.put(0, INVALID);

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ExplodePacket extends BedrockPacket {
     private final List<Vector3i> records = new ArrayList<>();
     private Vector3f position;

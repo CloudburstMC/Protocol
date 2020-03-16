@@ -1,9 +1,6 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +9,7 @@ import java.util.Objects;
 
 @Getter
 @ToString(exclude = {"image"})
+@EqualsAndHashCode(doNotUseGetters = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class ImageData {
     public static final ImageData EMPTY = new ImageData(0, 0, new byte[0]);

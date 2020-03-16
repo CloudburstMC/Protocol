@@ -3,15 +3,15 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import gnu.trove.map.TLongObjectMap;
-import gnu.trove.map.hash.TLongObjectHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ClientCacheMissResponsePacket extends BedrockPacket {
-    private final TLongObjectMap<byte[]> blobs = new TLongObjectHashMap<>();
+    private final Long2ObjectMap<byte[]> blobs = new Long2ObjectOpenHashMap<>();
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

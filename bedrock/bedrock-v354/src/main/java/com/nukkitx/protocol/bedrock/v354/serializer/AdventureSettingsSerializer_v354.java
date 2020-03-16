@@ -5,9 +5,9 @@ import com.nukkitx.protocol.bedrock.data.CommandPermission;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.AdventureSettingsPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,11 +22,11 @@ public class AdventureSettingsSerializer_v354 implements PacketSerializer<Advent
     private static final CommandPermission[] COMMAND_PERMISSIONS = CommandPermission.values();
     private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
-    private static final AdventureSettingsPacket.Flag[] FLAGS_1 = {IMMUTABLE_WORLD, NO_PVP, NO_PVM, null, NO_MVP, MAY_FLY, NO_CLIP, WORLD_BUILDER, FLYING};
-    private static final AdventureSettingsPacket.Flag[] FLAGS_2 = {MINE, DOORS_AND_SWITCHES, OPEN_CONTAINERS, ATTACK_PLAYERS, ATTACK_MOBS, OP, null, BUILD, SET_DEFAULT};
+    private static final AdventureSettingsPacket.Flag[] FLAGS_1 = {IMMUTABLE_WORLD, NO_PVP, NO_PVM, null, NO_MVP, AUTO_JUMP, MAY_FLY, NO_CLIP, WORLD_BUILDER, FLYING, MUTE};
+    private static final AdventureSettingsPacket.Flag[] FLAGS_2 = {MINE, DOORS_AND_SWITCHES, OPEN_CONTAINERS, ATTACK_PLAYERS, ATTACK_MOBS, OP, null, TELEPORT, BUILD, SET_DEFAULT};
 
-    private static final TObjectIntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_1 = new TObjectIntHashMap<>();
-    private static final TObjectIntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_2 = new TObjectIntHashMap<>();
+    private static final Object2IntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_1 = new Object2IntOpenHashMap<>();
+    private static final Object2IntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_2 = new Object2IntOpenHashMap<>();
 
     static {
         FLAGS_TO_BIT_1.put(IMMUTABLE_WORLD, 0x1);

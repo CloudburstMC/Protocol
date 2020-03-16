@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class CommandOutputPacket extends BedrockPacket {
     private final List<CommandOutputMessage> messages = new ArrayList<>();
     private CommandOriginData commandOriginData;

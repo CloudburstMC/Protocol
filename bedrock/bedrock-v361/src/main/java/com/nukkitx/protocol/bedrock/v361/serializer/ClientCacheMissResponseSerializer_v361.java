@@ -4,8 +4,8 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ClientCacheMissResponsePacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import gnu.trove.map.TLongObjectMap;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,19 +15,18 @@ public class ClientCacheMissResponseSerializer_v361 implements PacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, ClientCacheMissResponsePacket packet) {
-        TLongObjectMap<byte[]> blobs = packet.getBlobs();
+        Long2ObjectMap<byte[]> blobs = packet.getBlobs();
         VarInts.writeUnsignedInt(buffer, blobs.size());
 
-        blobs.forEachEntry((id, blob) -> {
+        blobs.forEach((id, blob) -> {
             buffer.writeLongLE(id);
             BedrockUtils.writeByteArray(buffer, blob);
-            return true;
         });
     }
 
     @Override
     public void deserialize(ByteBuf buffer, ClientCacheMissResponsePacket packet) {
-        TLongObjectMap<byte[]> blobs = packet.getBlobs();
+        Long2ObjectMap<byte[]> blobs = packet.getBlobs();
 
         int length = VarInts.readUnsignedInt(buffer);
 

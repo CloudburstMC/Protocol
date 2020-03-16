@@ -133,6 +133,15 @@ public class EntityDataMap implements Map<EntityData, Object> {
         return this;
     }
 
+    @Nonnull
+    public EntityFlags getOrCreateFlags() {
+        EntityFlags flags = this.getFlags();
+        if (flags == null) {
+            this.putFlags(flags = new EntityFlags());
+        }
+        return flags;
+    }
+
     public EntityFlags getFlags() {
         return (EntityFlags) this.map.get(FLAGS);
     }
@@ -240,6 +249,19 @@ public class EntityDataMap implements Map<EntityData, Object> {
     @Override
     public Set<Entry<EntityData, Object>> entrySet() {
         return this.map.entrySet();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EntityDataMap that = (EntityDataMap) o;
+        return this.map.equals(that.map);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.map.hashCode();
     }
 
     @Override

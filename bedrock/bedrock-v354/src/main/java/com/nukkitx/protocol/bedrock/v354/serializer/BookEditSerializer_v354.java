@@ -3,7 +3,7 @@ package com.nukkitx.protocol.bedrock.v354.serializer;
 import com.nukkitx.protocol.bedrock.packet.BookEditPacket;
 import com.nukkitx.protocol.bedrock.v354.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import static com.nukkitx.protocol.bedrock.packet.BookEditPacket.Action;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookEditSerializer_v354 implements PacketSerializer<BookEditPacket> {
     public static final BookEditSerializer_v354 INSTANCE = new BookEditSerializer_v354();
-    private static final TIntHashBiMap<Action> types = new TIntHashBiMap<>();
+    private static final Int2ObjectBiMap<Action> types = new Int2ObjectBiMap<>();
 
     static {
         types.put(0, Action.REPLACE_PAGE);

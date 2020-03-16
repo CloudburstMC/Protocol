@@ -5,16 +5,16 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.CommandPermission;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AdventureSettingsPacket extends BedrockPacket {
-    private final Set<Flag> flags = new HashSet<>();
+    private final Set<Flag> flags = new ObjectOpenHashSet<>();
     private CommandPermission commandPermission;
     private PlayerPermission playerPermission;
     private long uniqueEntityId;

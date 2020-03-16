@@ -1,39 +1,20 @@
 package com.nukkitx.protocol.bedrock.data;
 
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.ToString;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @ToString
 public class EntityFlags {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(EntityFlags.class);
 
-    private final Set<EntityFlag> flags = new HashSet<>();
-
-    public static EntityFlags create(long value, int index, TIntHashBiMap<EntityFlag> flagMappings) {
-        EntityFlags flags = new EntityFlags();
-        final int lower = index * 64;
-        final int upper = lower + 64;
-        for (int i = lower; i < upper; i++) {
-            int idx = i & 0x3f;
-            if ((value & (1L << idx)) != 0) {
-                EntityFlag flag = flagMappings.get(i);
-                if (flag != null) {
-                    flags.flags.add(flag);
-                } else {
-                    log.debug("Unknown Metadata flag index {} detected", i);
-                }
-            }
-        }
-        return flags;
-    }
+    private final Set<EntityFlag> flags = new ObjectOpenHashSet<>();
 
     /**
      * Set {@link EntityFlag} value
@@ -66,7 +47,7 @@ public class EntityFlags {
         return flags.contains(flag);
     }
 
-    public long get(int index, TIntHashBiMap<EntityFlag> flagMappings) {
+    public long get(int index, Int2ObjectBiMap<EntityFlag> flagMappings) {
         long value = 0;
         final int lower = index * 64;
         final int upper = lower + 64;
@@ -79,12 +60,28 @@ public class EntityFlags {
         return value;
     }
 
+    public void set(long value, int index, Int2ObjectBiMap<EntityFlag> flagMappings) {
+        final int lower = index * 64;
+        final int upper = lower + 64;
+        for (int i = lower; i < upper; i++) {
+            int idx = i & 0x3f;
+            if ((value & (1L << idx)) != 0) {
+                EntityFlag flag = flagMappings.get(i);
+                if (flag != null) {
+                    flags.add(flag);
+                } else {
+                    log.debug("Unknown entity flag index {} detected", i);
+                }
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof EntityFlags)) return false;
         EntityFlags that = (EntityFlags) o;
-        return Objects.equals(this.flags, that.flags);
+        return this.flags.equals(that.flags);
     }
 
     @Override

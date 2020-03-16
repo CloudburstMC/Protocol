@@ -5,8 +5,8 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.MapDecoration;
 import com.nukkitx.protocol.bedrock.data.MapTrackedObject;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import gnu.trove.list.TLongList;
-import gnu.trove.list.array.TLongArrayList;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ClientboundMapItemDataPacket extends BedrockPacket {
-    private final TLongList trackedEntityIds = new TLongArrayList();
+    private final LongList trackedEntityIds = new LongArrayList();
     private final List<MapTrackedObject> trackedObjects = new ArrayList<>();
     private final List<MapDecoration> decorations = new ArrayList<>();
     private long uniqueMapId;

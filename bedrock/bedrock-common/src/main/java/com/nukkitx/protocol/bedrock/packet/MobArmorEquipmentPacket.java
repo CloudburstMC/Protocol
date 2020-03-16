@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MobArmorEquipmentPacket extends BedrockPacket {
     private long runtimeEntityId;
     private ItemData helmet;

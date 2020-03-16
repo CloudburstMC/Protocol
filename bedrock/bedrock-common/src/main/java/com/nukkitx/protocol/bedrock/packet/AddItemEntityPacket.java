@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AddItemEntityPacket extends BedrockPacket {
     private final EntityDataMap metadata = new EntityDataMap();
     private long uniqueEntityId;

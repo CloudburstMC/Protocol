@@ -5,7 +5,7 @@ import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.packet.LevelSoundEvent1Packet;
 import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import static com.nukkitx.protocol.bedrock.data.SoundEvent.*;
 public class LevelSoundEventSerializer_v291 implements PacketSerializer<LevelSoundEvent1Packet> {
     public static final LevelSoundEventSerializer_v291 INSTANCE = new LevelSoundEventSerializer_v291();
 
-    private static final TIntHashBiMap<SoundEvent> sounds = new TIntHashBiMap<>(2, 0.5F, 214, UNDEFINED);
+    private static final Int2ObjectBiMap<SoundEvent> sounds = new Int2ObjectBiMap<>(2, 0.5F, 214, UNDEFINED);
 
     static {
         sounds.put(0, ITEM_USE_ON);

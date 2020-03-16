@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class PlayerSkinPacket extends BedrockPacket {
     private UUID uuid;
     private SerializedSkin skin;

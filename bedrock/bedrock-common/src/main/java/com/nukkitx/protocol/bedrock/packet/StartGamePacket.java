@@ -11,17 +11,22 @@ import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import lombok.*;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(exclude = {"itemEntries", "blockPalette"})
 public class StartGamePacket extends BedrockPacket {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(StartGamePacket.class);
+
     private final List<GameRuleData<?>> gamerules = new ArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
@@ -70,7 +75,7 @@ public class StartGamePacket extends BedrockPacket {
     private long currentTick;
     private int enchantmentSeed;
     private ListTag<CompoundTag> blockPalette;
-    private Collection<ItemEntry> itemEntries = new ArrayDeque<>();
+    private List<ItemEntry> itemEntries = new ArrayList<>();
     private String multiplayerCorrelationId;
 
     @Override
@@ -80,20 +85,6 @@ public class StartGamePacket extends BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.START_GAME_PACKET;
-    }
-
-    @Value
-    @RequiredArgsConstructor
-    public static class BlockPaletteEntry {
-        private final String identifier;
-        private final short meta;
-        private final short legacyId;
-
-        public BlockPaletteEntry(String identifier, short meta) {
-            this.identifier = identifier;
-            this.meta = meta;
-            this.legacyId = -1;
-        }
     }
 
     @Value
