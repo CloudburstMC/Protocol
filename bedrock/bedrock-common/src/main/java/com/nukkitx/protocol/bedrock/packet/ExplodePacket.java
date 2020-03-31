@@ -5,16 +5,16 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ExplodePacket extends BedrockPacket {
-    private final List<Vector3i> records = new ArrayList<>();
+    private final List<Vector3i> records = new ObjectArrayList<>();
     private Vector3f position;
     private float radius;
 

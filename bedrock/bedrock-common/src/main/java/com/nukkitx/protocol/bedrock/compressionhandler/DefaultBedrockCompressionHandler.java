@@ -10,8 +10,8 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -58,7 +58,7 @@ public class DefaultBedrockCompressionHandler implements BedrockCompressionHandl
 
     @Override
     public List<BedrockPacket> decompressPackets(BedrockPacketCodec packetCodec, ByteBuf compressed) {
-        List<BedrockPacket> packets = new ArrayList<>();
+        List<BedrockPacket> packets = new ObjectArrayList<>();
         ByteBuf decompressed = null;
         try {
             decompressed = zlib.inflate(compressed);

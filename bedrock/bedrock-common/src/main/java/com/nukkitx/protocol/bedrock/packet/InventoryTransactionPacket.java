@@ -7,16 +7,16 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class InventoryTransactionPacket extends BedrockPacket {
-    private final List<InventoryActionData> actions = new ArrayList<>();
+    private final List<InventoryActionData> actions = new ObjectArrayList<>();
     private Type transactionType;
     private int actionType;
     private long runtimeEntityId;

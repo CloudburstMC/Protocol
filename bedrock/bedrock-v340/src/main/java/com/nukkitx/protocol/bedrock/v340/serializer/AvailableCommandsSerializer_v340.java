@@ -11,11 +11,11 @@ import com.nukkitx.protocol.bedrock.v340.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -87,10 +87,10 @@ public class AvailableCommandsSerializer_v340 implements PacketSerializer<Availa
             }
         }
 
-        List<String> enumValues = new ArrayList<>(enumValuesSet);
-        List<String> postFixes = new ArrayList<>(postfixSet);
-        List<CommandEnumData> enums = new ArrayList<>(enumsSet);
-        List<CommandEnumData> softEnums = new ArrayList<>(softEnumsSet);
+        List<String> enumValues = new ObjectArrayList<>(enumValuesSet);
+        List<String> postFixes = new ObjectArrayList<>(postfixSet);
+        List<CommandEnumData> enums = new ObjectArrayList<>(enumsSet);
+        List<CommandEnumData> softEnums = new ObjectArrayList<>(softEnumsSet);
 
         // Determine width of enum index
         ObjIntConsumer<ByteBuf> indexWriter;
@@ -182,11 +182,11 @@ public class AvailableCommandsSerializer_v340 implements PacketSerializer<Availa
 
     @Override
     public void deserialize(ByteBuf buffer, AvailableCommandsPacket packet) {
-        List<String> enumValues = new ArrayList<>();
-        List<String> postFixes = new ArrayList<>();
-        List<CommandEnumData> enums = new ArrayList<>();
-        List<CommandData.Builder> commands = new ArrayList<>();
-        List<CommandEnumData> softEnums = new ArrayList<>();
+        List<String> enumValues = new ObjectArrayList<>();
+        List<String> postFixes = new ObjectArrayList<>();
+        List<CommandEnumData> enums = new ObjectArrayList<>();
+        List<CommandData.Builder> commands = new ObjectArrayList<>();
+        List<CommandEnumData> softEnums = new ObjectArrayList<>();
 
         BedrockUtils.readArray(buffer, enumValues, BedrockUtils::readString);
         BedrockUtils.readArray(buffer, postFixes, BedrockUtils::readString);
@@ -243,7 +243,7 @@ public class AvailableCommandsSerializer_v340 implements PacketSerializer<Availa
 
         for (CommandData.Builder command : commands) {
             byte flagsByte = command.getFlags();
-            List<CommandData.Flag> flags = new ArrayList<>();
+            List<CommandData.Flag> flags = new ObjectArrayList<>();
             for (int i = 0; i < 8; i++) {
                 if (((flagsByte >>> i) & 0xf) != 0) {
                     flags.add(CommandData.Flag.values()[i]);
@@ -261,7 +261,7 @@ public class AvailableCommandsSerializer_v340 implements PacketSerializer<Availa
                     CommandParamType type = overloadBuilders[i][i2].getType();
                     boolean optional = overloadBuilders[i][i2].isOptional();
                     byte optionsByte = overloadBuilders[i][i2].getOptions();
-                    List<CommandParamData.Option> options = new ArrayList<>();
+                    List<CommandParamData.Option> options = new ObjectArrayList<>();
                     for (int oi = 0; oi < 8; oi++) {
                         if (((optionsByte >>> oi) & 0xf) != 0) {
                             options.add(CommandParamData.Option.values()[oi]);

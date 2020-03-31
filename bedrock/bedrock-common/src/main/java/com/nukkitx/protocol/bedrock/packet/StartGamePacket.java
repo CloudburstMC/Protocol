@@ -13,12 +13,12 @@ import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,7 +27,7 @@ import java.util.List;
 public class StartGamePacket extends BedrockPacket {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(StartGamePacket.class);
 
-    private final List<GameRuleData<?>> gamerules = new ArrayList<>();
+    private final List<GameRuleData<?>> gamerules = new ObjectArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
     private int playerGamemode;
@@ -75,7 +75,7 @@ public class StartGamePacket extends BedrockPacket {
     private long currentTick;
     private int enchantmentSeed;
     private ListTag<CompoundTag> blockPalette;
-    private List<ItemEntry> itemEntries = new ArrayList<>();
+    private List<ItemEntry> itemEntries = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
 
     @Override

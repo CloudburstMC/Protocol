@@ -1,10 +1,10 @@
 package com.nukkitx.protocol.bedrock.data;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.*;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class SerializedSkin {
         String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
 
         return new SerializedSkin(skinId, geometryName, skinResourcePatch, skinData,
-                Collections.unmodifiableList(new ArrayList<>(animations)), capeData, geometryData, animationData,
+                Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId);
     }
 

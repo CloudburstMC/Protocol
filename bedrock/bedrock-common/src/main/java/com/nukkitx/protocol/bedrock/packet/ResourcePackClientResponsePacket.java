@@ -3,16 +3,16 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ResourcePackClientResponsePacket extends BedrockPacket {
-    private final List<String> packIds = new ArrayList<>();
+    private final List<String> packIds = new ObjectArrayList<>();
     private Status status;
 
     @Override

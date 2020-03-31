@@ -21,11 +21,15 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.util.AsciiString;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -646,7 +650,7 @@ public final class BedrockUtils {
     public static List<ResourcePacksInfoPacket.Entry> readPacksInfoEntries(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
-        List<ResourcePacksInfoPacket.Entry> entries = new ArrayList<>();
+        List<ResourcePacksInfoPacket.Entry> entries = new ObjectArrayList<>();
         int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
             String packId = readString(buffer);
@@ -1049,7 +1053,7 @@ public final class BedrockUtils {
         ImageData skinData = BedrockUtils.readImageData(buffer);
 
         int animationCount = buffer.readIntLE();
-        List<AnimationData> animations = new ArrayList<>(animationCount);
+        List<AnimationData> animations = new ObjectArrayList<>(animationCount);
         for (int i = 0; i < animationCount; i++) {
             ImageData image = BedrockUtils.readImageData(buffer);
             int type = buffer.readIntLE();

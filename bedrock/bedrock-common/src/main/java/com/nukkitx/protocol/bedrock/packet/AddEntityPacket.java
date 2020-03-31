@@ -7,18 +7,18 @@ import com.nukkitx.protocol.bedrock.data.Attribute;
 import com.nukkitx.protocol.bedrock.data.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.EntityLink;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AddEntityPacket extends BedrockPacket {
-    private final List<Attribute> attributes = new ArrayList<>();
+    private final List<Attribute> attributes = new ObjectArrayList<>();
     private final EntityDataMap metadata = new EntityDataMap();
-    private final List<EntityLink> entityLinks = new ArrayList<>();
+    private final List<EntityLink> entityLinks = new ObjectArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
     private String identifier;
