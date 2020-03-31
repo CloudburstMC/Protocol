@@ -34,7 +34,6 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
     public void serialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
         BedrockUtils.writeString(buffer, packInfo);
-        BedrockUtils.writeString(buffer, packet.getPackId().toString());
         buffer.writeIntLE((int) packet.getMaxChunkSize());
         buffer.writeIntLE((int) packet.getChunkCount());
         buffer.writeLongLE(packet.getCompressedPackSize());
