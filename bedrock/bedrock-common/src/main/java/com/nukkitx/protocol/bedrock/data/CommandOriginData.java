@@ -23,6 +23,9 @@ public class CommandOriginData {
         ENTITY,
         VIRTUAL,
         GAME_ARGUMENT,
-        ENTITY_SERVER
+        ENTITY_SERVER,
+        PRECOMPILED,
+        GAME_MASTER_ENTITY_SERVER,
+        SCRIPT,
     }
 }
