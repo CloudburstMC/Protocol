@@ -5,7 +5,7 @@ import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.packet.LevelEventPacket;
 import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -19,7 +19,7 @@ public class LevelEventSerializer_v388 implements PacketSerializer<LevelEventPac
     public static final LevelEventSerializer_v388 INSTANCE = new LevelEventSerializer_v388();
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(LevelEventSerializer_v388.class);
-    private static final TIntHashBiMap<LevelEventType> events = new TIntHashBiMap<>();
+    private static final Int2ObjectBiMap<LevelEventType> events = new Int2ObjectBiMap<>();
 
     static {
         events.put(1000, SOUND_CLICK);

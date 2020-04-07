@@ -1,8 +1,8 @@
 package com.nukkitx.protocol.bedrock.data;
 
 import com.nukkitx.network.util.Preconditions;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -60,7 +60,7 @@ public final class InventorySource {
         UNTRACKED_INTERACTION_UI(100),
         NON_IMPLEMENTED_TODO(99999);
 
-        private static final TIntObjectMap<Type> BY_ID = new TIntObjectHashMap<>(6);
+        private static final Int2ObjectMap<Type> BY_ID = new Int2ObjectOpenHashMap<>(6);
 
         static {
             for (Type type : values()) {

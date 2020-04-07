@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ResourcePackDataInfoPacket extends BedrockPacket {
     private UUID packId;
     private String packVersion;

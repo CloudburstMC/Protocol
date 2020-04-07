@@ -19,7 +19,7 @@ public class AddItemEntitySerializer_v291 implements PacketSerializer<AddItemEnt
         BedrockUtils.writeItemData(buffer, packet.getItemInHand());
         BedrockUtils.writeVector3f(buffer, packet.getPosition());
         BedrockUtils.writeVector3f(buffer, packet.getMotion());
-        BedrockUtils.writeMetadata(buffer, packet.getMetadata());
+        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
         buffer.writeBoolean(packet.isFromFishing());
     }
 
@@ -30,7 +30,7 @@ public class AddItemEntitySerializer_v291 implements PacketSerializer<AddItemEnt
         packet.setItemInHand(BedrockUtils.readItemData(buffer));
         packet.setPosition(BedrockUtils.readVector3f(buffer));
         packet.setMotion(BedrockUtils.readVector3f(buffer));
-        BedrockUtils.readMetadata(buffer, packet.getMetadata());
+        BedrockUtils.readEntityData(buffer, packet.getMetadata());
         packet.setFromFishing(buffer.readBoolean());
     }
 }

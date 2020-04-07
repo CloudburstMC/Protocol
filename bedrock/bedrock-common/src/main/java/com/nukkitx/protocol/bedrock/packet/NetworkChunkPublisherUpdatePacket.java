@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class NetworkChunkPublisherUpdatePacket extends BedrockPacket {
     private Vector3i position;
     private int radius;

@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MoveEntityAbsolutePacket extends BedrockPacket {
     private long runtimeEntityId;
     private Vector3f position;

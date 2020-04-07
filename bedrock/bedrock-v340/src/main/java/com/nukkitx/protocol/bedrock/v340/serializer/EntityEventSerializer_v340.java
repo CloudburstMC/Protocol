@@ -4,7 +4,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.EntityEventType;
 import com.nukkitx.protocol.bedrock.packet.EntityEventPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -16,7 +16,7 @@ import static com.nukkitx.protocol.bedrock.data.EntityEventType.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EntityEventSerializer_v340 implements PacketSerializer<EntityEventPacket> {
     public static final EntityEventSerializer_v340 INSTANCE = new EntityEventSerializer_v340();
-    private static final TIntHashBiMap<EntityEventType> events = new TIntHashBiMap<>();
+    private static final Int2ObjectBiMap<EntityEventType> events = new Int2ObjectBiMap<>();
     private static final InternalLogger log = InternalLoggerFactory.getInstance(EntityEventSerializer_v340.class);
 
     static {

@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class InventorySlotPacket extends BedrockPacket {
     private int containerId;
     private int slot;

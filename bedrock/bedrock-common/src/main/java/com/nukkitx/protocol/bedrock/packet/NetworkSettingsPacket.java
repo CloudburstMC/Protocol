@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class NetworkSettingsPacket extends BedrockPacket {
     private int compressionThresholdByteSize;
 

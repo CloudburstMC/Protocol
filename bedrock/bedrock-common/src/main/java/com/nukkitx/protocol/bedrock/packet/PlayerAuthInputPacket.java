@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class PlayerAuthInputPacket extends BedrockPacket {
     private Vector3f rotation; // head rot after motion
     private Vector3f position;

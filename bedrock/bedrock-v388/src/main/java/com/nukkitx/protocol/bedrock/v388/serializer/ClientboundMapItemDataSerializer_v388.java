@@ -6,8 +6,8 @@ import com.nukkitx.protocol.bedrock.data.MapTrackedObject;
 import com.nukkitx.protocol.bedrock.packet.ClientboundMapItemDataPacket;
 import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import gnu.trove.list.TLongList;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +31,7 @@ public class ClientboundMapItemDataSerializer_v388 implements PacketSerializer<C
         if (!decorations.isEmpty() && !trackedObjects.isEmpty()) {
             type |= 0x4;
         }
-        TLongList trackedEntityIds = packet.getTrackedEntityIds();
+        LongList trackedEntityIds = packet.getTrackedEntityIds();
         if (!trackedEntityIds.isEmpty()) {
             type |= 0x8;
         }
@@ -42,7 +42,7 @@ public class ClientboundMapItemDataSerializer_v388 implements PacketSerializer<C
 
         if ((type & 0x8) != 0) {
             VarInts.writeUnsignedInt(buffer, trackedEntityIds.size());
-            for (long trackedEntityId : trackedEntityIds.toArray()) {
+            for (long trackedEntityId : trackedEntityIds) {
                 VarInts.writeLong(buffer, trackedEntityId);
             }
         }
@@ -98,7 +98,7 @@ public class ClientboundMapItemDataSerializer_v388 implements PacketSerializer<C
         packet.setLocked(buffer.readBoolean());
 
         if ((type & 0x8) != 0) {
-            TLongList trackedEntityIds = packet.getTrackedEntityIds();
+            LongList trackedEntityIds = packet.getTrackedEntityIds();
             int length = VarInts.readUnsignedInt(buffer);
             for (int i = 0; i < length; i++) {
                 trackedEntityIds.add(VarInts.readLong(buffer));

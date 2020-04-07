@@ -3,7 +3,6 @@ package com.nukkitx.protocol.bedrock.v388;
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.CompoundTagBuilder;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
@@ -15,18 +14,22 @@ import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import com.nukkitx.protocol.bedrock.v388.serializer.GameRulesChangedSerializer_v388;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.util.AsciiString;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -35,9 +38,9 @@ import static com.nukkitx.protocol.bedrock.data.EntityData.*;
 @UtilityClass
 public final class BedrockUtils {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockUtils.class);
-    private static final TIntHashBiMap<EntityData> METADATAS = new TIntHashBiMap<>();
-    private static final TIntHashBiMap<EntityFlag> METADATA_FLAGS = new TIntHashBiMap<>();
-    private static final TIntHashBiMap<EntityData.Type> METADATA_TYPES = new TIntHashBiMap<>(9);
+    private static final Int2ObjectBiMap<EntityData> METADATAS = new Int2ObjectBiMap<>();
+    private static final Int2ObjectBiMap<EntityFlag> METADATA_FLAGS = new Int2ObjectBiMap<>();
+    private static final Int2ObjectBiMap<Type> METADATA_TYPES = new Int2ObjectBiMap<>(9);
 
     static {
         METADATAS.put(0, FLAGS);
@@ -389,12 +392,12 @@ public final class BedrockUtils {
 
     public static float readByteAngle(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return buffer.readByte() / 255f * 388f;
+        return buffer.readByte() * (360f / 256f);
     }
 
     public static void writeByteAngle(ByteBuf buffer, float angle) {
         Preconditions.checkNotNull(buffer, "buffer");
-        buffer.writeByte((byte) Math.ceil(angle / 388 * 255));
+        buffer.writeByte((byte) (angle / (360f / 256f)));
     }
 
     public static Attribute readEntityAttribute(ByteBuf buffer) {
@@ -641,15 +644,13 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(outputMessage, "outputMessage");
         buffer.writeBoolean(outputMessage.isInternal());
         writeString(buffer, outputMessage.getMessageId());
-        for (String parameter : outputMessage.getParameters()) {
-            writeString(buffer, parameter);
-        }
+        writeArray(buffer, outputMessage.getParameters(), BedrockUtils::writeString);
     }
 
     public static List<ResourcePacksInfoPacket.Entry> readPacksInfoEntries(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
-        List<ResourcePacksInfoPacket.Entry> entries = new ArrayList<>();
+        List<ResourcePacksInfoPacket.Entry> entries = new ObjectArrayList<>();
         int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
             String packId = readString(buffer);
@@ -699,7 +700,6 @@ public final class BedrockUtils {
 
     public static <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
         int length = VarInts.readUnsignedInt(buffer);
-
 
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer));
@@ -828,9 +828,9 @@ public final class BedrockUtils {
         }
     }
 
-    public static void readMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
+    public static void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
         Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
+        Preconditions.checkNotNull(entityDataMap, "entityDataMap");
 
         int length = VarInts.readUnsignedInt(buffer);
 
@@ -870,14 +870,13 @@ public final class BedrockUtils {
                         throw new IllegalStateException("Error whilst decoding NBT entity data");
                     }
                     object = tag;
-                    log.debug("TAG \n{}", tag);
                     break;
                 case VECTOR3I:
                     object = BedrockUtils.readVector3i(buffer);
                     break;
                 case FLAGS:
                     int index = entityData == FLAGS_2 ? 1 : 0;
-                    metadataDictionary.putFlags(EntityFlags.create(VarInts.readLong(buffer), index, METADATA_FLAGS));
+                    entityDataMap.getOrCreateFlags().set(VarInts.readLong(buffer), index, METADATA_FLAGS);
                     continue;
                 case LONG:
                     object = VarInts.readLong(buffer);
@@ -886,17 +885,17 @@ public final class BedrockUtils {
                     object = BedrockUtils.readVector3f(buffer);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown metadata type received");
+                    throw new IllegalArgumentException("Unknown entity data type received");
             }
             if (entityData != null) {
-                metadataDictionary.put(entityData, object);
+                entityDataMap.put(entityData, object);
             } else {
-                log.debug("Unknown metadata: {} type {} value {}", metadataInt, type, object);
+                log.debug("Unknown entity data: {} type {} value {}", metadataInt, type, object);
             }
         }
     }
 
-    public static void writeMetadata(ByteBuf buffer, EntityDataMap metadataDictionary) {
+    public static void writeEntityData(ByteBuf buffer, EntityDataMap metadataDictionary) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(metadataDictionary, "metadataDictionary");
 
@@ -933,7 +932,7 @@ public final class BedrockUtils {
                         ItemData item = (ItemData) object;
                         tag = item.getTag();
                         if (tag == null) {
-                            tag = CompoundTagBuilder.builder().buildRootTag();
+                            tag = CompoundTag.EMPTY;
                         }
                     }
                     try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
@@ -1054,7 +1053,7 @@ public final class BedrockUtils {
         ImageData skinData = BedrockUtils.readImageData(buffer);
 
         int animationCount = buffer.readIntLE();
-        List<AnimationData> animations = new ArrayList<>(animationCount);
+        List<AnimationData> animations = new ObjectArrayList<>(animationCount);
         for (int i = 0; i < animationCount; i++) {
             ImageData image = BedrockUtils.readImageData(buffer);
             int type = buffer.readIntLE();

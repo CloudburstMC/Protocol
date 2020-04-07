@@ -39,7 +39,7 @@ import lombok.EqualsAndHashCode;
  *
  **/
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class BlockEventPacket extends BedrockPacket {
 
     /**

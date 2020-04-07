@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public final class UnknownPacket extends BedrockPacket implements PacketSerializer<UnknownPacket>, ReferenceCounted {
     private ByteBuf payload;
 

@@ -10,10 +10,10 @@ import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v332.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -130,7 +130,7 @@ public class StartGameSerializer_v332 implements PacketSerializer<StartGamePacke
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
         int paletteLength = VarInts.readUnsignedInt(buffer);
-        List<CompoundTag> palette = new ArrayList<>(paletteLength);
+        List<CompoundTag> palette = new ObjectArrayList<>(paletteLength);
         for (int i = 0; i < paletteLength; i++) {
             palette.add(CompoundTagBuilder.builder()
                     .tag(CompoundTagBuilder.builder()

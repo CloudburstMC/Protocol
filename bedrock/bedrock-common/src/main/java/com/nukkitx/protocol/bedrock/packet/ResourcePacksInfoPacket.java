@@ -3,18 +3,18 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ResourcePacksInfoPacket extends BedrockPacket {
-    private final List<Entry> behaviorPackInfos = new ArrayList<>();
-    private final List<Entry> resourcePackInfos = new ArrayList<>();
+    private final List<Entry> behaviorPackInfos = new ObjectArrayList<>();
+    private final List<Entry> resourcePackInfos = new ObjectArrayList<>();
     private boolean forcedToAccept;
     private boolean scriptingEnabled;
 

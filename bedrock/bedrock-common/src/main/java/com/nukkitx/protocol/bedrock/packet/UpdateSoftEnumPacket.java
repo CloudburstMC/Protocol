@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class UpdateSoftEnumPacket extends BedrockPacket {
     private CommandEnumData softEnum;
     private Type type;

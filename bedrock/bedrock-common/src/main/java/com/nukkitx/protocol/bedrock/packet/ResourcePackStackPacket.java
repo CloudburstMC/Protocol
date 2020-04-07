@@ -3,19 +3,19 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ResourcePackStackPacket extends BedrockPacket {
     private boolean forcedToAccept;
-    private final List<Entry> behaviorPacks = new ArrayList<>();
-    private final List<Entry> resourcePacks = new ArrayList<>();
+    private final List<Entry> behaviorPacks = new ObjectArrayList<>();
+    private final List<Entry> resourcePacks = new ObjectArrayList<>();
     private boolean experimental;
     private String gameVersion;
 

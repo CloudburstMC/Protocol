@@ -9,14 +9,18 @@ import com.nukkitx.protocol.bedrock.data.CommandParamType;
 import com.nukkitx.protocol.bedrock.packet.AvailableCommandsPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
 
@@ -29,10 +33,10 @@ public class AvailableCommandsSerializer_v361 implements PacketSerializer<Availa
     private static final ObjIntConsumer<ByteBuf> WRITE_BYTE = ByteBuf::writeByte;
     private static final ObjIntConsumer<ByteBuf> WRITE_SHORT = ByteBuf::writeShortLE;
     private static final ObjIntConsumer<ByteBuf> WRITE_INT = ByteBuf::writeIntLE;
-    private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readByte;
-    private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readShortLE;
+    private static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readUnsignedByte;
+    private static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readUnsignedShortLE;
     private static final ToIntFunction<ByteBuf> READ_INT = ByteBuf::readIntLE;
-    private static final TIntHashBiMap<CommandParamData.Type> PARAM_TYPES = new TIntHashBiMap<>();
+    private static final Int2ObjectBiMap<CommandParamData.Type> PARAM_TYPES = new Int2ObjectBiMap<>();
 
     static {
         PARAM_TYPES.put(1, INT);
@@ -54,10 +58,10 @@ public class AvailableCommandsSerializer_v361 implements PacketSerializer<Availa
 
     @Override
     public void serialize(ByteBuf buffer, AvailableCommandsPacket packet) {
-        Set<String> enumValuesSet = new HashSet<>();
-        Set<String> postfixSet = new HashSet<>();
-        Set<CommandEnumData> enumsSet = new HashSet<>();
-        Set<CommandEnumData> softEnumsSet = new HashSet<>();
+        Set<String> enumValuesSet = new ObjectOpenHashSet<>();
+        Set<String> postfixSet = new ObjectOpenHashSet<>();
+        Set<CommandEnumData> enumsSet = new ObjectOpenHashSet<>();
+        Set<CommandEnumData> softEnumsSet = new ObjectOpenHashSet<>();
 
         // Get all enum values
         for (CommandData data : packet.getCommands()) {
@@ -86,10 +90,10 @@ public class AvailableCommandsSerializer_v361 implements PacketSerializer<Availa
             }
         }
 
-        List<String> enumValues = new ArrayList<>(enumValuesSet);
-        List<String> postFixes = new ArrayList<>(postfixSet);
-        List<CommandEnumData> enums = new ArrayList<>(enumsSet);
-        List<CommandEnumData> softEnums = new ArrayList<>(softEnumsSet);
+        List<String> enumValues = new ObjectArrayList<>(enumValuesSet);
+        List<String> postFixes = new ObjectArrayList<>(postfixSet);
+        List<CommandEnumData> enums = new ObjectArrayList<>(enumsSet);
+        List<CommandEnumData> softEnums = new ObjectArrayList<>(softEnumsSet);
 
         // Determine width of enum index
         ObjIntConsumer<ByteBuf> indexWriter;
@@ -181,11 +185,11 @@ public class AvailableCommandsSerializer_v361 implements PacketSerializer<Availa
 
     @Override
     public void deserialize(ByteBuf buffer, AvailableCommandsPacket packet) {
-        List<String> enumValues = new ArrayList<>();
-        List<String> postFixes = new ArrayList<>();
-        List<CommandEnumData> enums = new ArrayList<>();
-        List<CommandData.Builder> commands = new ArrayList<>();
-        List<CommandEnumData> softEnums = new ArrayList<>();
+        List<String> enumValues = new ObjectArrayList<>();
+        List<String> postFixes = new ObjectArrayList<>();
+        List<CommandEnumData> enums = new ObjectArrayList<>();
+        List<CommandData.Builder> commands = new ObjectArrayList<>();
+        List<CommandEnumData> softEnums = new ObjectArrayList<>();
 
         BedrockUtils.readArray(buffer, enumValues, BedrockUtils::readString);
         BedrockUtils.readArray(buffer, postFixes, BedrockUtils::readString);
@@ -242,7 +246,7 @@ public class AvailableCommandsSerializer_v361 implements PacketSerializer<Availa
 
         for (CommandData.Builder command : commands) {
             byte flagsByte = command.getFlags();
-            List<CommandData.Flag> flags = new ArrayList<>();
+            List<CommandData.Flag> flags = new ObjectArrayList<>();
             for (int i = 0; i < 8; i++) {
                 if (((flagsByte >>> i) & 0xf) != 0) {
                     flags.add(CommandData.Flag.values()[i]);
@@ -260,7 +264,7 @@ public class AvailableCommandsSerializer_v361 implements PacketSerializer<Availa
                     CommandParamType type = overloadBuilders[i][i2].getType();
                     boolean optional = overloadBuilders[i][i2].isOptional();
                     byte optionsByte = overloadBuilders[i][i2].getOptions();
-                    List<CommandParamData.Option> options = new ArrayList<>();
+                    List<CommandParamData.Option> options = new ObjectArrayList<>();
                     for (int oi = 0; oi < 8; oi++) {
                         if (((optionsByte >>> oi) & 0xf) != 0) {
                             options.add(CommandParamData.Option.values()[oi]);

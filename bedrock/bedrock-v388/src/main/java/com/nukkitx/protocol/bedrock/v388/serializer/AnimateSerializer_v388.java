@@ -3,7 +3,7 @@ package com.nukkitx.protocol.bedrock.v388.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.AnimatePacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import static com.nukkitx.protocol.bedrock.packet.AnimatePacket.Action;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnimateSerializer_v388 implements PacketSerializer<AnimatePacket> {
     public static final AnimateSerializer_v388 INSTANCE = new AnimateSerializer_v388();
-    private static final TIntHashBiMap<AnimatePacket.Action> types = new TIntHashBiMap<>();
+    private static final Int2ObjectBiMap<Action> types = new Int2ObjectBiMap<>();
 
     static {
         types.put(0, Action.NO_ACTION);

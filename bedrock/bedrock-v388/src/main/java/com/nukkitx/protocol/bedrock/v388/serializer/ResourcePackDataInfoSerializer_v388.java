@@ -4,7 +4,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import static com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket.Typ
 public class ResourcePackDataInfoSerializer_v388 implements PacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v388 INSTANCE = new ResourcePackDataInfoSerializer_v388();
 
-    public static final TIntHashBiMap<ResourcePackDataInfoPacket.Type> TYPES = new TIntHashBiMap<>(INVALID);
+    public static final Int2ObjectBiMap<ResourcePackDataInfoPacket.Type> TYPES = new Int2ObjectBiMap<>(INVALID);
 
     static {
         TYPES.put(0, INVALID);
@@ -35,7 +35,6 @@ public class ResourcePackDataInfoSerializer_v388 implements PacketSerializer<Res
     public void serialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
         BedrockUtils.writeString(buffer, packInfo);
-        BedrockUtils.writeString(buffer, packet.getPackId().toString());
         buffer.writeIntLE((int) packet.getMaxChunkSize());
         buffer.writeIntLE((int) packet.getChunkCount());
         buffer.writeLongLE(packet.getCompressedPackSize());

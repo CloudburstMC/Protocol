@@ -18,6 +18,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.md_5.bungee.jni.cipher.BungeeCipher;
 
 import javax.annotation.Nonnull;
@@ -151,23 +152,16 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     private void sendQueued() {
         BedrockPacket packet;
-        Collection<BedrockPacket> toBatch = new ArrayDeque<>();
+        List<BedrockPacket> toBatch = new ObjectArrayList<>();
         while ((packet = this.queuedPackets.poll()) != null) {
             if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
                 // We hit a unencryptable packet. Send the current wrapper and then send the unencryptable packet.
                 if (!toBatch.isEmpty()) {
                     this.sendWrapped(toBatch, true);
-                    toBatch = new ArrayDeque<>();
+                    toBatch = new ObjectArrayList<>();
                 }
 
                 this.sendPacketImmediately(packet);
-
-                try {
-                    // Delay things a tiny bit
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    log.error("Interrupted", e);
-                }
                 continue;
             }
 

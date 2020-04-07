@@ -1,13 +1,10 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.*;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +12,7 @@ import static com.nukkitx.network.util.Preconditions.checkArgument;
 
 @Getter
 @ToString(exclude = {"geometryData"})
+@EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SerializedSkin {
     private static final int PIXEL_SIZE = 4;
@@ -57,7 +55,7 @@ public class SerializedSkin {
         String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
 
         return new SerializedSkin(skinId, geometryName, skinResourcePatch, skinData,
-                Collections.unmodifiableList(new ArrayList<>(animations)), capeData, geometryData, animationData,
+                Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId);
     }
 

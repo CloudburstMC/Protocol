@@ -51,7 +51,7 @@ public enum EntityEventType {
     CHECK_TREASURE_HUNTER_ACHIEVEMENT,
     /**
      * Entity spawn
-     * Data: MobSpawnMethod | (entityId << 16)
+     * Data: {@code MobSpawnMethod | (entityId << 16)}
      */
     ENTITY_SPAWN,
     DRAGON_FLAMING,

@@ -3,7 +3,6 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ContainerSetDataPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

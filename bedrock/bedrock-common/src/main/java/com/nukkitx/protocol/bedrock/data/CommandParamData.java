@@ -28,6 +28,7 @@ public class CommandParamData {
         INT_RANGE,
         STRING,
         POSITION,
+        BLOCK_POSITION,
         MESSAGE,
         TEXT,
         JSON,

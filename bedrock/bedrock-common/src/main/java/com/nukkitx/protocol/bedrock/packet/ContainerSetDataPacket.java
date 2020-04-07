@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ContainerSetDataPacket extends BedrockPacket {
 
     public static final int FURNACE_TICK_COUNT = 0;

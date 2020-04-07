@@ -5,15 +5,14 @@ import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.packet.PacketHeader;
 import com.nukkitx.protocol.bedrock.packet.UnknownPacket;
 import com.nukkitx.protocol.serializer.PacketSerializer;
-import com.nukkitx.protocol.util.TIntHashBiMap;
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +32,7 @@ public final class BedrockPacketCodec {
     @Getter
     private final String minecraftVersion;
     private final PacketSerializer<BedrockPacket>[] serializers;
-    private final TIntHashBiMap<Class<? extends BedrockPacket>> idBiMap;
+    private final Int2ObjectBiMap<Class<? extends BedrockPacket>> idBiMap;
     private final PacketSerializer<PacketHeader> headerSerializer;
 
     public static Builder builder() {
@@ -108,8 +107,8 @@ public final class BedrockPacketCodec {
     @SuppressWarnings("unchecked")
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
-        private final TIntObjectMap<PacketSerializer<BedrockPacket>> serializers = new TIntObjectHashMap<>();
-        private final TIntHashBiMap<Class<? extends BedrockPacket>> idBiMap = new TIntHashBiMap<>((Class) UnknownPacket.class);
+        private final Int2ObjectMap<PacketSerializer<BedrockPacket>> serializers = new Int2ObjectOpenHashMap<>();
+        private final Int2ObjectBiMap<Class<? extends BedrockPacket>> idBiMap = new Int2ObjectBiMap<>(UnknownPacket.class);
         private int protocolVersion = -1;
         private String minecraftVersion = null;
         private PacketSerializer<PacketHeader> headerSerializer = null;
@@ -150,7 +149,7 @@ public final class BedrockPacketCodec {
             Preconditions.checkNotNull(minecraftVersion, "No Minecraft version defined");
             Preconditions.checkNotNull(headerSerializer, "headerSerializer cannot be null");
             int largestId = -1;
-            for (int id : serializers.keys()) {
+            for (int id : serializers.keySet()) {
                 if (id > largestId) {
                     largestId = id;
                 }
@@ -158,11 +157,8 @@ public final class BedrockPacketCodec {
             Preconditions.checkArgument(largestId > -1, "Must have at least one packet registered");
             PacketSerializer<BedrockPacket>[] serializers = new PacketSerializer[largestId + 1];
 
-            TIntObjectIterator<PacketSerializer<BedrockPacket>> iterator = this.serializers.iterator();
-
-            while (iterator.hasNext()) {
-                iterator.advance();
-                serializers[iterator.key()] = iterator.value();
+            for (Int2ObjectMap.Entry<PacketSerializer<BedrockPacket>> entry : this.serializers.int2ObjectEntrySet()) {
+                serializers[entry.getIntKey()] = entry.getValue();
             }
             return new BedrockPacketCodec(protocolVersion, minecraftVersion, serializers, idBiMap, headerSerializer);
         }

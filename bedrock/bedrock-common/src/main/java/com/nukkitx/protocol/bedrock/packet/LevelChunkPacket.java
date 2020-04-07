@@ -3,21 +3,21 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import gnu.trove.list.TLongList;
-import gnu.trove.list.array.TLongArrayList;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(exclude = {"data"}) // We don't really want to be printing the entire chunk
 public class LevelChunkPacket extends BedrockPacket {
     private int chunkX;
     private int chunkZ;
     private int subChunksLength;
     private boolean cachingEnabled;
-    private final TLongList blobIds = new TLongArrayList();
+    private final LongList blobIds = new LongArrayList();
     private byte[] data;
 
     @Override

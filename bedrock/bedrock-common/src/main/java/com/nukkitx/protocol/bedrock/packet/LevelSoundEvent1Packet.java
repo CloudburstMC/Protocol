@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class LevelSoundEvent1Packet extends BedrockPacket {
     private SoundEvent sound;
     private Vector3f position;
