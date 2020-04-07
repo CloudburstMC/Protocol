@@ -27,7 +27,7 @@ public final class UnknownPacket extends BedrockPacket implements PacketSerializ
 
     @Override
     public String toString() {
-        return "UNKNOWN - " + getHeader() + " - Hex: " + ByteBufUtil.hexDump(payload);
+        return "UNKNOWN - " + getHeader() + " - Hex: " + (payload == null ? "null" : ByteBufUtil.hexDump(payload));
     }
 
     @Override

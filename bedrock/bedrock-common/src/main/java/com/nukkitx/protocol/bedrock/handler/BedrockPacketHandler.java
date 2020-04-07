@@ -572,4 +572,36 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(VideoStreamConnectPacket packet) {
         return false;
     }
+
+    default boolean handle(CodeBuilderPacket packet) {
+        return false;
+    }
+
+    default boolean handle(EmoteListPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemStackRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemStackResponsePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerArmorDamagePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerEnchantOptionsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CreativeContentPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdatePlayerGameTypePacket packet) {
+        return false;
+    }
 }

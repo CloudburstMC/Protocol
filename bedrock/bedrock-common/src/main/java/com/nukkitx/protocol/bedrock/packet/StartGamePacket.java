@@ -39,6 +39,7 @@ public class StartGamePacket extends BedrockPacket {
     private int time;
     private int eduEditionOffers;
     private boolean eduFeaturesEnabled;
+    private String unknownString0;
     private float rainLevel;
     private float lightningLevel;
     private boolean platformLockedContentConfirmed;
@@ -61,6 +62,8 @@ public class StartGamePacket extends BedrockPacket {
     private boolean worldTemplateOptionLocked;
     private boolean onlySpawningV1Villagers;
     private String vanillaVersion;
+    private int unknownInt0;
+    private int unknownInt1;
     // Level settings end
     private String levelId;
     private String worldName;
@@ -72,6 +75,7 @@ public class StartGamePacket extends BedrockPacket {
     private ListTag<CompoundTag> blockPalette;
     private Collection<ItemEntry> itemEntries = new ArrayDeque<>();
     private String multiplayerCorrelationId;
+    private boolean unknownBool0;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

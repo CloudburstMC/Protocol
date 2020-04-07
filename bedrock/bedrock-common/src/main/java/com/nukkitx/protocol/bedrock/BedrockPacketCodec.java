@@ -54,7 +54,11 @@ public final class BedrockPacketCodec {
         packet.setHeader(header);
 
         try {
-            serializers[header.getPacketId()].deserialize(buf, packet);
+            if (packet instanceof UnknownPacket) {
+                ((UnknownPacket) packet).deserialize(buf, (UnknownPacket) packet);
+            } else {
+                serializers[header.getPacketId()].deserialize(buf, packet);
+            }
         } catch (Exception e) {
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
