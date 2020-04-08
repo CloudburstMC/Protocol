@@ -1,17 +1,17 @@
-package com.nukkitx.protocol.bedrock.v392;
+package com.nukkitx.protocol.bedrock.v402;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
 import com.nukkitx.protocol.bedrock.v389.serializer.EventSerializer_v389;
-import com.nukkitx.protocol.bedrock.v392.serializer.*;
+import com.nukkitx.protocol.bedrock.v402.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Bedrock_v402 {
     public static BedrockPacketCodec V392_CODEC = BedrockPacketCodec.builder()
-            .protocolVersion(393)
-            .minecraftVersion("1.15.0")
+            .protocolVersion(402)
+            .minecraftVersion("1.16.0.55")
             .headerSerializer(PacketHeaderSerializer_v388.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v388.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v388.INSTANCE, 2)

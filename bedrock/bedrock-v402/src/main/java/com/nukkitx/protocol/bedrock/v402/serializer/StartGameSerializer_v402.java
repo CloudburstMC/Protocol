@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v392.serializer;
+package com.nukkitx.protocol.bedrock.v402.serializer;
 
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
