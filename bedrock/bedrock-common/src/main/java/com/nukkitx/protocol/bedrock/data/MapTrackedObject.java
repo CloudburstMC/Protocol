@@ -2,8 +2,10 @@ package com.nukkitx.protocol.bedrock.data;
 
 import com.nukkitx.math.vector.Vector3i;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class MapTrackedObject {
     private final Type type;
     private long entityId;
