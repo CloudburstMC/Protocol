@@ -35,6 +35,10 @@ public class SerializedSkin {
     private final boolean capeOnClassic;
     private final String capeId;
     private final String fullSkinId;
+    private final String armSize;
+    private final String skinColor;
+    private final List<PersonaPieceData> personaPieces;
+    private final List<PersonaPieceTintData> tintColors;
 
     public static SerializedSkin of(String skinId, ImageData skinData, ImageData capeData, String geometryName,
                                     String geometryData, boolean premiumSkin) {
@@ -44,19 +48,30 @@ public class SerializedSkin {
         String skinResourcePatch = convertLegacyGeometryName(geometryName);
 
         return new SerializedSkin(skinId, geometryName, skinResourcePatch, skinData, Collections.emptyList(), capeData,
-                geometryData, "", premiumSkin, false, false, "", "");
+                geometryData, "", premiumSkin, false, false, "", "",
+                "wide", "#0", Collections.emptyList(), Collections.emptyList());
     }
 
     public static SerializedSkin of(String skinId, String skinResourcePatch, ImageData skinData,
                                     List<AnimationData> animations, ImageData capeData, String geometryData,
                                     String animationData, boolean premium, boolean persona, boolean capeOnClassic,
                                     String capeId, String fullSkinId) {
+        return of(skinId, skinResourcePatch, skinData, Collections.unmodifiableList(new ObjectArrayList<>(animations)),
+                capeData, geometryData, animationData, premium, persona, capeOnClassic, capeId, fullSkinId,
+                "wide", "#0", Collections.emptyList(), Collections.emptyList());
+    }
+
+    public static SerializedSkin of(String skinId, String skinResourcePatch, ImageData skinData,
+                                    List<AnimationData> animations, ImageData capeData, String geometryData,
+                                    String animationData, boolean premium, boolean persona, boolean capeOnClassic,
+                                    String capeId, String fullSkinId, String armSize, String skinColor,
+                                    List<PersonaPieceData> personaPieces, List<PersonaPieceTintData> tintColors) {
 
         String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
 
         return new SerializedSkin(skinId, geometryName, skinResourcePatch, skinData,
                 Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, animationData,
-                premium, persona, capeOnClassic, capeId, fullSkinId);
+                premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
 
     public static Builder builder() {
@@ -104,7 +119,8 @@ public class SerializedSkin {
                 .skinResourcePatch(this.skinResourcePatch).skinData(this.skinData).animations(this.animations)
                 .capeData(this.capeData).geometryData(this.geometryData).animationData(this.animationData)
                 .premium(this.premium).persona(this.persona).capeOnClassic(this.capeOnClassic).capeId(this.capeId)
-                .fullSkinId(this.fullSkinId);
+                .fullSkinId(this.fullSkinId).armSize(this.armSize).skinColor(this.skinColor)
+                .personaPieces(this.personaPieces).tintColors(this.tintColors);
     }
 
     public static class Builder {
@@ -121,6 +137,10 @@ public class SerializedSkin {
         private boolean capeOnClassic;
         private String capeId;
         private String fullSkinId;
+        private String armSize;
+        private String skinColor;
+        private List<PersonaPieceData> personaPieces;
+        private List<PersonaPieceTintData> tintColors;
 
         Builder() {
         }
@@ -190,10 +210,35 @@ public class SerializedSkin {
             return this;
         }
 
+        public Builder armSize(String armSize) {
+            this.armSize = armSize;
+            return this;
+        }
+
+        public Builder skinColor(String skinColor) {
+            this.skinColor = skinColor;
+            return this;
+        }
+
+        public Builder personaPieces(List<PersonaPieceData> personaPieces) {
+            this.personaPieces = personaPieces;
+            return this;
+        }
+
+        public Builder tintColors(List<PersonaPieceTintData> tintColors) {
+            this.tintColors = tintColors;
+            return this;
+        }
+
         public SerializedSkin build() {
-            if (fullSkinId == null) {
-                fullSkinId = skinId + capeId;
-            }
+            if (animationData == null) animationData = "";
+            if (capeData == null) capeData = ImageData.EMPTY;
+            if (capeId == null) capeId = "";
+            if (fullSkinId == null) fullSkinId = skinId + capeId;
+            if (armSize == null) armSize = "wide";
+            if (skinColor == null) skinColor = "#0";
+            if (personaPieces == null) personaPieces = Collections.emptyList();
+            if (tintColors == null) tintColors = Collections.emptyList();
 
             if (skinResourcePatch == null) {
                 return SerializedSkin.of(skinId, geometryName, skinData, animations, capeData, geometryData,
@@ -218,6 +263,10 @@ public class SerializedSkin {
                     ", capeOnClassic=" + this.capeOnClassic +
                     ", capeId=" + this.capeId +
                     ", fullSkinId=" + this.fullSkinId +
+                    ", armSize=" + this.armSize +
+                    ", skinColor=" + this.skinColor +
+                    ", personaPieces=" + this.personaPieces +
+                    ", tintColors=" + this.tintColors +
                     ")";
         }
     }
