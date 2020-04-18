@@ -27,7 +27,10 @@ public enum ContainerType {
     COMPOUND_CREATOR(20),
     ELEMENT_CONSTRUCTOR(21),
     MATERIAL_REDUCER(22),
-    LAB_TABLE(23);
+    LAB_TABLE(23),
+    GRINDSTONE(26),
+    BLAST_FURNACE(27),
+    SMOKER(28);
 
     public static final Int2ObjectMap<ContainerType> BY_ID = new Int2ObjectOpenHashMap<>();
 

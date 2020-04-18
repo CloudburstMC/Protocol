@@ -14,12 +14,22 @@ pipeline {
             }
         }
 
-        stage ('Javadoc') {
+        stage('Snapshot') {
+            when {
+                branch "develop"
+            }
+            steps {
+                sh 'mvn source:jar deploy -DskipTests'
+            }
+        }
+
+        stage ('Release') {
             when {
                 branch "master"
             }
             steps {
                 sh 'mvn javadoc:aggregate -pl bedrock/bedrock-common -am -DskipTests'
+                sh 'mvn javadoc:jar source:jar deploy -DskipTests'
             }
             post {
                 success {
@@ -29,15 +39,6 @@ pipeline {
                         keepAll: false
                     ])
                 }
-            }
-        }
-
-        stage ('Deploy') {
-            when {
-                branch "master"
-            }
-            steps {
-                sh 'mvn javadoc:jar source:jar deploy -DskipTests'
             }
         }
     }

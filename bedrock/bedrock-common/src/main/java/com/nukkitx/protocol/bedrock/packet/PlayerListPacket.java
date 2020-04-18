@@ -45,5 +45,6 @@ public class PlayerListPacket extends BedrockPacket {
         private SerializedSkin skin;
         private boolean teacher;
         private boolean host;
+        private boolean trustedSkin;
     }
 }
