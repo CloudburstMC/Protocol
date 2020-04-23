@@ -19,8 +19,8 @@ public class PlayerSkinSerializer_v361 implements PacketSerializer<PlayerSkinPac
         BedrockUtils.writeUuid(buffer, packet.getUuid());
         SerializedSkin skin = packet.getSkin();
         BedrockUtils.writeString(buffer, skin.getSkinId());
-        BedrockUtils.writeString(buffer, "");
-        BedrockUtils.writeString(buffer, "");
+        BedrockUtils.writeString(buffer, packet.getNewSkinName());
+        BedrockUtils.writeString(buffer, packet.getOldSkinName());
         skin.getSkinData().checkLegacySkinSize();
         BedrockUtils.writeByteArray(buffer, skin.getSkinData().getImage());
         skin.getCapeData().checkLegacyCapeSize();
@@ -34,8 +34,8 @@ public class PlayerSkinSerializer_v361 implements PacketSerializer<PlayerSkinPac
     public void deserialize(ByteBuf buffer, PlayerSkinPacket packet) {
         packet.setUuid(BedrockUtils.readUuid(buffer));
         String skinId = BedrockUtils.readString(buffer);
-        BedrockUtils.readString(buffer); // new skin name
-        BedrockUtils.readString(buffer); // old skin name
+        packet.setNewSkinName(BedrockUtils.readString(buffer));
+        packet.setOldSkinName(BedrockUtils.readString(buffer));
         ImageData skinData = ImageData.of(BedrockUtils.readByteArray(buffer));
         ImageData capeData = ImageData.of(64, 32, BedrockUtils.readByteArray(buffer));
         String geometryName = BedrockUtils.readString(buffer);

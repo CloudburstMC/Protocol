@@ -14,6 +14,8 @@ import java.util.UUID;
 public class PlayerSkinPacket extends BedrockPacket {
     private UUID uuid;
     private SerializedSkin skin;
+    private String oldSkinName;
+    private String newSkinName;
     private boolean trustedSkin;
 
     @Override
