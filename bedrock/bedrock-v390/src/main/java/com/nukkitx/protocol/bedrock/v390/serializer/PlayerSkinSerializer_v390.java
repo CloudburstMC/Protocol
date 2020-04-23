@@ -17,6 +17,8 @@ public class PlayerSkinSerializer_v390 implements PacketSerializer<PlayerSkinPac
     public void serialize(ByteBuf buffer, PlayerSkinPacket packet) {
         BedrockUtils.writeUuid(buffer, packet.getUuid());
         BedrockUtils_v390.writeSkin(buffer, packet.getSkin());
+        BedrockUtils.writeString(buffer, packet.getNewSkinName());
+        BedrockUtils.writeString(buffer, packet.getOldSkinName());
         buffer.writeBoolean(packet.isTrustedSkin());
     }
 
@@ -24,6 +26,8 @@ public class PlayerSkinSerializer_v390 implements PacketSerializer<PlayerSkinPac
     public void deserialize(ByteBuf buffer, PlayerSkinPacket packet) {
         packet.setUuid(BedrockUtils.readUuid(buffer));
         packet.setSkin(BedrockUtils_v390.readSkin(buffer));
+        packet.setNewSkinName(BedrockUtils.readString(buffer));
+        packet.setOldSkinName(BedrockUtils.readString(buffer));
         packet.setTrustedSkin(buffer.readBoolean());
     }
 }
