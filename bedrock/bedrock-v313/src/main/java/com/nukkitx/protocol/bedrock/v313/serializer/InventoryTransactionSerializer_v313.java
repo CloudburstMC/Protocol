@@ -33,7 +33,7 @@ public class InventoryTransactionSerializer_v313 implements PacketSerializer<Inv
                 BedrockUtils.writeVector3f(buffer, packet.getClickPosition());
                 break;
             case ITEM_USE_ON_ENTITY:
-                VarInts.writeUnsignedInt(buffer, packet.getRuntimeEntityId());
+                VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
                 VarInts.writeUnsignedInt(buffer, packet.getActionType());
                 VarInts.writeInt(buffer, packet.getHotbarSlot());
                 BedrockUtils.writeItemData(buffer, packet.getItemInHand());

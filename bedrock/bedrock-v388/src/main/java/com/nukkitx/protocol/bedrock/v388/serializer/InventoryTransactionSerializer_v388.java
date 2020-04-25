@@ -34,7 +34,7 @@ public class InventoryTransactionSerializer_v388 implements PacketSerializer<Inv
                 VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
                 break;
             case ITEM_USE_ON_ENTITY:
-                VarInts.writeUnsignedInt(buffer, packet.getRuntimeEntityId());
+                VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
                 VarInts.writeUnsignedInt(buffer, packet.getActionType());
                 VarInts.writeInt(buffer, packet.getHotbarSlot());
                 BedrockUtils.writeItemData(buffer, packet.getItemInHand());
