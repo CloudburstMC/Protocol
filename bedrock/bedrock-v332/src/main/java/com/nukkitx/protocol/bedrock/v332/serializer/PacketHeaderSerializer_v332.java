@@ -14,7 +14,7 @@ public class PacketHeaderSerializer_v332 implements PacketSerializer<PacketHeade
 
     @Override
     public void serialize(ByteBuf buffer, PacketHeader packet) {
-        long header = 0;
+        int header = 0;
         header |= (packet.getPacketId() & 0x3ff);
         header |= (packet.getSenderId() & 3) << 10;
         header |= (packet.getClientId() & 3) << 12;

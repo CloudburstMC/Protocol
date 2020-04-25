@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
-import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -37,9 +36,7 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         buffer.writeIntLE((int) packet.getMaxChunkSize());
         buffer.writeIntLE((int) packet.getChunkCount());
         buffer.writeLongLE(packet.getCompressedPackSize());
-        byte[] hash = packet.getHash();
-        VarInts.writeUnsignedInt(buffer, hash.length);
-        buffer.writeBytes(hash);
+        BedrockUtils.writeByteArray(buffer, packet.getHash());
         buffer.writeBoolean(packet.isPremium());
         buffer.writeByte(TYPES.get(packet.getType()));
     }
@@ -54,9 +51,7 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
         packet.setMaxChunkSize(buffer.readUnsignedIntLE());
         packet.setChunkCount(buffer.readUnsignedIntLE());
         packet.setCompressedPackSize(buffer.readLongLE());
-        byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
-        buffer.readBytes(hash);
-        packet.setHash(hash);
+        packet.setHash(BedrockUtils.readByteArray(buffer));
         packet.setPremium(buffer.readBoolean());
         packet.setType(TYPES.get(buffer.readUnsignedByte()));
     }

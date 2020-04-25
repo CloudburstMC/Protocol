@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock.v340.serializer;
 
-import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
 import com.nukkitx.protocol.bedrock.v340.BedrockUtils;
 import com.nukkitx.protocol.serializer.PacketSerializer;
@@ -21,9 +20,7 @@ public class ResourcePackDataInfoSerializer_v340 implements PacketSerializer<Res
         buffer.writeIntLE((int) packet.getMaxChunkSize());
         buffer.writeIntLE((int) packet.getChunkCount());
         buffer.writeLongLE(packet.getCompressedPackSize());
-        byte[] hash = packet.getHash();
-        VarInts.writeUnsignedInt(buffer, hash.length);
-        buffer.writeBytes(hash);
+        BedrockUtils.writeByteArray(buffer, packet.getHash());
     }
 
     @Override
@@ -36,8 +33,6 @@ public class ResourcePackDataInfoSerializer_v340 implements PacketSerializer<Res
         packet.setMaxChunkSize(buffer.readIntLE());
         packet.setChunkCount(buffer.readIntLE());
         packet.setCompressedPackSize(buffer.readLongLE());
-        byte[] hash = new byte[VarInts.readUnsignedInt(buffer)];
-        buffer.readBytes(hash);
-        packet.setHash(hash);
+        packet.setHash(BedrockUtils.readByteArray(buffer));
     }
 }
