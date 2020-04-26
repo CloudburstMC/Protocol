@@ -29,7 +29,7 @@ public class InteractPacket extends BedrockPacket {
         DAMAGE,
         LEAVE_VEHICLE,
         MOUSEOVER,
-        UNKNOWN_5,
+        NPC_OPEN,
         OPEN_INVENTORY
     }
 }

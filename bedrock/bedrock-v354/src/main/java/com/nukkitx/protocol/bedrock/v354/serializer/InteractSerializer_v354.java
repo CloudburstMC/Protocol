@@ -19,7 +19,7 @@ public class InteractSerializer_v354 implements PacketSerializer<InteractPacket>
         buffer.writeByte(packet.getAction().ordinal());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
 
-        if (packet.getAction() == InteractPacket.Action.MOUSEOVER) {
+        if (packet.getAction() == InteractPacket.Action.MOUSEOVER || packet.getAction() == InteractPacket.Action.NPC_OPEN) {
             BedrockUtils.writeVector3f(buffer, packet.getMousePosition());
         }
     }
@@ -29,7 +29,7 @@ public class InteractSerializer_v354 implements PacketSerializer<InteractPacket>
         packet.setAction(ACTIONS[buffer.readUnsignedByte()]);
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
 
-        if (packet.getAction() == InteractPacket.Action.MOUSEOVER) {
+        if (packet.getAction() == InteractPacket.Action.MOUSEOVER || packet.getAction() == InteractPacket.Action.NPC_OPEN) {
             packet.setMousePosition(BedrockUtils.readVector3f(buffer));
         }
     }
