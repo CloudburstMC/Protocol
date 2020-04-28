@@ -74,6 +74,19 @@ public class BedrockClient extends Bedrock {
         return future;
     }
 
+    public CompletableFuture<BedrockClientSession> directConnect(InetSocketAddress address) {
+        CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
+
+        RakNetClientSession connection = this.rakNetClient.create(address);
+        this.session = new BedrockClientSession(connection);
+        BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
+                connection, this, future);
+        connection.setListener(listener);
+        connection.connect();
+
+        return future;
+    }
+
     public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
         return this.rakNetClient.ping(address, 10, TimeUnit.SECONDS).thenApply(BedrockPong::fromRakNet);
     }
