@@ -34,6 +34,13 @@ public class PlayerListSerializer_v390 implements PacketSerializer<PlayerListPac
                 buffer.writeBoolean(entry.isTeacher());
                 buffer.writeBoolean(entry.isHost());
             }
+            for (Entry entry : packet.getEntries()) {
+                buffer.writeBoolean(entry.isTrustedSkin());
+            }
+        } else {
+            for (Entry entry : packet.getEntries()) {
+                BedrockUtils.writeUuid(buffer, entry.getUuid());
+            }
         }
     }
 
