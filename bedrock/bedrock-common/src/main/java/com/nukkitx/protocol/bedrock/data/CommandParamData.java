@@ -36,7 +36,7 @@ public class CommandParamData {
     }
 
     public enum Option {
-        ENUM_EXPANSION,
+        EXPAND_ENUM,
         UNKNOWN_1
     }
 
