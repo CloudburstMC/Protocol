@@ -14,7 +14,7 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
 import com.nukkitx.protocol.bedrock.packet.ResourcePacksInfoPacket;
-import com.nukkitx.protocol.bedrock.v363.serializer.GameRulesChangedSerializer_v363;
+import com.nukkitx.protocol.bedrock.v361.serializer.GameRulesChangedSerializer_v361;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -812,7 +812,7 @@ public final class BedrockUtils {
         Preconditions.checkNotNull(gameRule, "gameRule");
 
         Object value = gameRule.getValue();
-        int type = GameRulesChangedSerializer_v363.RULE_TYPES.get(value.getClass());
+        int type = GameRulesChangedSerializer_v361.RULE_TYPES.get(value.getClass());
 
         BedrockUtils.writeString(buffer, gameRule.getName());
         VarInts.writeUnsignedInt(buffer, type);
