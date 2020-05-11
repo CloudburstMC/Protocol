@@ -56,6 +56,7 @@ public class CommandData {
         EXECUTE,
         TYPE,
         CHEAT,
-        UNKNOWN_6
+        UNKNOWN_6,
+        UNKNOWN_7
     }
 }
