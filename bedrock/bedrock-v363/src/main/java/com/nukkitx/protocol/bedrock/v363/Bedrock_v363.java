@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v363;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
+import com.nukkitx.protocol.bedrock.v363.serializer.StartGameSerializer_v363;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -21,7 +22,7 @@ public class Bedrock_v363 {
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v361.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v361.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v361.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v361.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, StartGameSerializer_v363.INSTANCE, 11)
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v361.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v361.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v361.INSTANCE, 14)
