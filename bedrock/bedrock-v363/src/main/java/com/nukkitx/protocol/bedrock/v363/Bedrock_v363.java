@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v363;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
+import com.nukkitx.protocol.bedrock.v363.serializer.PlayerListSerializer_v363;
 import com.nukkitx.protocol.bedrock.v363.serializer.StartGameSerializer_v363;
 import lombok.experimental.UtilityClass;
 
@@ -73,7 +74,7 @@ public class Bedrock_v363 {
             .registerPacket(SetDifficultyPacket.class, SetDifficultySerializer_v361.INSTANCE, 60)
             .registerPacket(ChangeDimensionPacket.class, ChangeDimensionSerializer_v361.INSTANCE, 61)
             .registerPacket(SetPlayerGameTypePacket.class, SetPlayerGameTypeSerializer_v361.INSTANCE, 62)
-            .registerPacket(PlayerListPacket.class, PlayerListSerializer_v361.INSTANCE, 63)
+            .registerPacket(PlayerListPacket.class, PlayerListSerializer_v363.INSTANCE, 63)
             .registerPacket(SimpleEventPacket.class, SimpleEventSerializer_v361.INSTANCE, 64)
             .registerPacket(EventPacket.class, EventSerializer_v361.INSTANCE, 65)
             .registerPacket(SpawnExperienceOrbPacket.class, SpawnExperienceOrbSerializer_v361.INSTANCE, 66)
