@@ -89,6 +89,7 @@ public final class BedrockUtils {
         METADATAS.put(49, WITHER_TARGET_1);
         METADATAS.put(50, WITHER_TARGET_2);
         METADATAS.put(51, WITHER_TARGET_3);
+        METADATAS.put(52, WITHER_AERIAL_ATTACK);
 
         METADATAS.put(53, BOUNDING_BOX_WIDTH);
         METADATAS.put(54, BOUNDING_BOX_HEIGHT);
