@@ -58,4 +58,5 @@ public enum EntityEventType {
     MERGE_ITEMS,
     BALLOON_POP,
     FIND_TREASURE_BRIBE,
+    CROSSBOW_DRAW,
 }
