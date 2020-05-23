@@ -66,6 +66,7 @@ public class EntityEventSerializer_v388 implements PacketSerializer<EntityEventP
         events.put(69, MERGE_ITEMS);
         events.put(71, BALLOON_POP);
         events.put(72, FIND_TREASURE_BRIBE);
+        events.put(74, CROSSBOW_DRAW);
     }
 
     @Override
