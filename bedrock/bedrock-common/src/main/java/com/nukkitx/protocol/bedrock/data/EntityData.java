@@ -104,7 +104,15 @@ public enum EntityData {
     INTERACTIVE_TAG(Type.STRING),
     TRADE_TIER(Type.INT),
     MAX_TRADE_TIER(Type.INT),
-    TRADE_XP(Type.INT);
+    TRADE_XP(Type.INT),
+
+    // Unknown but seen
+    UNKNOWN_105(Type.INT),
+    UNKNOWN_106(Type.BYTE),
+    UNKNOWN_107(Type.FLOAT),
+    UNKNOWN_108(Type.FLOAT),
+    UNKNOWN_109(Type.STRING);
+
 
     private final Type type;
     private final boolean flags;

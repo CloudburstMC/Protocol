@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v363;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
+import com.nukkitx.protocol.bedrock.v363.serializer.AvailableCommandsSerializer_v363;
 import com.nukkitx.protocol.bedrock.v363.serializer.PlayerListSerializer_v363;
 import com.nukkitx.protocol.bedrock.v363.serializer.StartGameSerializer_v363;
 import lombok.experimental.UtilityClass;
@@ -87,7 +88,7 @@ public class Bedrock_v363 {
             .registerPacket(CameraPacket.class, CameraSerializer_v361.INSTANCE, 73)
             .registerPacket(BossEventPacket.class, BossEventSerializer_v361.INSTANCE, 74)
             .registerPacket(ShowCreditsPacket.class, ShowCreditsSerializer_v361.INSTANCE, 75)
-            .registerPacket(AvailableCommandsPacket.class, AvailableCommandsSerializer_v361.INSTANCE, 76)
+            .registerPacket(AvailableCommandsPacket.class, AvailableCommandsSerializer_v363.INSTANCE, 76)
             .registerPacket(CommandRequestPacket.class, CommandRequestSerializer_v361.INSTANCE, 77)
             .registerPacket(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v361.INSTANCE, 78)
             .registerPacket(CommandOutputPacket.class, CommandOutputSerializer_v361.INSTANCE, 79)

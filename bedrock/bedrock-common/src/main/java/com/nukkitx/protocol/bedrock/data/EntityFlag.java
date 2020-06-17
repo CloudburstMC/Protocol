@@ -85,5 +85,8 @@ public enum EntityFlag {
     STUNNED,
     ROARING,
     DELAYED_ATTACKING,
-    AVOIDING_MOBS
+    AVOIDING_MOBS,
+
+    // Unknowns but seen
+    UNKNOWN_87
 }

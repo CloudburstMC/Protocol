@@ -90,6 +90,7 @@ public final class BedrockUtils {
         METADATAS.put(49, WITHER_TARGET_1);
         METADATAS.put(50, WITHER_TARGET_2);
         METADATAS.put(51, WITHER_TARGET_3);
+        METADATAS.put(52, WITHER_AERIAL_ATTACK);
 
         METADATAS.put(53, BOUNDING_BOX_WIDTH);
         METADATAS.put(54, BOUNDING_BOX_HEIGHT);
@@ -141,6 +142,12 @@ public final class BedrockUtils {
         METADATAS.put(101, MAX_TRADE_TIER);
         METADATAS.put(102, TRADE_XP);
         METADATAS.put(103, SKIN_ID);
+
+        METADATAS.put(105, UNKNOWN_105);
+        METADATAS.put(106, UNKNOWN_106);
+        METADATAS.put(107, UNKNOWN_107);
+        METADATAS.put(108, UNKNOWN_108);
+        METADATAS.put(109, UNKNOWN_109);
 
 
         METADATA_FLAGS.put(0, EntityFlag.ON_FIRE);
@@ -215,6 +222,7 @@ public final class BedrockUtils {
         METADATA_FLAGS.put(70, EntityFlag.FALL_THROUGH_SCAFFOLDING);
         METADATA_FLAGS.put(71, EntityFlag.BLOCKING);
         METADATA_FLAGS.put(72, EntityFlag.DISABLE_BLOCKING);
+        METADATA_FLAGS.put(87, EntityFlag.UNKNOWN_87);
 
 
         METADATA_FLAGS.put(75, EntityFlag.SLEEPING);
