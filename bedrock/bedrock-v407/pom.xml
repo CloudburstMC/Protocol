@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bedrock-v402</artifactId>
+    <artifactId>bedrock-v407</artifactId>
 
     <dependencies>
         <dependency>
