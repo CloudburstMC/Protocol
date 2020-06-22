@@ -3,9 +3,9 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.EntityDataMap;
-import com.nukkitx.protocol.bedrock.data.EntityLink;
-import com.nukkitx.protocol.bedrock.data.ItemData;
+import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
+import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AddPlayerPacket extends BedrockPacket {
     private final EntityDataMap metadata = new EntityDataMap();
-    private final List<EntityLink> entityLinks = new ObjectArrayList<>();
+    private final List<EntityLinkData> entityLinks = new ObjectArrayList<>();
     private UUID uuid;
     private String username;
     private long uniqueEntityId;

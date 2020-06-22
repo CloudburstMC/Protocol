@@ -1,19 +1,18 @@
 package com.nukkitx.protocol.bedrock.v332.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.TextPacket;
-import com.nukkitx.protocol.bedrock.v332.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TextSerializer_v332 implements PacketSerializer<TextPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TextSerializer_v332 implements BedrockPacketSerializer<TextPacket> {
     public static final TextSerializer_v332 INSTANCE = new TextSerializer_v332();
 
-
     @Override
-    public void serialize(ByteBuf buffer, TextPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, TextPacket packet) {
         TextPacket.Type type = packet.getType();
         buffer.writeByte(type.ordinal());
         buffer.writeBoolean(packet.isNeedsTranslation());
@@ -22,47 +21,55 @@ public class TextSerializer_v332 implements PacketSerializer<TextPacket> {
             case CHAT:
             case WHISPER:
             case ANNOUNCEMENT:
-                BedrockUtils.writeString(buffer, packet.getSourceName());
+                helper.writeString(buffer, packet.getSourceName());
             case RAW:
             case TIP:
             case SYSTEM:
-                BedrockUtils.writeString(buffer, packet.getMessage());
+            case JSON:
+                helper.writeString(buffer, packet.getMessage());
                 break;
             case TRANSLATION:
             case POPUP:
             case JUKEBOX_POPUP:
-                BedrockUtils.writeString(buffer, packet.getMessage());
-                BedrockUtils.writeArray(buffer, packet.getParameters(), BedrockUtils::writeString);
+                helper.writeString(buffer, packet.getMessage());
+                helper.writeArray(buffer, packet.getParameters(), helper::writeString);
                 break;
+            default:
+                throw new UnsupportedOperationException("Unsupported TextType " + type);
         }
 
-        BedrockUtils.writeString(buffer, packet.getXuid());
-        BedrockUtils.writeString(buffer, packet.getPlatformChatId());
+        helper.writeString(buffer, packet.getXuid());
+        helper.writeString(buffer, packet.getPlatformChatId());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, TextPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, TextPacket packet) {
         TextPacket.Type type = TextPacket.Type.values()[buffer.readUnsignedByte()];
         packet.setType(type);
         packet.setNeedsTranslation(buffer.readBoolean());
+
         switch (type) {
             case CHAT:
             case WHISPER:
             case ANNOUNCEMENT:
-                packet.setSourceName(BedrockUtils.readString(buffer));
+                packet.setSourceName(helper.readString(buffer));
             case RAW:
             case TIP:
             case SYSTEM:
-                packet.setMessage(BedrockUtils.readString(buffer));
+            case JSON:
+                packet.setMessage(helper.readString(buffer));
                 break;
             case TRANSLATION:
             case POPUP:
             case JUKEBOX_POPUP:
-                packet.setMessage(BedrockUtils.readString(buffer));
-                BedrockUtils.readArray(buffer, packet.getParameters(), BedrockUtils::readString);
+                packet.setMessage(helper.readString(buffer));
+                helper.readArray(buffer, packet.getParameters(), helper::readString);
                 break;
+            default:
+                throw new UnsupportedOperationException("Unsupported TextType " + type);
         }
-        packet.setXuid(BedrockUtils.readString(buffer));
-        packet.setPlatformChatId(BedrockUtils.readString(buffer));
+
+        packet.setXuid(helper.readString(buffer));
+        packet.setPlatformChatId(helper.readString(buffer));
     }
 }

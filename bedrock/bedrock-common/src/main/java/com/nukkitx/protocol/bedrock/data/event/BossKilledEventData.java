@@ -6,7 +6,7 @@ import lombok.Value;
 public class BossKilledEventData implements EventData {
     private final long bossUniqueEntityId;
     private final int playerPartySize;
-    private final int legacyEntityTypeId;
+    private final int bossEntityType;
 
     @Override
     public EventDataType getType() {

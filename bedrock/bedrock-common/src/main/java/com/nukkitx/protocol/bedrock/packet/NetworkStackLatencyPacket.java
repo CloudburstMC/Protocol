@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class NetworkStackLatencyPacket extends BedrockPacket {
     private long timestamp;
-    private boolean sendBack;
+    private boolean fromServer;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

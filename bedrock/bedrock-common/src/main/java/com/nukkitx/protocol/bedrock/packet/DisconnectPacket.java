@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class DisconnectPacket extends BedrockPacket {
-    private boolean disconnectScreenHidden;
+    private boolean messageSkipped;
     private String kickMessage;
 
     @Override

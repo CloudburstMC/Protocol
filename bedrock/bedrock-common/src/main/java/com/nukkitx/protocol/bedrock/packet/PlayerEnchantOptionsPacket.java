@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.EnchantOptionData;
+import com.nukkitx.protocol.bedrock.data.inventory.EnchantOptionData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class PlayerEnchantOptionsPacket extends BedrockPacket {
     private final List<EnchantOptionData> options = new ArrayList<>();
-    private int int0;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

@@ -45,7 +45,6 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.build.directory}/delombok/main</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.projectlombok</groupId>
@@ -58,11 +57,6 @@
                         <goals>
                             <goal>delombok</goal>
                         </goals>
-                        <configuration>
-                            <addOutputDirectory>false</addOutputDirectory>
-                            <sourceDirectory>src/main/java</sourceDirectory>
-                            <outputDirectory>${project.build.directory}/delombok/main</outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -1,11 +1,10 @@
 package com.nukkitx.protocol.serializer;
 
-import com.nukkitx.protocol.MinecraftPacket;
 import io.netty.buffer.ByteBuf;
 
-public interface PacketSerializer<T extends MinecraftPacket> {
+public interface PacketSerializer<P, H> {
 
-    void serialize(ByteBuf buffer, T packet);
+    void serialize(ByteBuf buffer, H helper, P packet);
 
-    void deserialize(ByteBuf buffer, T packet);
+    void deserialize(ByteBuf buffer, H helper, P packet);
 }

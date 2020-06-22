@@ -505,11 +505,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(StructureTemplateDataExportRequestPacket packet) {
+    default boolean handle(StructureTemplateDataRequestPacket packet) {
         return false;
     }
 
-    default boolean handle(StructureTemplateDataExportResponsePacket packet) {
+    default boolean handle(StructureTemplateDataResponsePacket packet) {
         return false;
     }
 
@@ -602,6 +602,22 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(UpdatePlayerGameTypePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PositionTrackingDBServerBroadcastPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PositionTrackingDBClientRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PacketViolationWarningPacket packet) {
+        return false;
+    }
+
+    default boolean handle(DebugInfoPacket packet) {
         return false;
     }
 }

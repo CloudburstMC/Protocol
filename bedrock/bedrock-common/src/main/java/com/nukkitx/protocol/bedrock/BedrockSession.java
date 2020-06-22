@@ -1,28 +1,29 @@
 package com.nukkitx.protocol.bedrock;
 
+import com.nukkitx.natives.aes.Aes;
+import com.nukkitx.natives.aes.AesFactory;
+import com.nukkitx.natives.sha256.Sha256;
+import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.SessionConnection;
 import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.MinecraftSession;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
-import com.nukkitx.protocol.bedrock.compressionhandler.BedrockCompressionHandler;
-import com.nukkitx.protocol.bedrock.compressionhandler.DefaultBedrockCompressionHandler;
 import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.handler.BatchHandler;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
-import com.nukkitx.protocol.util.NativeCodeFactory;
-import com.voxelwind.server.jni.hash.VoxelwindHash;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.md_5.bungee.jni.cipher.BungeeCipher;
 
 import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.security.auth.DestroyFailedException;
 import java.net.InetSocketAddress;
 import java.security.GeneralSecurityException;
@@ -34,24 +35,27 @@ import java.util.function.Consumer;
 
 public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
-    private static final ThreadLocal<VoxelwindHash> hashLocal = ThreadLocal.withInitial(NativeCodeFactory.hash::newInstance);
+    private static final AesFactory AES_FACTORY = Natives.AES_CFB8.get();
+    private static final ThreadLocal<Sha256> HASH_LOCAL = ThreadLocal.withInitial(Natives.SHA_256);
 
+    private final Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Queue<BedrockPacket> queuedPackets = new ConcurrentLinkedQueue<>();
     private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
+    private final BedrockWrapperSerializer wrapperSerializer;
     final SessionConnection<ByteBuf> connection;
     private BedrockPacketCodec packetCodec = BedrockCompat.COMPAT_CODEC;
-    private Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private BedrockPacketHandler packetHandler;
-    private BedrockCompressionHandler compressionHandler = DefaultBedrockCompressionHandler.DEFAULT;
-    private BatchHandler batchedHandler = DefaultBatchHandler.INSTANCE;
-    private BungeeCipher encryptionCipher = null;
-    private BungeeCipher decryptionCipher = null;
+    private BatchHandler batchHandler = DefaultBatchHandler.INSTANCE;
+    private Aes encryptionCipher = null;
+    private Aes decryptionCipher = null;
     private SecretKey agreedKey;
+    private int compressionLevel = 7;
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    BedrockSession(SessionConnection<ByteBuf> connection) {
+    BedrockSession(SessionConnection<ByteBuf> connection, BedrockWrapperSerializer serializer) {
         this.connection = connection;
+        this.wrapperSerializer = serializer;
     }
 
     public void setPacketHandler(@Nonnull BedrockPacketHandler packetHandler) {
@@ -60,10 +64,6 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     public void setPacketCodec(BedrockPacketCodec packetCodec) {
         this.packetCodec = Objects.requireNonNull(packetCodec, "packetCodec");
-    }
-
-    public void setCompressionHandler(BedrockCompressionHandler compressionHandler) {
-        this.compressionHandler = Objects.requireNonNull(compressionHandler, "compressionHandler");
     }
 
     void checkForClosed() {
@@ -102,9 +102,9 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
-        ByteBuf compressed = null;
+        ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
         try {
-            compressed = this.compressionHandler.compressPackets(this.packetCodec, packets);
+            this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel);
             this.sendWrapped(compressed, encrypt);
         } finally {
             if (compressed != null) {
@@ -118,17 +118,18 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         ByteBuf withTrailer = null;
         try {
             int startIndex = compressed.readerIndex();
-            ByteBuf finalPayload = PooledByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 9);
+            ByteBuf finalPayload = ByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 9);
             finalPayload.writeByte(0xfe); // Wrapped packet ID
             if (this.encryptionCipher != null && encrypt) {
-                withTrailer = PooledByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 8);
+                withTrailer = ByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 8);
                 compressed.readerIndex(startIndex);
                 byte[] trailer = this.generateTrailer(compressed);
                 compressed.readerIndex(startIndex);
                 withTrailer.writeBytes(compressed);
                 withTrailer.writeBytes(trailer);
 
-                this.encryptionCipher.cipher(withTrailer, finalPayload);
+                this.encryptionCipher.cipher(withTrailer.internalNioBuffer(0, withTrailer.writerIndex()),
+                        finalPayload.internalNioBuffer(0, withTrailer.writerIndex()));
             } else {
                 finalPayload.writeBytes(compressed);
             }
@@ -186,31 +187,23 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
         this.agreedKey = secretKey;
         byte[] iv = Arrays.copyOf(secretKey.getEncoded(), 16);
-        try {
-            this.encryptionCipher = NativeCodeFactory.cipher.newInstance();
-            this.decryptionCipher = NativeCodeFactory.cipher.newInstance();
-
-            this.encryptionCipher.init(true, secretKey, iv);
-            this.decryptionCipher.init(false, secretKey, iv);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException("Unable to initialize ciphers", e);
-        }
-
+        this.encryptionCipher = AES_FACTORY.get(true, secretKey, new IvParameterSpec(iv));
+        this.decryptionCipher = AES_FACTORY.get(false, secretKey, new IvParameterSpec(iv));
     }
 
     private byte[] generateTrailer(ByteBuf buf) {
-        VoxelwindHash hash = hashLocal.get();
+        Sha256 hash = HASH_LOCAL.get();
         ByteBuf counterBuf = null;
         ByteBuf keyBuf = null;
         try {
-            counterBuf = PooledByteBufAllocator.DEFAULT.directBuffer(8);
-            keyBuf = PooledByteBufAllocator.DEFAULT.directBuffer(agreedKey.getEncoded().length);
+            counterBuf = ByteBufAllocator.DEFAULT.directBuffer(8);
+            keyBuf = ByteBufAllocator.DEFAULT.directBuffer(this.agreedKey.getEncoded().length);
             counterBuf.writeLongLE(this.sentEncryptedPacketCount.getAndIncrement());
             keyBuf.writeBytes(this.agreedKey.getEncoded());
 
-            hash.update(counterBuf);
-            hash.update(buf);
-            hash.update(keyBuf);
+            hash.update(counterBuf.internalNioBuffer(0, 8));
+            hash.update(buf.internalNioBuffer(buf.readerIndex(), buf.writerIndex()));
+            hash.update(keyBuf.internalNioBuffer(0, buf.writerIndex()));
             byte[] digested = hash.digest();
             return Arrays.copyOf(digested, 8);
         } finally {
@@ -254,28 +247,31 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void onWrappedPacket(final ByteBuf wrappedData) {
-        ByteBuf unwrappedData = null;
+        ByteBuf batched = null;
         try {
             if (this.isEncrypted()) {
                 // Decryption
-                unwrappedData = PooledByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
-                this.decryptionCipher.cipher(wrappedData, unwrappedData);
+                batched = ByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
+                this.decryptionCipher.cipher(wrappedData.internalNioBuffer(wrappedData.readerIndex(), wrappedData.writerIndex()),
+                        batched.internalNioBuffer(0, wrappedData.writerIndex()));
                 // TODO: Maybe verify the checksum?
-                unwrappedData = unwrappedData.slice(0, unwrappedData.readableBytes() - 8);
+                batched = batched.slice(0, batched.readableBytes() - 8);
             } else {
                 // Encryption not enabled so it should be readable.
-                unwrappedData = wrappedData;
+                batched = wrappedData;
             }
-            unwrappedData.markReaderIndex();
+            batched.markReaderIndex();
 
-            Collection<BedrockPacket> packets = this.compressionHandler.decompressPackets(this.packetCodec, unwrappedData);
-            this.batchedHandler.handle(this, unwrappedData, packets);
+            List<BedrockPacket> packets = new ObjectArrayList<>();
+            this.wrapperSerializer.deserialize(batched, this.packetCodec, packets);
+
+            this.batchHandler.handle(this, batched, packets);
         } catch (GeneralSecurityException ignore) {
         } catch (PacketSerializeException e) {
             log.warn("Error whilst decoding packets", e);
         } finally {
-            if (unwrappedData != null && unwrappedData != wrappedData) {
-                unwrappedData.release();
+            if (batched != null && batched != wrappedData) {
+                batched.release();
             }
         }
     }
@@ -296,16 +292,20 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         return this.packetHandler;
     }
 
-    public BedrockCompressionHandler getCompressionHandler() {
-        return this.compressionHandler;
+    public BatchHandler getBatchHandler() {
+        return this.batchHandler;
     }
 
-    public BatchHandler getBatchedHandler() {
-        return this.batchedHandler;
+    public void setBatchHandler(BatchHandler batchHandler) {
+        this.batchHandler = Objects.requireNonNull(batchHandler, "batchHandler");
     }
 
-    public void setBatchedHandler(BatchHandler batchedHandler) {
-        this.batchedHandler = Objects.requireNonNull(batchedHandler, "batchHandler");
+    public void setCompressionLevel(int compressionLevel) {
+        this.compressionLevel = compressionLevel;
+    }
+
+    public int getCompressionLevel() {
+        return compressionLevel;
     }
 
     public boolean isLogging() {

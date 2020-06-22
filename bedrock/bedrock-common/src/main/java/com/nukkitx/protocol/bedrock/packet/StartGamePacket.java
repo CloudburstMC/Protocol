@@ -9,6 +9,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
+import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
@@ -30,18 +31,18 @@ public class StartGamePacket extends BedrockPacket {
     private final List<GameRuleData<?>> gamerules = new ObjectArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
-    private int playerGamemode;
+    private GameType playerGameType;
     private Vector3f playerPosition;
     private Vector2f rotation;
     // Level settings start
     private int seed;
     private int dimensionId;
     private int generatorId;
-    private int levelGamemode;
+    private GameType levelGameType;
     private int difficulty;
     private Vector3i defaultSpawn;
     private boolean achievementsDisabled;
-    private int time;
+    private int dayCycleStopTime;
     private int eduEditionOffers;
     private boolean eduFeaturesEnabled;
     private String unknownString0;
@@ -71,7 +72,7 @@ public class StartGamePacket extends BedrockPacket {
     private int unknownInt1;
     // Level settings end
     private String levelId;
-    private String worldName;
+    private String levelName;
     private String premiumWorldTemplateId;
     private boolean trial;
     private boolean movementServerAuthoritative;
@@ -80,7 +81,7 @@ public class StartGamePacket extends BedrockPacket {
     private ListTag<CompoundTag> blockPalette;
     private List<ItemEntry> itemEntries = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
-    private boolean unknownBool0;
+    private boolean inventoriesServerAuthoritative;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -88,7 +89,7 @@ public class StartGamePacket extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.START_GAME_PACKET;
+        return BedrockPacketType.START_GAME;
     }
 
     @Value

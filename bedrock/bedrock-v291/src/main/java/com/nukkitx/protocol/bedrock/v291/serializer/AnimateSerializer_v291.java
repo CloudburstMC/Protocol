@@ -1,8 +1,9 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.AnimatePacket;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -10,8 +11,8 @@ import lombok.NoArgsConstructor;
 
 import static com.nukkitx.protocol.bedrock.packet.AnimatePacket.Action;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AnimateSerializer_v291 implements PacketSerializer<AnimatePacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class AnimateSerializer_v291 implements BedrockPacketSerializer<AnimatePacket> {
     public static final AnimateSerializer_v291 INSTANCE = new AnimateSerializer_v291();
     private static final Int2ObjectBiMap<Action> types = new Int2ObjectBiMap<>();
 
@@ -26,7 +27,7 @@ public class AnimateSerializer_v291 implements PacketSerializer<AnimatePacket> {
     }
 
     @Override
-    public void serialize(ByteBuf buffer, AnimatePacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AnimatePacket packet) {
         Action action = packet.getAction();
         VarInts.writeInt(buffer, types.get(action));
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
@@ -36,7 +37,7 @@ public class AnimateSerializer_v291 implements PacketSerializer<AnimatePacket> {
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, AnimatePacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, AnimatePacket packet) {
         Action action = types.get(VarInts.readInt(buffer));
         packet.setAction(action);
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ContainerClosePacket extends BedrockPacket {
-    private byte windowId;
+    private byte id;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

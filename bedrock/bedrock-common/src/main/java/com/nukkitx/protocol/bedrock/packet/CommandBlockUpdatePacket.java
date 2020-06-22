@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.CommandBlockMode;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +13,7 @@ import lombok.EqualsAndHashCode;
 public class CommandBlockUpdatePacket extends BedrockPacket {
     private boolean block;
     private Vector3i blockPosition;
-    private int commandBlockMode;
+    private CommandBlockMode mode;
     private boolean redstoneMode;
     private boolean conditional;
     private long minecartRuntimeEntityId;

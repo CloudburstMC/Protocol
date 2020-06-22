@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.SerializedSkin;
+import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +14,8 @@ import java.util.UUID;
 public class PlayerSkinPacket extends BedrockPacket {
     private UUID uuid;
     private SerializedSkin skin;
+    private String newSkinName;
+    private String oldSkinName;
     private boolean trustedSkin;
 
     @Override

@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,16 +11,17 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class UpdateTradePacket extends BedrockPacket {
-    private short windowId;
-    private short windowType;
-    private int unknownInt; // Hardcoded to 0
+    private int containerId;
+    private ContainerType containerType;
+    private int size; // Hardcoded to 0
     private int tradeTier;
     private long traderUniqueEntityId;
     private long playerUniqueEntityId;
     private String displayName;
     private Tag<?> offers;
-    private boolean screen2;
-    private boolean willing;
+    private boolean newTradingUi;
+    private boolean recipeAddedOnUpdate;
+    private boolean usingEconomyTrade;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

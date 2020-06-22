@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.BlockSyncType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
     private long runtimeEntityId;
-    private long unknownLong1;
+    private BlockSyncType entityBlockSyncType;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

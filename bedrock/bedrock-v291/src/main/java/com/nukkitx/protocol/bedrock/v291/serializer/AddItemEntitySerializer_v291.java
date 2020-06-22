@@ -1,36 +1,36 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.AddItemEntityPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AddItemEntitySerializer_v291 implements PacketSerializer<AddItemEntityPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class AddItemEntitySerializer_v291 implements BedrockPacketSerializer<AddItemEntityPacket> {
     public static final AddItemEntitySerializer_v291 INSTANCE = new AddItemEntitySerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, AddItemEntityPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AddItemEntityPacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeItemData(buffer, packet.getItemInHand());
-        BedrockUtils.writeVector3f(buffer, packet.getPosition());
-        BedrockUtils.writeVector3f(buffer, packet.getMotion());
-        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
+        helper.writeItem(buffer, packet.getItemInHand());
+        helper.writeVector3f(buffer, packet.getPosition());
+        helper.writeVector3f(buffer, packet.getMotion());
+        helper.writeEntityData(buffer, packet.getMetadata());
         buffer.writeBoolean(packet.isFromFishing());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, AddItemEntityPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, AddItemEntityPacket packet) {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setItemInHand(BedrockUtils.readItemData(buffer));
-        packet.setPosition(BedrockUtils.readVector3f(buffer));
-        packet.setMotion(BedrockUtils.readVector3f(buffer));
-        BedrockUtils.readEntityData(buffer, packet.getMetadata());
+        packet.setItemInHand(helper.readItem(buffer));
+        packet.setPosition(helper.readVector3f(buffer));
+        packet.setMotion(helper.readVector3f(buffer));
+        helper.readEntityData(buffer, packet.getMetadata());
         packet.setFromFishing(buffer.readBoolean());
     }
 }

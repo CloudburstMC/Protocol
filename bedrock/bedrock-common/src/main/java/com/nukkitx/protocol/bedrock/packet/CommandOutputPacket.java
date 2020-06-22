@@ -2,8 +2,9 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.CommandOriginData;
-import com.nukkitx.protocol.bedrock.data.CommandOutputMessage;
+import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
+import com.nukkitx.protocol.bedrock.data.command.CommandOutputMessage;
+import com.nukkitx.protocol.bedrock.data.command.CommandOutputType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.List;
 public class CommandOutputPacket extends BedrockPacket {
     private final List<CommandOutputMessage> messages = new ObjectArrayList<>();
     private CommandOriginData commandOriginData;
-    private int outputType;
+    private CommandOutputType type;
     private int successCount;
     private String data;
 

@@ -19,9 +19,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cn.nukkit</groupId>
-            <artifactId>nukkit-natives</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>com.nukkitx</groupId>
+            <artifactId>natives</artifactId>
+            <version>1.0.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -2,7 +2,8 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingType;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
@@ -16,8 +17,8 @@ import java.util.UUID;
 public class CraftingEventPacket extends BedrockPacket {
     private final List<ItemData> inputs = new ObjectArrayList<>();
     private final List<ItemData> outputs = new ObjectArrayList<>();
-    private byte windowId;
-    private int type;
+    private byte containerId;
+    private CraftingType type;
     private UUID uuid;
 
     @Override

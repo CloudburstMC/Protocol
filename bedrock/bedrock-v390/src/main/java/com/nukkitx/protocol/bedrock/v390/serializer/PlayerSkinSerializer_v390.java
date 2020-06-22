@@ -1,29 +1,27 @@
 package com.nukkitx.protocol.bedrock.v390.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.PlayerSkinPacket;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import com.nukkitx.protocol.bedrock.v390.BedrockUtils_v390;
-import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.bedrock.v388.serializer.PlayerSkinSerializer_v388;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PlayerSkinSerializer_v390 implements PacketSerializer<PlayerSkinPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class PlayerSkinSerializer_v390 extends PlayerSkinSerializer_v388 {
     public static final PlayerSkinSerializer_v390 INSTANCE = new PlayerSkinSerializer_v390();
 
-
     @Override
-    public void serialize(ByteBuf buffer, PlayerSkinPacket packet) {
-        BedrockUtils.writeUuid(buffer, packet.getUuid());
-        BedrockUtils_v390.writeSkin(buffer, packet.getSkin());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerSkinPacket packet) {
+        super.serialize(buffer, helper, packet);
+
         buffer.writeBoolean(packet.isTrustedSkin());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, PlayerSkinPacket packet) {
-        packet.setUuid(BedrockUtils.readUuid(buffer));
-        packet.setSkin(BedrockUtils_v390.readSkin(buffer));
-        packet.setTrustedSkin(buffer.readBoolean());
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerSkinPacket packet) {
+        super.serialize(buffer, helper, packet);
+
+        if (buffer.isReadable()) packet.setTrustedSkin(buffer.readBoolean());
     }
 }

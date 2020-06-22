@@ -1,314 +1,112 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
-import com.nukkitx.math.vector.Vector2f;
-import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.network.VarInts;
-import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.event.*;
-import com.nukkitx.protocol.bedrock.packet.EventPacket;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.bedrock.v354.serializer.EventSerializer_v354;
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
-import java.util.List;
+import static com.nukkitx.protocol.bedrock.data.event.EventDataType.*;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EventSerializer_v388 implements PacketSerializer<EventPacket> {
+public class EventSerializer_v388 extends EventSerializer_v354 {
     public static final EventSerializer_v388 INSTANCE = new EventSerializer_v388();
 
-    private static final EventDataType[] VALUES = EventDataType.values();
-
-    @Override
-    public void serialize(ByteBuf buffer, EventPacket packet) {
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        EventData eventData = packet.getEventData();
-        VarInts.writeInt(buffer, eventData.getType().ordinal());
-        buffer.writeByte(packet.getUnknown0());
-
-        switch (eventData.getType()) {
-            case ACHIEVEMENT_AWARDED:
-                VarInts.writeInt(buffer, ((AchievementAwardedEventData) eventData).getAchievementId());
-                break;
-            case ENTITY_INTERACT:
-                EntityInteractEventData entityInteractEventData = (EntityInteractEventData) eventData;
-                VarInts.writeInt(buffer, entityInteractEventData.getInteractionType());
-                VarInts.writeInt(buffer, entityInteractEventData.getLegacyEntityTypeId());
-                VarInts.writeInt(buffer, entityInteractEventData.getVariant());
-                buffer.writeByte(entityInteractEventData.getPaletteColor());
-                break;
-            case PORTAL_BUILT:
-                VarInts.writeInt(buffer, ((PortalBuiltEventData) eventData).getDimensionId());
-                break;
-            case PORTAL_USED:
-                PortalUsedEventData portalUsedEventData = (PortalUsedEventData) eventData;
-                VarInts.writeInt(buffer, portalUsedEventData.getFromDimensionId());
-                VarInts.writeInt(buffer, portalUsedEventData.getToDimensionId());
-                break;
-            case MOB_KILLED:
-                MobKilledEventData mobKilledEventData = (MobKilledEventData) eventData;
-                VarInts.writeLong(buffer, mobKilledEventData.getKillerUniqueEntityId());
-                VarInts.writeLong(buffer, mobKilledEventData.getVictimUniqueEntityId());
-                VarInts.writeInt(buffer, mobKilledEventData.getEntityDamageCause());
-                VarInts.writeInt(buffer, mobKilledEventData.getVillagerTradeTier());
-                BedrockUtils.writeString(buffer, mobKilledEventData.getVillagerDisplayName());
-                break;
-            case CAULDRON_USED:
-                CauldronUsedEventData cauldronUsedEventData = (CauldronUsedEventData) eventData;
-                VarInts.writeUnsignedInt(buffer, cauldronUsedEventData.getPotionId());
-                VarInts.writeInt(buffer, cauldronUsedEventData.getColor());
-                VarInts.writeInt(buffer, cauldronUsedEventData.getFillLevel());
-                break;
-            case PLAYER_DIED:
-                PlayerDiedEventData playerDiedEventData = (PlayerDiedEventData) eventData;
-                VarInts.writeInt(buffer, playerDiedEventData.getUnknown0());
-                VarInts.writeInt(buffer, playerDiedEventData.getUnknown1());
-                VarInts.writeInt(buffer, playerDiedEventData.getEntityDamageCause());
-                buffer.writeBoolean(playerDiedEventData.isInRaid());
-                break;
-            case BOSS_KILLED:
-                BossKilledEventData bossKilledEventData = (BossKilledEventData) eventData;
-                VarInts.writeLong(buffer, bossKilledEventData.getBossUniqueEntityId());
-                VarInts.writeInt(buffer, bossKilledEventData.getPlayerPartySize());
-                VarInts.writeInt(buffer, bossKilledEventData.getLegacyEntityTypeId());
-                break;
-            case AGENT_COMMAND:
-                AgentCommandEventData agentCommandEventData = (AgentCommandEventData) eventData;
-                VarInts.writeInt(buffer, agentCommandEventData.getAgentResult());
-                VarInts.writeInt(buffer, agentCommandEventData.getDataValue());
-                BedrockUtils.writeString(buffer, agentCommandEventData.getCommand());
-                BedrockUtils.writeString(buffer, agentCommandEventData.getDataKey());
-                BedrockUtils.writeString(buffer, agentCommandEventData.getOutput());
-                break;
-            case AGENT_CREATED:
-                // No extra data
-                break;
-            case PATTERN_REMOVED:
-                PatternRemovedEventData patternRemovedEventData = (PatternRemovedEventData) eventData;
-                VarInts.writeInt(buffer, patternRemovedEventData.getItemId());
-                VarInts.writeInt(buffer, patternRemovedEventData.getAuxValue());
-                VarInts.writeInt(buffer, patternRemovedEventData.getPatternsSize());
-                VarInts.writeInt(buffer, patternRemovedEventData.getPatternIndex());
-                VarInts.writeInt(buffer, patternRemovedEventData.getPatternColor());
-                break;
-            case SLASH_COMMAND_EXECUTED:
-                SlashCommandExecutedEventData slashCommandExecutedEventData = (SlashCommandExecutedEventData) eventData;
-                VarInts.writeInt(buffer, slashCommandExecutedEventData.getSuccessCount());
-                List<String> outputMessages = slashCommandExecutedEventData.getOutputMessages();
-                VarInts.writeInt(buffer, outputMessages.size());
-                BedrockUtils.writeString(buffer, slashCommandExecutedEventData.getCommandName());
-                BedrockUtils.writeString(buffer, String.join(";", outputMessages));
-                break;
-            case FISH_BUCKETED:
-                FishBucketedEventData fishBucketedEventData = (FishBucketedEventData) eventData;
-                VarInts.writeInt(buffer, fishBucketedEventData.getUnknown0());
-                VarInts.writeInt(buffer, fishBucketedEventData.getUnknown1());
-                VarInts.writeInt(buffer, fishBucketedEventData.getUnknown2());
-                buffer.writeBoolean(fishBucketedEventData.isUnknown3());
-                break;
-            case MOB_BORN:
-                MobBornEventData mobBornEventData = (MobBornEventData) eventData;
-                VarInts.writeInt(buffer, mobBornEventData.getLegacyEntityTypeId());
-                VarInts.writeInt(buffer, mobBornEventData.getVariant());
-                buffer.writeByte(mobBornEventData.getColor());
-                break;
-            case PET_DIED:
-                PetDiedEventData petDiedEventData = (PetDiedEventData) eventData;
-                buffer.writeBoolean(petDiedEventData.isUnknown0());
-                VarInts.writeLong(buffer, petDiedEventData.getKillerUniqueEntityId());
-                VarInts.writeLong(buffer, petDiedEventData.getPetUniqueEntityId());
-                VarInts.writeInt(buffer, petDiedEventData.getEntityDamageCause());
-                VarInts.writeInt(buffer, petDiedEventData.getUnknown1());
-                break;
-            case CAULDRON_BLOCK_USED:
-                CauldronBlockUsedEventData cauldronBlockUsedEventData = (CauldronBlockUsedEventData) eventData;
-                VarInts.writeInt(buffer, cauldronBlockUsedEventData.getBlockInteractionType());
-                VarInts.writeInt(buffer, cauldronBlockUsedEventData.getUnknown0());
-                break;
-            case COMPOSTER_BLOCK_USED:
-                ComposterBlockUsedEventData composterBlockUsedEventData = (ComposterBlockUsedEventData) eventData;
-                VarInts.writeInt(buffer, composterBlockUsedEventData.getBlockInteractionType());
-                VarInts.writeInt(buffer, composterBlockUsedEventData.getUnknown0());
-                break;
-            case BELL_BLOCK_USED:
-                VarInts.writeInt(buffer, ((BellBlockUsedEventData) eventData).getUnknown0());
-                break;
-            case ENTITY_DEFINITION_TRIGGER:
-                BedrockUtils.writeString(buffer, ((EntityDefinitionTriggerEventData) eventData).getId());
-                break;
-            case RAID_UPDATE:
-                RaidUpdateEventData raidUpdateEventData = (RaidUpdateEventData) eventData;
-                VarInts.writeInt(buffer, raidUpdateEventData.getCurrentWave());
-                VarInts.writeInt(buffer, raidUpdateEventData.getTotalWaves());
-                buffer.writeBoolean(raidUpdateEventData.isUnknown0());
-                break;
-            case MOVEMENT:
-                MovementEventData movementEventData = (MovementEventData) eventData;
-                buffer.writeByte(movementEventData.getMovementType());
-                BedrockUtils.writeVector2f(buffer, movementEventData.getRotation());
-                BedrockUtils.writeVector3f(buffer, movementEventData.getPosition());
-                break;
-            case MOVEMENT_THRESHOLD:
-                MovementThresholdEventData movementThresholdEventData = (MovementThresholdEventData) eventData;
-                buffer.writeFloatLE(movementThresholdEventData.getUnknown0());
-                buffer.writeFloatLE(movementThresholdEventData.getUnknown1());
-                buffer.writeFloatLE(movementThresholdEventData.getPlayerMovementScoreThreshold());
-                buffer.writeFloatLE(movementThresholdEventData.getPlayerMovementDistanceThreshold());
-                VarInts.writeInt(buffer, movementThresholdEventData.getPlayerMovementDurationThreshold());
-                break;
-        }
+    protected EventSerializer_v388() {
+        super();
+        this.readers.put(ENTITY_DEFINITION_TRIGGER, this::readEntityDefinitionTrigger);
+        this.readers.put(RAID_UPDATE, this::readRaidUpdate);
+        this.readers.put(MOVEMENT_ANOMALY, this::readMovementAnomaly);
+        this.readers.put(MOVEMENT_CORRECTED, this::readMovementCorrected);
+        this.writers.put(ENTITY_DEFINITION_TRIGGER, this::writeEntityDefinitionTrigger);
+        this.writers.put(RAID_UPDATE, this::writeRaidUpdate);
+        this.writers.put(MOVEMENT_ANOMALY, this::writeMovementAnomaly);
+        this.writers.put(MOVEMENT_CORRECTED, this::writeMovementCorrected);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, EventPacket packet) {
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
+    protected MobKilledEventData readMobKilled(ByteBuf buffer, BedrockPacketHelper helper) {
+        long killerUniqueEntityId = VarInts.readLong(buffer);
+        long victimUniqueEntityId = VarInts.readLong(buffer);
+        int killerEntityType = VarInts.readInt(buffer);
+        int entityDamageCause = VarInts.readInt(buffer);
+        int villagerTradeTier = VarInts.readInt(buffer);
+        String villagerDisplayName = helper.readString(buffer);
+        return new MobKilledEventData(killerUniqueEntityId, victimUniqueEntityId, killerEntityType, entityDamageCause,
+                villagerTradeTier, villagerDisplayName);
+    }
 
-        int eventId = VarInts.readInt(buffer);
-        Preconditions.checkElementIndex(eventId, VALUES.length, "EventDataType");
-        EventDataType type = VALUES[eventId];
+    @Override
+    protected void writeMobKilled(ByteBuf buffer, BedrockPacketHelper helper, EventData eventData) {
+        MobKilledEventData event = (MobKilledEventData) eventData;
+        VarInts.writeLong(buffer, event.getKillerUniqueEntityId());
+        VarInts.writeLong(buffer, event.getVictimUniqueEntityId());
+        VarInts.writeInt(buffer, event.getKillerEntityType());
+        VarInts.writeInt(buffer, event.getEntityDamageCause());
+        VarInts.writeInt(buffer, event.getVillagerTradeTier());
+        helper.writeString(buffer, event.getVillagerDisplayName());
+    }
 
-        packet.setUnknown0(buffer.readByte());
+    protected EntityDefinitionTriggerEventData readEntityDefinitionTrigger(ByteBuf buffer, BedrockPacketHelper helper) {
+        String eventName = helper.readString(buffer);
+        return new EntityDefinitionTriggerEventData(eventName);
+    }
 
-        EventData data;
+    protected void writeEntityDefinitionTrigger(ByteBuf buffer, BedrockPacketHelper helper, EventData eventData) {
+        EntityDefinitionTriggerEventData event = (EntityDefinitionTriggerEventData) eventData;
+        helper.writeString(buffer, event.getEventName());
+    }
 
-        switch (type) {
-            case ACHIEVEMENT_AWARDED:
-                data = new AchievementAwardedEventData(VarInts.readInt(buffer));
-                break;
-            case ENTITY_INTERACT:
-                int interactionType = VarInts.readInt(buffer);
-                int legacyEntityTypeId = VarInts.readInt(buffer);
-                int variant = VarInts.readInt(buffer);
-                int paletteColor = buffer.readUnsignedByte();
-                data = new EntityInteractEventData(interactionType, legacyEntityTypeId, variant, paletteColor);
-                break;
-            case PORTAL_BUILT:
-                data = new PortalBuiltEventData(VarInts.readInt(buffer));
-                break;
-            case PORTAL_USED:
-                int fromDimensionId = VarInts.readInt(buffer);
-                int toDimensionId = VarInts.readInt(buffer);
-                data = new PortalUsedEventData(fromDimensionId, toDimensionId);
-                break;
-            case MOB_KILLED:
-                long killerUniqueEntityId = VarInts.readLong(buffer);
-                long victimUniqueEntityId = VarInts.readLong(buffer);
-                int entityDamageCause = VarInts.readInt(buffer);
-                int villagerTradeTier = VarInts.readInt(buffer);
-                String villagerDisplayName = BedrockUtils.readString(buffer);
-                data = new MobKilledEventData(killerUniqueEntityId, victimUniqueEntityId, entityDamageCause,
-                        villagerTradeTier, villagerDisplayName);
-                break;
-            case CAULDRON_USED:
-                int potionId = VarInts.readInt(buffer);
-                int color = VarInts.readInt(buffer);
-                int fillLevel = VarInts.readInt(buffer);
-                data = new CauldronUsedEventData(potionId, color, fillLevel);
-                break;
-            case PLAYER_DIED:
-                int unknown0 = VarInts.readInt(buffer);
-                int unknown1 = VarInts.readInt(buffer);
-                entityDamageCause = VarInts.readInt(buffer);
-                boolean inRaid = buffer.readBoolean();
-                data = new PlayerDiedEventData(unknown0, unknown1, entityDamageCause, inRaid);
-                break;
-            case BOSS_KILLED:
-                long bossUniqueEntityId = VarInts.readLong(buffer);
-                int playerPartySize = VarInts.readInt(buffer);
-                legacyEntityTypeId = VarInts.readInt(buffer);
-                data = new BossKilledEventData(bossUniqueEntityId, playerPartySize, legacyEntityTypeId);
-                break;
-            case AGENT_COMMAND:
-                int agentResult = VarInts.readInt(buffer);
-                int dataValue = VarInts.readInt(buffer);
-                String command = BedrockUtils.readString(buffer);
-                String dataKey = BedrockUtils.readString(buffer);
-                String output = BedrockUtils.readString(buffer);
-                data = new AgentCommandEventData(agentResult, command, dataKey, dataValue, output);
-                break;
-            case AGENT_CREATED:
-                data = AgentCreatedEventData.INSTANCE;
-                break;
-            case PATTERN_REMOVED:
-                int itemId = VarInts.readInt(buffer);
-                int auxValue = VarInts.readInt(buffer);
-                int patternsSize = VarInts.readInt(buffer);
-                int patternIndex = VarInts.readInt(buffer);
-                int patternColor = VarInts.readInt(buffer);
-                data = new PatternRemovedEventData(itemId, auxValue, patternsSize, patternIndex, patternColor);
-                break;
-            case SLASH_COMMAND_EXECUTED:
-                int successCount = VarInts.readInt(buffer);
-                VarInts.readInt(buffer);
-                String commandName = BedrockUtils.readString(buffer);
-                List<String> outputMessages = Arrays.asList(BedrockUtils.readString(buffer).split(";"));
-                data = new SlashCommandExecutedEventData(commandName, successCount, outputMessages);
-                break;
-            case FISH_BUCKETED:
-                unknown0 = VarInts.readInt(buffer);
-                unknown1 = VarInts.readInt(buffer);
-                int unknown2 = VarInts.readInt(buffer);
-                boolean unknown3 = buffer.readBoolean();
-                data = new FishBucketedEventData(unknown0, unknown1, unknown2, unknown3);
-                break;
-            case MOB_BORN:
-                legacyEntityTypeId = VarInts.readInt(buffer);
-                variant = VarInts.readInt(buffer);
-                color = buffer.readUnsignedByte();
-                data = new MobBornEventData(legacyEntityTypeId, variant, color);
-                break;
-            case PET_DIED:
-                boolean unknownBool = buffer.readBoolean();
-                killerUniqueEntityId = VarInts.readLong(buffer);
-                long petUniqueEntityId = VarInts.readLong(buffer);
-                entityDamageCause = VarInts.readInt(buffer);
-                unknown1 = VarInts.readInt(buffer);
-                data = new PetDiedEventData(unknownBool, killerUniqueEntityId, petUniqueEntityId, entityDamageCause,
-                        unknown1);
-                break;
-            case CAULDRON_BLOCK_USED:
-                int blockInterationType = VarInts.readInt(buffer);
-                unknown0 = VarInts.readInt(buffer);
-                data = new CauldronBlockUsedEventData(blockInterationType, unknown0);
-                break;
-            case COMPOSTER_BLOCK_USED:
-                blockInterationType = VarInts.readInt(buffer);
-                unknown0 = VarInts.readInt(buffer);
-                data = new ComposterBlockUsedEventData(blockInterationType, unknown0);
-                break;
-            case BELL_BLOCK_USED:
-                data = new BellBlockUsedEventData(VarInts.readInt(buffer));
-                break;
-            case ENTITY_DEFINITION_TRIGGER:
-                String id = BedrockUtils.readString(buffer);
-                data = new EntityDefinitionTriggerEventData(id);
-                break;
-            case RAID_UPDATE:
-                int currentWave = VarInts.readInt(buffer);
-                int totalWaves = VarInts.readInt(buffer);
-                unknownBool = buffer.readBoolean();
-                data = new RaidUpdateEventData(currentWave, totalWaves, unknownBool);
-                break;
-            case MOVEMENT:
-                int movementType = buffer.readUnsignedByte();
-                Vector2f rotation = BedrockUtils.readVector2f(buffer);
-                Vector3f position = BedrockUtils.readVector3f(buffer);
-                data = new MovementEventData(movementType, rotation, position);
-                break;
-            case MOVEMENT_THRESHOLD:
-                float unknownFloat0 = buffer.readFloatLE();
-                float unknownFloat1 = buffer.readFloatLE();
-                float playerMovementScoreThreshold = buffer.readFloatLE();
-                float playerMovementDistanceThreshold = buffer.readFloatLE();
-                int playerMovementDurationThreshold = VarInts.readInt(buffer);
-                data = new MovementThresholdEventData(unknownFloat0, unknownFloat1, playerMovementScoreThreshold,
-                        playerMovementDistanceThreshold, playerMovementDurationThreshold);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown EventDataType");
-        }
-        packet.setEventData(data);
+    protected RaidUpdateEventData readRaidUpdate(ByteBuf buffer, BedrockPacketHelper helper) {
+        int currentRaidWave = VarInts.readInt(buffer);
+        int totalRaidWaves = VarInts.readInt(buffer);
+        boolean wonRaid = buffer.readBoolean();
+        return new RaidUpdateEventData(currentRaidWave, totalRaidWaves, wonRaid);
+    }
+
+    protected void writeRaidUpdate(ByteBuf buffer, BedrockPacketHelper helper, EventData eventData) {
+        RaidUpdateEventData event = (RaidUpdateEventData) eventData;
+        VarInts.writeInt(buffer, event.getCurrentWave());
+        VarInts.writeInt(buffer, event.getTotalWaves());
+        buffer.writeBoolean(event.isWinner());
+    }
+
+    protected MovementAnomalyEventData readMovementAnomaly(ByteBuf buffer, BedrockPacketHelper helper) {
+        byte eventType = buffer.readByte();
+        float cheatingScore = buffer.readFloatLE();
+        float averagePositionDelta = buffer.readFloatLE();
+        float totalPositionDelta = buffer.readFloatLE();
+        float minPositionDelta = buffer.readFloatLE();
+        float maxPositionDelta = buffer.readFloatLE();
+        return new MovementAnomalyEventData(eventType, cheatingScore, averagePositionDelta, totalPositionDelta,
+                minPositionDelta, maxPositionDelta);
+    }
+
+    protected void writeMovementAnomaly(ByteBuf buffer, BedrockPacketHelper helper, EventData eventData) {
+        MovementAnomalyEventData event = (MovementAnomalyEventData) eventData;
+        buffer.writeByte(event.getEventType());
+        buffer.writeFloatLE(event.getCheatingScore());
+        buffer.writeFloatLE(event.getAveragePositionDelta());
+        buffer.writeFloatLE(event.getTotalPositionDelta());
+        buffer.writeFloatLE(event.getMinPositionDelta());
+        buffer.writeFloatLE(event.getMaxPositionDelta());
+    }
+
+    protected MovementCorrectedEventData readMovementCorrected(ByteBuf buffer, BedrockPacketHelper helper) {
+        float positionDelta = buffer.readFloatLE();
+        float cheatingScore = buffer.readFloatLE();
+        float scoreThreshold = buffer.readFloatLE();
+        float distanceThreshold = buffer.readFloatLE();
+        int durationThreshold = VarInts.readInt(buffer);
+        return new MovementCorrectedEventData(positionDelta, cheatingScore, scoreThreshold, distanceThreshold,
+                durationThreshold);
+    }
+
+    protected void writeMovementCorrected(ByteBuf buffer, BedrockPacketHelper helper, EventData eventData) {
+        MovementCorrectedEventData event = (MovementCorrectedEventData) eventData;
+        buffer.writeFloatLE(event.getPositionDelta());
+        buffer.writeFloatLE(event.getCheatingScore());
+        buffer.writeFloatLE(event.getScoreThreshold());
+        buffer.writeFloatLE(event.getDistanceThreshold());
+        VarInts.writeInt(buffer, event.getDurationThreshold());
     }
 }

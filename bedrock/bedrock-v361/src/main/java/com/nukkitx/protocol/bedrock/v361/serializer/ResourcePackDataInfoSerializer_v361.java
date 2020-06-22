@@ -1,9 +1,9 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
-import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import java.util.UUID;
 
 import static com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket.Type.*;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<ResourcePackDataInfoPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v361 INSTANCE = new ResourcePackDataInfoSerializer_v361();
 
     public static final Int2ObjectBiMap<ResourcePackDataInfoPacket.Type> TYPES = new Int2ObjectBiMap<>(INVALID);
@@ -31,9 +31,9 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
     }
 
     @Override
-    public void serialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackDataInfoPacket packet) {
         String packInfo = packet.getPackId().toString() + (packet.getPackVersion() == null ? "" : '_' + packet.getPackVersion());
-        BedrockUtils.writeString(buffer, packInfo);
+        helper.writeString(buffer, packInfo);
         buffer.writeIntLE((int) packet.getMaxChunkSize());
         buffer.writeIntLE((int) packet.getChunkCount());
         buffer.writeLongLE(packet.getCompressedPackSize());
@@ -45,8 +45,8 @@ public class ResourcePackDataInfoSerializer_v361 implements PacketSerializer<Res
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, ResourcePackDataInfoPacket packet) {
-        String[] packInfo = BedrockUtils.readString(buffer).split("_");
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackDataInfoPacket packet) {
+        String[] packInfo = helper.readString(buffer).split("_");
         packet.setPackId(UUID.fromString(packInfo[0]));
         if (packInfo.length > 1) {
             packet.setPackVersion(packInfo[1]);

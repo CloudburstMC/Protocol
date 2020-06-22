@@ -1,27 +1,27 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.SetEntityDataPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SetEntityDataSerializer_v291 implements PacketSerializer<SetEntityDataPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class SetEntityDataSerializer_v291 implements BedrockPacketSerializer<SetEntityDataPacket> {
     public static final SetEntityDataSerializer_v291 INSTANCE = new SetEntityDataSerializer_v291();
 
 
     @Override
-    public void serialize(ByteBuf buffer, SetEntityDataPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, SetEntityDataPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
+        helper.writeEntityData(buffer, packet.getMetadata());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, SetEntityDataPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, SetEntityDataPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        BedrockUtils.readEntityData(buffer, packet.getMetadata());
+        helper.readEntityData(buffer, packet.getMetadata());
     }
 }

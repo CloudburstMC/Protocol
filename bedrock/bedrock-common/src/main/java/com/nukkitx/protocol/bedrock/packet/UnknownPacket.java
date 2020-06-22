@@ -1,9 +1,10 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.util.ReferenceCounted;
@@ -12,22 +13,22 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public final class UnknownPacket extends BedrockPacket implements PacketSerializer<UnknownPacket>, ReferenceCounted {
+public final class UnknownPacket extends BedrockPacket implements BedrockPacketSerializer<UnknownPacket>, ReferenceCounted {
     private ByteBuf payload;
 
     @Override
-    public void serialize(ByteBuf buffer, UnknownPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, UnknownPacket packet) {
         buffer.writeBytes(packet.payload);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, UnknownPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, UnknownPacket packet) {
         packet.payload = buffer.readBytes(buffer.readableBytes());
     }
 
     @Override
     public String toString() {
-        return "UNKNOWN - " + getHeader() + " - Hex: " + (payload == null ? "null" : ByteBufUtil.hexDump(payload));
+        return "UNKNOWN - " + getPacketId() + " - Hex: " + (payload == null ? "null" : ByteBufUtil.hexDump(payload));
     }
 
     @Override

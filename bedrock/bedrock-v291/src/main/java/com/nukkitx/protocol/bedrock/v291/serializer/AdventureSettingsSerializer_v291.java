@@ -1,10 +1,12 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
-import com.nukkitx.protocol.bedrock.data.CommandPermission;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.AdventureSetting;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
+import com.nukkitx.protocol.bedrock.data.command.CommandPermission;
 import com.nukkitx.protocol.bedrock.packet.AdventureSettingsPacket;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -13,54 +15,58 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-import static com.nukkitx.protocol.bedrock.packet.AdventureSettingsPacket.Flag.*;
+import static com.nukkitx.protocol.bedrock.data.AdventureSetting.*;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AdventureSettingsSerializer_v291 implements PacketSerializer<AdventureSettingsPacket> {
+@SuppressWarnings("PointlessBitwiseExpression")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class AdventureSettingsSerializer_v291 implements BedrockPacketSerializer<AdventureSettingsPacket> {
     public static final AdventureSettingsSerializer_v291 INSTANCE = new AdventureSettingsSerializer_v291();
 
     private static final CommandPermission[] COMMAND_PERMISSIONS = CommandPermission.values();
     private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
-    private static final AdventureSettingsPacket.Flag[] FLAGS_1 = {IMMUTABLE_WORLD, NO_PVP, NO_PVM, null, NO_MVP, AUTO_JUMP, MAY_FLY, NO_CLIP, WORLD_BUILDER, FLYING, MUTE};
-    private static final AdventureSettingsPacket.Flag[] FLAGS_2 = {MINE, DOORS_AND_SWITCHES, OPEN_CONTAINERS, ATTACK_PLAYERS, ATTACK_MOBS, OP, null, TELEPORT, BUILD, SET_DEFAULT};
+    private static final AdventureSetting[] FLAGS_1 = {WORLD_IMMUTABLE, NO_PVM, NO_MVP, null, SHOW_NAME_TAGS, AUTO_JUMP, MAY_FLY, NO_CLIP, WORLD_BUILDER, FLYING, MUTED};
+    private static final AdventureSetting[] FLAGS_2 = {MINE, DOORS_AND_SWITCHES, OPEN_CONTAINERS, ATTACK_PLAYERS, ATTACK_MOBS, OPERATOR, null, TELEPORT, BUILD, DEFAULT_LEVEL_PERMISSIONS};
 
-    private static final Object2IntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_1 = new Object2IntOpenHashMap<>();
-    private static final Object2IntMap<AdventureSettingsPacket.Flag> FLAGS_TO_BIT_2 = new Object2IntOpenHashMap<>();
+    private static final Object2IntMap<AdventureSetting> FLAGS_TO_BIT_1 = new Object2IntOpenHashMap<>();
+    private static final Object2IntMap<AdventureSetting> FLAGS_TO_BIT_2 = new Object2IntOpenHashMap<>();
 
     static {
-        FLAGS_TO_BIT_1.put(IMMUTABLE_WORLD, 0x1);
-        FLAGS_TO_BIT_1.put(NO_PVP, 0x2);
-        FLAGS_TO_BIT_1.put(NO_PVM, 0x4);
-        FLAGS_TO_BIT_1.put(NO_MVP, 0x10);
-        FLAGS_TO_BIT_1.put(AUTO_JUMP, 0x20);
-        FLAGS_TO_BIT_1.put(MAY_FLY, 0x40);
-        FLAGS_TO_BIT_1.put(NO_CLIP, 0x80);
-        FLAGS_TO_BIT_1.put(WORLD_BUILDER, 0x100);
-        FLAGS_TO_BIT_1.put(FLYING, 0x200);
-        FLAGS_TO_BIT_1.put(MUTE, 0x400);
+        FLAGS_TO_BIT_1.put(WORLD_IMMUTABLE, (1 << 0));
+        FLAGS_TO_BIT_1.put(NO_PVM, (1 << 1));
+        FLAGS_TO_BIT_1.put(NO_MVP, (1 << 2));
 
-        FLAGS_TO_BIT_2.put(MINE, 0x1);
-        FLAGS_TO_BIT_2.put(DOORS_AND_SWITCHES, 0x2);
-        FLAGS_TO_BIT_2.put(OPEN_CONTAINERS, 0x04);
-        FLAGS_TO_BIT_2.put(ATTACK_PLAYERS, 0x8);
-        FLAGS_TO_BIT_2.put(ATTACK_MOBS, 0x10);
-        FLAGS_TO_BIT_2.put(OP, 0x20);
-        FLAGS_TO_BIT_2.put(TELEPORT, 0x80);
-        FLAGS_TO_BIT_2.put(BUILD, 0x100);
-        FLAGS_TO_BIT_2.put(SET_DEFAULT, 0x200);
+        FLAGS_TO_BIT_1.put(SHOW_NAME_TAGS, (1 << 4));
+        FLAGS_TO_BIT_1.put(AUTO_JUMP, (1 << 5));
+        FLAGS_TO_BIT_1.put(MAY_FLY, (1 << 6));
+        FLAGS_TO_BIT_1.put(NO_CLIP, (1 << 7));
+        FLAGS_TO_BIT_1.put(WORLD_BUILDER, (1 << 8));
+        FLAGS_TO_BIT_1.put(FLYING, (1 << 9));
+        FLAGS_TO_BIT_1.put(MUTED, (1 << 10));
+
+        // Permissions flags
+        FLAGS_TO_BIT_2.put(MINE, (1 << 0));
+        FLAGS_TO_BIT_2.put(DOORS_AND_SWITCHES, (1 << 1));
+        FLAGS_TO_BIT_2.put(OPEN_CONTAINERS, (1 << 2));
+        FLAGS_TO_BIT_2.put(ATTACK_PLAYERS, (1 << 3));
+        FLAGS_TO_BIT_2.put(ATTACK_MOBS, (1 << 4));
+        FLAGS_TO_BIT_2.put(OPERATOR, (1 << 5));
+
+        FLAGS_TO_BIT_2.put(TELEPORT, (1 << 7));
+        FLAGS_TO_BIT_2.put(BUILD, (1 << 8));
+        FLAGS_TO_BIT_2.put(DEFAULT_LEVEL_PERMISSIONS, (1 << 9));
     }
 
 
     @Override
-    public void serialize(ByteBuf buffer, AdventureSettingsPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AdventureSettingsPacket packet) {
         int flags1 = 0;
         int flags2 = 0;
-        for (AdventureSettingsPacket.Flag flag : packet.getFlags()) {
-            if (FLAGS_TO_BIT_1.containsKey(flag)) {
-                flags1 |= FLAGS_TO_BIT_1.get(flag);
-            } else if (FLAGS_TO_BIT_2.containsKey(flag)) {
-                flags2 |= FLAGS_TO_BIT_2.get(flag);
+        for (AdventureSetting setting : packet.getSettings()) {
+            if (FLAGS_TO_BIT_1.containsKey(setting)) {
+                flags1 |= FLAGS_TO_BIT_1.getInt(setting);
+            } else if (FLAGS_TO_BIT_2.containsKey(setting)) {
+                flags2 |= FLAGS_TO_BIT_2.getInt(setting);
             }
         }
         VarInts.writeUnsignedInt(buffer, flags1);
@@ -72,7 +78,7 @@ public class AdventureSettingsSerializer_v291 implements PacketSerializer<Advent
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, AdventureSettingsPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, AdventureSettingsPacket packet) {
         int flags1 = VarInts.readUnsignedInt(buffer);
         packet.setCommandPermission(COMMAND_PERMISSIONS[VarInts.readUnsignedInt(buffer)]);
         int flags2 = VarInts.readUnsignedInt(buffer);
@@ -80,16 +86,17 @@ public class AdventureSettingsSerializer_v291 implements PacketSerializer<Advent
         VarInts.readUnsignedInt(buffer); // useless
         packet.setUniqueEntityId(buffer.readLongLE());
 
-        Set<AdventureSettingsPacket.Flag> flags = packet.getFlags();
-        for (int i = 0; i < FLAGS_1.length; i++) {
-            if ((flags1 & (1 << i)) != 0) {
-                flags.add(FLAGS_1[i]);
-            }
-        }
+        Set<AdventureSetting> settings = packet.getSettings();
 
-        for (int i = 0; i < FLAGS_2.length; i++) {
-            if ((flags2 & (1 << i)) != 0) {
-                flags.add(FLAGS_2[i]);
+        readFlags(flags1, FLAGS_1, settings);
+        readFlags(flags2, FLAGS_2, settings);
+    }
+
+    protected static void readFlags(int flags, AdventureSetting[] mappings, Set<AdventureSetting> settings) {
+        for (int i = 0; i < mappings.length; i++) {
+            AdventureSetting setting = mappings[i];
+            if (setting != null && (flags & (1 << i)) != 0) {
+                settings.add(setting);
             }
         }
     }
