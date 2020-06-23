@@ -87,6 +87,7 @@ public class Zlib {
 
             while (!deflater.finished()) {
                 int index = destination.writerIndex();
+                destination.ensureWritable(CHUNK);
                 int written = deflater.deflate(destination.internalNioBuffer(index, CHUNK));
                 destination.writerIndex(index + written);
             }

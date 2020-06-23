@@ -106,6 +106,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         try {
             this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel);
             this.sendWrapped(compressed, encrypt);
+        } catch (Exception e) {
+            log.error("Unable to compress packets", e);
         } finally {
             if (compressed != null) {
                 compressed.release();
@@ -118,10 +120,10 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         ByteBuf withTrailer = null;
         try {
             int startIndex = compressed.readerIndex();
-            ByteBuf finalPayload = ByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 9);
+            ByteBuf finalPayload = ByteBufAllocator.DEFAULT.ioBuffer(compressed.readableBytes() + 9);
             finalPayload.writeByte(0xfe); // Wrapped packet ID
             if (this.encryptionCipher != null && encrypt) {
-                withTrailer = ByteBufAllocator.DEFAULT.directBuffer(compressed.readableBytes() + 8);
+                withTrailer = ByteBufAllocator.DEFAULT.ioBuffer(compressed.readableBytes() + 8);
                 compressed.readerIndex(startIndex);
                 byte[] trailer = this.generateTrailer(compressed);
                 compressed.readerIndex(startIndex);
@@ -129,7 +131,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
                 withTrailer.writeBytes(trailer);
 
                 this.encryptionCipher.cipher(withTrailer.internalNioBuffer(0, withTrailer.writerIndex()),
-                        finalPayload.internalNioBuffer(0, withTrailer.writerIndex()));
+                        finalPayload.internalNioBuffer(1, withTrailer.writerIndex()));
             } else {
                 finalPayload.writeBytes(compressed);
             }
