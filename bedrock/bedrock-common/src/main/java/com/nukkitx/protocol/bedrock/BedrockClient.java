@@ -38,6 +38,10 @@ public class BedrockClient extends Bedrock {
         return this.rakNetClient;
     }
 
+    public void setRakNetVersion(int version) {
+        this.rakNetClient.setProtocolVersion(version);
+    }
+
     @Override
     public void close() {
         if (session != null) {

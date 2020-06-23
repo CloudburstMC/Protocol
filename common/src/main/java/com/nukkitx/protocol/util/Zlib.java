@@ -23,15 +23,13 @@ public class Zlib {
     }
 
     public ByteBuf inflate(ByteBuf buffer, int maxSize) throws DataFormatException {
-        // Ensure that this buffer is direct.
-        if (buffer.getByte(buffer.readerIndex()) != 0x78) throw new DataFormatException("No zlib header");
         ByteBuf source = null;
-        ByteBuf decompressed = ByteBufAllocator.DEFAULT.directBuffer();
+        ByteBuf decompressed = ByteBufAllocator.DEFAULT.ioBuffer();
 
         try {
             if (!buffer.isDirect()) {
                 // We don't have a direct buffer. Create one.
-                ByteBuf temporary = ByteBufAllocator.DEFAULT.directBuffer();
+                ByteBuf temporary = ByteBufAllocator.DEFAULT.ioBuffer();
                 temporary.writeBytes(buffer);
                 source = temporary;
             } else {
@@ -40,13 +38,13 @@ public class Zlib {
 
             Inflater inflater = inflaterLocal.get();
             inflater.reset();
-            inflater.setInput(source.internalNioBuffer(source.readerIndex(), source.writerIndex()));
+            inflater.setInput(source.internalNioBuffer(source.readerIndex(), source.readableBytes()));
             inflater.finished();
 
             while (!inflater.finished()) {
                 decompressed.ensureWritable(CHUNK);
                 int index = decompressed.writerIndex();
-                int written = inflater.inflate(decompressed.internalNioBuffer(index, index + CHUNK));
+                int written = inflater.inflate(decompressed.internalNioBuffer(index, CHUNK));
                 decompressed.writerIndex(index + written);
                 if (maxSize > 0 && decompressed.writerIndex() >= maxSize) {
                     throw new DataFormatException("Inflated data exceeds maximum size");
@@ -69,7 +67,7 @@ public class Zlib {
         try {
             if (!uncompressed.isDirect()) {
                 // Source is not a direct buffer. Work on a temporary direct buffer and then write the contents out.
-                source = ByteBufAllocator.DEFAULT.directBuffer();
+                source = ByteBufAllocator.DEFAULT.ioBuffer();
                 source.writeBytes(uncompressed);
             } else {
                 source = uncompressed;
@@ -77,7 +75,7 @@ public class Zlib {
 
             if (!compressed.isDirect()) {
                 // Destination is not a direct buffer. Work on a temporary direct buffer and then write the contents out.
-                destination = ByteBufAllocator.DEFAULT.directBuffer();
+                destination = ByteBufAllocator.DEFAULT.ioBuffer();
             } else {
                 destination = compressed;
             }
@@ -85,11 +83,11 @@ public class Zlib {
             Deflater deflater = deflaterLocal.get();
             deflater.reset();
             deflater.setLevel(level);
-            deflater.setInput(source.internalNioBuffer(source.readerIndex(), source.writerIndex()));
+            deflater.setInput(source.internalNioBuffer(source.readerIndex(), source.readableBytes()));
 
             while (!deflater.finished()) {
                 int index = destination.writerIndex();
-                int written = deflater.deflate(destination.internalNioBuffer(index, index + CHUNK));
+                int written = deflater.deflate(destination.internalNioBuffer(index, CHUNK));
                 destination.writerIndex(index + written);
             }
 
