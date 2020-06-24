@@ -27,7 +27,7 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     protected void registerEntityFlags() {
         super.registerEntityFlags();
 
-        this.addEntityFlag(86, EntityFlag.IS_AVOIDING_MOBS);
+        this.addEntityFlag(86, EntityFlag.IS_AVOIDING_BLOCK);
         this.addEntityFlag(87, EntityFlag.FACING_TARGET_TO_RANGE_ATTACK);
         this.addEntityFlag(88, EntityFlag.HIDDEN_WHEN_INVISIBLE);
         this.addEntityFlag(89, EntityFlag.IS_IN_UI);

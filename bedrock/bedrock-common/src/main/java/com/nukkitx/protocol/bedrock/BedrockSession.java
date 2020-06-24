@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.zip.Deflater;
 
 public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
@@ -49,7 +50,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private Aes encryptionCipher = null;
     private Aes decryptionCipher = null;
     private SecretKey agreedKey;
-    private int compressionLevel = 7;
+    private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
@@ -204,8 +205,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             keyBuf.writeBytes(this.agreedKey.getEncoded());
 
             hash.update(counterBuf.internalNioBuffer(0, 8));
-            hash.update(buf.internalNioBuffer(buf.readerIndex(), buf.writerIndex()));
-            hash.update(keyBuf.internalNioBuffer(0, buf.writerIndex()));
+            hash.update(buf.internalNioBuffer(buf.readerIndex(), buf.readableBytes()));
+            hash.update(keyBuf.internalNioBuffer(0, keyBuf.readableBytes()));
             byte[] digested = hash.digest();
             return Arrays.copyOf(digested, 8);
         } finally {
