@@ -17,7 +17,6 @@ import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
 import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -255,7 +254,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         try {
             if (this.isEncrypted()) {
                 // Decryption
-                batched = PooledByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
+                batched = ByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
                 this.decryptionCipher.cipher(wrappedData.nioBuffer(), batched.internalNioBuffer(0, wrappedData.readableBytes()));
 
                 // TODO: Maybe verify the checksum?
