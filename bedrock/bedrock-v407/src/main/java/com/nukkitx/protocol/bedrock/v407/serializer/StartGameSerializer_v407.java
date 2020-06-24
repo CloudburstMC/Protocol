@@ -36,6 +36,12 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         helper.writeVector2f(buffer, packet.getRotation());
         // Level settings start
         VarInts.writeInt(buffer, packet.getSeed());
+
+        //@Todo
+        buffer.writeByte(0);
+        buffer.writeByte(0);
+        helper.writeString(buffer, "plains");
+
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
@@ -45,9 +51,13 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         VarInts.writeInt(buffer, packet.getDayCycleStopTime());
         VarInts.writeInt(buffer, packet.getEduEditionOffers());
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
-        helper.writeString(buffer, packet.getUnknownString0());
+//        helper.writeString(buffer, packet.getUnknownString0());
         buffer.writeFloatLE(packet.getRainLevel());
         buffer.writeFloatLE(packet.getLightningLevel());
+
+        //@Todo
+        buffer.writeByte(0);
+
         buffer.writeBoolean(packet.isPlatformLockedContentConfirmed());
         buffer.writeBoolean(packet.isMultiplayerGame());
         buffer.writeBoolean(packet.isBroadcastingToLan());
@@ -70,6 +80,10 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         helper.writeString(buffer, packet.getVanillaVersion());
         buffer.writeIntLE(packet.getUnknownInt0());
         buffer.writeIntLE(packet.getUnknownInt1());
+
+        // @Todo
+        buffer.writeByte(0);
+        buffer.writeByte(0);
 
         // Level settings end
         helper.writeString(buffer, packet.getLevelId());
@@ -125,6 +139,7 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());
 
+        //@Todo
         buffer.readByte(); // 0
 
         packet.setPlatformLockedContentConfirmed(buffer.readBoolean());
@@ -153,7 +168,6 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         // @Todo
         buffer.readByte(); // 0
         buffer.readByte(); // 0
-
 
         // Level settings end
         packet.setLevelId(helper.readString(buffer));
