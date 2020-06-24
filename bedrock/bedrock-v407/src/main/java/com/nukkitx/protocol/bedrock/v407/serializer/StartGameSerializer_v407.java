@@ -106,6 +106,12 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setRotation(helper.readVector2f(buffer));
         // Level settings start
         packet.setSeed(VarInts.readInt(buffer));
+
+        //@Todo
+        buffer.readByte(); // 0
+        buffer.readByte(); // 0
+        helper.readString(buffer); // plains
+
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
         packet.setLevelGameType(GameType.from(VarInts.readInt(buffer)));
@@ -115,9 +121,12 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setDayCycleStopTime(VarInts.readInt(buffer));
         packet.setEduEditionOffers(VarInts.readInt(buffer));
         packet.setEduFeaturesEnabled(buffer.readBoolean());
-        packet.setUnknownString0(helper.readString(buffer));
+//        packet.setUnknownString0(helper.readString(buffer));
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());
+
+        buffer.readByte(); // 0
+
         packet.setPlatformLockedContentConfirmed(buffer.readBoolean());
         packet.setMultiplayerGame(buffer.readBoolean());
         packet.setBroadcastingToLan(buffer.readBoolean());
@@ -140,6 +149,12 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setVanillaVersion(helper.readString(buffer));
         packet.setUnknownInt0(buffer.readIntLE());
         packet.setUnknownInt1(buffer.readIntLE());
+
+        // @Todo
+        buffer.readByte(); // 0
+        buffer.readByte(); // 0
+
+
         // Level settings end
         packet.setLevelId(helper.readString(buffer));
         packet.setLevelName(helper.readString(buffer));

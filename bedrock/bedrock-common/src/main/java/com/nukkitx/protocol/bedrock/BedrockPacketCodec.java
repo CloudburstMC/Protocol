@@ -5,6 +5,7 @@ import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.packet.UnknownPacket;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -18,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 @Immutable
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -51,9 +56,47 @@ public final class BedrockPacketCodec {
             throw new PacketSerializeException("Packet ID " + id + " does not exist", e);
         }
 
+        ByteBuf dupe = buf.duplicate();
         try {
+
             serializer.deserialize(buf, this.helper, packet);
         } catch (Exception e) {
+            byte[] dupeBytes = new byte[dupe.readableBytes()];
+            dupe.readBytes(dupeBytes);
+
+            System.err.println(packet);
+            StringBuilder b = new StringBuilder();
+            for(int i=0;i<dupeBytes.length;i++) {
+                if (i%80 == 0) {
+                    b.append("\n");
+                }
+                b.append(String.format("%02x ", dupeBytes[i]));
+            }
+
+            b.append("\n\n");
+            for(int i=0; i<dupeBytes.length; i++) {
+                if (i%80 == 0) {
+                    b.append("\n");
+                }
+                char c = (char) dupeBytes[i];
+                if ( (c >= 'a' && c <= 'z')
+                    || (c >= 'A' && c<= 'Z')
+                        || (c >= '0' && c<= '9')) {
+                    b.append((char)dupeBytes[i]);
+                } else {
+                    b.append(".");
+                }
+                b.append(" ");
+            }
+
+            File debugFile = new File(packet.getClass().getSimpleName() + ".txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream(debugFile))) {
+                out.println(b.toString());
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+
+
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
 
