@@ -17,6 +17,7 @@ import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
 import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -131,8 +132,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
                 withTrailer.writeBytes(compressed);
                 withTrailer.writeBytes(trailer);
 
-                this.encryptionCipher.cipher(withTrailer.internalNioBuffer(0, withTrailer.writerIndex()),
-                        finalPayload.internalNioBuffer(1, withTrailer.writerIndex()));
+                this.encryptionCipher.cipher(withTrailer.nioBuffer(), finalPayload.internalNioBuffer(1, withTrailer.readableBytes()));
+                finalPayload.writerIndex(finalPayload.readerIndex()+withTrailer.readableBytes()+1);
             } else {
                 finalPayload.writeBytes(compressed);
             }
@@ -205,8 +206,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             keyBuf.writeBytes(this.agreedKey.getEncoded());
 
             hash.update(counterBuf.internalNioBuffer(0, 8));
-            hash.update(buf.internalNioBuffer(buf.readerIndex(), buf.readableBytes()));
-            hash.update(keyBuf.internalNioBuffer(0, keyBuf.readableBytes()));
+            hash.update(buf.nioBuffer());
+            hash.update(keyBuf.nioBuffer());
             byte[] digested = hash.digest();
             return Arrays.copyOf(digested, 8);
         } finally {
@@ -254,11 +255,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         try {
             if (this.isEncrypted()) {
                 // Decryption
-                batched = ByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
-                this.decryptionCipher.cipher(wrappedData.internalNioBuffer(wrappedData.readerIndex(), wrappedData.readableBytes()),
-                        batched.internalNioBuffer(0, wrappedData.readableBytes()));
+                batched = PooledByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
+                this.decryptionCipher.cipher(wrappedData.nioBuffer(), batched.internalNioBuffer(0, wrappedData.readableBytes()));
+
                 // TODO: Maybe verify the checksum?
-                batched = batched.slice(0, batched.readableBytes() - 8);
+                batched.writerIndex(wrappedData.readableBytes()+1-8);
             } else {
                 // Encryption not enabled so it should be readable.
                 batched = wrappedData;
