@@ -255,8 +255,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             if (this.isEncrypted()) {
                 // Decryption
                 batched = ByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
-                this.decryptionCipher.cipher(wrappedData.internalNioBuffer(wrappedData.readerIndex(), wrappedData.writerIndex()),
-                        batched.internalNioBuffer(0, wrappedData.writerIndex()));
+                this.decryptionCipher.cipher(wrappedData.internalNioBuffer(wrappedData.readerIndex(), wrappedData.readableBytes()),
+                        batched.internalNioBuffer(0, wrappedData.readableBytes()));
                 // TODO: Maybe verify the checksum?
                 batched = batched.slice(0, batched.readableBytes() - 8);
             } else {
