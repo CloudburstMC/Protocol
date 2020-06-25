@@ -13,6 +13,7 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerializer_v340 {
+    public static final AvailableCommandsSerializer_v388 INSTANCE = new AvailableCommandsSerializer_v388();
 
 
     @Override
