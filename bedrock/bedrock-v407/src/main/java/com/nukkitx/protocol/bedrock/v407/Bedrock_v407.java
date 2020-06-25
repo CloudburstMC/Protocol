@@ -61,7 +61,7 @@ public class Bedrock_v407 {
             .registerPacket(SetEntityMotionPacket.class, SetEntityMotionSerializer_v291.INSTANCE, 40)
             .registerPacket(SetEntityLinkPacket.class, SetEntityLinkSerializer_v291.INSTANCE, 41)
             .registerPacket(SetHealthPacket.class, SetHealthSerializer_v291.INSTANCE, 42)
-            .registerPacket(SetSpawnPositionPacket.class, SetSpawnPositionSerializer_v291.INSTANCE, 43)
+            .registerPacket(SetSpawnPositionPacket.class, SetSpawnPositionSerializer_v407.INSTANCE, 43)
             .registerPacket(AnimatePacket.class, AnimateSerializer_v291.INSTANCE, 44)
             .registerPacket(RespawnPacket.class, RespawnSerializer_v388.INSTANCE, 45)
             .registerPacket(ContainerOpenPacket.class, ContainerOpenSerializer_v291.INSTANCE, 46)
