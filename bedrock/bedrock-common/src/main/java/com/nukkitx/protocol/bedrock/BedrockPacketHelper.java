@@ -18,6 +18,7 @@ import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemDataInstance;
 import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
@@ -545,5 +546,17 @@ public abstract class BedrockPacketHelper {
         VarInts.writeInt(buffer, data.getInputId());
         VarInts.writeInt(buffer, data.getReagentId());
         VarInts.writeInt(buffer, data.getOutputId());
+    }
+
+    public ItemDataInstance readItemInstance(ByteBuf buffer) {
+        return ItemDataInstance.of(
+                VarInts.readInt(buffer),
+                readItem(buffer)
+        );
+    }
+
+    public void writeItemInstance(ByteBuf buffer, ItemDataInstance data) {
+        VarInts.writeInt(buffer, data.getNetworkId());
+        writeItem(buffer, data.getItem());
     }
 }
