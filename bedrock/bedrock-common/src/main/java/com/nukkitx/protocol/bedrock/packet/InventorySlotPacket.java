@@ -13,6 +13,7 @@ public class InventorySlotPacket extends BedrockPacket {
     private int containerId;
     private int slot;
     private ItemData item;
+    private int itemNetworkId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

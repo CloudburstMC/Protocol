@@ -68,7 +68,7 @@ public class Bedrock_v407 {
             .registerPacket(ContainerClosePacket.class, ContainerCloseSerializer_v291.INSTANCE, 47)
             .registerPacket(PlayerHotbarPacket.class, PlayerHotbarSerializer_v291.INSTANCE, 48)
             .registerPacket(InventoryContentPacket.class, InventoryContentSerializer_v291.INSTANCE, 49)
-            .registerPacket(InventorySlotPacket.class, InventorySlotSerializer_v291.INSTANCE, 50)
+            .registerPacket(InventorySlotPacket.class, InventorySlotSerializer_v407.INSTANCE, 50)
             .registerPacket(ContainerSetDataPacket.class, ContainerSetDataSerializer_v291.INSTANCE, 51)
             .registerPacket(CraftingDataPacket.class, CraftingDataSerializer_v407.INSTANCE, 52)
             .registerPacket(CraftingEventPacket.class, CraftingEventSerializer_v291.INSTANCE, 53)
