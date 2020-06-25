@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.packet.AvailableCommandsPacket;
@@ -19,6 +20,9 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AvailableCommandsPacket packet) {
         super.serialize(buffer, helper, packet);
+
+        // Constraints - @TODO
+        //helper.writeArray(buffer, packet.getConstraints(), (buf, data) -> helper.writeCommandEnumConstraints(buf, enums, enumValues));
     }
 
     @Override
@@ -92,7 +96,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                     flagList, command.getPermission(), aliases, overloads));
         }
 
-        // Constraints
-        helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
+        // Constraints - @TODO
+        //helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
     }
 }
