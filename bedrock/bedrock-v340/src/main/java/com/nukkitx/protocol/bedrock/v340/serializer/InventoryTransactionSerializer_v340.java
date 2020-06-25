@@ -16,13 +16,13 @@ public class InventoryTransactionSerializer_v340 extends InventoryTransactionSer
     public void readItemUse(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
         super.readItemUse(buffer, helper, packet);
 
-        VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
+        packet.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
     }
 
     @Override
     public void writeItemUse(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
         super.writeItemUse(buffer, helper, packet);
 
-        packet.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
+        VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
     }
 }
