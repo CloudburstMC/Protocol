@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     public static final BedrockPacketHelper_v407 INSTANCE = new BedrockPacketHelper_v407();
@@ -37,4 +38,5 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addEntityFlag(93, EntityFlag.ADMIRING);
         this.addEntityFlag(94, EntityFlag.CELEBRATING_SPECIAL);
     }
+
 }

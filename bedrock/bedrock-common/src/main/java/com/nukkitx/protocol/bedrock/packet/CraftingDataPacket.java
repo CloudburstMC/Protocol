@@ -14,7 +14,7 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-@ToString(exclude = {"craftingData"})
+@ToString
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class CraftingDataPacket extends BedrockPacket {
     private final List<CraftingData> craftingData = new ObjectArrayList<>();

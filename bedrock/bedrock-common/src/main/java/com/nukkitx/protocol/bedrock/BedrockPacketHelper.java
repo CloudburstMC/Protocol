@@ -16,7 +16,9 @@ import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
 import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.*;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -39,6 +41,8 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
 
 public abstract class BedrockPacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketHelper.class);
@@ -467,5 +471,79 @@ public abstract class BedrockPacketHelper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ItemData readRecipeIngredient(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        int id = VarInts.readInt(buffer);
+
+        if (id == 0) {
+            // We don't need to read anything extra.
+            return ItemData.AIR;
+        }
+
+        int meta = VarInts.readInt(buffer);
+        int count = VarInts.readInt(buffer);
+
+        return ItemData.of(id, (short) meta, count);
+    }
+
+    public void writeRecipeIngredient(ByteBuf buffer, ItemData item) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(item, "item is null");
+
+        VarInts.writeInt(buffer, item.getId());
+
+        if (item.getId() == 0) {
+            return;
+        }
+
+        VarInts.writeInt(buffer, item.getDamage());
+        VarInts.writeInt(buffer, item.getCount());
+    }
+
+    public PotionMixData readPotionRecipe(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        return new PotionMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writePotionRecipe(ByteBuf buffer, PotionMixData data) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getInputMeta());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getReagentMeta());
+        VarInts.writeInt(buffer, data.getOutputId());
+        VarInts.writeInt(buffer, data.getOutputMeta());
+    }
+
+    public ContainerMixData readContainerChangeRecipe(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        return new ContainerMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writeContainerChangeRecipe(ByteBuf buffer, ContainerMixData data) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getOutputId());
     }
 }

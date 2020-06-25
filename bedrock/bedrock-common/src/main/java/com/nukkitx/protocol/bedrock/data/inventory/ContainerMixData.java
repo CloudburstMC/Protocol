@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class ContainerMixData {
-    private final int fromItemId;
-    private final int ingredient;
-    private final int toItemId;
+    private final int inputId;
+    private final int reagentId;
+    private final int outputId;
 }

@@ -41,6 +41,43 @@ public final class BedrockPacketCodec {
         return new Builder();
     }
 
+    private void dumpPacket(ByteBuf buf, BedrockPacket packet) {
+        byte[] dupeBytes = new byte[buf.readableBytes()];
+        buf.readBytes(dupeBytes);
+
+        System.err.println(packet);
+        StringBuilder b = new StringBuilder();
+        for(int i=0;i<dupeBytes.length;i++) {
+            if (i%80 == 0) {
+                b.append("\n");
+            }
+            b.append(String.format("%02x ", dupeBytes[i]));
+        }
+
+        b.append("\n\n");
+        for(int i=0; i<dupeBytes.length; i++) {
+            if (i%80 == 0) {
+                b.append("\n");
+            }
+            char c = (char) dupeBytes[i];
+            if ( (c >= 'a' && c <= 'z')
+                    || (c >= 'A' && c<= 'Z')
+                    || (c >= '0' && c<= '9')) {
+                b.append((char)dupeBytes[i]);
+            } else {
+                b.append(".");
+            }
+            b.append(" ");
+        }
+
+        File debugFile = new File(packet.getClass().getSimpleName() + ".txt");
+        try (PrintStream out = new PrintStream(new FileOutputStream(debugFile))) {
+            out.println(b.toString());
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+    }
+
     public BedrockPacket tryDecode(ByteBuf buf, int id) throws PacketSerializeException {
         BedrockPacket packet;
         BedrockPacketSerializer<BedrockPacket> serializer;
@@ -61,46 +98,12 @@ public final class BedrockPacketCodec {
 
             serializer.deserialize(buf, this.helper, packet);
         } catch (Exception e) {
-            byte[] dupeBytes = new byte[dupe.readableBytes()];
-            dupe.readBytes(dupeBytes);
-
-            System.err.println(packet);
-            StringBuilder b = new StringBuilder();
-            for(int i=0;i<dupeBytes.length;i++) {
-                if (i%80 == 0) {
-                    b.append("\n");
-                }
-                b.append(String.format("%02x ", dupeBytes[i]));
-            }
-
-            b.append("\n\n");
-            for(int i=0; i<dupeBytes.length; i++) {
-                if (i%80 == 0) {
-                    b.append("\n");
-                }
-                char c = (char) dupeBytes[i];
-                if ( (c >= 'a' && c <= 'z')
-                    || (c >= 'A' && c<= 'Z')
-                        || (c >= '0' && c<= '9')) {
-                    b.append((char)dupeBytes[i]);
-                } else {
-                    b.append(".");
-                }
-                b.append(" ");
-            }
-
-            File debugFile = new File(packet.getClass().getSimpleName() + ".txt");
-            try (PrintStream out = new PrintStream(new FileOutputStream(debugFile))) {
-                out.println(b.toString());
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-
-
+            dumpPacket(dupe, packet);
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
 
         if (log.isDebugEnabled() && buf.isReadable()) {
+            dumpPacket(dupe, packet);
             log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
         }
         return packet;

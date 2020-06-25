@@ -40,14 +40,14 @@ public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
         });
 
         helper.writeArray(buffer, packet.getPotionMixData(), (buf, potionMixData) -> {
-            VarInts.writeInt(buf, potionMixData.getFromPotionId());
-            VarInts.writeInt(buf, potionMixData.getIngredient());
-            VarInts.writeInt(buf, potionMixData.getToPotionId());
+            VarInts.writeInt(buf, potionMixData.getInputId());
+            VarInts.writeInt(buf, potionMixData.getReagentId());
+            VarInts.writeInt(buf, potionMixData.getOutputId());
         });
         helper.writeArray(buffer, packet.getContainerMixData(), (buf, containerMixData) -> {
-            VarInts.writeInt(buf, containerMixData.getFromItemId());
-            VarInts.writeInt(buf, containerMixData.getIngredient());
-            VarInts.writeInt(buf, containerMixData.getToItemId());
+            VarInts.writeInt(buf, containerMixData.getInputId());
+            VarInts.writeInt(buf, containerMixData.getReagentId());
+            VarInts.writeInt(buf, containerMixData.getOutputId());
         });
 
         buffer.writeBoolean(packet.isCleanRecipes());
@@ -80,7 +80,7 @@ public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
             int fromPotionId = VarInts.readInt(buf);
             int ingredient = VarInts.readInt(buf);
             int toPotionId = VarInts.readInt(buf);
-            return new PotionMixData(fromPotionId, ingredient, toPotionId);
+            return new PotionMixData(fromPotionId, 0, ingredient, 0, toPotionId, 0);
         });
         helper.readArray(buffer, packet.getContainerMixData(), buf -> {
             int fromItemId = VarInts.readInt(buf);
