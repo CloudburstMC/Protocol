@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemDataInstance;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -21,7 +21,7 @@ public class CreativeContentPacket extends BedrockPacket {
     /**
      * Item entries for the creative menu. Each item must have a unique ID for the net ID manager
      */
-    private final Int2ObjectMap<ItemDataInstance> entries = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<ItemData> entries = new Int2ObjectOpenHashMap<>();
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {
