@@ -24,11 +24,9 @@ public class CommandParamData {
         private final boolean optional;
         private final byte options;
 
+        @Deprecated
         public Builder(String name, CommandSymbolData type, boolean optional) {
-            this.name = name;
-            this.type = type;
-            this.optional = optional;
-            this.options = 0;
+            this(name, type, optional, (byte) 0);
         }
     }
 }

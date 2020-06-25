@@ -12,6 +12,8 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintData;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintType;
 import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
 import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
@@ -37,6 +39,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -545,5 +548,18 @@ public abstract class BedrockPacketHelper {
         VarInts.writeInt(buffer, data.getInputId());
         VarInts.writeInt(buffer, data.getReagentId());
         VarInts.writeInt(buffer, data.getOutputId());
+    }
+
+    public CommandEnumConstraintData readCommandEnumConstraints(ByteBuf buffer, List<CommandEnumData> enums, List<String> enumValues) {
+        int valueIndex = buffer.readIntLE();
+        int enumIndex = buffer.readIntLE();
+        CommandEnumConstraintType[] constraints = readArray(buffer, new CommandEnumConstraintType[0],
+                buf -> CommandEnumConstraintType.byId(buffer.readByte()));
+
+        return new CommandEnumConstraintData(
+                enumValues.get(valueIndex),
+                enums.get(enumIndex).getName(),
+                constraints
+        );
     }
 }

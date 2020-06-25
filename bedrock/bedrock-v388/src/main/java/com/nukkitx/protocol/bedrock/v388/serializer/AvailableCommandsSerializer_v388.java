@@ -80,7 +80,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                     List<CommandParamOption> options = new ObjectArrayList<>();
                     for (int idx = 0; idx < 8; idx++) {
                         if ((optionsByte & (1 << idx)) != 0) {
-                            options.add(OPTIONS[i]);
+                            options.add(OPTIONS[idx]);
                         }
                     }
 
@@ -91,5 +91,8 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
             packet.getCommands().add(new CommandData(command.getName(), command.getDescription(),
                     flagList, command.getPermission(), aliases, overloads));
         }
+
+        // Constraints
+        helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
     }
 }

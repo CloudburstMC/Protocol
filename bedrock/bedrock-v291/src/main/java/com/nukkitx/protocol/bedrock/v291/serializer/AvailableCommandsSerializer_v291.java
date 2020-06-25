@@ -278,12 +278,11 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
     }
 
     protected CommandParamData.Builder readParameter(ByteBuf buffer, BedrockPacketHelper helper) {
-        String parameterName = helper.readString(buffer);
-
-        CommandSymbolData type = CommandSymbolData.deserialize(buffer.readIntLE());
-
-        boolean optional = buffer.readBoolean();
-
-        return new CommandParamData.Builder(parameterName, type, optional);
+        return new CommandParamData.Builder(
+                helper.readString(buffer),
+                CommandSymbolData.deserialize(buffer.readIntLE()),
+                buffer.readBoolean(),
+                buffer.readByte()
+        );
     }
 }
