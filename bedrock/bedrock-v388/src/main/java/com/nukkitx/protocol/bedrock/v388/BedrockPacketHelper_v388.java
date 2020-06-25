@@ -133,4 +133,23 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         this.writeString(buffer, skin.getCapeId());
         this.writeString(buffer, skin.getFullSkinId());
     }
+
+    @Override
+    public ImageData readImage(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+        int width = buffer.readIntLE();
+        int height = buffer.readIntLE();
+        byte[] image = readByteArray(buffer);
+        return ImageData.of(width, height, image);
+    }
+
+    @Override
+    public void writeImage(ByteBuf buffer, ImageData image) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(image, "image is null");
+
+        buffer.writeIntLE(image.getWidth());
+        buffer.writeIntLE(image.getHeight());
+        writeByteArray(buffer, image.getImage());
+    }
 }
