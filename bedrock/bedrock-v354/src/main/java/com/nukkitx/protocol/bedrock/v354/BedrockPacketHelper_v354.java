@@ -17,6 +17,8 @@ public class BedrockPacketHelper_v354 extends BedrockPacketHelper_v340 {
 
     @Override
     protected void registerEntityData() {
+        super.registerEntityData();
+
         this.addEntityData(102, TRADE_XP);
     }
 
