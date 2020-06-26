@@ -12,7 +12,7 @@ public class CommandEnumConstraintData {
     String option;
 
     // The name of the enum of which the option above should be constrained.
-    String name;
+    CommandEnumData enumData;
 
     // List of constraints that should be applied to the enum option.
     CommandEnumConstraintType[] constraints;

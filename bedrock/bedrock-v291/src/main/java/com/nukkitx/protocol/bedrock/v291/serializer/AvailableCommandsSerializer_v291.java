@@ -174,7 +174,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             VarInts.writeUnsignedInt(buffer, commandEnum.getValues().length);
             for (String value : commandEnum.getValues()) {
                 int index = values.indexOf(value);
-                Preconditions.checkArgument(index > -1, "Invalid enum value detected");
+                Preconditions.checkArgument(index > -1, "Invalid enum value detected: " + value);
                 indexWriter.accept(buf, index);
             }
         });
@@ -268,7 +268,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         } else if (param.getType() != null) {
             index = helper.getCommandParamId(param.getType());
         } else {
-            throw new IllegalStateException("No param type specified");
+            throw new IllegalStateException("No param type specified: " + param);
         }
 
         CommandSymbolData type = new CommandSymbolData(index, enumData, softEnum, postfix);
@@ -282,7 +282,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 helper.readString(buffer),
                 CommandSymbolData.deserialize(buffer.readIntLE()),
                 buffer.readBoolean(),
-                buffer.readByte()
+                (byte) 0
         );
     }
 }

@@ -39,11 +39,15 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -558,8 +562,16 @@ public abstract class BedrockPacketHelper {
 
         return new CommandEnumConstraintData(
                 enumValues.get(valueIndex),
-                enums.get(enumIndex).getName(),
+                enums.get(enumIndex),
                 constraints
         );
+    }
+
+    public void writeCommandEnumConstraints(ByteBuf buffer, CommandEnumConstraintData data, List<CommandEnumData> enums, List<String> enumValues) {
+        buffer.writeIntLE(enumValues.indexOf(data.getOption()));
+        buffer.writeIntLE(enums.indexOf(data.getEnumData()));
+        writeArray(buffer, data.getConstraints(), (buf, constraint) -> {
+            buf.writeByte(constraint.ordinal());
+        });
     }
 }

@@ -1,10 +1,14 @@
 package com.nukkitx.protocol.bedrock.v407;
 
+import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
+import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.TARGET;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +41,24 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addEntityFlag(92, EntityFlag.CELEBRATING);
         this.addEntityFlag(93, EntityFlag.ADMIRING);
         this.addEntityFlag(94, EntityFlag.CELEBRATING_SPECIAL);
+    }
+
+    @Override
+    protected void registerCommandParams() {
+        super.registerCommandParams();
+        this.addCommandParam(1, INT);
+        this.addCommandParam(2, FLOAT);
+        this.addCommandParam(3, VALUE);
+        this.addCommandParam(4, WILDCARD_INT);
+        this.addCommandParam(5, OPERATOR);
+        this.addCommandParam(6, TARGET);
+        this.addCommandParam(14, FILE_PATH);
+        this.addCommandParam(29, STRING);
+        this.addCommandParam(38, CommandParamType.POSITION);
+        this.addCommandParam(41, MESSAGE);
+        this.addCommandParam(43, CommandParamType.TEXT);
+        this.addCommandParam(47, CommandParamType.JSON);
+        this.addCommandParam(54, CommandParamType.COMMAND);
     }
 
 }

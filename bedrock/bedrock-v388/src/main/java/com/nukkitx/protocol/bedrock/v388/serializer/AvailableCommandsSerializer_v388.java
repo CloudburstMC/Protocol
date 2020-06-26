@@ -1,16 +1,20 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
-import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.packet.AvailableCommandsPacket;
 import com.nukkitx.protocol.bedrock.v340.serializer.AvailableCommandsSerializer_v340;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerializer_v340 {
@@ -19,10 +23,68 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AvailableCommandsPacket packet) {
-        super.serialize(buffer, helper, packet);
+        Set<String> enumValuesSet = new ObjectOpenHashSet<>();
+        Set<String> postfixSet = new ObjectOpenHashSet<>();
+        Set<CommandEnumData> enumsSet = new ObjectOpenHashSet<>();
+        Set<CommandEnumData> softEnumsSet = new ObjectOpenHashSet<>();
 
-        // Constraints - @TODO
-        //helper.writeArray(buffer, packet.getConstraints(), (buf, data) -> helper.writeCommandEnumConstraints(buf, enums, enumValues));
+        // Get all enum values
+        for (CommandData data : packet.getCommands()) {
+            if (data.getAliases() != null) {
+                Collections.addAll(enumValuesSet, data.getAliases().getValues());
+                enumsSet.add(data.getAliases());
+            }
+
+            for (CommandParamData[] overload : data.getOverloads()) {
+                for (CommandParamData parameter : overload) {
+                    CommandEnumData commandEnumData = parameter.getEnumData();
+                    if (commandEnumData != null) {
+                        if (commandEnumData.isSoft()) {
+                            softEnumsSet.add(commandEnumData);
+                        } else {
+                            Collections.addAll(enumValuesSet, commandEnumData.getValues());
+                            enumsSet.add(commandEnumData);
+                        }
+                    }
+
+                    String postfix = parameter.getPostfix();
+                    if (postfix != null) {
+                        postfixSet.add(postfix);
+                    }
+                }
+            }
+        }
+
+        // Add Constraint Enums
+        for(CommandEnumData enumData : packet.getConstraints().stream().map(CommandEnumConstraintData::getEnumData).collect(Collectors.toList())) {
+            if (enumData.isSoft()) {
+                softEnumsSet.add(enumData);
+            } else {
+                enumsSet.add(enumData);
+            }
+            enumValuesSet.addAll(Arrays.asList(enumData.getValues()));
+        }
+
+        List<String> enumValues = new ObjectArrayList<>(enumValuesSet);
+        List<String> postFixes = new ObjectArrayList<>(postfixSet);
+        List<CommandEnumData> enums = new ObjectArrayList<>(enumsSet);
+        List<CommandEnumData> softEnums = new ObjectArrayList<>(softEnumsSet);
+
+        helper.writeArray(buffer, enumValues, helper::writeString);
+        helper.writeArray(buffer, postFixes, helper::writeString);
+
+        this.writeEnums(buffer, helper, enumValues, enums);
+
+        helper.writeArray(buffer, packet.getCommands(), (buf, command) -> {
+            this.writeCommand(buffer, helper, command, enums, softEnums, postFixes);
+        });
+
+        helper.writeArray(buffer, softEnums, helper::writeCommandEnum);
+
+        // Constraints
+        helper.writeArray(buffer, packet.getConstraints(), (buf, constraint) -> {
+            helper.writeCommandEnumConstraints(buf, constraint, enums, enumValues);
+        });
     }
 
     @Override
@@ -96,7 +158,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                     flagList, command.getPermission(), aliases, overloads));
         }
 
-        // Constraints - @TODO
-        //helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
+        // Constraints
+        helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
     }
 }
