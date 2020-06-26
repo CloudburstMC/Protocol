@@ -1,9 +1,13 @@
 package com.nukkitx.protocol.bedrock.v407;
 
+import com.nukkitx.network.VarInts;
+import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
 import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
+import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -59,6 +63,31 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addCommandParam(43, CommandParamType.TEXT);
         this.addCommandParam(47, CommandParamType.JSON);
         this.addCommandParam(54, CommandParamType.COMMAND);
+    }
+
+    @Override
+    public EntityLinkData readEntityLink(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+
+        return new EntityLinkData(
+                VarInts.readLong(buffer),
+                VarInts.readLong(buffer),
+                EntityLinkData.Type.byId(buffer.readUnsignedByte()),
+                buffer.readBoolean(),
+                buffer.readBoolean()
+        );
+    }
+
+    @Override
+    public void writeEntityLink(ByteBuf buffer, EntityLinkData entityLink) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(entityLink, "entityLink");
+
+        VarInts.writeLong(buffer, entityLink.getFrom());
+        VarInts.writeLong(buffer, entityLink.getTo());
+        buffer.writeByte(entityLink.getType().ordinal());
+        buffer.writeBoolean(entityLink.isImmediate());
+        buffer.writeBoolean(entityLink.isRiderInitiated());
     }
 
 }
