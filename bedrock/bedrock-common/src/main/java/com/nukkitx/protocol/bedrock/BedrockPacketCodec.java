@@ -125,6 +125,7 @@ public final class BedrockPacketCodec {
             serializer.serialize(buf, this.helper, packet);
         } catch (Exception e) {
             //@TODO Remove Debugging
+            System.err.println("Error whilst serializing " + packet);
             e.printStackTrace();
             throw new PacketSerializeException("Error whilst serializing " + packet, e);
         } finally {

@@ -26,7 +26,7 @@ public class SetSpawnPositionPacket extends BedrockPacket {
 
     // SpawnPosition is a new field added in 1.16. It holds the spawn position of the world. This spawn
     // position is {-2147483648, -2147483648, -2147483648} for a default spawn position.
-    private Vector3i spawnPosition;
+    private Vector3i spawnPosition = Vector3i.from(-2147483648, -2147483648, -2147483648);
 
     @Deprecated
     private boolean spawnForced;
