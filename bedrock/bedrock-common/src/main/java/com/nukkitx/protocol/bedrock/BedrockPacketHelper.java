@@ -105,6 +105,11 @@ public abstract class BedrockPacketHelper {
     }
 
     public final int getEntityEventId(EntityEventType type) {
+        // @TODO For speed we may want a flag that disables this check for production use
+        if (!this.entityEvents.containsValue(type)) {
+            log.debug("Unknown EntityEventType: ", type);
+            return this.entityEvents.get(EntityEventType.NONE);
+        }
         return this.entityEvents.get(type);
     }
 
