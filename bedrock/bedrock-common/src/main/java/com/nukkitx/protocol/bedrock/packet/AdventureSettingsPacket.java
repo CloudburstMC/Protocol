@@ -16,8 +16,8 @@ import java.util.Set;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AdventureSettingsPacket extends BedrockPacket {
     private final Set<AdventureSetting> settings = new ObjectOpenHashSet<>();
-    private CommandPermission commandPermission;
-    private PlayerPermission playerPermission;
+    private CommandPermission commandPermission = CommandPermission.NORMAL;
+    private PlayerPermission playerPermission = PlayerPermission.VISITOR;
     private long uniqueEntityId;
 
     @Override
