@@ -29,7 +29,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
         TransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
-        //buffer.writeBoolean(packet.isHasNetworkIds());
+        buffer.writeBoolean(packet.isHasNetworkIds());
         helper.writeArray(buffer, packet.getActions(), this::writeAction);
 
         switch (transactionType) {
