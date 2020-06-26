@@ -41,6 +41,7 @@ public final class BedrockPacketCodec {
         return new Builder();
     }
 
+    //@TODO Remove Debugging
     private void dumpPacket(ByteBuf buf, BedrockPacket packet) {
         byte[] dupeBytes = new byte[buf.readableBytes()];
         buf.readBytes(dupeBytes);
@@ -98,11 +99,13 @@ public final class BedrockPacketCodec {
 
             serializer.deserialize(buf, this.helper, packet);
         } catch (Exception e) {
+            //@TODO Remove Debugging
             dumpPacket(dupe, packet);
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
 
         if (log.isDebugEnabled() && buf.isReadable()) {
+            //@TODO Remove Debugging
             dumpPacket(dupe, packet);
             log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
         }
@@ -121,6 +124,8 @@ public final class BedrockPacketCodec {
             }
             serializer.serialize(buf, this.helper, packet);
         } catch (Exception e) {
+            //@TODO Remove Debugging
+            e.printStackTrace();
             throw new PacketSerializeException("Error whilst serializing " + packet, e);
         } finally {
             ReferenceCountUtil.release(packet);
