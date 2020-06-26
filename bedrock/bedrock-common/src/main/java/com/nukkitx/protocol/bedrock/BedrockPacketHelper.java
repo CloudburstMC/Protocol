@@ -107,17 +107,26 @@ public abstract class BedrockPacketHelper {
     public final int getEntityEventId(EntityEventType type) {
         // @TODO For speed we may want a flag that disables this check for production use
         if (!this.entityEvents.containsValue(type)) {
-            log.debug("Unknown EntityEventType: ", type);
+            log.debug("Unknown EntityEventType: {}", type);
             return this.entityEvents.get(EntityEventType.NONE);
         }
         return this.entityEvents.get(type);
     }
 
     public final EntityEventType getEntityEvent(int id) {
+        // @TODO For speed we may want a flag that disables this check for production use
+        if (!entityEvents.containsKey(id)) {
+            log.debug("Unknown EntityEvent: {}", id);
+            return EntityEventType.NONE;
+        }
         return this.entityEvents.get(id);
     }
 
     public final int getSoundEventId(SoundEvent event) {
+        if (!soundEvents.containsValue(event)) {
+            log.debug("Unknown SoundEvent {} received", event);
+            return soundEvents.get(SoundEvent.UNDEFINED);
+        }
         return this.soundEvents.get(event);
     }
 
@@ -131,6 +140,11 @@ public abstract class BedrockPacketHelper {
     }
 
     public final int getLevelEventId(LevelEventType event) {
+        // @TODO For speed we may want a flag that disables this check for production use
+        if (!this.levelEvents.containsValue(event)) {
+            log.debug("Unknown LevelEventType: {}", event);
+            return this.levelEvents.get(LevelEventType.UNDEFINED);
+        }
         return this.levelEvents.get(event);
     }
 
