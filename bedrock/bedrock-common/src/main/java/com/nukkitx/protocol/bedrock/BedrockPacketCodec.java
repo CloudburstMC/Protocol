@@ -41,42 +41,43 @@ public final class BedrockPacketCodec {
         return new Builder();
     }
 
-    //@TODO Remove Debugging
-    private void dumpPacket(ByteBuf buf, BedrockPacket packet) {
-        byte[] dupeBytes = new byte[buf.readableBytes()];
-        buf.readBytes(dupeBytes);
-
-        System.err.println(packet);
+    // @TODO Remove Debugging
+    public void dumpBytes(File file, byte[] bytes) {
         StringBuilder b = new StringBuilder();
-        for(int i=0;i<dupeBytes.length;i++) {
+        for(int i=0;i<bytes.length;i++) {
             if (i%80 == 0) {
                 b.append("\n");
             }
-            b.append(String.format("%02x ", dupeBytes[i]));
+            b.append(String.format("%02x ", bytes[i]));
         }
 
         b.append("\n\n");
-        for(int i=0; i<dupeBytes.length; i++) {
+        for(int i=0; i<bytes.length; i++) {
             if (i%80 == 0) {
                 b.append("\n");
             }
-            char c = (char) dupeBytes[i];
+            char c = (char) bytes[i];
             if ( (c >= 'a' && c <= 'z')
                     || (c >= 'A' && c<= 'Z')
                     || (c >= '0' && c<= '9')) {
-                b.append((char)dupeBytes[i]);
+                b.append((char)bytes[i]);
             } else {
                 b.append(".");
             }
             b.append(" ");
         }
 
-        File debugFile = new File(packet.getClass().getSimpleName() + ".txt");
-        try (PrintStream out = new PrintStream(new FileOutputStream(debugFile))) {
+        try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
             out.println(b.toString());
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
         }
+    }
+
+    private byte[] byteBufToByteArray(ByteBuf buf) {
+        byte[] bytes = new byte[buf.readableBytes()];
+        buf.duplicate().readBytes(bytes);
+        return bytes;
     }
 
     public BedrockPacket tryDecode(ByteBuf buf, int id) throws PacketSerializeException {
@@ -94,19 +95,21 @@ public final class BedrockPacketCodec {
             throw new PacketSerializeException("Packet ID " + id + " does not exist", e);
         }
 
-        ByteBuf dupe = buf.duplicate();
+        // @TODO Remove Debugging
+        packet.setRaw(byteBufToByteArray(buf)); // For those watching, this is used in ProxyPass to compare in and out bytes
         try {
-
             serializer.deserialize(buf, this.helper, packet);
         } catch (Exception e) {
-            //@TODO Remove Debugging
-            dumpPacket(dupe, packet);
+            // @TODO Remove Debugging
+            System.err.println("tryDecode(): Unable to serialize " + packet);
+            e.printStackTrace();
+            dumpBytes(new File(packet.getClass().getSimpleName() + ".txt"), packet.getRaw());
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
 
         if (log.isDebugEnabled() && buf.isReadable()) {
-            //@TODO Remove Debugging
-            dumpPacket(dupe, packet);
+            // @TODO Remove Debugging
+            dumpBytes(new File(packet.getClass().getSimpleName() + ".txt"), packet.getRaw());
             log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
         }
         return packet;
@@ -124,7 +127,7 @@ public final class BedrockPacketCodec {
             }
             serializer.serialize(buf, this.helper, packet);
         } catch (Exception e) {
-            //@TODO Remove Debugging
+            // @TODO Remove Debugging - Needed because Geyser suppresses this exception
             System.err.println("Error whilst serializing " + packet);
             e.printStackTrace();
             throw new PacketSerializeException("Error whilst serializing " + packet, e);
