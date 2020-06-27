@@ -25,7 +25,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
@@ -131,7 +133,9 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
 
         VarInts.writeUnsignedInt(buffer, entityDataMap.size());
 
-        for (Map.Entry<EntityData, Object> entry : entityDataMap.entrySet()) {
+        for (Map.Entry<EntityData, Object> entry : entityDataMap.entrySet().stream()
+                .sorted(Comparator.comparingInt(o -> entityData.get(o.getKey())))
+                .collect(Collectors.toList())) {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, this.entityData.get(entry.getKey()));
             Object object = entry.getValue();
