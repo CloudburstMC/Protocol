@@ -14,17 +14,17 @@ public class InventorySlotSerializer_v407 implements BedrockPacketSerializer<Inv
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventorySlotPacket packet) {
-        VarInts.writeInt(buffer, packet.getNetworkId());
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
         VarInts.writeUnsignedInt(buffer, packet.getSlot());
+        VarInts.writeInt(buffer, packet.getNetworkId());
         helper.writeItem(buffer, packet.getItem());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventorySlotPacket packet) {
-        packet.setNetworkId(VarInts.readInt(buffer));
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
         packet.setSlot(VarInts.readUnsignedInt(buffer));
+        packet.setNetworkId(VarInts.readInt(buffer));
         packet.setItem(helper.readItem(buffer));
     }
 }
