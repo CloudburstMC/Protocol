@@ -77,7 +77,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackRequestPacket packet) {
         helper.readArray(buffer, packet.getRequests(), buf -> {
-            int unknownVarInt0 = VarInts.readInt(buf);
+            int requestId = VarInts.readInt(buf);
             List<ItemStackAction> actions = new ArrayList<>();
 
             helper.readArray(buf, actions, byteBuf -> {
@@ -146,7 +146,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                 return new ItemStackAction(type, bool0, byte0, varInt0, varInt1, baseByte0, baseByte1, baseByte2,
                         baseVarInt0, flagsByte0, flagsByte1, flagsVarInt0, items);
             });
-            return new ItemStackRequestPacket.Request(unknownVarInt0, actions);
+            return new ItemStackRequestPacket.Request(requestId, actions);
         });
     }
 }
