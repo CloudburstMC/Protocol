@@ -4,7 +4,6 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequestData;
 import com.nukkitx.protocol.bedrock.data.inventory.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.AutoCraftRecipeStackRequestActionData;
@@ -163,7 +162,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                 // Fallback
                 return new CraftNonImplementedStackRequestActionData();
             });
-            return new ItemStackRequestData(requestId, actions.toArray(new StackRequestActionData[0]));
+            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]));
         });
     }
 
