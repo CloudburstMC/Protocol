@@ -1,5 +1,8 @@
 package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * CreateStackRequestActionData is sent by the client when an item is created through being used as part of a
  * recipe. For example, when milk is used to craft a cake, the buckets are leftover. The buckets are moved to
@@ -8,6 +11,8 @@ package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
  * that are not fully consumed when used for a recipe should not be destroyed there, but instead, should be
  * turned into their respective resulting items.
  */
+@Getter
+@AllArgsConstructor
 public class CreateStackRequestActionData extends StackRequestActionData {
     // The slot to which the results of the crafting ingredients are to be placed
     byte slot;

@@ -2,7 +2,8 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemStackAction;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemStackActionDeprecated;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequestData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ItemStackRequestPacket extends BedrockPacket {
-    private final List<Request> requests = new ArrayList<>();
+    private final List<ItemStackRequestData> requests = new ArrayList<>();
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {
@@ -24,11 +25,5 @@ public class ItemStackRequestPacket extends BedrockPacket {
     @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ITEM_STACK_REQUEST;
-    }
-
-    @Value
-    public static class Request {
-        private final int requestId;
-        private final List<ItemStackAction> actions;
     }
 }

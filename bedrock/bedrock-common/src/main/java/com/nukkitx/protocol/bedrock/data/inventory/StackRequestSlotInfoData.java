@@ -1,8 +1,11 @@
 package com.nukkitx.protocol.bedrock.data.inventory;
 
+import lombok.Value;
+
 /**
  * Holds information on a specific slot client-side.
  */
+@Value
 public class StackRequestSlotInfoData {
     // ContainerId is the ID of the container the slot was in
     byte ContainerId;

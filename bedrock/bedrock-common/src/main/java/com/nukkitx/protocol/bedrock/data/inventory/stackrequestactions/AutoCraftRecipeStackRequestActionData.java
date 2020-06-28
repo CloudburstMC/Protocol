@@ -6,4 +6,7 @@ package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
  */
 public class AutoCraftRecipeStackRequestActionData extends CraftRecipeStackRequestActionData {
 
+    public AutoCraftRecipeStackRequestActionData(int recipeNetworkId) {
+        super(recipeNetworkId);
+    }
 }

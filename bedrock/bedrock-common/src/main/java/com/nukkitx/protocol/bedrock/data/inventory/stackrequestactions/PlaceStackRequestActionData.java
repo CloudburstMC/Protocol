@@ -8,8 +8,8 @@ import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
  * container to the cursor.
  */
 
-public class TakeStackRequestActionData extends TransferStackRequestActionData {
-    public TakeStackRequestActionData(byte count, StackRequestSlotInfoData source, StackRequestSlotInfoData destination) {
+public class PlaceStackRequestActionData extends TransferStackRequestActionData {
+    public PlaceStackRequestActionData(byte count, StackRequestSlotInfoData source, StackRequestSlotInfoData destination) {
         super(count, source, destination);
     }
 }
