@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.v407;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
@@ -91,4 +91,18 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         buffer.writeBoolean(entityLink.isRiderInitiated());
     }
 
+    @Override
+    protected void registerLevelEvents() {
+        super.registerLevelEvents();
+
+        this.addLevelEvent(1050, LevelEventType.SOUND_CAMERA);
+
+        this.addLevelEvent(3600, LevelEventType.BLOCK_START_BREAK);
+        this.addLevelEvent(3601, LevelEventType.BLOCK_STOP_BREAK);
+        this.addLevelEvent(3602, LevelEventType.BLOCK_UPDATE_BREAK);
+
+        this.addLevelEvent(4000, LevelEventType.SET_DATA);
+
+        this.addLevelEvent(9800, LevelEventType.ALL_PLAYERS_SLEEPING);
+    }
 }
