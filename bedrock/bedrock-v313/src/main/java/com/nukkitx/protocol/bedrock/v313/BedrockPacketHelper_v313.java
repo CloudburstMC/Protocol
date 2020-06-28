@@ -79,6 +79,6 @@ public class BedrockPacketHelper_v313 extends BedrockPacketHelper_v291 {
     protected void registerLevelEvents() {
         super.registerLevelEvents();
 
-        this.addLevelEvent(11 | 3500, LevelEventType.AGENT_SPAWN_EFFECT);
+        this.addLevelEvent(11 + 3500, LevelEventType.AGENT_SPAWN_EFFECT);
     }
 }

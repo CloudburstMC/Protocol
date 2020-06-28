@@ -70,6 +70,6 @@ public class BedrockPacketHelper_v354 extends BedrockPacketHelper_v340 {
     protected void registerLevelEvents() {
         super.registerLevelEvents();
 
-        this.addLevelEvent(22 | 2000, LevelEventType.PARTICLE_KNOCKBACK_ROAR);
+        this.addLevelEvent(22 + 2000, LevelEventType.PARTICLE_KNOCKBACK_ROAR);
     }
 }

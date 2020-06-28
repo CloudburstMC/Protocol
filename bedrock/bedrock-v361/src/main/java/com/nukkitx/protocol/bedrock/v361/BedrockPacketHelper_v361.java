@@ -55,7 +55,7 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
     protected void registerLevelEvents() {
         super.registerLevelEvents();
 
-        this.addLevelEvent(23 | 2000, LevelEventType.PARTICLE_TELEPORT_TRAIL);
+        this.addLevelEvent(23 + 2000, LevelEventType.PARTICLE_TELEPORT_TRAIL);
     }
 
     @Override

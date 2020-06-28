@@ -56,9 +56,9 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         super.registerLevelEvents();
 
         int particle = 2000;
-        this.addLevelEvent(24 | particle, LevelEventType.PARTICLE_POINT_CLOUD);
-        this.addLevelEvent(25 | particle, LevelEventType.PARTICLE_EXPLOSION);
-        this.addLevelEvent(26 | particle, LevelEventType.PARTICLE_BLOCK_EXPLOSION);
+        this.addLevelEvent(24 + particle, LevelEventType.PARTICLE_POINT_CLOUD);
+        this.addLevelEvent(25 + particle, LevelEventType.PARTICLE_EXPLOSION);
+        this.addLevelEvent(26 + particle, LevelEventType.PARTICLE_BLOCK_EXPLOSION);
     }
 
     @Override
