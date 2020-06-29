@@ -29,7 +29,7 @@ public class PlayerEnchantOptionsSerializer_v407 implements BedrockPacketSeriali
     }
 
     protected void writeOption(ByteBuf buffer, BedrockPacketHelper helper, EnchantOptionData option) {
-        VarInts.writeInt(buffer, option.getCost());
+        VarInts.writeUnsignedInt(buffer, option.getCost());
         buffer.writeIntLE(option.getPrimarySlot());
         helper.writeArray(buffer, option.getEnchants0(), this::serializeEnchant);
         helper.writeArray(buffer, option.getEnchants1(), this::serializeEnchant);
