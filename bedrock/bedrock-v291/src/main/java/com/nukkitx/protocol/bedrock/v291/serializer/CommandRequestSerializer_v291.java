@@ -1,27 +1,27 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.CommandRequestPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommandRequestSerializer_v291 implements PacketSerializer<CommandRequestPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CommandRequestSerializer_v291 implements BedrockPacketSerializer<CommandRequestPacket> {
     public static final CommandRequestSerializer_v291 INSTANCE = new CommandRequestSerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, CommandRequestPacket packet) {
-        BedrockUtils.writeString(buffer, packet.getCommand());
-        BedrockUtils.writeCommandOriginData(buffer, packet.getCommandOriginData());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CommandRequestPacket packet) {
+        helper.writeString(buffer, packet.getCommand());
+        helper.writeCommandOrigin(buffer, packet.getCommandOriginData());
         buffer.writeBoolean(packet.isInternal());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, CommandRequestPacket packet) {
-        packet.setCommand(BedrockUtils.readString(buffer));
-        packet.setCommandOriginData(BedrockUtils.readCommandOriginData(buffer));
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, CommandRequestPacket packet) {
+        packet.setCommand(helper.readString(buffer));
+        packet.setCommandOriginData(helper.readCommandOrigin(buffer));
         packet.setInternal(buffer.readBoolean());
     }
 }

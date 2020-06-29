@@ -3,15 +3,15 @@ package com.nukkitx.protocol.bedrock.v388.serializer;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityDeltaPacket;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MoveEntityDeltaSerializer_v388 implements PacketSerializer<MoveEntityDeltaPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class MoveEntityDeltaSerializer_v388 implements BedrockPacketSerializer<MoveEntityDeltaPacket> {
     public static final MoveEntityDeltaSerializer_v388 INSTANCE = new MoveEntityDeltaSerializer_v388();
 
     private static final int HAS_X = 0x01;
@@ -22,7 +22,7 @@ public class MoveEntityDeltaSerializer_v388 implements PacketSerializer<MoveEnti
     private static final int HAS_ROLL = 0x20;
 
     @Override
-    public void serialize(ByteBuf buffer, MoveEntityDeltaPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, MoveEntityDeltaPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
         short flags = 0;
         Vector3i movementDelta = packet.getMovementDelta();
@@ -44,18 +44,18 @@ public class MoveEntityDeltaSerializer_v388 implements PacketSerializer<MoveEnti
             VarInts.writeInt(buffer, movementDelta.getZ());
         }
         if ((flags & HAS_PITCH) != 0) {
-            BedrockUtils.writeByteAngle(buffer, rotationDelta.getX());
+            helper.writeByteAngle(buffer, rotationDelta.getX());
         }
         if ((flags & HAS_YAW) != 0) {
-            BedrockUtils.writeByteAngle(buffer, rotationDelta.getY());
+            helper.writeByteAngle(buffer, rotationDelta.getY());
         }
         if ((flags & HAS_ROLL) != 0) {
-            BedrockUtils.writeByteAngle(buffer, rotationDelta.getZ());
+            helper.writeByteAngle(buffer, rotationDelta.getZ());
         }
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, MoveEntityDeltaPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, MoveEntityDeltaPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         short flags = buffer.readShortLE();
         int x = 0, y = 0, z = 0;
@@ -70,13 +70,13 @@ public class MoveEntityDeltaSerializer_v388 implements PacketSerializer<MoveEnti
             z = VarInts.readInt(buffer);
         }
         if ((flags & HAS_PITCH) != 0) {
-            pitch = BedrockUtils.readByteAngle(buffer);
+            pitch = helper.readByteAngle(buffer);
         }
         if ((flags & HAS_YAW) != 0) {
-            yaw = BedrockUtils.readByteAngle(buffer);
+            yaw = helper.readByteAngle(buffer);
         }
         if ((flags & HAS_ROLL) != 0) {
-            roll = BedrockUtils.readByteAngle(buffer);
+            roll = helper.readByteAngle(buffer);
         }
         packet.setMovementDelta(Vector3i.from(x, y, z));
         packet.setRotationDelta(Vector3f.from(pitch, yaw, roll));

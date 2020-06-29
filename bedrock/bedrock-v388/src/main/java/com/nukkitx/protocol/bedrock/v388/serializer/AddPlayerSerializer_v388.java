@@ -1,50 +1,27 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
-import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.AddPlayerPacket;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.bedrock.v291.serializer.AddPlayerSerializer_v291;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AddPlayerSerializer_v388 implements PacketSerializer<AddPlayerPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class AddPlayerSerializer_v388 extends AddPlayerSerializer_v291 {
     public static final AddPlayerSerializer_v388 INSTANCE = new AddPlayerSerializer_v388();
 
     @Override
-    public void serialize(ByteBuf buffer, AddPlayerPacket packet) {
-        BedrockUtils.writeUuid(buffer, packet.getUuid());
-        BedrockUtils.writeString(buffer, packet.getUsername());
-        VarInts.writeLong(buffer, packet.getUniqueEntityId());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        BedrockUtils.writeString(buffer, packet.getPlatformChatId());
-        BedrockUtils.writeVector3f(buffer, packet.getPosition());
-        BedrockUtils.writeVector3f(buffer, packet.getMotion());
-        BedrockUtils.writeVector3f(buffer, packet.getRotation());
-        BedrockUtils.writeItemData(buffer, packet.getHand());
-        BedrockUtils.writeEntityData(buffer, packet.getMetadata());
-        AdventureSettingsSerializer_v388.INSTANCE.serialize(buffer, packet.getAdventureSettings());
-        BedrockUtils.writeArray(buffer, packet.getEntityLinks(), BedrockUtils::writeEntityLink);
-        BedrockUtils.writeString(buffer, packet.getDeviceId());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AddPlayerPacket packet) {
+        super.serialize(buffer, helper, packet);
+
         buffer.writeIntLE(packet.getBuildPlatform());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, AddPlayerPacket packet) {
-        packet.setUuid(BedrockUtils.readUuid(buffer));
-        packet.setUsername(BedrockUtils.readString(buffer));
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setPlatformChatId(BedrockUtils.readString(buffer));
-        packet.setPosition(BedrockUtils.readVector3f(buffer));
-        packet.setMotion(BedrockUtils.readVector3f(buffer));
-        packet.setRotation(BedrockUtils.readVector3f(buffer));
-        packet.setHand(BedrockUtils.readItemData(buffer));
-        BedrockUtils.readEntityData(buffer, packet.getMetadata());
-        AdventureSettingsSerializer_v388.INSTANCE.deserialize(buffer, packet.getAdventureSettings());
-        BedrockUtils.readArray(buffer, packet.getEntityLinks(), BedrockUtils::readEntityLink);
-        packet.setDeviceId(BedrockUtils.readString(buffer));
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, AddPlayerPacket packet) {
+        super.deserialize(buffer, helper, packet);
+
         packet.setBuildPlatform(buffer.readIntLE());
     }
 }

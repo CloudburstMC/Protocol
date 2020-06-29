@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class EntityDefinitionTriggerEventData implements EventData {
-    private final String id;
+    private final String eventName;
 
     @Override
     public EventDataType getType() {

@@ -505,11 +505,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(StructureTemplateDataExportRequestPacket packet) {
+    default boolean handle(StructureTemplateDataRequestPacket packet) {
         return false;
     }
 
-    default boolean handle(StructureTemplateDataExportResponsePacket packet) {
+    default boolean handle(StructureTemplateDataResponsePacket packet) {
         return false;
     }
 
@@ -570,6 +570,54 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(VideoStreamConnectPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CodeBuilderPacket packet) {
+        return false;
+    }
+
+    default boolean handle(EmoteListPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemStackRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemStackResponsePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerArmorDamagePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerEnchantOptionsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CreativeContentPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdatePlayerGameTypePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PositionTrackingDBServerBroadcastPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PositionTrackingDBClientRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PacketViolationWarningPacket packet) {
+        return false;
+    }
+
+    default boolean handle(DebugInfoPacket packet) {
         return false;
     }
 }

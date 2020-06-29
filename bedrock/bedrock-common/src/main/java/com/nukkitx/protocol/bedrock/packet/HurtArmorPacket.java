@@ -9,7 +9,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class HurtArmorPacket extends BedrockPacket {
-    private int health;
+    private int cause;
+    private int damage;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

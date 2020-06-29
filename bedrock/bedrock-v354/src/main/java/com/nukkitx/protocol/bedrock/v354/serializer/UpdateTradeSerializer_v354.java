@@ -4,9 +4,10 @@ import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.nbt.stream.NBTInputStream;
 import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
 import com.nukkitx.protocol.bedrock.packet.UpdateTradePacket;
-import com.nukkitx.protocol.bedrock.v354.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -15,22 +16,22 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UpdateTradeSerializer_v354 implements PacketSerializer<UpdateTradePacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class UpdateTradeSerializer_v354 implements BedrockPacketSerializer<UpdateTradePacket> {
     public static final UpdateTradeSerializer_v354 INSTANCE = new UpdateTradeSerializer_v354();
 
 
     @Override
-    public void serialize(ByteBuf buffer, UpdateTradePacket packet) {
-        buffer.writeByte(packet.getWindowId());
-        buffer.writeByte(packet.getWindowType());
-        VarInts.writeInt(buffer, packet.getUnknownInt());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, UpdateTradePacket packet) {
+        buffer.writeByte(packet.getContainerId());
+        buffer.writeByte(packet.getContainerType().getId());
+        VarInts.writeInt(buffer, packet.getSize());
         VarInts.writeInt(buffer, packet.getTradeTier());
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
-        BedrockUtils.writeString(buffer, packet.getDisplayName());
-        buffer.writeBoolean(packet.isScreen2());
-        buffer.writeBoolean(packet.isWilling());
+        helper.writeString(buffer, packet.getDisplayName());
+        buffer.writeBoolean(packet.isNewTradingUi());
+        buffer.writeBoolean(packet.isUsingEconomyTrade());
         try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
             writer.write(packet.getOffers());
         } catch (IOException e) {
@@ -39,17 +40,16 @@ public class UpdateTradeSerializer_v354 implements PacketSerializer<UpdateTradeP
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, UpdateTradePacket packet) {
-        packet.setWindowId(buffer.readUnsignedByte());
-        packet.setWindowType(buffer.readUnsignedByte());
-        packet.setUnknownInt(VarInts.readInt(buffer));
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, UpdateTradePacket packet) {
+        packet.setContainerId(buffer.readByte());
+        packet.setContainerType(ContainerType.from(buffer.readByte()));
+        packet.setSize(VarInts.readInt(buffer));
         packet.setTradeTier(VarInts.readInt(buffer));
-        packet.setWilling(buffer.readBoolean());
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
-        packet.setDisplayName(BedrockUtils.readString(buffer));
-        packet.setScreen2(buffer.readBoolean());
-        packet.setWilling(buffer.readBoolean());
+        packet.setDisplayName(helper.readString(buffer));
+        packet.setNewTradingUi(buffer.readBoolean());
+        packet.setUsingEconomyTrade(buffer.readBoolean());
         try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
             packet.setOffers(reader.readTag());
         } catch (IOException e) {

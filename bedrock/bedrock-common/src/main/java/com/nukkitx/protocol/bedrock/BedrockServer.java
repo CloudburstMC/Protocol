@@ -4,6 +4,8 @@ import com.nukkitx.network.raknet.RakNetServer;
 import com.nukkitx.network.raknet.RakNetServerListener;
 import com.nukkitx.network.raknet.RakNetServerSession;
 import com.nukkitx.network.util.EventLoops;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializers;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
@@ -94,7 +96,8 @@ public class BedrockServer extends Bedrock {
 
         @Override
         public void onSessionCreation(RakNetServerSession connection) {
-            BedrockServerSession session = new BedrockServerSession(connection);
+            BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
+            BedrockServerSession session = new BedrockServerSession(connection, serializer);
             connection.setListener(new BedrockRakNetSessionListener.Server(session, connection, BedrockServer.this));
         }
 

@@ -3,9 +3,6 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 
-/*
-WTF were they thinking?
- */
 public class LevelSoundEventPacket extends LevelSoundEvent2Packet {
 
     @Override
@@ -13,7 +10,8 @@ public class LevelSoundEventPacket extends LevelSoundEvent2Packet {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.LEVEL_SOUND_EVENT_3;
+        return BedrockPacketType.LEVEL_SOUND_EVENT;
     }
 }

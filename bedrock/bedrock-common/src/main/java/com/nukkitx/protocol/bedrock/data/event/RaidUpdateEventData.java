@@ -6,7 +6,7 @@ import lombok.Value;
 public class RaidUpdateEventData implements EventData {
     private final int currentWave;
     private final int totalWaves;
-    private final boolean unknown0; // Hero of the village?
+    private final boolean winner;
 
     @Override
     public EventDataType getType() {

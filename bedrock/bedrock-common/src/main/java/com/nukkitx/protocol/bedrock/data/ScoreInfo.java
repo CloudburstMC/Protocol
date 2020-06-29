@@ -4,7 +4,6 @@ import com.nukkitx.network.util.Preconditions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.experimental.NonFinal;
 
 @Getter
 @EqualsAndHashCode
@@ -14,16 +13,16 @@ public class ScoreInfo {
     private final String objectiveId;
     private final int score;
     private final ScorerType type;
-    @NonFinal
-    private String name;
-    @NonFinal
-    private long entityId;
+    private final String name;
+    private final long entityId;
 
     public ScoreInfo(long scoreboardId, String objectiveId, int score) {
         this.scoreboardId = scoreboardId;
         this.objectiveId = objectiveId;
         this.score = score;
         this.type = ScorerType.INVALID;
+        this.name = null;
+        this.entityId = -1;
     }
 
     public ScoreInfo(long scoreboardId, String objectiveId, int score, String name) {
@@ -32,6 +31,7 @@ public class ScoreInfo {
         this.score = score;
         this.type = ScorerType.FAKE;
         this.name = name;
+        this.entityId = -1;
     }
 
     public ScoreInfo(long scoreboardId, String objectiveId, int score, ScorerType type, long entityId) {
@@ -41,6 +41,7 @@ public class ScoreInfo {
         this.score = score;
         this.type = type;
         this.entityId = entityId;
+        this.name = null;
     }
 
     public enum ScorerType {
