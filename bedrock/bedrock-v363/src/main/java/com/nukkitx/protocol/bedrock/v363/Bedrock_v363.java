@@ -5,6 +5,7 @@ import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v291.serializer.*;
 import com.nukkitx.protocol.bedrock.v313.serializer.*;
 import com.nukkitx.protocol.bedrock.v332.serializer.*;
+import com.nukkitx.protocol.bedrock.v340.serializer.AvailableCommandsSerializer_v340;
 import com.nukkitx.protocol.bedrock.v340.serializer.InventoryTransactionSerializer_v340;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
@@ -91,7 +92,7 @@ public class Bedrock_v363 {
             .registerPacket(CameraPacket.class, CameraSerializer_v291.INSTANCE, 73)
             .registerPacket(BossEventPacket.class, BossEventSerializer_v291.INSTANCE, 74)
             .registerPacket(ShowCreditsPacket.class, ShowCreditsSerializer_v291.INSTANCE, 75)
-            .registerPacket(AvailableCommandsPacket.class, AvailableCommandsSerializer_v363.INSTANCE, 76)
+            .registerPacket(AvailableCommandsPacket.class, AvailableCommandsSerializer_v340.INSTANCE, 76)
             .registerPacket(CommandRequestPacket.class, CommandRequestSerializer_v291.INSTANCE, 77)
             .registerPacket(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v361.INSTANCE, 78)
             .registerPacket(CommandOutputPacket.class, CommandOutputSerializer_v291.INSTANCE, 79)
