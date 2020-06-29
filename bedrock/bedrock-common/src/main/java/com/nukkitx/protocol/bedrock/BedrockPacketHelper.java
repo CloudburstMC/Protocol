@@ -129,7 +129,7 @@ public abstract class BedrockPacketHelper {
     public final SoundEvent getSoundEvent(int id) {
         SoundEvent soundEvent = this.soundEvents.get(id);
         if (soundEvent == null) {
-            log.debug("Unknown SoundEvent {} received", id);
+            log.debug("Unknown SoundEvent {} received", Integer.toUnsignedLong(id));
             return SoundEvent.UNDEFINED;
         }
         return soundEvent;
