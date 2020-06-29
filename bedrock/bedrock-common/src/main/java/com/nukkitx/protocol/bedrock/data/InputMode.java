@@ -1,9 +1,9 @@
 package com.nukkitx.protocol.bedrock.data;
 
 public enum InputMode {
-    UNDEFINED,
+    GAMEPAD,
+    MOTION_CONTROLLER,
     MOUSE,
     TOUCH,
-    GAMEPAD,
-    MOTION_CONTROLLER
+    UNDEFINED
 }
