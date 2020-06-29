@@ -8,6 +8,7 @@ import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
+
+    public static final BedrockPacketHelper INSTANCE = new BedrockPacketHelper_v361();
 
     @Override
     protected void registerEntityData() {
