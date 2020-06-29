@@ -51,14 +51,7 @@ public class BedrockClient extends Bedrock {
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
-
-        this.ping(address).whenComplete((pong, throwable) -> {
-            if (throwable != null) {
-                future.completeExceptionally(throwable);
-                return;
-            }
-
+        return this.ping(address).thenApply(pong -> {
             int port;
             if (address.getAddress() instanceof Inet4Address && pong.getIpv4Port() != -1) {
                 port = pong.getIpv4Port();
@@ -68,24 +61,16 @@ public class BedrockClient extends Bedrock {
                 port = address.getPort();
             }
 
-            InetSocketAddress connectAddress = new InetSocketAddress(address.getAddress(), port);
-
-            RakNetClientSession connection = this.rakNetClient.create(connectAddress);
-            BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
-            this.session = new BedrockClientSession(connection, serializer);
-            BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
-                    connection, this, future);
-            connection.setListener(listener);
-            connection.connect();
-        });
-        return future;
+            return new InetSocketAddress(address.getAddress(), port);
+        }).thenCompose(this::directConnect);
     }
 
     public CompletableFuture<BedrockClientSession> directConnect(InetSocketAddress address) {
         CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
 
         RakNetClientSession connection = this.rakNetClient.create(address);
-        this.session = new BedrockClientSession(connection);
+        BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
+        this.session = new BedrockClientSession(connection, serializer);
         BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
                 connection, this, future);
         connection.setListener(listener);
