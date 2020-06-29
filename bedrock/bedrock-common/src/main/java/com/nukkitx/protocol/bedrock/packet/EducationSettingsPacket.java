@@ -9,8 +9,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class EducationSettingsPacket extends BedrockPacket {
-    private String settings;
-    private boolean unknown0;
+    private String codeBuilderUri;
+    private boolean quizAttached;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

@@ -9,9 +9,9 @@ import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.nukkitx.natives.aes.AesFactory;
+import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.util.NativeCodeFactory;
-import com.voxelwind.server.jni.CryptoUtil;
 import lombok.experimental.UtilityClass;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -32,7 +32,7 @@ import java.util.Base64;
 
 @UtilityClass
 public class EncryptionUtils {
-    private static final boolean CAN_USE_ENCRYPTION = CryptoUtil.isJCEUnlimitedStrength() || NativeCodeFactory.cipher.isLoaded();
+    private static final AesFactory AES_FACTORY;
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final String MOJANG_PUBLIC_KEY_BASE64 =
@@ -44,6 +44,14 @@ public class EncryptionUtils {
         // Since Java 8u231, secp384r1 is deprecated and will throw an exception.
         String namedGroups = System.getProperty("jdk.tls.namedGroups");
         System.setProperty("jdk.tls.namedGroups", namedGroups == null || namedGroups.isEmpty() ? "secp384r1" : ", secp384r1");
+
+        AesFactory aesFactory;
+        try {
+            aesFactory = Natives.AES_CFB8.get();
+        } catch (NullPointerException | IllegalStateException e) {
+            aesFactory = null;
+        }
+        AES_FACTORY = aesFactory;
 
         try {
             KEY_PAIR_GEN = KeyPairGenerator.getInstance("EC");
@@ -210,7 +218,7 @@ public class EncryptionUtils {
      * @return can use encryption
      */
     public static boolean canUseEncryption() {
-        return CAN_USE_ENCRYPTION;
+        return AES_FACTORY != null;
     }
 
     /**

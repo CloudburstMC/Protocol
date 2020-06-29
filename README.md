@@ -1,6 +1,6 @@
 # Protocol
 
-[![License](https://img.shields.io/badge/license-Apache-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-LGPL-blue.svg)](LICENSE)
 [![Build Status](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/badge/icon)](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/)
 [![Discord](https://img.shields.io/discord/393465748535640064.svg)](https://discord.gg/seCw62a)
 
@@ -146,7 +146,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.5.6-SNAPSHOT</version>
+            <version>2.6.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

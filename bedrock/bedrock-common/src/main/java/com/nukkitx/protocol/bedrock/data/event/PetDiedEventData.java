@@ -4,11 +4,11 @@ import lombok.Value;
 
 @Value
 public class PetDiedEventData implements EventData {
-    private final boolean unknown0;
+    private final boolean ownerKilled;
     private final long killerUniqueEntityId;
     private final long petUniqueEntityId;
     private final int entityDamageCause;
-    private final int unknown1;
+    private final int petEntityType;
 
     @Override
     public EventDataType getType() {

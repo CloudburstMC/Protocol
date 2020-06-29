@@ -1,40 +1,59 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.command.CommandOutputMessage;
+import com.nukkitx.protocol.bedrock.data.command.CommandOutputType;
 import com.nukkitx.protocol.bedrock.packet.CommandOutputPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommandOutputSerializer_v291 implements PacketSerializer<CommandOutputPacket> {
+import static java.util.Objects.requireNonNull;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CommandOutputSerializer_v291 implements BedrockPacketSerializer<CommandOutputPacket> {
     public static final CommandOutputSerializer_v291 INSTANCE = new CommandOutputSerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, CommandOutputPacket packet) {
-        BedrockUtils.writeCommandOriginData(buffer, packet.getCommandOriginData());
-        buffer.writeByte(packet.getOutputType());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CommandOutputPacket packet) {
+        helper.writeCommandOrigin(buffer, packet.getCommandOriginData());
+        buffer.writeByte(packet.getType().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getSuccessCount());
 
-        BedrockUtils.writeArray(buffer, packet.getMessages(), BedrockUtils::writeCommandOutputMessage);
+        helper.writeArray(buffer, packet.getMessages(), this::writeMessage);
 
-        if (packet.getOutputType() == 4) {
-            BedrockUtils.writeString(buffer, packet.getData());
+        if (packet.getType() == CommandOutputType.DATA_SET) {
+            helper.writeString(buffer, packet.getData());
         }
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, CommandOutputPacket packet) {
-        packet.setCommandOriginData(BedrockUtils.readCommandOriginData(buffer));
-        packet.setOutputType(buffer.readUnsignedByte());
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, CommandOutputPacket packet) {
+        packet.setCommandOriginData(helper.readCommandOrigin(buffer));
+        packet.setType(CommandOutputType.values()[buffer.readUnsignedByte()]);
         packet.setSuccessCount(VarInts.readUnsignedInt(buffer));
 
-        BedrockUtils.readArray(buffer, packet.getMessages(), BedrockUtils::readCommandOutputMessage);
+        helper.readArray(buffer, packet.getMessages(), this::readMessage);
 
-        if (packet.getOutputType() == 4) {
-            packet.setData(BedrockUtils.readString(buffer));
+        if (packet.getType() == CommandOutputType.DATA_SET) {
+            packet.setData(helper.readString(buffer));
         }
+    }
+
+    public CommandOutputMessage readMessage(ByteBuf buffer, BedrockPacketHelper helper) {
+        boolean internal = buffer.readBoolean();
+        String messageId = helper.readString(buffer);
+        String[] parameters = helper.readArray(buffer, new String[0], helper::readString);
+        return new CommandOutputMessage(internal, messageId, parameters);
+    }
+
+    public void writeMessage(ByteBuf buffer, BedrockPacketHelper helper, CommandOutputMessage outputMessage) {
+        requireNonNull(outputMessage, "CommandOutputMessage is null");
+
+        buffer.writeBoolean(outputMessage.isInternal());
+        helper.writeString(buffer, outputMessage.getMessageId());
+        helper.writeArray(buffer, outputMessage.getParameters(), helper::writeString);
     }
 }

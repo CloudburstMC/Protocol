@@ -1,19 +1,20 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.MobEffectPacket;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MobEffectSerializer_v291 implements PacketSerializer<MobEffectPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class MobEffectSerializer_v291 implements BedrockPacketSerializer<MobEffectPacket> {
     public static final MobEffectSerializer_v291 INSTANCE = new MobEffectSerializer_v291();
 
 
     @Override
-    public void serialize(ByteBuf buffer, MobEffectPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, MobEffectPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
         buffer.writeByte(packet.getEvent().ordinal());
         VarInts.writeInt(buffer, packet.getEffectId());
@@ -23,7 +24,7 @@ public class MobEffectSerializer_v291 implements PacketSerializer<MobEffectPacke
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, MobEffectPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, MobEffectPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setEvent(MobEffectPacket.Event.values()[buffer.readUnsignedByte()]);
         packet.setEffectId(VarInts.readInt(buffer));

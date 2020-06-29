@@ -1,37 +1,37 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingType;
 import com.nukkitx.protocol.bedrock.packet.CraftingEventPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CraftingEventSerializer_v291 implements PacketSerializer<CraftingEventPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CraftingEventSerializer_v291 implements BedrockPacketSerializer<CraftingEventPacket> {
     public static final CraftingEventSerializer_v291 INSTANCE = new CraftingEventSerializer_v291();
 
-
     @Override
-    public void serialize(ByteBuf buffer, CraftingEventPacket packet) {
-        buffer.writeByte(packet.getWindowId());
-        VarInts.writeInt(buffer, packet.getType());
-        BedrockUtils.writeUuid(buffer, packet.getUuid());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CraftingEventPacket packet) {
+        buffer.writeByte(packet.getContainerId());
+        VarInts.writeInt(buffer, packet.getType().ordinal());
+        helper.writeUuid(buffer, packet.getUuid());
 
-        BedrockUtils.writeArray(buffer, packet.getInputs(), BedrockUtils::writeItemData);
+        helper.writeArray(buffer, packet.getInputs(), helper::writeItem);
 
-        BedrockUtils.writeArray(buffer, packet.getOutputs(), BedrockUtils::writeItemData);
+        helper.writeArray(buffer, packet.getOutputs(), helper::writeItem);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, CraftingEventPacket packet) {
-        packet.setWindowId(buffer.readByte());
-        packet.setType(VarInts.readInt(buffer));
-        packet.setUuid(BedrockUtils.readUuid(buffer));
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, CraftingEventPacket packet) {
+        packet.setContainerId(buffer.readByte());
+        packet.setType(CraftingType.values()[VarInts.readInt(buffer)]);
+        packet.setUuid(helper.readUuid(buffer));
 
-        BedrockUtils.readArray(buffer, packet.getInputs(), BedrockUtils::readItemData);
+        helper.readArray(buffer, packet.getInputs(), helper::readItem);
 
-        BedrockUtils.readArray(buffer, packet.getOutputs(), BedrockUtils::readItemData);
+        helper.readArray(buffer, packet.getOutputs(), helper::readItem);
     }
 }

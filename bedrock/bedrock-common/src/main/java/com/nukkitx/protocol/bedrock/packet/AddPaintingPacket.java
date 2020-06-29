@@ -10,7 +10,7 @@ import lombok.ToString;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(callSuper = false)
 public class AddPaintingPacket extends AddHangingEntityPacket {
-    private String name;
+    private String motive;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

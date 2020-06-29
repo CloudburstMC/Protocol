@@ -9,7 +9,9 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
+import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
+import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -30,20 +32,23 @@ public class StartGamePacket extends BedrockPacket {
     private final List<GameRuleData<?>> gamerules = new ObjectArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
-    private int playerGamemode;
+    private GameType playerGameType;
     private Vector3f playerPosition;
     private Vector2f rotation;
     // Level settings start
     private int seed;
+    private SpawnBiomeType spawnBiomeType = SpawnBiomeType.DEFAULT;
+    private String customBiomeName = "";
     private int dimensionId;
     private int generatorId;
-    private int levelGamemode;
+    private GameType levelGameType;
     private int difficulty;
     private Vector3i defaultSpawn;
     private boolean achievementsDisabled;
-    private int time;
+    private int dayCycleStopTime;
     private int eduEditionOffers;
     private boolean eduFeaturesEnabled;
+    private String educationProductionId = "";
     private float rainLevel;
     private float lightningLevel;
     private boolean platformLockedContentConfirmed;
@@ -66,9 +71,13 @@ public class StartGamePacket extends BedrockPacket {
     private boolean worldTemplateOptionLocked;
     private boolean onlySpawningV1Villagers;
     private String vanillaVersion;
+    private int limitedWorldWidth;
+    private int limitedWorldHeight;
+    private boolean netherType;
+    private boolean forceExperimentalGameplay;
     // Level settings end
     private String levelId;
-    private String worldName;
+    private String levelName;
     private String premiumWorldTemplateId;
     private boolean trial;
     private boolean movementServerAuthoritative;
@@ -77,6 +86,7 @@ public class StartGamePacket extends BedrockPacket {
     private ListTag<CompoundTag> blockPalette;
     private List<ItemEntry> itemEntries = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
+    private boolean inventoriesServerAuthoritative;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -84,7 +94,7 @@ public class StartGamePacket extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.START_GAME_PACKET;
+        return BedrockPacketType.START_GAME;
     }
 
     @Value

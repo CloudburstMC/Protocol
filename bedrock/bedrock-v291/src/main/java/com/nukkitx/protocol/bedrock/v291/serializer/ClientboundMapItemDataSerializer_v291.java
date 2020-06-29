@@ -1,11 +1,11 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.MapDecoration;
 import com.nukkitx.protocol.bedrock.data.MapTrackedObject;
 import com.nukkitx.protocol.bedrock.packet.ClientboundMapItemDataPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
@@ -13,27 +13,27 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ClientboundMapItemDataSerializer_v291 implements PacketSerializer<ClientboundMapItemDataPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSerializer<ClientboundMapItemDataPacket> {
     public static final ClientboundMapItemDataSerializer_v291 INSTANCE = new ClientboundMapItemDataSerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, ClientboundMapItemDataPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ClientboundMapItemDataPacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueMapId());
 
         int type = 0;
         int[] colors = packet.getColors();
         if (colors != null && colors.length > 0) {
-            type |= 0x2;
+            type |= 0x2; // Texture update
         }
         List<MapDecoration> decorations = packet.getDecorations();
         List<MapTrackedObject> trackedObjects = packet.getTrackedObjects();
         if (!decorations.isEmpty() && !trackedObjects.isEmpty()) {
-            type |= 0x4;
+            type |= 0x4; // Decoration Update
         }
         LongList trackedEntityIds = packet.getTrackedEntityIds();
         if (!trackedEntityIds.isEmpty()) {
-            type |= 0x8;
+            type |= 0x8; // Creation
         }
 
         VarInts.writeUnsignedInt(buffer, type);
@@ -56,7 +56,7 @@ public class ClientboundMapItemDataSerializer_v291 implements PacketSerializer<C
                 switch (object.getType()) {
                     case BLOCK:
                         buffer.writeIntLE(object.getType().ordinal());
-                        BedrockUtils.writeBlockPosition(buffer, object.getPosition());
+                        helper.writeBlockPosition(buffer, object.getPosition());
                         break;
                     case ENTITY:
                         buffer.writeIntLE(object.getType().ordinal());
@@ -71,7 +71,7 @@ public class ClientboundMapItemDataSerializer_v291 implements PacketSerializer<C
                 buffer.writeByte(decoration.getRotation());
                 buffer.writeByte(decoration.getXOffset());
                 buffer.writeByte(decoration.getYOffset());
-                BedrockUtils.writeString(buffer, decoration.getLabel());
+                helper.writeString(buffer, decoration.getLabel());
                 VarInts.writeUnsignedInt(buffer, decoration.getColor());
             }
         }
@@ -90,7 +90,7 @@ public class ClientboundMapItemDataSerializer_v291 implements PacketSerializer<C
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, ClientboundMapItemDataPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ClientboundMapItemDataPacket packet) {
         packet.setUniqueMapId(VarInts.readLong(buffer));
         int type = VarInts.readUnsignedInt(buffer);
         packet.setDimensionId(buffer.readUnsignedByte());
@@ -114,7 +114,7 @@ public class ClientboundMapItemDataSerializer_v291 implements PacketSerializer<C
                 MapTrackedObject.Type objectType = MapTrackedObject.Type.values()[buffer.readIntLE()];
                 switch (objectType) {
                     case BLOCK:
-                        trackedObjects.add(new MapTrackedObject(BedrockUtils.readBlockPosition(buffer)));
+                        trackedObjects.add(new MapTrackedObject(helper.readBlockPosition(buffer)));
                         break;
                     case ENTITY:
                         trackedObjects.add(new MapTrackedObject(VarInts.readLong(buffer)));
@@ -129,7 +129,7 @@ public class ClientboundMapItemDataSerializer_v291 implements PacketSerializer<C
                 int rotation = buffer.readUnsignedByte();
                 int xOffset = buffer.readUnsignedByte();
                 int yOffset = buffer.readUnsignedByte();
-                String label = BedrockUtils.readString(buffer);
+                String label = helper.readString(buffer);
                 int color = VarInts.readUnsignedInt(buffer);
                 decorations.add(new MapDecoration(image, rotation, xOffset, yOffset, label, color));
             }

@@ -4,6 +4,8 @@ import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.ClientPlayMode;
+import com.nukkitx.protocol.bedrock.data.InputMode;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,8 +17,8 @@ public class PlayerAuthInputPacket extends BedrockPacket {
     private Vector3f position;
     private Vector2f motion;
     private long inputData;
-    private int inputMode;
-    private int playMode;
+    private InputMode inputMode;
+    private ClientPlayMode playMode;
 
     private Vector3f vrGazeDirection;
 

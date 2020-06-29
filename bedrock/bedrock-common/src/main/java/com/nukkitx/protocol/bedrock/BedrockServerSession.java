@@ -3,13 +3,14 @@ package com.nukkitx.protocol.bedrock;
 import com.nukkitx.network.raknet.RakNetSession;
 import com.nukkitx.protocol.MinecraftServerSession;
 import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 
 import javax.annotation.Nullable;
 
 public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
 
-    public BedrockServerSession(RakNetSession connection) {
-        super(connection);
+    public BedrockServerSession(RakNetSession connection, BedrockWrapperSerializer serializer) {
+        super(connection, serializer);
     }
 
     @Override
@@ -26,7 +27,7 @@ public class BedrockServerSession extends BedrockSession implements MinecraftSer
 
         DisconnectPacket packet = new DisconnectPacket();
         if (reason == null || hideReason) {
-            packet.setDisconnectScreenHidden(true);
+            packet.setMessageSkipped(true);
             reason = "disconnect.disconnected";
         }
         packet.setKickMessage(reason);

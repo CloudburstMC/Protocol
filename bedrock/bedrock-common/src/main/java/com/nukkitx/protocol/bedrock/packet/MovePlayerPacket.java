@@ -32,9 +32,9 @@ public class MovePlayerPacket extends BedrockPacket {
 
     public enum Mode {
         NORMAL,
-        RESET,
+        RESPAWN,
         TELEPORT,
-        ROTATION
+        HEAD_ROTATION
     }
 
     public enum TeleportationCause {

@@ -3,6 +3,8 @@ package com.nukkitx.protocol.bedrock;
 import com.nukkitx.network.raknet.RakNetClient;
 import com.nukkitx.network.raknet.RakNetClientSession;
 import com.nukkitx.network.util.EventLoops;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializers;
 import io.netty.channel.EventLoopGroup;
 
 import java.net.Inet4Address;
@@ -36,6 +38,10 @@ public class BedrockClient extends Bedrock {
         return this.rakNetClient;
     }
 
+    public void setRakNetVersion(int version) {
+        this.rakNetClient.setProtocolVersion(version);
+    }
+
     @Override
     public void close() {
         if (session != null) {
@@ -65,7 +71,8 @@ public class BedrockClient extends Bedrock {
             InetSocketAddress connectAddress = new InetSocketAddress(address.getAddress(), port);
 
             RakNetClientSession connection = this.rakNetClient.create(connectAddress);
-            this.session = new BedrockClientSession(connection);
+            BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
+            this.session = new BedrockClientSession(connection, serializer);
             BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
                     connection, this, future);
             connection.setListener(listener);

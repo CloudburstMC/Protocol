@@ -1,49 +1,55 @@
 package com.nukkitx.protocol.util;
 
+import com.nukkitx.natives.util.Natives;
+import com.nukkitx.natives.zlib.Deflater;
+import com.nukkitx.natives.zlib.Inflater;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.PooledByteBufAllocator;
-import net.md_5.bungee.jni.zlib.BungeeZlib;
+import io.netty.buffer.ByteBufAllocator;
 
 import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
 
 public class Zlib {
-    public static final Zlib DEFAULT = new Zlib(Deflater.DEFAULT_COMPRESSION);
+    public static final Zlib DEFAULT = new Zlib(false);
+    public static final Zlib RAW = new Zlib(true);
 
-    private final ThreadLocal<BungeeZlib> inflaterLocal;
-    private final ThreadLocal<BungeeZlib> deflaterLocal;
+    private static final int CHUNK = 8192;
 
-    public Zlib(int compression) {
-        inflaterLocal = ThreadLocal.withInitial(() -> {
-            BungeeZlib zlib = NativeCodeFactory.zlib.newInstance();
-            zlib.init(false, compression);
-            return zlib;
-        });
+    private final ThreadLocal<Inflater> inflaterLocal;
+    private final ThreadLocal<Deflater> deflaterLocal;
 
-        deflaterLocal = ThreadLocal.withInitial(() -> {
-            BungeeZlib zlib = NativeCodeFactory.zlib.newInstance();
-            zlib.init(true, compression);
-            return zlib;
-        });
+    private Zlib(boolean raw) {
+        this.inflaterLocal = ThreadLocal.withInitial(() -> Natives.ZLIB.get().create(raw));
+        this.deflaterLocal = ThreadLocal.withInitial(() -> Natives.ZLIB.get().create(7, raw));
     }
 
-    public ByteBuf inflate(ByteBuf buffer) throws DataFormatException {
-        // Ensure that this buffer is direct.
-        if (buffer.getByte(buffer.readerIndex()) != 0x78) throw new DataFormatException("No zlib header");
+    public ByteBuf inflate(ByteBuf buffer, int maxSize) throws DataFormatException {
         ByteBuf source = null;
-        ByteBuf decompressed = PooledByteBufAllocator.DEFAULT.directBuffer();
+        ByteBuf decompressed = ByteBufAllocator.DEFAULT.ioBuffer();
 
         try {
             if (!buffer.isDirect()) {
                 // We don't have a direct buffer. Create one.
-                ByteBuf temporary = PooledByteBufAllocator.DEFAULT.directBuffer();
+                ByteBuf temporary = ByteBufAllocator.DEFAULT.ioBuffer();
                 temporary.writeBytes(buffer);
                 source = temporary;
             } else {
                 source = buffer;
             }
 
-            inflaterLocal.get().process(source, decompressed);
+            Inflater inflater = inflaterLocal.get();
+            inflater.reset();
+            inflater.setInput(source.internalNioBuffer(source.readerIndex(), source.readableBytes()));
+            inflater.finished();
+
+            while (!inflater.finished()) {
+                decompressed.ensureWritable(CHUNK);
+                int index = decompressed.writerIndex();
+                int written = inflater.inflate(decompressed.internalNioBuffer(index, CHUNK));
+                decompressed.writerIndex(index + written);
+                if (maxSize > 0 && decompressed.writerIndex() >= maxSize) {
+                    throw new DataFormatException("Inflated data exceeds maximum size");
+                }
+            }
             return decompressed;
         } catch (DataFormatException e) {
             decompressed.release();
@@ -55,46 +61,45 @@ public class Zlib {
         }
     }
 
-    public ByteBuf deflate(ByteBuf buffer) throws DataFormatException {
-        ByteBuf dest = PooledByteBufAllocator.DEFAULT.directBuffer();
-        try {
-            deflate(buffer, dest);
-        } catch (DataFormatException e) {
-            dest.release();
-            throw e;
-        }
-        return dest;
-    }
-
-    public void deflate(ByteBuf toCompress, ByteBuf into) throws DataFormatException {
+    public void deflate(ByteBuf uncompressed, ByteBuf compressed, int level) throws DataFormatException {
         ByteBuf destination = null;
         ByteBuf source = null;
         try {
-            if (!toCompress.isDirect()) {
+            if (!uncompressed.isDirect()) {
                 // Source is not a direct buffer. Work on a temporary direct buffer and then write the contents out.
-                source = PooledByteBufAllocator.DEFAULT.directBuffer();
-                source.writeBytes(toCompress);
+                source = ByteBufAllocator.DEFAULT.ioBuffer();
+                source.writeBytes(uncompressed);
             } else {
-                source = toCompress;
+                source = uncompressed;
             }
 
-            if (!into.isDirect()) {
+            if (!compressed.isDirect()) {
                 // Destination is not a direct buffer. Work on a temporary direct buffer and then write the contents out.
-                destination = PooledByteBufAllocator.DEFAULT.directBuffer();
+                destination = ByteBufAllocator.DEFAULT.ioBuffer();
             } else {
-                destination = into;
+                destination = compressed;
             }
 
-            deflaterLocal.get().process(source, destination);
+            Deflater deflater = deflaterLocal.get();
+            deflater.reset();
+            deflater.setLevel(level);
+            deflater.setInput(source.internalNioBuffer(source.readerIndex(), source.readableBytes()));
 
-            if (destination != into) {
-                into.writeBytes(destination);
+            while (!deflater.finished()) {
+                int index = destination.writerIndex();
+                destination.ensureWritable(CHUNK);
+                int written = deflater.deflate(destination.internalNioBuffer(index, CHUNK));
+                destination.writerIndex(index + written);
+            }
+
+            if (destination != compressed) {
+                compressed.writeBytes(destination);
             }
         } finally {
-            if (source != null && source != toCompress) {
+            if (source != null && source != uncompressed) {
                 source.release();
             }
-            if (destination != null && destination != into) {
+            if (destination != null && destination != compressed) {
                 destination.release();
             }
         }

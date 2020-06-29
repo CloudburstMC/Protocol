@@ -1,21 +1,20 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.LevelChunkPacket;
-import com.nukkitx.protocol.bedrock.v361.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class LevelChunkSerializer_v361 implements PacketSerializer<LevelChunkPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class LevelChunkSerializer_v361 implements BedrockPacketSerializer<LevelChunkPacket> {
     public static final LevelChunkSerializer_v361 INSTANCE = new LevelChunkSerializer_v361();
 
-
     @Override
-    public void serialize(ByteBuf buffer, LevelChunkPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, LevelChunkPacket packet) {
         VarInts.writeInt(buffer, packet.getChunkX());
         VarInts.writeInt(buffer, packet.getChunkZ());
         VarInts.writeUnsignedInt(buffer, packet.getSubChunksLength());
@@ -29,11 +28,11 @@ public class LevelChunkSerializer_v361 implements PacketSerializer<LevelChunkPac
             }
         }
 
-        BedrockUtils.writeByteArray(buffer, packet.getData());
+        helper.writeByteArray(buffer, packet.getData());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, LevelChunkPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, LevelChunkPacket packet) {
         packet.setChunkX(VarInts.readInt(buffer));
         packet.setChunkZ(VarInts.readInt(buffer));
         packet.setSubChunksLength(VarInts.readUnsignedInt(buffer));
@@ -47,6 +46,6 @@ public class LevelChunkSerializer_v361 implements PacketSerializer<LevelChunkPac
                 blobIds.add(buffer.readLongLE());
             }
         }
-        packet.setData(BedrockUtils.readByteArray(buffer));
+        packet.setData(helper.readByteArray(buffer));
     }
 }

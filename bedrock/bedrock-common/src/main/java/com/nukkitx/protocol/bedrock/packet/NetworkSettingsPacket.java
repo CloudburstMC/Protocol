@@ -9,7 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class NetworkSettingsPacket extends BedrockPacket {
-    private int compressionThresholdByteSize;
+    /**
+     * The smallest amount of bytes that should be compressed by the client. 0-65535
+     */
+    private int compressionThreshold;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

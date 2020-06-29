@@ -32,8 +32,8 @@ public class ResourcePacksInfoPacket extends BedrockPacket {
         private final String packId;
         private final String packVersion;
         private final long packSize;
-        private final String encryptionKey;
-        private final String subpackName;
+        private final String contentKey;
+        private final String subPackName;
         private final String contentId;
         private final boolean scripting;
     }

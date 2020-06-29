@@ -1,42 +1,31 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackClientResponsePacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 import static com.nukkitx.protocol.bedrock.packet.ResourcePackClientResponsePacket.Status;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResourcePackClientResponseSerializer_v291 implements PacketSerializer<ResourcePackClientResponsePacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ResourcePackClientResponseSerializer_v291 implements BedrockPacketSerializer<ResourcePackClientResponsePacket> {
     public static final ResourcePackClientResponseSerializer_v291 INSTANCE = new ResourcePackClientResponseSerializer_v291();
 
 
     @Override
-    public void serialize(ByteBuf buffer, ResourcePackClientResponsePacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackClientResponsePacket packet) {
         buffer.writeByte(packet.getStatus().ordinal());
 
-        List<String> packIds = packet.getPackIds();
-        buffer.writeShortLE(packIds.size());
-
-        for (String packId : packIds) {
-            BedrockUtils.writeString(buffer, packId);
-        }
+        helper.writeArrayShortLE(buffer, packet.getPackIds(), helper::writeString);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, ResourcePackClientResponsePacket packet) {
-        Status status = Status.values()[buffer.readByte()];
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackClientResponsePacket packet) {
+        Status status = Status.values()[buffer.readUnsignedByte()];
         packet.setStatus(status);
 
-        List<String> packIds = packet.getPackIds();
-        int packIdsCount = buffer.readShortLE();
-        for (int i = 0; i < packIdsCount; i++) {
-            packIds.add(BedrockUtils.readString(buffer));
-        }
+        helper.readArrayShortLE(buffer, packet.getPackIds(), helper::readString);
     }
 }

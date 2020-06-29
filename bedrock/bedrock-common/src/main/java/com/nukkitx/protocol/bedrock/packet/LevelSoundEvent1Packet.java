@@ -24,6 +24,6 @@ public class LevelSoundEvent1Packet extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.LEVEL_SOUND_EVENT;
+        return BedrockPacketType.LEVEL_SOUND_EVENT_1;
     }
 }
