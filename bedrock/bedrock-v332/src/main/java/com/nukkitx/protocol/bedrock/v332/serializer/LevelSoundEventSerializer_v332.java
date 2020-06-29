@@ -14,7 +14,7 @@ public class LevelSoundEventSerializer_v332 implements BedrockPacketSerializer<L
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, LevelSoundEventPacket packet) {
-        buffer.writeIntLE(helper.getSoundEventId(packet.getSound()));
+        VarInts.writeUnsignedInt(buffer, helper.getSoundEventId(packet.getSound()));
         helper.writeVector3f(buffer, packet.getPosition());
         VarInts.writeInt(buffer, packet.getExtraData());
         helper.writeString(buffer, packet.getIdentifier());
@@ -24,7 +24,7 @@ public class LevelSoundEventSerializer_v332 implements BedrockPacketSerializer<L
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, LevelSoundEventPacket packet) {
-        packet.setSound(helper.getSoundEvent(buffer.readIntLE()));
+        packet.setSound(helper.getSoundEvent(VarInts.readUnsignedInt(buffer)));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setExtraData(VarInts.readInt(buffer));
         packet.setIdentifier(helper.readString(buffer));
