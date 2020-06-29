@@ -62,11 +62,13 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
         VarInts.writeInt(buffer, eventData.getType().ordinal());
         buffer.writeByte(packet.getUsePlayerId());
 
-        BiFunction<ByteBuf, BedrockPacketHelper, EventData> function = this.readers.get(eventData.getType());
+        TriConsumer<ByteBuf, BedrockPacketHelper, EventData> function = this.writers.get(eventData.getType());
 
         if (function == null) {
             throw new UnsupportedOperationException("Unknown event type " + eventData.getType());
         }
+
+        function.accept(buffer, helper, eventData);
     }
 
     @Override

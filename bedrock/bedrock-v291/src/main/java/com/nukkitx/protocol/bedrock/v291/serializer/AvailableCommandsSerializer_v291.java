@@ -142,7 +142,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                     List<CommandParamOption> options = new ObjectArrayList<>();
                     for (int idx = 0; idx < 8; idx++) {
                         if ((optionsByte & (1 << idx)) != 0) {
-                            options.add(OPTIONS[i]);
+                            options.add(OPTIONS[idx]);
                         }
                     }
 
@@ -174,7 +174,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             VarInts.writeUnsignedInt(buffer, commandEnum.getValues().length);
             for (String value : commandEnum.getValues()) {
                 int index = values.indexOf(value);
-                Preconditions.checkArgument(index > -1, "Invalid enum value detected");
+                Preconditions.checkArgument(index > -1, "Invalid enum value detected: " + value);
                 indexWriter.accept(buf, index);
             }
         });
@@ -268,7 +268,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         } else if (param.getType() != null) {
             index = helper.getCommandParamId(param.getType());
         } else {
-            throw new IllegalStateException("No param type specified");
+            throw new IllegalStateException("No param type specified: " + param);
         }
 
         CommandSymbolData type = new CommandSymbolData(index, enumData, softEnum, postfix);
@@ -278,12 +278,11 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
     }
 
     protected CommandParamData.Builder readParameter(ByteBuf buffer, BedrockPacketHelper helper) {
-        String parameterName = helper.readString(buffer);
-
-        CommandSymbolData type = CommandSymbolData.deserialize(buffer.readIntLE());
-
-        boolean optional = buffer.readBoolean();
-
-        return new CommandParamData.Builder(parameterName, type, optional);
+        return new CommandParamData.Builder(
+                helper.readString(buffer),
+                CommandSymbolData.deserialize(buffer.readIntLE()),
+                buffer.readBoolean(),
+                (byte) 0
+        );
     }
 }

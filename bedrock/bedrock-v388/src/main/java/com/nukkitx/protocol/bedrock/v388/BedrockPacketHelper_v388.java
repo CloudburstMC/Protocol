@@ -56,9 +56,9 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         super.registerLevelEvents();
 
         int particle = 2000;
-        this.addLevelEvent(24 | particle, LevelEventType.PARTICLE_POINT_CLOUD);
-        this.addLevelEvent(25 | particle, LevelEventType.PARTICLE_EXPLOSION);
-        this.addLevelEvent(26 | particle, LevelEventType.PARTICLE_BLOCK_EXPLOSION);
+        this.addLevelEvent(24 + particle, LevelEventType.PARTICLE_POINT_CLOUD);
+        this.addLevelEvent(25 + particle, LevelEventType.PARTICLE_EXPLOSION);
+        this.addLevelEvent(26 + particle, LevelEventType.PARTICLE_BLOCK_EXPLOSION);
     }
 
     @Override
@@ -132,5 +132,24 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         buffer.writeBoolean(skin.isCapeOnClassic());
         this.writeString(buffer, skin.getCapeId());
         this.writeString(buffer, skin.getFullSkinId());
+    }
+
+    @Override
+    public ImageData readImage(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+        int width = buffer.readIntLE();
+        int height = buffer.readIntLE();
+        byte[] image = readByteArray(buffer);
+        return ImageData.of(width, height, image);
+    }
+
+    @Override
+    public void writeImage(ByteBuf buffer, ImageData image) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(image, "image is null");
+
+        buffer.writeIntLE(image.getWidth());
+        buffer.writeIntLE(image.getHeight());
+        writeByteArray(buffer, image.getImage());
     }
 }

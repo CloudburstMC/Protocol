@@ -17,6 +17,8 @@ public class BedrockPacketHelper_v354 extends BedrockPacketHelper_v340 {
 
     @Override
     protected void registerEntityData() {
+        super.registerEntityData();
+
         this.addEntityData(102, TRADE_XP);
     }
 
@@ -68,6 +70,6 @@ public class BedrockPacketHelper_v354 extends BedrockPacketHelper_v340 {
     protected void registerLevelEvents() {
         super.registerLevelEvents();
 
-        this.addLevelEvent(22 | 2000, LevelEventType.PARTICLE_KNOCKBACK_ROAR);
+        this.addLevelEvent(22 + 2000, LevelEventType.PARTICLE_KNOCKBACK_ROAR);
     }
 }

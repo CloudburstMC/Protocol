@@ -11,6 +11,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
+import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -36,6 +37,8 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         helper.writeVector2f(buffer, packet.getRotation());
         // Level settings start
         VarInts.writeInt(buffer, packet.getSeed());
+        buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
+        helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
@@ -45,9 +48,10 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         VarInts.writeInt(buffer, packet.getDayCycleStopTime());
         VarInts.writeInt(buffer, packet.getEduEditionOffers());
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
-        helper.writeString(buffer, packet.getUnknownString0());
+        helper.writeString(buffer, packet.getEducationProductionId());
         buffer.writeFloatLE(packet.getRainLevel());
         buffer.writeFloatLE(packet.getLightningLevel());
+
         buffer.writeBoolean(packet.isPlatformLockedContentConfirmed());
         buffer.writeBoolean(packet.isMultiplayerGame());
         buffer.writeBoolean(packet.isBroadcastingToLan());
@@ -68,8 +72,10 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         buffer.writeBoolean(packet.isWorldTemplateOptionLocked());
         buffer.writeBoolean(packet.isOnlySpawningV1Villagers());
         helper.writeString(buffer, packet.getVanillaVersion());
-        buffer.writeIntLE(packet.getUnknownInt0());
-        buffer.writeIntLE(packet.getUnknownInt1());
+        buffer.writeIntLE(packet.getLimitedWorldWidth());
+        buffer.writeIntLE(packet.getLimitedWorldHeight());
+        buffer.writeBoolean(packet.isNetherType());
+        buffer.writeBoolean(packet.isForceExperimentalGameplay());
 
         // Level settings end
         helper.writeString(buffer, packet.getLevelId());
@@ -106,6 +112,8 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setRotation(helper.readVector2f(buffer));
         // Level settings start
         packet.setSeed(VarInts.readInt(buffer));
+        packet.setSpawnBiomeType(SpawnBiomeType.byId(buffer.readShortLE()));
+        packet.setCustomBiomeName(helper.readString(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
         packet.setLevelGameType(GameType.from(VarInts.readInt(buffer)));
@@ -115,9 +123,10 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setDayCycleStopTime(VarInts.readInt(buffer));
         packet.setEduEditionOffers(VarInts.readInt(buffer));
         packet.setEduFeaturesEnabled(buffer.readBoolean());
-        packet.setUnknownString0(helper.readString(buffer));
+        packet.setEducationProductionId(helper.readString(buffer));
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());
+
         packet.setPlatformLockedContentConfirmed(buffer.readBoolean());
         packet.setMultiplayerGame(buffer.readBoolean());
         packet.setBroadcastingToLan(buffer.readBoolean());
@@ -138,8 +147,11 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setWorldTemplateOptionLocked(buffer.readBoolean());
         packet.setOnlySpawningV1Villagers(buffer.readBoolean());
         packet.setVanillaVersion(helper.readString(buffer));
-        packet.setUnknownInt0(buffer.readIntLE());
-        packet.setUnknownInt1(buffer.readIntLE());
+        packet.setLimitedWorldWidth(buffer.readIntLE());
+        packet.setLimitedWorldHeight(buffer.readIntLE());
+        packet.setNetherType(buffer.readBoolean());
+        packet.setForceExperimentalGameplay(buffer.readBoolean());
+
         // Level settings end
         packet.setLevelId(helper.readString(buffer));
         packet.setLevelName(helper.readString(buffer));

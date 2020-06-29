@@ -39,6 +39,7 @@ public class TextPacket extends BedrockPacket {
         SYSTEM,
         WHISPER,
         ANNOUNCEMENT,
-        JSON
+        OBJECT,
+        OBJECT_WHISPER
     }
 }

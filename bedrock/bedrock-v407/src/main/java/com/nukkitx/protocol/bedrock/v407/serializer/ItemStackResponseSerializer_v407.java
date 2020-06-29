@@ -19,16 +19,17 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackResponsePacket packet) {
         helper.writeArray(buffer, packet.getEntries(), (buf, response) -> {
-            buf.writeBoolean(response.isHasContainers());
+            buf.writeBoolean(response.isSuccess());
+            VarInts.writeInt(buffer, response.getRequestId());
 
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
-                buf2.writeByte(containerEntry.getWindowsId());
+                buf2.writeByte(containerEntry.getWindowId());
 
                 helper.writeArray(buf2, containerEntry.getItems(), (byteBuf, itemEntry) -> {
                     byteBuf.writeByte(itemEntry.getSlot());
                     byteBuf.writeByte(itemEntry.getHotbarSlot());
                     byteBuf.writeByte(itemEntry.getCount());
-                    VarInts.writeInt(byteBuf, itemEntry.getItemStackId());
+                    VarInts.writeInt(byteBuf, itemEntry.getStackNetworkId());
                 });
             });
         });
@@ -38,27 +39,23 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackResponsePacket packet) {
         List<ItemStackResponsePacket.Response> entries = packet.getEntries();
         helper.readArray(buffer, entries, buf -> {
-            boolean hasArray = buf.readBoolean();
+            boolean success = buf.readBoolean();
             int requestId = VarInts.readInt(buf);
 
-            List<ItemStackResponsePacket.ContainerEntry> containerEntries = null;
-            if (hasArray) {
-                containerEntries = new ArrayList<>();
-                helper.readArray(buf, containerEntries, buf2 -> {
-                    byte windowId = buf2.readByte();
+            List<ItemStackResponsePacket.ContainerEntry> containerEntries = new ArrayList<>();
+            helper.readArray(buf, containerEntries, buf2 -> {
+                byte windowId = buf2.readByte();
 
-                    List<ItemStackResponsePacket.ItemEntry> itemEntries = new ArrayList<>();
-                    helper.readArray(buf2, itemEntries, byteBuf -> {
-                        byte slot = byteBuf.readByte();
-                        byte hotbarSlot = byteBuf.readByte();
-                        byte count = byteBuf.readByte();
-                        int unknownVarint0 = VarInts.readInt(byteBuf);
-                        return new ItemStackResponsePacket.ItemEntry(slot, hotbarSlot, count, unknownVarint0);
-                    });
-                    return new ItemStackResponsePacket.ContainerEntry(windowId, itemEntries);
-                });
-            }
-            return new ItemStackResponsePacket.Response(hasArray, requestId, containerEntries);
+                List<ItemStackResponsePacket.ItemEntry> itemEntries = new ArrayList<>();
+                helper.readArray(buf2, itemEntries, byteBuf -> new ItemStackResponsePacket.ItemEntry(
+                        byteBuf.readByte(),
+                        byteBuf.readByte(),
+                        byteBuf.readByte(),
+                        VarInts.readInt(byteBuf)
+                ));
+                return new ItemStackResponsePacket.ContainerEntry(windowId, itemEntries);
+            });
+            return new ItemStackResponsePacket.Response(success, requestId, containerEntries);
         });
     }
 }

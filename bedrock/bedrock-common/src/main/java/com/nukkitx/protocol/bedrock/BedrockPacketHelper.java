@@ -12,11 +12,15 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintData;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintType;
 import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
 import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.*;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -35,10 +39,13 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
 
 public abstract class BedrockPacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketHelper.class);
@@ -94,27 +101,46 @@ public abstract class BedrockPacketHelper {
     }
 
     public final int getEntityEventId(EntityEventType type) {
+        // @TODO For speed we may want a flag that disables this check for production use
+        if (!this.entityEvents.containsValue(type)) {
+            log.debug("Unknown EntityEventType: {}", type);
+            return this.entityEvents.get(EntityEventType.NONE);
+        }
         return this.entityEvents.get(type);
     }
 
     public final EntityEventType getEntityEvent(int id) {
+        // @TODO For speed we may want a flag that disables this check for production use
+        if (!entityEvents.containsKey(id)) {
+            log.debug("Unknown EntityEvent: {}", id);
+            return EntityEventType.NONE;
+        }
         return this.entityEvents.get(id);
     }
 
     public final int getSoundEventId(SoundEvent event) {
+        if (!soundEvents.containsValue(event)) {
+            log.debug("Unknown SoundEvent {} received", event);
+            return soundEvents.get(SoundEvent.UNDEFINED);
+        }
         return this.soundEvents.get(event);
     }
 
     public final SoundEvent getSoundEvent(int id) {
         SoundEvent soundEvent = this.soundEvents.get(id);
         if (soundEvent == null) {
-            log.debug("Unknown SoundEvent {} received", id);
+            log.debug("Unknown SoundEvent {} received", Integer.toUnsignedLong(id));
             return SoundEvent.UNDEFINED;
         }
         return soundEvent;
     }
 
     public final int getLevelEventId(LevelEventType event) {
+        // @TODO For speed we may want a flag that disables this check for production use
+        if (!this.levelEvents.containsValue(event)) {
+            log.debug("Unknown LevelEventType: {}", event);
+            return this.levelEvents.get(LevelEventType.UNDEFINED);
+        }
         return this.levelEvents.get(event);
     }
 
@@ -467,5 +493,100 @@ public abstract class BedrockPacketHelper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ItemData readRecipeIngredient(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        int id = VarInts.readInt(buffer);
+
+        if (id == 0) {
+            // We don't need to read anything extra.
+            return ItemData.AIR;
+        }
+
+        int meta = VarInts.readInt(buffer);
+        int count = VarInts.readInt(buffer);
+
+        return ItemData.of(id, (short) meta, count);
+    }
+
+    public void writeRecipeIngredient(ByteBuf buffer, ItemData item) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(item, "item is null");
+
+        VarInts.writeInt(buffer, item.getId());
+
+        if (item.getId() == 0) {
+            return;
+        }
+
+        VarInts.writeInt(buffer, item.getDamage());
+        VarInts.writeInt(buffer, item.getCount());
+    }
+
+    public PotionMixData readPotionRecipe(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        return new PotionMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writePotionRecipe(ByteBuf buffer, PotionMixData data) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getInputMeta());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getReagentMeta());
+        VarInts.writeInt(buffer, data.getOutputId());
+        VarInts.writeInt(buffer, data.getOutputMeta());
+    }
+
+    public ContainerMixData readContainerChangeRecipe(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        return new ContainerMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writeContainerChangeRecipe(ByteBuf buffer, ContainerMixData data) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getOutputId());
+    }
+
+    public CommandEnumConstraintData readCommandEnumConstraints(ByteBuf buffer, List<CommandEnumData> enums, List<String> enumValues) {
+        int valueIndex = buffer.readIntLE();
+        int enumIndex = buffer.readIntLE();
+        CommandEnumConstraintType[] constraints = readArray(buffer, new CommandEnumConstraintType[0],
+                buf -> CommandEnumConstraintType.byId(buffer.readByte()));
+
+        return new CommandEnumConstraintData(
+                enumValues.get(valueIndex),
+                enums.get(enumIndex),
+                constraints
+        );
+    }
+
+    public void writeCommandEnumConstraints(ByteBuf buffer, CommandEnumConstraintData data, List<CommandEnumData> enums, List<String> enumValues) {
+        buffer.writeIntLE(enumValues.indexOf(data.getOption()));
+        buffer.writeIntLE(enums.indexOf(data.getEnumData()));
+        writeArray(buffer, data.getConstraints(), (buf, constraint) -> {
+            buf.writeByte(constraint.ordinal());
+        });
     }
 }

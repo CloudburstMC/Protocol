@@ -11,6 +11,7 @@ import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
+import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -36,6 +37,8 @@ public class StartGamePacket extends BedrockPacket {
     private Vector2f rotation;
     // Level settings start
     private int seed;
+    private SpawnBiomeType spawnBiomeType = SpawnBiomeType.DEFAULT;
+    private String customBiomeName = "";
     private int dimensionId;
     private int generatorId;
     private GameType levelGameType;
@@ -45,7 +48,7 @@ public class StartGamePacket extends BedrockPacket {
     private int dayCycleStopTime;
     private int eduEditionOffers;
     private boolean eduFeaturesEnabled;
-    private String unknownString0;
+    private String educationProductionId = "";
     private float rainLevel;
     private float lightningLevel;
     private boolean platformLockedContentConfirmed;
@@ -68,8 +71,10 @@ public class StartGamePacket extends BedrockPacket {
     private boolean worldTemplateOptionLocked;
     private boolean onlySpawningV1Villagers;
     private String vanillaVersion;
-    private int unknownInt0;
-    private int unknownInt1;
+    private int limitedWorldWidth;
+    private int limitedWorldHeight;
+    private boolean netherType;
+    private boolean forceExperimentalGameplay;
     // Level settings end
     private String levelId;
     private String levelName;

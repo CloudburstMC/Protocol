@@ -62,8 +62,8 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         super.registerLevelEvents();
 
         int block = 3500;
-        this.addLevelEvent(12 | block, LevelEventType.CAULDRON_FILL_LAVA);
-        this.addLevelEvent(13 | block, LevelEventType.CAULDRON_TAKE_LAVA);
+        this.addLevelEvent(12 + block, LevelEventType.CAULDRON_FILL_LAVA);
+        this.addLevelEvent(13 + block, LevelEventType.CAULDRON_TAKE_LAVA);
     }
 
     @Override

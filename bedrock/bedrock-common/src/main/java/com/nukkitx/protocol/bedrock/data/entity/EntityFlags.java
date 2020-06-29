@@ -6,9 +6,11 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
+import lombok.ToString;
 
 import javax.annotation.Nonnull;
 
+@ToString
 public class EntityFlags {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(EntityFlags.class);
 

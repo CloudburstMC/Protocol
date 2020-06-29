@@ -8,6 +8,7 @@ import com.nukkitx.nbt.stream.NBTOutputStream;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
@@ -25,10 +26,14 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
+
+    public static final BedrockPacketHelper INSTANCE = new BedrockPacketHelper_v361();
 
     @Override
     protected void registerEntityData() {
@@ -53,7 +58,7 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
     protected void registerLevelEvents() {
         super.registerLevelEvents();
 
-        this.addLevelEvent(23 | 2000, LevelEventType.PARTICLE_TELEPORT_TRAIL);
+        this.addLevelEvent(23 + 2000, LevelEventType.PARTICLE_TELEPORT_TRAIL);
     }
 
     @Override
@@ -131,7 +136,9 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
 
         VarInts.writeUnsignedInt(buffer, entityDataMap.size());
 
-        for (Map.Entry<EntityData, Object> entry : entityDataMap.entrySet()) {
+        for (Map.Entry<EntityData, Object> entry : entityDataMap.entrySet().stream()
+                .sorted(Comparator.comparingInt(o -> entityData.get(o.getKey())))
+                .collect(Collectors.toList())) {
             int index = buffer.writerIndex();
             VarInts.writeUnsignedInt(buffer, this.entityData.get(entry.getKey()));
             Object object = entry.getValue();

@@ -47,7 +47,7 @@ public enum ContainerType {
 
     static {
         ContainerType[] types = values();
-        int arrayLength = types[types.length - 1].id + 9;
+        int arrayLength = types[types.length - 1].id + 9 + 1;
         VALUES = new ContainerType[arrayLength];
 
         for (ContainerType type : types) {

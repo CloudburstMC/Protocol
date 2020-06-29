@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.StringJoiner;
 
 @Value
-public class ItemStackAction {
+@Deprecated
+public class ItemStackActionDeprecated {
     private final byte type;
     private final boolean bool0;
     private final byte byte0;

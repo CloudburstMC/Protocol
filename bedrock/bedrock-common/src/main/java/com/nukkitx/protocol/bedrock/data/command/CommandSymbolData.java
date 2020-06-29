@@ -20,7 +20,7 @@ public class CommandSymbolData {
         boolean commandEnum = (type & ARG_FLAG_ENUM) != 0;
         boolean softEnum = (type & ARG_FLAG_SOFT_ENUM) != 0;
         boolean postfix = (type & ARG_FLAG_POSTFIX) != 0;
-        Preconditions.checkState(postfix || (type & ARG_FLAG_VALID) != 0, "Invalid command param type");
+        Preconditions.checkState(postfix || (type & ARG_FLAG_VALID) != 0, "Invalid command param type: " + type);
         return new CommandSymbolData(value, commandEnum, softEnum, postfix);
     }
 

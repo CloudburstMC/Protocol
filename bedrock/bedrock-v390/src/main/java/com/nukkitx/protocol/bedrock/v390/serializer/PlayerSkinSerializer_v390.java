@@ -20,7 +20,7 @@ public class PlayerSkinSerializer_v390 extends PlayerSkinSerializer_v388 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerSkinPacket packet) {
-        super.serialize(buffer, helper, packet);
+        super.deserialize(buffer, helper, packet);
 
         if (buffer.isReadable()) packet.setTrustedSkin(buffer.readBoolean());
     }
