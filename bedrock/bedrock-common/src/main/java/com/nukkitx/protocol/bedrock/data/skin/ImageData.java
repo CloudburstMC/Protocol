@@ -66,7 +66,7 @@ public class ImageData {
         }
     }
 
-    private static ImageData parseBufferedImage(BufferedImage image) {
+    public static ImageData from(BufferedImage image) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
