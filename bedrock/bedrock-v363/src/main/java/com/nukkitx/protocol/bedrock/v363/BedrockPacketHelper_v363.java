@@ -1,29 +1,22 @@
 package com.nukkitx.protocol.bedrock.v363;
 
-import com.nukkitx.protocol.bedrock.v354.BedrockPacketHelper_v354;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import com.nukkitx.protocol.bedrock.v361.BedrockPacketHelper_v361;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BedrockPacketHelper_v363 extends BedrockPacketHelper_v354 {
+public class BedrockPacketHelper_v363 extends BedrockPacketHelper_v361 {
+    public static final BedrockPacketHelper INSTANCE = new BedrockPacketHelper_v363();
 
     @Override
-    protected void registerCommandParams() {
-        this.addCommandParam(1, INT);
-        this.addCommandParam(2, FLOAT);
-        this.addCommandParam(3, VALUE);
-        this.addCommandParam(4, WILDCARD_INT);
-        this.addCommandParam(5, OPERATOR);
-        this.addCommandParam(6, TARGET);
-        this.addCommandParam(7, WILDCARD_TARGET);
-        this.addCommandParam(14, FILE_PATH);
-        this.addCommandParam(27, STRING);
-        this.addCommandParam(29, POSITION);
-        this.addCommandParam(32, MESSAGE);
-        this.addCommandParam(34, TEXT);
-        this.addCommandParam(37, JSON);
-        this.addCommandParam(44, COMMAND);
+    protected void registerEntityData() {
+        super.registerEntityData();
+
+        this.addEntityData(107, EntityData.AMBIENT_SOUND_INTERVAL);
+        this.addEntityData(108, EntityData.AMBIENT_SOUND_INTERVAL_RANGE);
+        this.addEntityData(109, EntityData.AMBIENT_SOUND_EVENT_NAME);
     }
+
 }

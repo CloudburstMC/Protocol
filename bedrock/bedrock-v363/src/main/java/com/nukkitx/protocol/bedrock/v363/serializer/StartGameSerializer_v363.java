@@ -32,6 +32,7 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
         helper.writeVector2f(buffer, packet.getRotation());
 
         // Level settings start
+        VarInts.writeInt(buffer, packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
