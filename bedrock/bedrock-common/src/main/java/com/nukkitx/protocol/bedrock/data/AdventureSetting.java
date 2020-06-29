@@ -1,25 +1,25 @@
 package com.nukkitx.protocol.bedrock.data;
 
 public enum AdventureSetting {
-    WORLD_IMMUTABLE,
-    NO_PVM,
-    NO_MVP,
-    SHOW_NAME_TAGS,
     AUTO_JUMP,
-    MAY_FLY,
-    NO_CLIP,
-    WORLD_BUILDER,
     FLYING,
+    MAY_FLY,
     MUTED,
+    NO_CLIP,
+    NO_MVP,
+    NO_PVM,
+    SHOW_NAME_TAGS,
+    WORLD_BUILDER,
+    WORLD_IMMUTABLE,
 
     // Permission flags
-    MINE,
-    DOORS_AND_SWITCHES,
-    OPEN_CONTAINERS,
-    ATTACK_PLAYERS,
     ATTACK_MOBS,
-    OPERATOR,
-    TELEPORT,
+    ATTACK_PLAYERS,
     BUILD,
-    DEFAULT_LEVEL_PERMISSIONS
+    DEFAULT_LEVEL_PERMISSIONS,
+    DOORS_AND_SWITCHES,
+    MINE,
+    OPEN_CONTAINERS,
+    OPERATOR,
+    TELEPORT
 }
