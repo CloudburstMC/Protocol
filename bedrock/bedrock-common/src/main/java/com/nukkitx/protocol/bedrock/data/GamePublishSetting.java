@@ -1,10 +1,10 @@
 package com.nukkitx.protocol.bedrock.data;
 
 public enum GamePublishSetting {
-    NO_MULTI_PLAY,
-    INVITE_ONLY,
-    FRIENDS_ONLY,
     FRIENDS_OF_FRIENDS,
+    FRIENDS_ONLY,
+    INVITE_ONLY,
+    NO_MULTI_PLAY,
     PUBLIC;
 
     public static GamePublishSetting byId(int id) {
