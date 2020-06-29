@@ -16,6 +16,7 @@ import lombok.experimental.UtilityClass;
 public class Bedrock_v363 {
     public static BedrockPacketCodec V363_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(363)
+            .raknetProtocolVersion(9)
             .minecraftVersion("1.12.60")
             .helper(BedrockPacketHelper_v363.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
