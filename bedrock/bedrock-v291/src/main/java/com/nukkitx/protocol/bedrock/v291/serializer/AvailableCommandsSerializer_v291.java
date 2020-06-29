@@ -142,7 +142,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                     List<CommandParamOption> options = new ObjectArrayList<>();
                     for (int idx = 0; idx < 8; idx++) {
                         if ((optionsByte & (1 << idx)) != 0) {
-                            options.add(OPTIONS[i]);
+                            options.add(OPTIONS[idx]);
                         }
                     }
 

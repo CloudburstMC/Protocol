@@ -1,35 +1,29 @@
 package com.nukkitx.protocol.bedrock.v363;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.network.VarInts;
-import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
-import com.nukkitx.protocol.bedrock.data.entity.EntityData;
-import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
-import com.nukkitx.protocol.bedrock.data.entity.EntityFlags;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.structure.StructureMirror;
-import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
-import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.v354.BedrockPacketHelper_v354;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.stream.Collectors;
+import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v363 extends BedrockPacketHelper_v354 {
 
+    @Override
+    protected void registerCommandParams() {
+        this.addCommandParam(1, INT);
+        this.addCommandParam(2, FLOAT);
+        this.addCommandParam(3, VALUE);
+        this.addCommandParam(4, WILDCARD_INT);
+        this.addCommandParam(5, OPERATOR);
+        this.addCommandParam(6, TARGET);
+        this.addCommandParam(7, WILDCARD_TARGET);
+        this.addCommandParam(14, FILE_PATH);
+        this.addCommandParam(27, STRING);
+        this.addCommandParam(29, POSITION);
+        this.addCommandParam(32, MESSAGE);
+        this.addCommandParam(34, TEXT);
+        this.addCommandParam(37, JSON);
+        this.addCommandParam(44, COMMAND);
+    }
 }
