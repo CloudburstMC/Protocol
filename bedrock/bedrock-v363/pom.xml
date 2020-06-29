@@ -5,19 +5,13 @@
     <parent>
         <artifactId>bedrock-parent</artifactId>
         <groupId>com.nukkitx.protocol</groupId>
-        <version>2.5.7-SNAPSHOT</version>
+        <version>2.6.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bedrock-v363</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.nukkitx.protocol</groupId>
-            <artifactId>bedrock-common</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v361</artifactId>
