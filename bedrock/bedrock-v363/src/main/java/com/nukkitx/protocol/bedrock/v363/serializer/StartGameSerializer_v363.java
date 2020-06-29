@@ -6,6 +6,7 @@ import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
+import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v361.serializer.StartGameSerializer_v361;
@@ -26,18 +27,18 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        VarInts.writeInt(buffer, packet.getPlayerGamemode());
+        VarInts.writeInt(buffer, packet.getPlayerGameType().ordinal());
         helper.writeVector3f(buffer, packet.getPlayerPosition());
         helper.writeVector2f(buffer, packet.getRotation());
+
         // Level settings start
-        VarInts.writeInt(buffer, packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
-        VarInts.writeInt(buffer, packet.getLevelGamemode());
+        VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
         VarInts.writeInt(buffer, packet.getDifficulty());
         helper.writeBlockPosition(buffer, packet.getDefaultSpawn());
         buffer.writeBoolean(packet.isAchievementsDisabled());
-        VarInts.writeInt(buffer, packet.getTime());
+        VarInts.writeInt(buffer, packet.getDayCycleStopTime());
         buffer.writeByte(packet.getEduEditionOffers());
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
         buffer.writeFloatLE(packet.getRainLevel());
@@ -65,13 +66,12 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
         buffer.writeBoolean(packet.isFromWorldTemplate());
         buffer.writeBoolean(packet.isWorldTemplateOptionLocked());
         buffer.writeBoolean(packet.isOnlySpawningV1Villagers());
-
-        // Unknown
-        buffer.writeBytes(new byte[] {0x10, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0});
+        buffer.writeIntLE(packet.getLimitedWorldWidth());
+        buffer.writeIntLE(packet.getLimitedWorldHeight());
 
         // Level settings end
         helper.writeString(buffer, packet.getLevelId());
-        helper.writeString(buffer, packet.getWorldName());
+        helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
         buffer.writeLongLE(packet.getCurrentTick());
@@ -100,7 +100,7 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
 
-        packet.setPlayerGamemode(VarInts.readInt(buffer));
+        packet.setPlayerGameType(GameType.from(VarInts.readInt(buffer)));
         packet.setPlayerPosition(helper.readVector3f(buffer));
         packet.setRotation(helper.readVector2f(buffer));
 
@@ -108,18 +108,18 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
         packet.setSeed(VarInts.readInt(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
-        packet.setLevelGamemode(VarInts.readInt(buffer));
+        packet.setLevelGameType(GameType.values()[VarInts.readInt(buffer)]);
         packet.setDifficulty(VarInts.readInt(buffer));
         packet.setDefaultSpawn(helper.readBlockPosition(buffer));
         packet.setAchievementsDisabled(buffer.readBoolean());
-        packet.setTime(VarInts.readInt(buffer));
+        packet.setDayCycleStopTime(VarInts.readInt(buffer));
         packet.setEduEditionOffers(buffer.readByte());
         packet.setEduFeaturesEnabled(buffer.readBoolean());
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());
 
         // unknown: Mine: 0x0
-        buffer.readBoolean();
+        buffer.readByte();
 
         packet.setPlatformLockedContentConfirmed(buffer.readBoolean());
         packet.setMultiplayerGame(buffer.readBoolean());
@@ -142,13 +142,12 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
         packet.setFromWorldTemplate(buffer.readBoolean());
         packet.setWorldTemplateOptionLocked(buffer.readBoolean());
         packet.setOnlySpawningV1Villagers(buffer.readBoolean());
-
-        // Unknown: Mine: 0x10 0x0 0x0 0x0 0x10 0x0 0x0 0x0
-        buffer.readLong();
+        packet.setLimitedWorldWidth(buffer.readIntLE());
+        packet.setLimitedWorldHeight(buffer.readIntLE());
 
         // Level settings end
         packet.setLevelId(helper.readString(buffer));
-        packet.setWorldName(helper.readString(buffer));
+        packet.setLevelName(helper.readString(buffer));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
         packet.setCurrentTick(buffer.readLongLE());

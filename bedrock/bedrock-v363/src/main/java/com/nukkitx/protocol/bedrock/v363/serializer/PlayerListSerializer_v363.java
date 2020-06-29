@@ -2,6 +2,8 @@ package com.nukkitx.protocol.bedrock.v363.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.data.skin.ImageData;
+import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.packet.PlayerListPacket;
 import com.nukkitx.protocol.bedrock.v291.serializer.PlayerListSerializer_v291;
 import io.netty.buffer.ByteBuf;
