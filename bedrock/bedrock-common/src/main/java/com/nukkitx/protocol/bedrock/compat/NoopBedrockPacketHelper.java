@@ -55,6 +55,11 @@ public class NoopBedrockPacketHelper extends BedrockPacketHelper {
     }
 
     @Override
+    protected void registerResourcePackTypes() {
+
+    }
+
+    @Override
     protected void registerLevelEvents() {
 
     }

@@ -4,31 +4,15 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket;
-import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-import static com.nukkitx.protocol.bedrock.packet.ResourcePackDataInfoPacket.Type.*;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSerializer<ResourcePackDataInfoPacket> {
     public static final ResourcePackDataInfoSerializer_v361 INSTANCE = new ResourcePackDataInfoSerializer_v361();
-
-    public static final Int2ObjectBiMap<ResourcePackDataInfoPacket.Type> TYPES = new Int2ObjectBiMap<>(INVALID);
-
-    static {
-        TYPES.put(0, INVALID);
-        TYPES.put(1, RESOURCE);
-        TYPES.put(2, BEHAVIOR);
-        TYPES.put(3, WORLD_TEMPLATE);
-        TYPES.put(4, ADDON);
-        TYPES.put(5, SKINS);
-        TYPES.put(6, CACHED);
-        TYPES.put(7, COPY_PROTECTED);
-    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackDataInfoPacket packet) {
@@ -41,7 +25,7 @@ public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSeriali
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
         buffer.writeBoolean(packet.isPremium());
-        buffer.writeByte(TYPES.get(packet.getType()));
+        buffer.writeByte(helper.getResourcePackTypeId(packet.getType()));
     }
 
     @Override
@@ -58,6 +42,6 @@ public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSeriali
         buffer.readBytes(hash);
         packet.setHash(hash);
         packet.setPremium(buffer.readBoolean());
-        packet.setType(TYPES.get(buffer.readUnsignedByte()));
+        packet.setType(helper.getResourcePackType(buffer.readUnsignedByte()));
     }
 }

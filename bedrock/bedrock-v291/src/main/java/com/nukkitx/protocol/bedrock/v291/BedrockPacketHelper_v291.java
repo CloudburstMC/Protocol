@@ -533,6 +533,11 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
     }
 
     @Override
+    protected void registerResourcePackTypes() {
+        // NOOP
+    }
+
+    @Override
     protected void registerLevelEvents() {
         this.addLevelEvent(0, LevelEventType.UNDEFINED);
 
