@@ -9,12 +9,12 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class ScoreInfo {
-    private final long scoreboardId;
-    private final String objectiveId;
     private final int score;
+    private final long entityId;
+    private final long scoreboardId;
     private final ScorerType type;
     private final String name;
-    private final long entityId;
+    private final objectiveId;
 
     public ScoreInfo(long scoreboardId, String objectiveId, int score) {
         this.scoreboardId = scoreboardId;
@@ -45,9 +45,9 @@ public class ScoreInfo {
     }
 
     public enum ScorerType {
-        INVALID,
-        PLAYER,
         ENTITY,
-        FAKE
+        FAKE,
+        INVALID,
+        PLAYER
     }
 }
