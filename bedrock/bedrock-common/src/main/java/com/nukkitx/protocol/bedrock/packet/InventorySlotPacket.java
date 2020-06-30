@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,8 +12,7 @@ import lombok.EqualsAndHashCode;
 public class InventorySlotPacket extends BedrockPacket {
     private int containerId;
     private int slot;
-    private int networkId;
-    private ItemData item;
+    private ItemInstance itemInstance;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

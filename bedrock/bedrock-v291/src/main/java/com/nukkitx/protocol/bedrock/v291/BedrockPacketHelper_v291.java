@@ -19,6 +19,7 @@ import com.nukkitx.protocol.bedrock.data.command.CommandOriginType;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -692,6 +693,16 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         VarInts.writeLong(buffer, entityLink.getTo());
         buffer.writeByte(entityLink.getType().ordinal());
         buffer.writeBoolean(entityLink.isImmediate());
+    }
+
+    @Override
+    public ItemInstance readItemInstance(ByteBuf buffer) {
+        return ItemInstance.of(readItem(buffer));
+    }
+
+    @Override
+    public void writeItemInstance(ByteBuf buffer, ItemInstance itemInstance) {
+        writeItem(buffer, itemInstance.getItem());
     }
 
     @Override

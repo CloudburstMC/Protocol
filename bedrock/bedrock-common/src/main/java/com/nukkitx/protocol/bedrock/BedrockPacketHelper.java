@@ -20,6 +20,7 @@ import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
@@ -185,6 +186,10 @@ public abstract class BedrockPacketHelper {
     public abstract EntityLinkData readEntityLink(ByteBuf buffer);
 
     public abstract void writeEntityLink(ByteBuf buffer, EntityLinkData link);
+
+    public abstract ItemInstance readItemInstance(ByteBuf buffer);
+
+    public abstract void writeItemInstance(ByteBuf buffer, ItemInstance itemInstance);
 
     public abstract ItemData readItem(ByteBuf buffer);
 

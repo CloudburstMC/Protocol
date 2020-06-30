@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -89,6 +90,17 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         buffer.writeByte(entityLink.getType().ordinal());
         buffer.writeBoolean(entityLink.isImmediate());
         buffer.writeBoolean(entityLink.isRiderInitiated());
+    }
+
+    @Override
+    public ItemInstance readItemInstance(ByteBuf buffer) {
+        return ItemInstance.of(VarInts.readInt(buffer), readItem(buffer));
+    }
+
+    @Override
+    public void writeItemInstance(ByteBuf buffer, ItemInstance itemInstance) {
+        VarInts.writeInt(buffer, itemInstance.getNetworkId());
+        writeItem(buffer, itemInstance.getItem());
     }
 
     @Override

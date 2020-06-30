@@ -7,6 +7,7 @@ import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -65,6 +66,16 @@ public class NoopBedrockPacketHelper extends BedrockPacketHelper {
 
     @Override
     public void writeEntityLink(ByteBuf buffer, EntityLinkData link) {
+
+    }
+
+    @Override
+    public ItemInstance readItemInstance(ByteBuf buffer) {
+        return null;
+    }
+
+    @Override
+    public void writeItemInstance(ByteBuf buffer, ItemInstance itemInstance) {
 
     }
 
