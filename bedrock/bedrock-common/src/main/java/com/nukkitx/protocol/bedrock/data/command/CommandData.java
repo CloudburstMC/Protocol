@@ -8,12 +8,12 @@ import java.util.Objects;
 
 @Value
 public class CommandData {
-    private final String name;
-    private final String description;
-    private final List<Flag> flags;
     private final byte permission;
     private final CommandEnumData aliases;
     private final CommandParamData[][] overloads;
+    private final List<Flag> flags;
+    private final String description;
+    private final String name;
 
     public String toString() {
         StringBuilder overloads = new StringBuilder("[\r\n");
@@ -40,22 +40,22 @@ public class CommandData {
 
     @Value
     public static class Builder {
-        private final String name;
-        private final String description;
+        private CommandParamData.Builder[][] overloads;
         private final byte flags;
         private final byte permission;
         private final int aliases;
-        private CommandParamData.Builder[][] overloads;
+        private final String description;
+        private final String name;
     }
 
     // Bit flags
     public enum Flag {
-        USAGE,
-        VISIBILITY,
-        SYNC,
-        EXECUTE,
-        TYPE,
         CHEAT,
-        UNKNOWN_6
+        EXECUTE,
+        SYNC,
+        TYPE,
+        UNKNOWN_6,
+        USAGE,
+        VISIBILITY
     }
 }
