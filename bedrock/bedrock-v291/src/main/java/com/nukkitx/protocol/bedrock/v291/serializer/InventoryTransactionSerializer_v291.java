@@ -91,6 +91,8 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
                 return InventorySource.fromWorldInteraction(flag);
             case CREATIVE:
                 return InventorySource.fromCreativeInventory();
+            case UNTRACKED_INTERACTION_UI:
+                return InventorySource.fromUntrackedInteractionUI(VarInts.readInt(buffer));
             case NON_IMPLEMENTED_TODO:
                 containerId = VarInts.readInt(buffer);
                 return InventorySource.fromNonImplementedTodo(containerId);
