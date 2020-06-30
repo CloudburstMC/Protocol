@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
     public static final BedrockPacketHelper INSTANCE = new BedrockPacketHelper_v361();
 
+    public static final BedrockPacketHelper INSTANCE = new BedrockPacketHelper_v361();
+
     @Override
     protected void registerEntityData() {
         super.registerEntityData();

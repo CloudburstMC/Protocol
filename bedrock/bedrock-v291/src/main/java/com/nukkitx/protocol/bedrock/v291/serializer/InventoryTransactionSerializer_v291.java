@@ -137,7 +137,7 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
     }
 
     public void readItemUseOnEntity(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
-        packet.setRuntimeEntityId(VarInts.readUnsignedInt(buffer));
+        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setActionType(VarInts.readUnsignedInt(buffer));
         packet.setHotbarSlot(VarInts.readInt(buffer));
         packet.setItemInHand(helper.readItem(buffer));
@@ -146,7 +146,7 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
     }
 
     public void writeItemUseOnEntity(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getRuntimeEntityId());
+        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
         VarInts.writeUnsignedInt(buffer, packet.getActionType());
         VarInts.writeInt(buffer, packet.getHotbarSlot());
         helper.writeItem(buffer, packet.getItemInHand());
