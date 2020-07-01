@@ -11,12 +11,9 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintData;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintType;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
-import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
@@ -58,6 +55,7 @@ public abstract class BedrockPacketHelper {
     protected final Int2ObjectBiMap<SoundEvent> soundEvents = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<LevelEventType> levelEvents = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<CommandParamType> commandParams = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<ResourcePackType> resourcePackTypes = new Int2ObjectBiMap<>();
 
     protected BedrockPacketHelper() {
         gameRuleTypes.defaultReturnValue(-1);
@@ -70,6 +68,7 @@ public abstract class BedrockPacketHelper {
         this.registerSoundEvents();
         this.registerLevelEvents();
         this.registerCommandParams();
+        this.registerResourcePackTypes();
     }
 
     protected final void addGameRuleType(int index, Class<?> clazz) {
@@ -166,6 +165,18 @@ public abstract class BedrockPacketHelper {
         return this.commandParams.get(commandParam);
     }
 
+    public final void addResourcePackType(int index, ResourcePackType resourcePackType) {
+        this.resourcePackTypes.put(index, resourcePackType);
+    }
+
+    public final ResourcePackType getResourcePackType(int index) {
+        return this.resourcePackTypes.get(index);
+    }
+
+    public final int getResourcePackTypeId(ResourcePackType resourcePackType) {
+        return this.resourcePackTypes.get(resourcePackType);
+    }
+
     protected abstract void registerEntityData();
 
     protected abstract void registerEntityFlags();
@@ -180,11 +191,17 @@ public abstract class BedrockPacketHelper {
 
     protected abstract void registerCommandParams();
 
+    protected abstract void registerResourcePackTypes();
+
     protected abstract void registerLevelEvents();
 
     public abstract EntityLinkData readEntityLink(ByteBuf buffer);
 
     public abstract void writeEntityLink(ByteBuf buffer, EntityLinkData link);
+
+    public abstract ItemData readNetItem(ByteBuf buffer);
+
+    public abstract void writeNetItem(ByteBuf buffer, ItemData item);
 
     public abstract ItemData readItem(ByteBuf buffer);
 
