@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v407;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
@@ -79,6 +80,42 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addLevelEvent(4000, LevelEventType.SET_DATA);
 
         this.addLevelEvent(9800, LevelEventType.ALL_PLAYERS_SLEEPING);
+    }
+
+    @Override
+    protected void registerSoundEvents() {
+        super.registerSoundEvents();
+
+        this.addSoundEvent(287, SoundEvent.JUMP_PREVENT);
+        this.addSoundEvent(288, SoundEvent.AMBIENT_POLLINATE);
+        this.addSoundEvent(289, SoundEvent.BEEHIVE_DRIP);
+        this.addSoundEvent(290, SoundEvent.BEEHIVE_ENTER);
+        this.addSoundEvent(291, SoundEvent.BEEHIVE_EXIT);
+        this.addSoundEvent(292, SoundEvent.BEEHIVE_WORK);
+        this.addSoundEvent(293, SoundEvent.BEEHIVE_SHEAR);
+        this.addSoundEvent(294, SoundEvent.HONEYBOTTLE_DRINK);
+        this.addSoundEvent(295, SoundEvent.AMBIENT_CAVE);
+        this.addSoundEvent(296, SoundEvent.RETREAT);
+        this.addSoundEvent(297, SoundEvent.CONVERT_TO_ZOMBIFIED);
+        this.addSoundEvent(298, SoundEvent.ADMIRE);
+        this.addSoundEvent(299, SoundEvent.STEP_LAVA);
+        this.addSoundEvent(300, SoundEvent.TEMPT);
+        this.addSoundEvent(301, SoundEvent.PANIC);
+        this.addSoundEvent(302, SoundEvent.ANGRY);
+        this.addSoundEvent(303, SoundEvent.AMBIENT_WARPED_FOREST);
+        this.addSoundEvent(304, SoundEvent.AMBIENT_SOULSAND_VALLEY);
+        this.addSoundEvent(305, SoundEvent.AMBIENT_NETHER_WASTES);
+        this.addSoundEvent(306, SoundEvent.AMBIENT_BASALT_DELTAS);
+        this.addSoundEvent(307, SoundEvent.AMBIENT_CRIMSON_FOREST);
+        this.addSoundEvent(308, SoundEvent.RESPAWN_ANCHOR_CHARGE);
+        this.addSoundEvent(309, SoundEvent.RESPAWN_ANCHOR_DEPLETE);
+        this.addSoundEvent(310, SoundEvent.RESPAWN_ANCHOR_SET_SPAWN);
+        this.addSoundEvent(311, SoundEvent.RESPAWN_ANCHOR_AMBIENT);
+        this.addSoundEvent(312, SoundEvent.SOUL_ESCAPE_QUIET);
+        this.addSoundEvent(313, SoundEvent.SOUL_ESCAPE_LOUD);
+        this.addSoundEvent(314, SoundEvent.RECORD_PIGSTEP);
+        this.addSoundEvent(315, SoundEvent.LINK_COMPASS_TO_LODESTONE);
+        this.addSoundEvent(316, SoundEvent.USE_SMITHING_TABLE);
     }
 
     @Override
