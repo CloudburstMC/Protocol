@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class InventoryContentPacket extends BedrockPacket {
-    private ItemData[] items;
+    private ItemData[] contents;
     private int containerId;
 
     @Override
