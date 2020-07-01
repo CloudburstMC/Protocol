@@ -6,14 +6,13 @@ import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
-import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.TARGET;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -68,6 +67,21 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     }
 
     @Override
+    protected void registerLevelEvents() {
+        super.registerLevelEvents();
+
+        this.addLevelEvent(1050, LevelEventType.SOUND_CAMERA);
+
+        this.addLevelEvent(3600, LevelEventType.BLOCK_START_BREAK);
+        this.addLevelEvent(3601, LevelEventType.BLOCK_STOP_BREAK);
+        this.addLevelEvent(3602, LevelEventType.BLOCK_UPDATE_BREAK);
+
+        this.addLevelEvent(4000, LevelEventType.SET_DATA);
+
+        this.addLevelEvent(9800, LevelEventType.ALL_PLAYERS_SLEEPING);
+    }
+
+    @Override
     public EntityLinkData readEntityLink(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
@@ -93,28 +107,16 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     }
 
     @Override
-    public ItemInstance readItemInstance(ByteBuf buffer) {
-        return ItemInstance.of(VarInts.readInt(buffer), readItem(buffer));
+    public ItemData readNetItem(ByteBuf buffer) {
+        int netId = VarInts.readInt(buffer);
+        ItemData item = this.readItem(buffer);
+        item.setNetId(netId);
+        return item;
     }
 
     @Override
-    public void writeItemInstance(ByteBuf buffer, ItemInstance itemInstance) {
-        VarInts.writeInt(buffer, itemInstance.getNetworkId());
-        writeItem(buffer, itemInstance.getItem());
-    }
-
-    @Override
-    protected void registerLevelEvents() {
-        super.registerLevelEvents();
-
-        this.addLevelEvent(1050, LevelEventType.SOUND_CAMERA);
-
-        this.addLevelEvent(3600, LevelEventType.BLOCK_START_BREAK);
-        this.addLevelEvent(3601, LevelEventType.BLOCK_STOP_BREAK);
-        this.addLevelEvent(3602, LevelEventType.BLOCK_UPDATE_BREAK);
-
-        this.addLevelEvent(4000, LevelEventType.SET_DATA);
-
-        this.addLevelEvent(9800, LevelEventType.ALL_PLAYERS_SLEEPING);
+    public void writeNetItem(ByteBuf buffer, ItemData item) {
+        VarInts.writeInt(buffer, item.getNetId());
+        this.writeItem(buffer, item);
     }
 }

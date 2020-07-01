@@ -3,7 +3,6 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.packet.InventoryContentPacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -16,12 +15,12 @@ public class InventoryContentSerializer_v291 implements BedrockPacketSerializer<
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryContentPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
-        helper.writeArray(buffer, packet.getItems(), helper::writeItemInstance);
+        helper.writeArray(buffer, packet.getItems(), helper::writeNetItem);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryContentPacket packet) {
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
-        helper.readArray(buffer, packet.getItems(), helper::readItemInstance);
+        helper.readArray(buffer, packet.getItems(), helper::readNetItem);
     }
 }

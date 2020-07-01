@@ -13,15 +13,10 @@ import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintData;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumConstraintType;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
-import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemInstance;
 import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
@@ -204,9 +199,9 @@ public abstract class BedrockPacketHelper {
 
     public abstract void writeEntityLink(ByteBuf buffer, EntityLinkData link);
 
-    public abstract ItemInstance readItemInstance(ByteBuf buffer);
+    public abstract ItemData readNetItem(ByteBuf buffer);
 
-    public abstract void writeItemInstance(ByteBuf buffer, ItemInstance itemInstance);
+    public abstract void writeNetItem(ByteBuf buffer, ItemData item);
 
     public abstract ItemData readItem(ByteBuf buffer);
 
