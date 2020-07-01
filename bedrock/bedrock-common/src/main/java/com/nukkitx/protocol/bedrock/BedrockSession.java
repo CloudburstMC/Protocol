@@ -146,7 +146,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    void onTick() {
+    synchronized void onTick() {
         if (this.closed) {
             return;
         }
