@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,6 +22,9 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
         helper.writeArray(buffer, packet.getEntries(), (buf, response) -> {
             buf.writeBoolean(response.isSuccess());
             VarInts.writeInt(buffer, response.getRequestId());
+
+            if (!response.isSuccess())
+                return;
 
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
                 buf2.writeByte(containerEntry.getWindowId());
@@ -41,6 +45,9 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
         helper.readArray(buffer, entries, buf -> {
             boolean success = buf.readBoolean();
             int requestId = VarInts.readInt(buf);
+
+            if (!success)
+                return new ItemStackResponsePacket.Response(success, requestId, Collections.emptyList());
 
             List<ItemStackResponsePacket.ContainerEntry> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
