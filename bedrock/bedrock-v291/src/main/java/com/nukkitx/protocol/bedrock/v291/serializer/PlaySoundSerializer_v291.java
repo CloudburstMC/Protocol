@@ -15,7 +15,7 @@ public class PlaySoundSerializer_v291 implements BedrockPacketSerializer<PlaySou
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlaySoundPacket packet) {
         helper.writeString(buffer, packet.getSound());
-        helper.writeBlockPosition(buffer, packet.getPosition().mul(3).toInt());
+        helper.writeBlockPosition(buffer, packet.getPosition().mul(8).toInt());
         buffer.writeFloatLE(packet.getVolume());
         buffer.writeFloatLE(packet.getPitch());
     }
