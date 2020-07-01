@@ -47,10 +47,13 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                 switch (type) {
                     case TAKE:
                     case PLACE:
-                    case SWAP:
                         byteBuf.writeByte(((TransferStackRequestActionData) action).getCount());
                         writeStackRequestSlotInfo(byteBuf, helper, ((TransferStackRequestActionData) action).getSource());
                         writeStackRequestSlotInfo(byteBuf, helper, ((TransferStackRequestActionData) action).getDestination());
+                        break;
+                    case SWAP:
+                        writeStackRequestSlotInfo(byteBuf, helper, ((SwapStackRequestActionData) action).getSource());
+                        writeStackRequestSlotInfo(byteBuf, helper, ((SwapStackRequestActionData) action).getDestination());
                         break;
                     case DROP:
                         byteBuf.writeByte(((DropStackRequestActionData) action).getCount());
@@ -109,7 +112,6 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                         );
                     case SWAP:
                         return new SwapStackRequestActionData(
-                                byteBuf.readByte(),
                                 readStackRequestSlotInfo(byteBuf, helper),
                                 readStackRequestSlotInfo(byteBuf, helper)
                         );
