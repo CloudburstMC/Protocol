@@ -54,6 +54,11 @@ public class NoopBedrockPacketHelper extends BedrockPacketHelper {
     }
 
     @Override
+    protected void registerResourcePackTypes() {
+
+    }
+
+    @Override
     protected void registerLevelEvents() {
 
     }
@@ -65,6 +70,16 @@ public class NoopBedrockPacketHelper extends BedrockPacketHelper {
 
     @Override
     public void writeEntityLink(ByteBuf buffer, EntityLinkData link) {
+
+    }
+
+    @Override
+    public ItemData readNetItem(ByteBuf buffer) {
+        return null;
+    }
+
+    @Override
+    public void writeNetItem(ByteBuf buffer, ItemData item) {
 
     }
 

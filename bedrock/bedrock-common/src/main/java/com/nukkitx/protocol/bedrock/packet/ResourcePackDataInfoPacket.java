@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +19,7 @@ public class ResourcePackDataInfoPacket extends BedrockPacket {
     private long compressedPackSize;
     private byte[] hash;
     private boolean premium;
-    private Type type;
+    private ResourcePackType type;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -27,17 +28,5 @@ public class ResourcePackDataInfoPacket extends BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESOURCE_PACK_DATA_INFO;
-    }
-
-    public enum Type {
-        INVALID,
-        RESOURCE,
-        BEHAVIOR,
-        WORLD_TEMPLATE,
-        ADDON,
-        SKINS,
-        CACHED,
-        COPY_PROTECTED,
-        PERSONA_PIECE
     }
 }
