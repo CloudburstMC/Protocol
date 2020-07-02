@@ -7,8 +7,8 @@ import lombok.Value;
  */
 @Value
 public class StackRequestSlotInfoData {
-    // ContainerId is the ID of the container the slot was in
-    byte ContainerId;
+    // container the slot was in
+    Container container;
 
     // slot is the index of the slot within the container
     byte slot;
