@@ -34,10 +34,10 @@ public class UpdateBlockPacket extends BedrockPacket {
     }
 
     public enum Flag {
-        NONE,
         NEIGHBORS,
         NETWORK,
         NO_GRAPHIC,
+        UNUSED,
         PRIORITY
     }
 }
