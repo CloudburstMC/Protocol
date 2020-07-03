@@ -532,6 +532,11 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
     }
 
     @Override
+    protected void registerResourcePackTypes() {
+        // NOOP
+    }
+
+    @Override
     protected void registerLevelEvents() {
         this.addLevelEvent(0, LevelEventType.UNDEFINED);
 
@@ -692,6 +697,16 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         VarInts.writeLong(buffer, entityLink.getTo());
         buffer.writeByte(entityLink.getType().ordinal());
         buffer.writeBoolean(entityLink.isImmediate());
+    }
+
+    @Override
+    public ItemData readNetItem(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeNetItem(ByteBuf buffer, ItemData item) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

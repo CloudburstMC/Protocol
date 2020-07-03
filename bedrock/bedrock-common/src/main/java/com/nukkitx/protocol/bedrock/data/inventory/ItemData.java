@@ -3,14 +3,15 @@ package com.nukkitx.protocol.bedrock.data.inventory;
 import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.network.util.Preconditions;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.experimental.NonFinal;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Arrays;
 import java.util.Objects;
 
-@Value
+@Data
 @Immutable
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemData {
@@ -24,27 +25,47 @@ public final class ItemData {
     private final String[] canPlace;
     private final String[] canBreak;
     private final long blockingTicks;
+    @NonFinal
+    private int netId;
 
     public static ItemData of(int id, short damage, int count) {
         return of(id, damage, count, null);
     }
 
     public static ItemData of(int id, short damage, int count, CompoundTag tag) {
-        return of(id, damage, count, tag, EMPTY, EMPTY);
+        return fromNet(1, id, damage, count, tag, EMPTY, EMPTY);
     }
 
     public static ItemData of(int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak) {
-        return of(id, damage, count, tag, canPlace, canBreak, 0);
+        return fromNet(1, id, damage, count, tag, canPlace, canBreak, 0);
     }
 
     public static ItemData of(int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak, long blockingTicks) {
+        return fromNet(1, id, damage, count, tag, canPlace, canBreak, blockingTicks);
+    }
+
+    public static ItemData fromNet(int netId, int id, short damage, int count) {
+        return fromNet(netId, id, damage, count, null);
+    }
+
+    public static ItemData fromNet(int netId, int id, short damage, int count, CompoundTag tag) {
+        return fromNet(netId, id, damage, count, tag, EMPTY, EMPTY);
+    }
+
+    public static ItemData fromNet(int netId, int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak) {
+        return fromNet(netId, id, damage, count, tag, canPlace, canBreak, 0);
+    }
+
+    public static ItemData fromNet(int netId, int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak, long blockingTicks) {
         if (id == 0) {
             return AIR;
         }
         Preconditions.checkNotNull(canPlace, "canPlace");
         Preconditions.checkNotNull(canBreak, "canBreak");
         Preconditions.checkArgument(count < 256, "count exceeds maximum of 255");
-        return new ItemData(id, damage, count, tag, canPlace, canBreak, blockingTicks);
+        ItemData data = new ItemData(id, damage, count, tag, canPlace, canBreak, blockingTicks);
+        data.netId = netId;
+        return data;
     }
 
     public boolean isValid() {

@@ -10,6 +10,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
@@ -58,6 +59,18 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
         super.registerLevelEvents();
 
         this.addLevelEvent(23 + 2000, LevelEventType.PARTICLE_TELEPORT_TRAIL);
+    }
+
+    @Override
+    protected void registerResourcePackTypes() {
+        addResourcePackType(0, ResourcePackType.INVALID);
+        addResourcePackType(1, ResourcePackType.RESOURCE);
+        addResourcePackType(2, ResourcePackType.BEHAVIOR);
+        addResourcePackType(3, ResourcePackType.WORLD_TEMPLATE);
+        addResourcePackType(4, ResourcePackType.ADDON);
+        addResourcePackType(5, ResourcePackType.SKINS);
+        addResourcePackType(6, ResourcePackType.CACHED);
+        addResourcePackType(7, ResourcePackType.COPY_PROTECTED);
     }
 
     @Override

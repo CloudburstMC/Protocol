@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.v388;
 
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
@@ -78,6 +79,19 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         this.addSoundEvent(284, SoundEvent.MOOSHROOM_CONVERT);
         this.addSoundEvent(285, SoundEvent.MILK_SUSPICIOUSLY);
         this.addSoundEvent(286, SoundEvent.CELEBRATE);
+    }
+
+    @Override
+    protected void registerResourcePackTypes() {
+        addResourcePackType(0, ResourcePackType.INVALID);
+        addResourcePackType(1, ResourcePackType.ADDON);
+        addResourcePackType(2, ResourcePackType.CACHED);
+        addResourcePackType(3, ResourcePackType.COPY_PROTECTED);
+        addResourcePackType(4, ResourcePackType.BEHAVIOR);
+        addResourcePackType(5, ResourcePackType.PERSONA_PIECE);
+        addResourcePackType(6, ResourcePackType.RESOURCE);
+        addResourcePackType(7, ResourcePackType.SKINS);
+        addResourcePackType(8, ResourcePackType.WORLD_TEMPLATE);
     }
 
     @Override

@@ -12,7 +12,6 @@ import lombok.EqualsAndHashCode;
 public class InventorySlotPacket extends BedrockPacket {
     private int containerId;
     private int slot;
-    private int networkId;
     private ItemData item;
 
     @Override
