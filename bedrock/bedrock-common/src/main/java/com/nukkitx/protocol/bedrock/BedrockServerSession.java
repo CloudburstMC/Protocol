@@ -4,13 +4,14 @@ import com.nukkitx.network.raknet.RakNetSession;
 import com.nukkitx.protocol.MinecraftServerSession;
 import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
 import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
+import io.netty.channel.EventLoop;
 
 import javax.annotation.Nullable;
 
 public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
 
-    public BedrockServerSession(RakNetSession connection, BedrockWrapperSerializer serializer) {
-        super(connection, serializer);
+    public BedrockServerSession(RakNetSession connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
+        super(connection, eventLoop, serializer);
     }
 
     @Override
