@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.nbt.tag.Tag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerType;
@@ -18,7 +18,7 @@ public class UpdateTradePacket extends BedrockPacket {
     private long traderUniqueEntityId;
     private long playerUniqueEntityId;
     private String displayName;
-    private Tag<?> offers;
+    private NbtMap offers;
     private boolean newTradingUi;
     private boolean recipeAddedOnUpdate;
     private boolean usingEconomyTrade;

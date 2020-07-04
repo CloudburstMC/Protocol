@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.data.inventory;
 
-import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.network.util.Preconditions;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -21,7 +21,7 @@ public final class ItemData {
     private final int id;
     private final short damage;
     private final int count;
-    private final CompoundTag tag;
+    private final NbtMap tag;
     private final String[] canPlace;
     private final String[] canBreak;
     private final long blockingTicks;
@@ -32,15 +32,15 @@ public final class ItemData {
         return of(id, damage, count, null);
     }
 
-    public static ItemData of(int id, short damage, int count, CompoundTag tag) {
+    public static ItemData of(int id, short damage, int count, NbtMap tag) {
         return fromNet(1, id, damage, count, tag, EMPTY, EMPTY);
     }
 
-    public static ItemData of(int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak) {
+    public static ItemData of(int id, short damage, int count, NbtMap tag, String[] canPlace, String[] canBreak) {
         return fromNet(1, id, damage, count, tag, canPlace, canBreak, 0);
     }
 
-    public static ItemData of(int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak, long blockingTicks) {
+    public static ItemData of(int id, short damage, int count, NbtMap tag, String[] canPlace, String[] canBreak, long blockingTicks) {
         return fromNet(1, id, damage, count, tag, canPlace, canBreak, blockingTicks);
     }
 
@@ -48,15 +48,15 @@ public final class ItemData {
         return fromNet(netId, id, damage, count, null);
     }
 
-    public static ItemData fromNet(int netId, int id, short damage, int count, CompoundTag tag) {
+    public static ItemData fromNet(int netId, int id, short damage, int count, NbtMap tag) {
         return fromNet(netId, id, damage, count, tag, EMPTY, EMPTY);
     }
 
-    public static ItemData fromNet(int netId, int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak) {
+    public static ItemData fromNet(int netId, int id, short damage, int count, NbtMap tag, String[] canPlace, String[] canBreak) {
         return fromNet(netId, id, damage, count, tag, canPlace, canBreak, 0);
     }
 
-    public static ItemData fromNet(int netId, int id, short damage, int count, CompoundTag tag, String[] canPlace, String[] canBreak, long blockingTicks) {
+    public static ItemData fromNet(int netId, int id, short damage, int count, NbtMap tag, String[] canPlace, String[] canBreak, long blockingTicks) {
         if (id == 0) {
             return AIR;
         }

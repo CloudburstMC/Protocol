@@ -3,10 +3,9 @@ package com.nukkitx.protocol.bedrock;
 import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
@@ -496,17 +495,18 @@ public abstract class BedrockPacketHelper {
         }
     }
 
-    public Tag<?> readTag(ByteBuf buffer) {
+    @SuppressWarnings("unchecked")
+    public <T> T readTag(ByteBuf buffer) {
         try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
-            return reader.readTag();
+            return (T) reader.readTag();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void writeTag(ByteBuf buffer, Tag<?> tag) {
+    public <T> void writeTag(ByteBuf buffer, T tag) {
         try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
-            writer.write(tag);
+            writer.writeTag(tag);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.data.entity;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -167,7 +167,7 @@ public enum EntityData {
                 return EntityData.Type.FLOAT;
             } else if (o instanceof String) {
                 return EntityData.Type.STRING;
-            } else if (o instanceof ItemData || o instanceof CompoundTag) {
+            } else if (o instanceof ItemData || o instanceof NbtMap) {
                 return EntityData.Type.NBT;
             } else if (o instanceof Vector3i) {
                 return EntityData.Type.VECTOR3I;

@@ -1,9 +1,8 @@
 package com.nukkitx.protocol.bedrock.v340;
 
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -94,13 +93,10 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         if (damage == Short.MAX_VALUE) damage = -1;
         int count = aux & 0xff;
         int nbtSize = buffer.readShortLE();
-        CompoundTag compoundTag = null;
+        NbtMap compoundTag = null;
         if (nbtSize > 0) {
             try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
-                Tag<?> tag = reader.readTag();
-                if (tag instanceof CompoundTag) {
-                    compoundTag = (CompoundTag) tag;
-                }
+                compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
@@ -108,10 +104,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
             try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
                 int nbtTagCount = VarInts.readUnsignedInt(buffer);
                 if (nbtTagCount == 1) {
-                    Tag<?> tag = reader.readTag();
-                    if (tag instanceof CompoundTag) {
-                        compoundTag = (CompoundTag) tag;
-                    }
+                    compoundTag = (NbtMap) reader.readTag();
                 } else {
                     throw new IllegalArgumentException("Expected 1 tag but got " + nbtTagCount);
                 }

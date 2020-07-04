@@ -2,10 +2,7 @@ package com.nukkitx.protocol.bedrock.v361;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -21,12 +18,9 @@ import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.v354.BedrockPacketHelper_v354;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -169,13 +163,7 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
                     object = readString(buffer);
                     break;
                 case NBT:
-                    CompoundTag tag;
-                    try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
-                        tag = (CompoundTag) reader.readTag();
-                    } catch (IOException e) {
-                        throw new IllegalStateException("Error whilst decoding NBT entity data");
-                    }
-                    object = tag;
+                    object = this.readTag(buffer);
                     break;
                 case VECTOR3I:
                     object = readVector3i(buffer);
@@ -234,21 +222,17 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
                     writeString(buffer, (String) object);
                     break;
                 case NBT:
-                    CompoundTag tag;
-                    if (object instanceof CompoundTag) {
-                        tag = (CompoundTag) object;
+                    NbtMap tag;
+                    if (object instanceof NbtMap) {
+                        tag = (NbtMap) object;
                     } else {
                         ItemData item = (ItemData) object;
                         tag = item.getTag();
                         if (tag == null) {
-                            tag = CompoundTag.EMPTY;
+                            tag = NbtMap.EMPTY;
                         }
                     }
-                    try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
-                        writer.write(tag);
-                    } catch (IOException e) {
-                        throw new IllegalStateException("Error whilst decoding NBT entity data");
-                    }
+                    this.writeTag(buffer, tag);
                     break;
                 case VECTOR3I:
                     writeVector3i(buffer, (Vector3i) object);
