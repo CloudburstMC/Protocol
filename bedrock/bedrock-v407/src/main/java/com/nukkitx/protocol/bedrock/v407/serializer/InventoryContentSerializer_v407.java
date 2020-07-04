@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v291.serializer;
+package com.nukkitx.protocol.bedrock.v407.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -10,20 +10,20 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InventoryContentSerializer_v291 implements BedrockPacketSerializer<InventoryContentPacket> {
-    public static final InventoryContentSerializer_v291 INSTANCE = new InventoryContentSerializer_v291();
+public class InventoryContentSerializer_v407 implements BedrockPacketSerializer<InventoryContentPacket> {
+    public static final InventoryContentSerializer_v407 INSTANCE = new InventoryContentSerializer_v407();
 
     private static final ItemData[] EMPTY = new ItemData[0];
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryContentPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
-        helper.writeArray(buffer, packet.getContents(), helper::writeItem);
+        helper.writeArray(buffer, packet.getContents(), helper::writeNetItem);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryContentPacket packet) {
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
-        packet.setContents(helper.readArray(buffer, EMPTY, helper::readItem));
+        packet.setContents(helper.readArray(buffer, EMPTY, helper::readNetItem));
     }
 }
