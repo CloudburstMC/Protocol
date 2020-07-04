@@ -18,8 +18,6 @@ public class BedrockPacketHelper_v389 extends BedrockPacketHelper_v388 {
         this.addLevelEvent(23 + 2000, LevelEventType.PARTICLE_TELEPORT_TRAIL);
 
         int legacy = 0x4000;
-        this.addLevelEvent(2 + legacy, LevelEventType.PARTICLE_BUBBLE_MANUAL);
-        this.addLevelEvent(24 + legacy, LevelEventType.PARTICLE_SPLASH_MANUAL);
         this.addLevelEvent(28 + legacy, LevelEventType.PARTICLE_DRIP_HONEY);
         this.addLevelEvent(29 + legacy, LevelEventType.PARTICLE_FALLING_DUST);
         this.addLevelEvent(30 + legacy, LevelEventType.PARTICLE_MOB_SPELL);

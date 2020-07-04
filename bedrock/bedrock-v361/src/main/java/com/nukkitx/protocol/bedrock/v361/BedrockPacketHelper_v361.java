@@ -83,7 +83,7 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
         this.addLevelEvent(19 + legacy, LevelEventType.PARTICLE_TERRAIN);
         this.addLevelEvent(20 + legacy, LevelEventType.PARTICLE_TOWN_AURA);
         this.addLevelEvent(21 + legacy, LevelEventType.PARTICLE_PORTAL);
-        //22 unknown
+        this.addLevelEvent(22 + legacy, LevelEventType.PARTICLE_MOB_PORTAL);
         this.addLevelEvent(23 + legacy, LevelEventType.PARTICLE_SPLASH);
         this.addLevelEvent(24 + legacy, LevelEventType.PARTICLE_SPLASH_MANUAL);
         this.addLevelEvent(25 + legacy, LevelEventType.PARTICLE_WATER_WAKE);
