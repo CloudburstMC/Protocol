@@ -671,9 +671,12 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         this.addLevelEvent(36 + legacy, LevelEventType.PARTICLE_NOTE);
         this.addLevelEvent(37 + legacy, LevelEventType.PARTICLE_WITCH_SPELL);
         this.addLevelEvent(38 + legacy, LevelEventType.PARTICLE_CARROT);
-        //39 unknown
+        this.addLevelEvent(39 + legacy, LevelEventType.PARTICLE_MOB_APPEARANCE);
         this.addLevelEvent(40 + legacy, LevelEventType.PARTICLE_END_ROD);
         this.addLevelEvent(41 + legacy, LevelEventType.PARTICLE_DRAGONS_BREATH);
+        this.addLevelEvent(42 + legacy, LevelEventType.PARTICLE_SPIT);
+        this.addLevelEvent(43 + legacy, LevelEventType.PARTICLE_TOTEM);
+        this.addLevelEvent(44 + legacy, LevelEventType.PARTICLE_FOOD);
     }
 
     @Override

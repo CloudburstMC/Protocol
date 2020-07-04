@@ -80,5 +80,17 @@ public class BedrockPacketHelper_v313 extends BedrockPacketHelper_v291 {
         super.registerLevelEvents();
 
         this.addLevelEvent(11 + 3500, LevelEventType.AGENT_SPAWN_EFFECT);
+
+        int legacy = 0x4000;
+        this.addLevelEvent(45 + legacy, LevelEventType.PARTICLE_FIREWORKS_STARTER);
+        this.addLevelEvent(46 + legacy, LevelEventType.PARTICLE_FIREWORKS_SPARK);
+        this.addLevelEvent(47 + legacy, LevelEventType.PARTICLE_FIREWORKS_OVERLAY);
+        this.addLevelEvent(48 + legacy, LevelEventType.PARTICLE_BALLOON_GAS);
+        this.addLevelEvent(49 + legacy, LevelEventType.PARTICLE_COLORED_FLAME);
+        this.addLevelEvent(50 + legacy, LevelEventType.PARTICLE_SPARKLER);
+        this.addLevelEvent(51 + legacy, LevelEventType.PARTICLE_CONDUIT);
+        this.addLevelEvent(52 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_UP);
+        this.addLevelEvent(53 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_DOWN);
+        this.addLevelEvent(54 + legacy, LevelEventType.PARTICLE_SNEEZE);
     }
 }

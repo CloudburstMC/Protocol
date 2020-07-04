@@ -8,7 +8,6 @@ import com.nukkitx.protocol.bedrock.v332.serializer.*;
 import com.nukkitx.protocol.bedrock.v340.serializer.InventoryTransactionSerializer_v340;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
-import com.nukkitx.protocol.bedrock.v388.BedrockPacketHelper_v388;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
 import lombok.experimental.UtilityClass;
 
@@ -17,7 +16,7 @@ public class Bedrock_v389 {
     public static BedrockPacketCodec V389_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(389)
             .minecraftVersion("1.14.0")
-            .helper(BedrockPacketHelper_v388.INSTANCE)
+            .helper(BedrockPacketHelper_v389.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
