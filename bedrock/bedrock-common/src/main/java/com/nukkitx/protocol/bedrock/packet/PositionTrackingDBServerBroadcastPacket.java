@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 public class PositionTrackingDBServerBroadcastPacket extends BedrockPacket {
     private Action action;
     private int trackingId;
-    private CompoundTag tag;
+    private NbtMap tag;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

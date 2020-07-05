@@ -1,8 +1,8 @@
 package com.nukkitx.protocol.bedrock.v361.serializer;
 
-import com.nukkitx.nbt.CompoundTagBuilder;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.ListTag;
+import com.nukkitx.nbt.NbtList;
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtType;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.GameType;
@@ -36,10 +36,10 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
         buffer.writeLongLE(packet.getCurrentTick());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
-        List<CompoundTag> palette = packet.getBlockPalette().getValue();
+        List<NbtMap> palette = packet.getBlockPalette();
         VarInts.writeUnsignedInt(buffer, palette.size());
-        for (CompoundTag entry : palette) {
-            CompoundTag blockTag = entry.getCompound("block");
+        for (NbtMap entry : palette) {
+            NbtMap blockTag = entry.getCompound("block");
             helper.writeString(buffer, blockTag.getString("name"));
             buffer.writeShortLE(entry.getShort("meta"));
             buffer.writeShortLE(entry.getShort("id"));
@@ -72,17 +72,17 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
         int paletteLength = VarInts.readUnsignedInt(buffer);
-        List<CompoundTag> palette = new ObjectArrayList<>(paletteLength);
+        List<NbtMap> palette = new ObjectArrayList<>(paletteLength);
         for (int i = 0; i < paletteLength; i++) {
-            palette.add(CompoundTagBuilder.builder()
-                    .tag(CompoundTagBuilder.builder()
-                            .stringTag("name", helper.readString(buffer))
-                            .build("block"))
-                    .shortTag("meta", buffer.readShortLE())
-                    .shortTag("id", buffer.readShortLE())
-                    .buildRootTag());
+            palette.add(NbtMap.builder()
+                    .putCompound("block", NbtMap.builder()
+                            .putString("name", helper.readString(buffer))
+                            .build())
+                    .putShort("meta", buffer.readShortLE())
+                    .putShort("id", buffer.readShortLE())
+                    .build());
         }
-        packet.setBlockPalette(new ListTag<>("", CompoundTag.class, palette));
+        packet.setBlockPalette(new NbtList<>(NbtType.COMPOUND, palette));
 
         helper.readArray(buffer, packet.getItemEntries(), buf -> {
             String identifier = helper.readString(buf);

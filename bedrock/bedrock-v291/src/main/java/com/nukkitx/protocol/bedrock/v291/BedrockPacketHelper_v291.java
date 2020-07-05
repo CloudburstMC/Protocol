@@ -2,11 +2,10 @@ package com.nukkitx.protocol.bedrock.v291;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NBTOutputStream;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -671,9 +670,12 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         this.addLevelEvent(36 + legacy, LevelEventType.PARTICLE_NOTE);
         this.addLevelEvent(37 + legacy, LevelEventType.PARTICLE_WITCH_SPELL);
         this.addLevelEvent(38 + legacy, LevelEventType.PARTICLE_CARROT);
-        //39 unknown
+        this.addLevelEvent(39 + legacy, LevelEventType.PARTICLE_MOB_APPEARANCE);
         this.addLevelEvent(40 + legacy, LevelEventType.PARTICLE_END_ROD);
         this.addLevelEvent(41 + legacy, LevelEventType.PARTICLE_DRAGONS_BREATH);
+        this.addLevelEvent(42 + legacy, LevelEventType.PARTICLE_SPIT);
+        this.addLevelEvent(43 + legacy, LevelEventType.PARTICLE_TOTEM);
+        this.addLevelEvent(44 + legacy, LevelEventType.PARTICLE_FOOD);
     }
 
     @Override
@@ -724,12 +726,12 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         int count = aux & 0xff;
         short nbtSize = buffer.readShortLE();
 
-        CompoundTag compoundTag = null;
+        NbtMap compoundTag = null;
         if (nbtSize > 0) {
             try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
-                Tag<?> tag = reader.readTag();
-                if (tag instanceof CompoundTag) {
-                    compoundTag = (CompoundTag) tag;
+                Object tag = reader.readTag();
+                if (tag instanceof NbtMap) {
+                    compoundTag = (NbtMap) tag;
                 }
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
@@ -768,7 +770,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         if (item.getTag() != null) {
             int afterSizeIndex = buffer.writerIndex();
             try (NBTOutputStream stream = new NBTOutputStream(new LittleEndianByteBufOutputStream(buffer))) {
-                stream.write(item.getTag());
+                stream.writeTag(item.getTag());
             } catch (IOException e) {
                 // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
                 throw new IllegalStateException("Unable to save NBT data", e);
@@ -941,8 +943,8 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
                     break;
                 case NBT:
                     ItemData item;
-                    if (object instanceof CompoundTag) {
-                        item = ItemData.of(1, (short) 0, 1, (CompoundTag) object);
+                    if (object instanceof NbtMap) {
+                        item = ItemData.of(1, (short) 0, 1, (NbtMap) object);
                     } else {
                         item = (ItemData) object;
                     }

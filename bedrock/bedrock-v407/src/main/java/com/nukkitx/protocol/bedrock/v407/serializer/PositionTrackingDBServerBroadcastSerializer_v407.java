@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock.v407.serializer;
 
-import com.nukkitx.nbt.tag.CompoundTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -26,6 +25,6 @@ public class PositionTrackingDBServerBroadcastSerializer_v407 implements Bedrock
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PositionTrackingDBServerBroadcastPacket packet) {
         packet.setAction(ACTIONS[buffer.readByte()]);
         packet.setTrackingId(VarInts.readInt(buffer));
-        packet.setTag((CompoundTag) helper.readTag(buffer));
+        packet.setTag(helper.readTag(buffer));
     }
 }

@@ -1,10 +1,8 @@
 package com.nukkitx.protocol.bedrock.v332;
 
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
@@ -13,7 +11,6 @@ import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.v313.BedrockPacketHelper_v313;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -78,13 +75,10 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         if (damage == Short.MAX_VALUE) damage = -1;
         int count = aux & 0xff;
         int nbtSize = buffer.readShortLE();
-        CompoundTag compoundTag = null;
+        NbtMap compoundTag = null;
         if (nbtSize > 0) {
             try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
-                Tag<?> tag = reader.readTag();
-                if (tag instanceof CompoundTag) {
-                    compoundTag = (CompoundTag) tag;
-                }
+                compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
@@ -92,10 +86,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
             try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
                 int nbtTagCount = VarInts.readUnsignedInt(buffer);
                 if (nbtTagCount == 1) {
-                    Tag<?> tag = reader.readTag();
-                    if (tag instanceof CompoundTag) {
-                        compoundTag = (CompoundTag) tag;
-                    }
+                    compoundTag = (NbtMap) reader.readTag();
                 } else {
                     throw new IllegalArgumentException("Expected 1 tag but got " + nbtTagCount);
                 }
@@ -128,12 +119,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         if (item.getTag() != null) {
             buffer.writeShortLE(-1);
             VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
-            try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
-                stream.write(item.getTag());
-            } catch (IOException e) {
-                // This shouldn't happen (as this is backed by a Netty ByteBuf), but okay...
-                throw new IllegalStateException("Unable to save NBT data", e);
-            }
+            this.writeTag(buffer, item.getTag());
         } else {
             buffer.writeShortLE(0);
         }

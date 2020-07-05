@@ -80,6 +80,11 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addLevelEvent(4000, LevelEventType.SET_DATA);
 
         this.addLevelEvent(9800, LevelEventType.ALL_PLAYERS_SLEEPING);
+
+        int legacy = 0x4000;
+        this.addLevelEvent(68 + legacy, LevelEventType.PARTICLE_BLUE_FLAME);
+        this.addLevelEvent(69 + legacy, LevelEventType.PARTICLE_SOUL);
+        this.addLevelEvent(70 + legacy, LevelEventType.PARTICLE_OBSIDIAN_TEAR);
     }
 
     @Override

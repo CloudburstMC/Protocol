@@ -69,7 +69,7 @@ public class BedrockServer extends Bedrock {
     @Override
     protected void onTick() {
         for (BedrockServerSession session : sessions) {
-            this.eventLoopGroup.execute(session::onTick);
+            session.tick();
         }
     }
 
@@ -97,7 +97,7 @@ public class BedrockServer extends Bedrock {
         @Override
         public void onSessionCreation(RakNetServerSession connection) {
             BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
-            BedrockServerSession session = new BedrockServerSession(connection, serializer);
+            BedrockServerSession session = new BedrockServerSession(connection, BedrockServer.this.eventLoopGroup.next(), serializer);
             connection.setListener(new BedrockRakNetSessionListener.Server(session, connection, BedrockServer.this));
         }
 

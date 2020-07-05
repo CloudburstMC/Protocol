@@ -17,6 +17,8 @@ import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
 import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.channel.EventLoop;
+import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -29,7 +31,6 @@ import java.net.InetSocketAddress;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.zip.Deflater;
@@ -40,9 +41,10 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private static final ThreadLocal<Sha256> HASH_LOCAL = ThreadLocal.withInitial(Natives.SHA_256);
 
     private final Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private final Queue<BedrockPacket> queuedPackets = new ConcurrentLinkedQueue<>();
+    private final Queue<BedrockPacket> queuedPackets = PlatformDependent.newMpscQueue();
     private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
     private final BedrockWrapperSerializer wrapperSerializer;
+    private final EventLoop eventLoop;
     final SessionConnection<ByteBuf> connection;
     private BedrockPacketCodec packetCodec = BedrockCompat.COMPAT_CODEC;
     private BedrockPacketHandler packetHandler;
@@ -54,8 +56,9 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    BedrockSession(SessionConnection<ByteBuf> connection, BedrockWrapperSerializer serializer) {
+    BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
         this.connection = connection;
+        this.eventLoop = eventLoop;
         this.wrapperSerializer = serializer;
     }
 
@@ -146,7 +149,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    void onTick() {
+    public void tick() {
+        this.eventLoop.execute(this::onTick);
+    }
+
+    private void onTick() {
         if (this.closed) {
             return;
         }

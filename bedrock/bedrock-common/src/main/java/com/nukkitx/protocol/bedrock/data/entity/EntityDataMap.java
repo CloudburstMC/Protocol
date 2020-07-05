@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.data.entity;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.NbtMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -81,15 +81,15 @@ public class EntityDataMap implements Map<EntityData, Object> {
         return this;
     }
 
-    public CompoundTag getTag(EntityData key) {
-        return getTag(key, CompoundTag.EMPTY);
+    public NbtMap getTag(EntityData key) {
+        return getTag(key, NbtMap.EMPTY);
     }
 
-    public CompoundTag getTag(EntityData key, CompoundTag defaultValue) {
+    public NbtMap getTag(EntityData key, NbtMap defaultValue) {
         return getOrDefault(key, defaultValue);
     }
 
-    public EntityDataMap putTag(EntityData key, CompoundTag value) {
+    public EntityDataMap putTag(EntityData key, NbtMap value) {
         this.put(key, value);
         return this;
     }

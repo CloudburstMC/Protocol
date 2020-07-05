@@ -1,22 +1,13 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
-import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.nbt.stream.NBTInputStream;
-import com.nukkitx.nbt.stream.NBTOutputStream;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v361.serializer.StartGameSerializer_v361;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import java.io.IOException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
@@ -41,14 +32,10 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
         // cache palette for fast writing
-        try (NBTOutputStream stream = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
-            stream.write(packet.getBlockPalette());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        helper.writeTag(buffer, packet.getBlockPalette());
 
-        helper.writeArray(buffer, packet.getItemEntries(), (buf, entry) -> {
-            helper.writeString(buf, entry.getIdentifier());
+        helper.writeArray(buffer, packet.getItemEntries(), (buf, h, entry) -> {
+            h.writeString(buf, entry.getIdentifier());
             buf.writeShortLE(entry.getId());
         });
 
@@ -75,14 +62,10 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
         packet.setCurrentTick(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
-        try (NBTInputStream stream = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
-            packet.setBlockPalette((ListTag<CompoundTag>) stream.readTag());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        packet.setBlockPalette(helper.readTag(buffer));
 
-        helper.readArray(buffer, packet.getItemEntries(), buf -> {
-            String identifier = helper.readString(buf);
+        helper.readArray(buffer, packet.getItemEntries(), (buf, h) -> {
+            String identifier = h.readString(buf);
             short id = buf.readShortLE();
             return new StartGamePacket.ItemEntry(identifier, id);
         });

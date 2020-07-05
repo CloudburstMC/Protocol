@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.nbt.tag.CompoundTag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.structure.StructureTemplateResponseType;
@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 public class StructureTemplateDataResponsePacket extends BedrockPacket {
     private String name;
     private boolean save;
-    private CompoundTag tag;
+    private NbtMap tag;
     private StructureTemplateResponseType type;
 
     @Override
