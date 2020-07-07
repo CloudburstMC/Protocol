@@ -84,6 +84,7 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
             NbtMap blockTag = entry.getCompound("block");
             helper.writeString(buffer, blockTag.getString("name"));
             buffer.writeShortLE(entry.getShort("meta"));
+            buffer.writeShortLE(entry.getShort("id"));
         }
 
         helper.writeArray(buffer, packet.getItemEntries(), (buf, entry) -> {
@@ -161,6 +162,7 @@ public class StartGameSerializer_v363 extends StartGameSerializer_v361 {
                             .putString("name", helper.readString(buffer))
                             .build())
                     .putShort("meta", buffer.readShortLE())
+                    .putShort("id", buffer.readShortLE())
                     .build());
         }
         packet.setBlockPalette(new NbtList<>(NbtType.COMPOUND, palette));
