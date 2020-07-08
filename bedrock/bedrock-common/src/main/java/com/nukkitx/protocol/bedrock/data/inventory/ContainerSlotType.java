@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.data.inventory;
 
-public enum Container {
+public enum ContainerSlotType {
     ANVIL_INPUT,
     ANVIL_MATERIAL,
     ANVIL_RESULT,
