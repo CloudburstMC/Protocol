@@ -15,7 +15,7 @@ import java.util.Set;
 public class EmotePacket extends BedrockPacket {
     private long runtimeEntityId;
     private String emoteId;
-    private Set<EmoteFlag> flags = new ObjectOpenHashSet<>();
+    private final Set<EmoteFlag> flags = new ObjectOpenHashSet<>();
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {
