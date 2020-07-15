@@ -3,7 +3,7 @@ package com.nukkitx.protocol.bedrock.v407.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
-import com.nukkitx.protocol.bedrock.data.inventory.Container;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.*;
@@ -165,7 +165,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
 
     public StackRequestSlotInfoData readStackRequestSlotInfo(ByteBuf buffer, BedrockPacketHelper helper) {
         return new StackRequestSlotInfoData(
-                Container.values()[buffer.readByte()],
+                ContainerSlotType.values()[buffer.readByte()],
                 buffer.readByte(),
                 VarInts.readInt(buffer)
         );

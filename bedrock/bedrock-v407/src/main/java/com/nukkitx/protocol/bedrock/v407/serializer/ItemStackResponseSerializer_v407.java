@@ -3,7 +3,7 @@ package com.nukkitx.protocol.bedrock.v407.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
-import com.nukkitx.protocol.bedrock.data.inventory.Container;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -52,7 +52,7 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
 
             List<ItemStackResponsePacket.ContainerEntry> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
-                Container container = Container.values()[buf2.readByte()];
+                ContainerSlotType container = ContainerSlotType.values()[buf2.readByte()];
 
                 List<ItemStackResponsePacket.ItemEntry> itemEntries = new ArrayList<>();
                 helper.readArray(buf2, itemEntries, byteBuf -> new ItemStackResponsePacket.ItemEntry(
