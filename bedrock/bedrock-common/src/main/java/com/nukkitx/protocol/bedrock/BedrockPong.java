@@ -93,7 +93,7 @@ public class BedrockPong {
     }
 
     byte[] toRakNet() {
-        StringJoiner joiner = new StringJoiner(";")
+        StringJoiner joiner = new StringJoiner(";", "", ";")
                 .add(this.edition)
                 .add(toString(this.motd))
                 .add(Integer.toString(this.protocolVersion))
