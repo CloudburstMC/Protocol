@@ -45,8 +45,6 @@ public class InflateStream {
     }
 
     public void free() {
-        inflater.free();
-
         if (source.readableBytes() > 0) {
             log.error("Source not empty! {}", source);
             if (log.isTraceEnabled()) {
