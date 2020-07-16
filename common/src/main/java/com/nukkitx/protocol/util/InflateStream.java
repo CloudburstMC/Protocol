@@ -46,8 +46,8 @@ public class InflateStream {
 
     public void free() {
         if (source.readableBytes() > 0) {
-            log.error("Source not empty! {}", source);
             if (log.isTraceEnabled()) {
+                log.trace("Source not empty! {}", source);
                 ByteBuf hexdump = source.readBytes(source.readableBytes());
                 log.trace(ByteBufUtil.prettyHexDump(hexdump));
                 hexdump.release();
