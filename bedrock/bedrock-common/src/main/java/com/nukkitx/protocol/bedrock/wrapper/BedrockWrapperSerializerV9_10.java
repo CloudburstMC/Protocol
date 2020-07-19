@@ -57,7 +57,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
     public void deserialize(ByteBuf compressed, BedrockPacketCodec codec, Collection<BedrockPacket> packets) {
         ByteBuf decompressed = null;
         try {
-            decompressed = zlib.inflate(compressed, 2 * 1024 * 1024); // 2MBs
+            decompressed = zlib.inflate(compressed, 12 * 1024 * 1024); // 12MBs
 
             while (decompressed.isReadable()) {
                 int length = VarInts.readUnsignedInt(decompressed);
