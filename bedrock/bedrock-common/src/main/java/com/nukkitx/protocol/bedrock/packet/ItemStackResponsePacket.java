@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -55,10 +56,8 @@ public class ItemStackResponsePacket extends BedrockPacket {
      */
     @Value
     public static class ContainerEntry {
-        // widowId is the window ID of the container that the slots that follow are in. For the main
-        // inventory, this value seems to be 0x1b. For the cursor, this value seems to be 0x3a. For the crafting
-        // grid, this value seems to be 0x0d.
-        private final byte windowId;
+        // container that the slots that follow are in.
+        private final ContainerSlotType container;
 
         // items holds information on what item stack should be present in specific slots in the container.
         private final List<ItemEntry> items;

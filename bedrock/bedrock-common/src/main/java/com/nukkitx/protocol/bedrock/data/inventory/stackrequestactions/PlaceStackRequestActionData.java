@@ -1,15 +1,21 @@
 package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 
-
 import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
+import lombok.Value;
 
 /**
- * TakeStackRequestActionData is sent by the client to the server to take x amount of items from one slot in a
- * container to the cursor.
+ * PlaceStackRequestAction is sent by the client to the server to place x amount of items from one slot into
+ * another slot, such as when shift clicking an item in the inventory to move it around or when moving an item
+ * in the cursor into a slot.
  */
+@Value
+public class PlaceStackRequestActionData implements TransferStackRequestActionData {
+    byte count;
+    StackRequestSlotInfoData source;
+    StackRequestSlotInfoData destination;
 
-public class PlaceStackRequestActionData extends TransferStackRequestActionData {
-    public PlaceStackRequestActionData(byte count, StackRequestSlotInfoData source, StackRequestSlotInfoData destination) {
-        super(count, source, destination);
+    @Override
+    public StackRequestActionType getType() {
+        return StackRequestActionType.PLACE;
     }
 }

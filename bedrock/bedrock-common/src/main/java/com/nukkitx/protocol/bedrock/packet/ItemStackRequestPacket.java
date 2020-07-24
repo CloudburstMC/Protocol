@@ -4,10 +4,9 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,7 @@ public class ItemStackRequestPacket extends BedrockPacket {
      * change an item in an inventory.
      * Item stack requests are either approved or rejected by the server using the ItemStackResponse packet.
      */
-    @Getter
-    @AllArgsConstructor
+    @Value
     public static class Request {
         // requestId is a unique ID for the request. This ID is used by the server to send a response for this
         // specific request in the ItemStackResponse packet.
