@@ -72,4 +72,18 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
 
         packet.setMultiplayerCorrelationId(helper.readString(buffer));
     }
+
+    @Override
+    protected void readLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
+        super.readLevelSettings(buffer, helper, packet);
+
+        packet.setVanillaVersion(helper.readString(buffer));
+    }
+
+    @Override
+    protected void writeLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
+        super.writeLevelSettings(buffer, helper, packet);
+
+        helper.writeString(buffer, packet.getVanillaVersion());
+    }
 }
