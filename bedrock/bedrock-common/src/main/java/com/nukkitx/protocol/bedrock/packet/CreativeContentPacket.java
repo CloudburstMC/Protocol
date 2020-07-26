@@ -4,11 +4,8 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Map;
 
 
 /**
@@ -21,8 +18,10 @@ import java.util.Map;
 public class CreativeContentPacket extends BedrockPacket {
     /**
      * Item entries for the creative menu. Each item must have a unique ID for the net ID manager
+     *
+     * @see ItemData#fromNet
      */
-    private final Map<Integer, ItemData> entries = new Int2ObjectLinkedOpenHashMap<>();
+    private ItemData[] contents;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

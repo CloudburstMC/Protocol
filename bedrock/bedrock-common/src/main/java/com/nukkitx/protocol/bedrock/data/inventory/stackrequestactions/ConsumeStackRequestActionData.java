@@ -1,13 +1,19 @@
 package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 
 import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
+import lombok.Value;
 
 /**
  * ConsumeStackRequestAction is sent by the client when it uses an item to craft another item. The original
  * item is 'consumed'.
  */
-public class ConsumeStackRequestActionData extends DestroyStackRequestActionData {
-    public ConsumeStackRequestActionData(byte count, StackRequestSlotInfoData source) {
-        super(count, source);
+@Value
+public class ConsumeStackRequestActionData implements StackRequestActionData {
+    byte count;
+    StackRequestSlotInfoData source;
+
+    @Override
+    public StackRequestActionType getType() {
+        return StackRequestActionType.CONSUME;
     }
 }

@@ -1,8 +1,7 @@
 package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Value;
 
 /**
  * CraftResultsDeprecatedStackRequestAction is an additional, deprecated packet sent by the client after
@@ -10,10 +9,13 @@ import lombok.Getter;
  * This action is also sent when an item is enchanted. Enchanting should be treated mostly the same way as
  * crafting, where the old item is consumed.
  */
-@Getter
-@AllArgsConstructor
-public class CraftResultsDeprecatedStackRequestActionData extends StackRequestActionData {
+@Value
+public class CraftResultsDeprecatedStackRequestActionData implements StackRequestActionData {
     ItemData[] resultItems;
-
     byte timesCrafted;
+
+    @Override
+    public StackRequestActionType getType() {
+        return StackRequestActionType.CRAFT_RESULTS_DEPRECATED;
+    }
 }

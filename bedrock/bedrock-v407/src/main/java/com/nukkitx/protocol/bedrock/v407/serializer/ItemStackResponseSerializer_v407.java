@@ -3,12 +3,14 @@ package com.nukkitx.protocol.bedrock.v407.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,8 +24,11 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
             buf.writeBoolean(response.isSuccess());
             VarInts.writeInt(buffer, response.getRequestId());
 
+            if (!response.isSuccess())
+                return;
+
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
-                buf2.writeByte(containerEntry.getWindowId());
+                buf2.writeByte(containerEntry.getContainer().ordinal());
 
                 helper.writeArray(buf2, containerEntry.getItems(), (byteBuf, itemEntry) -> {
                     byteBuf.writeByte(itemEntry.getSlot());
@@ -42,9 +47,12 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
             boolean success = buf.readBoolean();
             int requestId = VarInts.readInt(buf);
 
+            if (!success)
+                return new ItemStackResponsePacket.Response(success, requestId, Collections.emptyList());
+
             List<ItemStackResponsePacket.ContainerEntry> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
-                byte windowId = buf2.readByte();
+                ContainerSlotType container = ContainerSlotType.values()[buf2.readByte()];
 
                 List<ItemStackResponsePacket.ItemEntry> itemEntries = new ArrayList<>();
                 helper.readArray(buf2, itemEntries, byteBuf -> new ItemStackResponsePacket.ItemEntry(
@@ -53,7 +61,7 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
                         byteBuf.readByte(),
                         VarInts.readInt(byteBuf)
                 ));
-                return new ItemStackResponsePacket.ContainerEntry(windowId, itemEntries);
+                return new ItemStackResponsePacket.ContainerEntry(container, itemEntries);
             });
             return new ItemStackResponsePacket.Response(success, requestId, containerEntries);
         });
