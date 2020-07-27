@@ -67,7 +67,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                         VarInts.writeUnsignedInt(byteBuf, ((RecipeStackRequestActionData) action).getRecipeNetworkId());
                         break;
                     case CRAFT_CREATIVE:
-                        VarInts.writeInt(byteBuf, ((CraftCreativeStackRequestActionData) action).getCreativeItemNetworkId());
+                        VarInts.writeUnsignedInt(byteBuf, ((CraftCreativeStackRequestActionData) action).getCreativeItemNetworkId());
                         break;
                     case CRAFT_NON_IMPLEMENTED_DEPRECATED:
                         break;
@@ -146,7 +146,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                         );
                     case CRAFT_CREATIVE:
                         return new CraftCreativeStackRequestActionData(
-                                VarInts.readInt(byteBuf)
+                                VarInts.readUnsignedInt(byteBuf)
                         );
                     case CRAFT_NON_IMPLEMENTED_DEPRECATED:
                         return new CraftNonImplementedStackRequestActionData();
