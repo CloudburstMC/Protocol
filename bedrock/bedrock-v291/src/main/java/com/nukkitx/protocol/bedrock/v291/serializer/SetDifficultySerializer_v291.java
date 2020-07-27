@@ -15,11 +15,11 @@ public class SetDifficultySerializer_v291 implements BedrockPacketSerializer<Set
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, SetDifficultyPacket packet) {
-        VarInts.writeInt(buffer, packet.getDifficulty());
+        VarInts.writeUnsignedInt(buffer, packet.getDifficulty());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, SetDifficultyPacket packet) {
-        packet.setDifficulty(VarInts.readInt(buffer));
+        packet.setDifficulty(VarInts.readUnsignedInt(buffer));
     }
 }
