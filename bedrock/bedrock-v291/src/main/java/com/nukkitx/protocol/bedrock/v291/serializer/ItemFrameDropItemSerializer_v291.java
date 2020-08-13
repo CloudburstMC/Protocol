@@ -14,11 +14,11 @@ public class ItemFrameDropItemSerializer_v291 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ItemFrameDropItemPacket packet) {
-        helper.writeVector3i(buffer, packet.getBlockPosition());
+        helper.writeBlockPosition(buffer, packet.getBlockPosition());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ItemFrameDropItemPacket packet) {
-        packet.setBlockPosition(helper.readVector3i(buffer));
+        packet.setBlockPosition(helper.readBlockPosition(buffer));
     }
 }
