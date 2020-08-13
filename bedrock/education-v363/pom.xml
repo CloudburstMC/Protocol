@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bedrock-v363</artifactId>
+    <artifactId>education-v363</artifactId>
 
     <dependencies>
         <dependency>

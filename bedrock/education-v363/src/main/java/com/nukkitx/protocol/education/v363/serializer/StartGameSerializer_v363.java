@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v363.serializer;
+package com.nukkitx.protocol.education.v363.serializer;
 
 import com.nukkitx.nbt.NbtList;
 import com.nukkitx.nbt.NbtMap;

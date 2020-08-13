@@ -20,12 +20,13 @@
         <module>bedrock-v340</module>
         <module>bedrock-v354</module>
         <module>bedrock-v361</module>
-        <module>bedrock-v363</module>
         <module>bedrock-v388</module>
         <module>bedrock-v389</module>
         <module>bedrock-v390</module>
         <module>bedrock-v407</module>
         <module>bedrock-v408</module>
         <module>bedrock-v409</module>
+        <module>education-v363</module>
+        <module>education-v390</module>
     </modules>
 </project>

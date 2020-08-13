@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v363;
+package com.nukkitx.protocol.education.v363;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
@@ -7,8 +7,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BedrockPacketHelper_v363 extends BedrockPacketHelper_v361 {
-    public static final BedrockPacketHelper INSTANCE = new BedrockPacketHelper_v363();
+public class EducationPacketHelper_v363 extends BedrockPacketHelper_v361 {
+    public static final BedrockPacketHelper INSTANCE = new EducationPacketHelper_v363();
 
     @Override
     protected void registerEntityData() {
