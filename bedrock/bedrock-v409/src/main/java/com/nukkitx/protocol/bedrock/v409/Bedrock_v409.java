@@ -16,7 +16,6 @@ import com.nukkitx.protocol.bedrock.v361.serializer.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
-import com.nukkitx.protocol.bedrock.v407.BedrockPacketHelper_v407;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import lombok.experimental.UtilityClass;
 
@@ -25,7 +24,7 @@ public class Bedrock_v409 {
     public static BedrockPacketCodec V409_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(409)
             .minecraftVersion("1.16.100")
-            .helper(BedrockPacketHelper_v407.INSTANCE)
+            .helper(BedrockPacketHelper_v409.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)

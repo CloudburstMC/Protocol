@@ -606,4 +606,16 @@ public abstract class BedrockPacketHelper {
             buf.writeByte(constraint.ordinal());
         });
     }
+
+    /**
+     * Return true if the item id has a blockingticks attached.
+     *
+     * Only a shield should return true
+     *
+     * @param id ID of item
+     * @return true if reading/writing blockingticks
+     */
+    public boolean isBlockingItem(int id) {
+        return false;
+    }
 }
