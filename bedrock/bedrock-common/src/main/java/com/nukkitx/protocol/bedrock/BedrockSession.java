@@ -6,7 +6,6 @@ import com.nukkitx.natives.sha256.Sha256;
 import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.SessionConnection;
 import com.nukkitx.network.util.DisconnectReason;
-import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.MinecraftSession;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
@@ -98,8 +97,6 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             String to = this.connection.getAddress().toString();
             log.trace("Outbound {}: {}", to, packet);
         }
-
-        Preconditions.checkState(this.packetCodec != BedrockCompat.COMPAT_CODEC, "No PacketCodec is set!");
 
         // Verify that the packet ID exists.
         this.packetCodec.getId(packet.getClass());
