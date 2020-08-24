@@ -9,4 +9,9 @@ import lombok.NoArgsConstructor;
 public class BedrockPacketHelper_v411 extends BedrockPacketHelper_v409 {
     public static final BedrockPacketHelper_v411 INSTANCE = new BedrockPacketHelper_v411();
 
+    @Override
+    public boolean isBlockingItem(int id) {
+        return id == 513;
+    }
+
 }
