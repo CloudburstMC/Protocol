@@ -17,6 +17,7 @@ import com.nukkitx.protocol.bedrock.v388.serializer.*;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
+import com.nukkitx.protocol.bedrock.v409.serializer.MoveEntityDeltaSerializer_v409;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -134,7 +135,7 @@ public class Bedrock_v411 {
             .registerPacket(SetScorePacket.class, SetScoreSerializer_v291.INSTANCE, 108)
             .registerPacket(LabTablePacket.class, LabTableSerializer_v291.INSTANCE, 109)
             .registerPacket(UpdateBlockSyncedPacket.class, UpdateBlockSyncedSerializer_v291.INSTANCE, 110)
-            .registerPacket(MoveEntityDeltaPacket.class, MoveEntityDeltaSerializer_v388.INSTANCE, 111)
+            .registerPacket(MoveEntityDeltaPacket.class, MoveEntityDeltaSerializer_v409.INSTANCE, 111)
             .registerPacket(SetScoreboardIdentityPacket.class, SetScoreboardIdentitySerializer_v291.INSTANCE, 112)
             .registerPacket(SetLocalPlayerAsInitializedPacket.class, SetLocalPlayerAsInitializedSerializer_v291.INSTANCE, 113)
             .registerPacket(UpdateSoftEnumPacket.class, UpdateSoftEnumSerializer_v291.INSTANCE, 114)
