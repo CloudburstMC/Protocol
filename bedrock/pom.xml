@@ -27,5 +27,6 @@
         <module>bedrock-v408</module>
         <module>bedrock-v409</module>
         <module>bedrock-v411</module>
+        <module>bedrock-v412</module>
     </modules>
 </project>
