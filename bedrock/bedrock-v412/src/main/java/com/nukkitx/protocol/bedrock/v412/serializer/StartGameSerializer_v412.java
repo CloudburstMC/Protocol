@@ -10,7 +10,6 @@ import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v361.serializer.StartGameSerializer_v361;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -151,7 +150,6 @@ public class StartGameSerializer_v412 extends StartGameSerializer_v361 {
         packet.setTrial(buffer.readBoolean());
         packet.setMovementServerAuthoritative(buffer.readBoolean());
         packet.setCurrentTick(buffer.readLongLE());
-        System.err.println(ByteBufUtil.prettyHexDump(buffer));
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
         // Empty Palette - 0x0 - TODO probably should be fixed in readTag
