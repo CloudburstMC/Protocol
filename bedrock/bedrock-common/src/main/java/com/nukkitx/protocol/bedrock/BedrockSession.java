@@ -37,7 +37,7 @@ import java.util.zip.Deflater;
 public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
     private static final AesFactory AES_FACTORY = Natives.AES_CFB8.get();
-    private static ThreadLocal<Sha256> HASH_LOCAL;
+    private static final ThreadLocal<Sha256> HASH_LOCAL;
 
     private final Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Queue<BedrockPacket> queuedPackets = PlatformDependent.newMpscQueue();
