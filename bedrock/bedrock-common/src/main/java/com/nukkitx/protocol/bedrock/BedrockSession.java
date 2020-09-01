@@ -55,21 +55,24 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
-        this.connection = connection;
-        this.eventLoop = eventLoop;
-        this.wrapperSerializer = serializer;
+    static {
         // Required for Android API versions prior to 26.
         try {
             HASH_LOCAL = ThreadLocal.withInitial(Natives.SHA_256);
         } catch (NoSuchMethodError error) {
-            this.HASH_LOCAL = new ThreadLocal<Sha256>() {
+            HASH_LOCAL = new ThreadLocal<Sha256>() {
                 @Override
                 protected Sha256 initialValue() {
                     return Natives.SHA_256.get();
                 }
             };
         }
+    }
+
+    BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
+        this.connection = connection;
+        this.eventLoop = eventLoop;
+        this.wrapperSerializer = serializer;
     }
 
     public void setPacketHandler(@Nonnull BedrockPacketHandler packetHandler) {
