@@ -18,8 +18,19 @@ public class Zlib {
     private final ThreadLocal<Deflater> deflaterLocal;
 
     private Zlib(boolean raw) {
-        this.inflaterLocal = ThreadLocal.withInitial(() -> Natives.ZLIB.get().create(raw));
-        this.deflaterLocal = ThreadLocal.withInitial(() -> Natives.ZLIB.get().create(7, raw));
+        // Required for Android API versions prior to 26.
+        this.inflaterLocal = new ThreadLocal<Inflater>() {
+            @Override
+            public Inflater initialValue() {
+                return Natives.ZLIB.get().create(raw);
+            }
+        };
+        this.deflaterLocal = new ThreadLocal<Deflater>(){
+            @Override
+            protected Deflater initialValue() {
+                return Natives.ZLIB.get().create(7, raw);
+            }
+        };
     }
 
     public ByteBuf inflate(ByteBuf buffer, int maxSize) throws DataFormatException {
