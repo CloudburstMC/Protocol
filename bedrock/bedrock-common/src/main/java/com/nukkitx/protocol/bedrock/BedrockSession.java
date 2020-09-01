@@ -57,16 +57,12 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     static {
         // Required for Android API versions prior to 26.
-        try {
-            HASH_LOCAL = ThreadLocal.withInitial(Natives.SHA_256);
-        } catch (NoSuchMethodError error) {
-            HASH_LOCAL = new ThreadLocal<Sha256>() {
-                @Override
-                protected Sha256 initialValue() {
-                    return Natives.SHA_256.get();
-                }
-            };
-        }
+        HASH_LOCAL = new ThreadLocal<Sha256>() {
+            @Override
+            protected Sha256 initialValue() {
+                return Natives.SHA_256.get();
+            }
+        };
     }
 
     BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
