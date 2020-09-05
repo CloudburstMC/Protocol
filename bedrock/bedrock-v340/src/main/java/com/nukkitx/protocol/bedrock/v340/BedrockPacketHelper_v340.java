@@ -124,7 +124,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         }
 
         long blockingTicks = 0;
-        if (id == 513) { // We shouldn't be hardcoding this but it's what Microjang have made us do
+        if (isBlockingItem(id)) {
             blockingTicks = VarInts.readLong(buffer);
         }
         return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak, blockingTicks);
@@ -134,7 +134,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
     public void writeItem(ByteBuf buffer, ItemData item) {
         super.writeItem(buffer, item);
 
-        if (item.getId() == 513) { // TODO: 20/03/2019 We shouldn't be hardcoding this but it's what Microjang have made us do
+        if (isBlockingItem(item.getId())) {
             VarInts.writeLong(buffer, item.getBlockingTicks());
         }
     }
@@ -142,5 +142,10 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
         return super.readStructureSettings(buffer);
+    }
+
+    @Override
+    public boolean isBlockingItem(int id) {
+        return id == 513;
     }
 }
