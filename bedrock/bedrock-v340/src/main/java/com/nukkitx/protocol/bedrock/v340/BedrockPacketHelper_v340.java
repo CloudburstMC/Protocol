@@ -112,8 +112,16 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
         }
-        String[] canPlace = readArray(buffer, new String[0], this::readString);
-        String[] canBreak = readArray(buffer, new String[0], this::readString);
+
+        String[] canPlace = new String[VarInts.readInt(buffer)];
+        for (int i = 0; i < canPlace.length; i++) {
+            canPlace[i] = this.readString(buffer);
+        }
+
+        String[] canBreak = new String[VarInts.readInt(buffer)];
+        for (int i = 0; i < canBreak.length; i++) {
+            canBreak[i] = this.readString(buffer);
+        }
 
         long blockingTicks = 0;
         if (id == 513) { // We shouldn't be hardcoding this but it's what Microjang have made us do
