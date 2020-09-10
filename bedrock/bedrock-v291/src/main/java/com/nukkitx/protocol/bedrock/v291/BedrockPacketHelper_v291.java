@@ -214,7 +214,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         this.addEntityEvent(2, EntityEventType.HURT);
         this.addEntityEvent(3, EntityEventType.DEATH);
         this.addEntityEvent(4, EntityEventType.ATTACK_START);
-        this.addEntityEvent(4, EntityEventType.ATTACK_STOP);
+        this.addEntityEvent(5, EntityEventType.ATTACK_STOP);
         this.addEntityEvent(6, EntityEventType.TAME_FAILED);
         this.addEntityEvent(7, EntityEventType.TAME_SUCCEEDED);
         this.addEntityEvent(8, EntityEventType.SHAKE_WETNESS);
