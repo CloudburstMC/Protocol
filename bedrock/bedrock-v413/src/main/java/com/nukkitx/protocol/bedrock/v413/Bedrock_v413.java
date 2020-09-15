@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v409;
+package com.nukkitx.protocol.bedrock.v413;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -18,13 +18,14 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.BedrockPacketHelper_v407;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
+import com.nukkitx.protocol.bedrock.v413.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class Bedrock_v409 {
-    public static BedrockPacketCodec V409_CODEC = BedrockPacketCodec.builder()
-            .protocolVersion(409)
-            .minecraftVersion("1.16.100")
+public class Bedrock_v413 {
+    public static BedrockPacketCodec V413_CODEC = BedrockPacketCodec.builder()
+            .protocolVersion(413)
+            .minecraftVersion("1.16.100.54")
             .helper(BedrockPacketHelper_v407.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
@@ -157,7 +158,6 @@ public class Bedrock_v409 {
             .registerPacket(MapCreateLockedCopyPacket.class, MapCreateLockedCopySerializer_v354.INSTANCE, 131)
             .registerPacket(StructureTemplateDataRequestPacket.class, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132)
             .registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v388.INSTANCE, 133)
-            .registerPacket(UpdateBlockPropertiesPacket.class, UpdateBlockPropertiesSerializer_v361.INSTANCE, 134)
             .registerPacket(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
             .registerPacket(ClientCacheMissResponsePacket.class, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
             .registerPacket(EducationSettingsPacket.class, EducationSettingsSerializer_v388.INSTANCE, 137)
@@ -180,5 +180,10 @@ public class Bedrock_v409 {
             .registerPacket(PositionTrackingDBClientRequestPacket.class, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154)
             .registerPacket(DebugInfoPacket.class, DebugInfoSerializer_v407.INSTANCE, 155)
             .registerPacket(PacketViolationWarningPacket.class, PacketViolationWarningSerializer_v407.INSTANCE, 156)
+            .registerPacket(SetEntityMotionPlusPacket.class, SetEntityMotionPlusSerializer_v413.INSTANCE, 157)
+            .registerPacket(AnimateEntityPacket.class, AnimateEntitySerializer_v413.INSTANCE, 158)
+            .registerPacket(CameraShakePacket.class, CameraShakeSerializer_v413.INSTANCE, 159)
+            .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v413.INSTANCE, 160)
+            .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v413.INSTANCE, 161)
             .build();
 }

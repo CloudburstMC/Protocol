@@ -76,7 +76,7 @@ public class StartGamePacket extends BedrockPacket {
     private String levelName;
     private String premiumWorldTemplateId;
     private boolean trial;
-    private boolean movementServerAuthoritative;
+    private AuthoritativeMovementMode authoritativeMovementMode;
     private long currentTick;
     private int enchantmentSeed;
     private NbtList<NbtMap> blockPalette;

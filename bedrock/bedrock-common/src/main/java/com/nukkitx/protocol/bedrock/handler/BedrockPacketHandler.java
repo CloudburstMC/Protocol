@@ -620,4 +620,24 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(DebugInfoPacket packet) {
         return false;
     }
+
+    default boolean handle(SetEntityMotionPlusPacket packet) {
+        return false;
+    }
+
+    default boolean handle(AnimateEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CameraShakePacket packet) {
+        return false;
+    }
+
+    default boolean handle(CorrectPlayerMovePredictionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerFogPacket packet) {
+        return false;
+    }
 }
