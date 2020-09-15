@@ -3,10 +3,7 @@ package com.nukkitx.protocol.bedrock.v407.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
-import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
-import com.nukkitx.protocol.bedrock.data.GameType;
-import com.nukkitx.protocol.bedrock.data.PlayerPermission;
-import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
+import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -73,7 +70,7 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
-        buffer.writeBoolean(packet.isMovementServerAuthoritative());
+        buffer.writeBoolean(packet.getAuthoritativeMovementMode() != AuthoritativeMovementMode.CLIENT);
         buffer.writeLongLE(packet.getCurrentTick());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
@@ -144,7 +141,7 @@ public class StartGameSerializer_v407 implements BedrockPacketSerializer<StartGa
         packet.setLevelName(helper.readString(buffer));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
-        packet.setMovementServerAuthoritative(buffer.readBoolean());
+        packet.setAuthoritativeMovementMode(buffer.readBoolean() ? AuthoritativeMovementMode.SERVER : AuthoritativeMovementMode.CLIENT);
         packet.setCurrentTick(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
         packet.setBlockPalette(helper.readTag(buffer));
