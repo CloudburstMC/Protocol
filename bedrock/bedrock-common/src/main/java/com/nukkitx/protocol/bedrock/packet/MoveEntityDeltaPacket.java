@@ -12,8 +12,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MoveEntityDeltaPacket extends BedrockPacket {
     private long runtimeEntityId;
-    private Vector3i movementDelta;
+
+    private Vector3i movementDeltaI;
+    private Vector3f movementDeltaF;
+
     private Vector3f rotationDelta;
+
+    private int flags;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -23,4 +28,18 @@ public class MoveEntityDeltaPacket extends BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOVE_ENTITY_DELTA;
     }
+
+    @Deprecated
+    public Vector3i getMovementDelta() {
+        return movementDeltaI != null ? movementDeltaI : Vector3i.from(movementDeltaF.getX(), movementDeltaF.getY(), movementDeltaF.getZ());
+    }
+
+    public void setMovementDelta(Vector3i movementDelta) {
+        movementDeltaI = movementDelta;
+    }
+
+    public void setMovementDelta(Vector3f movementDelta) {
+        movementDeltaF = movementDelta;
+    }
+
 }
