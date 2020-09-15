@@ -91,8 +91,17 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
         }
-        String[] canPlace = readArray(buffer, new String[0], this::readString);
-        String[] canBreak = readArray(buffer, new String[0], this::readString);
+
+        String[] canPlace = new String[VarInts.readInt(buffer)];
+        for (int i = 0; i < canPlace.length; i++) {
+            canPlace[i] = this.readString(buffer);
+        }
+
+        String[] canBreak = new String[VarInts.readInt(buffer)];
+        for (int i = 0; i < canBreak.length; i++) {
+            canBreak[i] = this.readString(buffer);
+        }
+
 
         return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak);
     }
@@ -120,7 +129,17 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         } else {
             buffer.writeShortLE(0);
         }
-        writeArray(buffer, item.getCanPlace(), this::writeString);
-        writeArray(buffer, item.getCanBreak(), this::writeString);
+
+        String[] canPlace = item.getCanPlace();
+        VarInts.writeInt(buffer, canPlace.length);
+        for (String aCanPlace : canPlace) {
+            this.writeString(buffer, aCanPlace);
+        }
+
+        String[] canBreak = item.getCanBreak();
+        VarInts.writeInt(buffer, canBreak.length);
+        for (String aCanBreak : canBreak) {
+            this.writeString(buffer, aCanBreak);
+        }
     }
 }

@@ -37,7 +37,7 @@ import java.util.zip.Deflater;
 public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
     private static final AesFactory AES_FACTORY = Natives.AES_CFB8.get();
-    private static final ThreadLocal<Sha256> HASH_LOCAL = ThreadLocal.withInitial(Natives.SHA_256);
+    private static final ThreadLocal<Sha256> HASH_LOCAL;
 
     private final Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Queue<BedrockPacket> queuedPackets = PlatformDependent.newMpscQueue();
@@ -54,6 +54,16 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
     private volatile boolean closed = false;
     private volatile boolean logging = true;
+
+    static {
+        // Required for Android API versions prior to 26.
+        HASH_LOCAL = new ThreadLocal<Sha256>() {
+            @Override
+            protected Sha256 initialValue() {
+                return Natives.SHA_256.get();
+            }
+        };
+    }
 
     BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
         this.connection = connection;
