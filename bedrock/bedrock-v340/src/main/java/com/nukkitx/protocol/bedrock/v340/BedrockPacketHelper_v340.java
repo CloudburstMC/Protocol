@@ -4,7 +4,6 @@ import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
-import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
@@ -82,7 +81,6 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
 
     @Override
     public ItemData readItem(ByteBuf buffer) {
-        Preconditions.checkNotNull(buffer, "buffer");
         int id = VarInts.readInt(buffer);
         if (id == 0) {
             // We don't need to read anything extra.
@@ -101,13 +99,10 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
         } else if (nbtSize == -1) {
+            int tagCount = buffer.readUnsignedByte();
+            if (tagCount != 1) throw new IllegalArgumentException("Expected 1 tag but got " + tagCount);
             try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
-                int nbtTagCount = VarInts.readUnsignedInt(buffer);
-                if (nbtTagCount == 1) {
-                    compoundTag = (NbtMap) reader.readTag();
-                } else {
-                    throw new IllegalArgumentException("Expected 1 tag but got " + nbtTagCount);
-                }
+                compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }

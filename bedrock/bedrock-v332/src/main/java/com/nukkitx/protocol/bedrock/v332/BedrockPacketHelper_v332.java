@@ -83,13 +83,10 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
         } else if (nbtSize == -1) {
+            int tagCount = buffer.readUnsignedByte();
+            if (tagCount != 1) throw new IllegalArgumentException("Expected 1 tag but got " + tagCount);
             try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
-                int nbtTagCount = VarInts.readUnsignedInt(buffer);
-                if (nbtTagCount == 1) {
-                    compoundTag = (NbtMap) reader.readTag();
-                } else {
-                    throw new IllegalArgumentException("Expected 1 tag but got " + nbtTagCount);
-                }
+                compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
@@ -118,7 +115,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         VarInts.writeInt(buffer, (damage << 8) | (item.getCount() & 0xff));
         if (item.getTag() != null) {
             buffer.writeShortLE(-1);
-            VarInts.writeUnsignedInt(buffer, 1); // Hardcoded in current version
+            buffer.writeByte(1); // Hardcoded in current version
             this.writeTag(buffer, item.getTag());
         } else {
             buffer.writeShortLE(0);
