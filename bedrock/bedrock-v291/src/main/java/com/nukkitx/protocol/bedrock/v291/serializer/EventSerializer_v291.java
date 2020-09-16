@@ -81,52 +81,13 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
 
         packet.setUsePlayerId(buffer.readByte());
 
-        EventData data;
+        BiFunction<ByteBuf, BedrockPacketHelper, EventData> function = this.readers.get(type);
 
-        switch (type) {
-            case ACHIEVEMENT_AWARDED:
-                data = this.readAchievementAwarded(buffer, helper);
-                break;
-            case ENTITY_INTERACT:
-                data = this.readEntityInteract(buffer, helper);
-                break;
-            case PORTAL_BUILT:
-                data = this.readPortalBuilt(buffer, helper);
-                break;
-            case PORTAL_USED:
-                data = this.readPortalUsed(buffer, helper);
-                break;
-            case MOB_KILLED:
-                data = this.readMobKilled(buffer, helper);
-                break;
-            case CAULDRON_USED:
-                data = this.readCauldronUsed(buffer, helper);
-                break;
-            case PLAYER_DIED:
-                data = this.readPlayerDied(buffer, helper);
-                break;
-            case BOSS_KILLED:
-                data = this.readBossKilled(buffer, helper);
-                break;
-            case AGENT_COMMAND:
-                data = this.readAgentCommand(buffer, helper);
-                break;
-            case AGENT_CREATED:
-                data = AgentCreatedEventData.INSTANCE;
-                break;
-            case PATTERN_REMOVED:
-                data = this.readPatternRemoved(buffer, helper);
-                break;
-            case SLASH_COMMAND_EXECUTED:
-                data = this.readSlashCommandExecuted(buffer, helper);
-                break;
-            case FISH_BUCKETED:
-                data = this.readFishBucketed(buffer, helper);
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown event type " + type);
+        if (function == null) {
+            throw new UnsupportedOperationException("Unknown event type " + type);
         }
-        packet.setEventData(data);
+
+        function.apply(buffer, helper);
     }
 
     protected AchievementAwardedEventData readAchievementAwarded(ByteBuf buffer, BedrockPacketHelper helper) {
