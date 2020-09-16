@@ -8,10 +8,7 @@ import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.bedrock.data.GameRuleData;
-import com.nukkitx.protocol.bedrock.data.LevelEventType;
-import com.nukkitx.protocol.bedrock.data.ResourcePackType;
-import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
@@ -236,7 +233,10 @@ public abstract class BedrockPacketHelper {
 
     public byte[] readByteArray(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        byte[] bytes = new byte[VarInts.readUnsignedInt(buffer)];
+        int length = VarInts.readUnsignedInt(buffer);
+        Preconditions.checkArgument(buffer.isReadable(length),
+                "Tried to read %s bytes but only has %s readable", length, buffer.readableBytes());
+        byte[] bytes = new byte[length];
         buffer.readBytes(bytes);
         return bytes;
     }
@@ -617,5 +617,13 @@ public abstract class BedrockPacketHelper {
      */
     public boolean isBlockingItem(int id) {
         return false;
+    }
+
+    public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+        throw new UnsupportedOperationException();
     }
 }

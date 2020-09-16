@@ -54,6 +54,8 @@ public class StartGamePacket extends BedrockPacket {
     private GamePublishSetting platformBroadcastMode;
     private boolean commandsEnabled;
     private boolean texturePacksRequired;
+    private final List<ExperimentData> experiments = new ObjectArrayList<>();
+    private boolean experimentsPreviouslyToggled;
     private boolean bonusChestEnabled;
     private boolean startingWithMap;
     private boolean trustingPlayers;
@@ -80,6 +82,7 @@ public class StartGamePacket extends BedrockPacket {
     private long currentTick;
     private int enchantmentSeed;
     private NbtList<NbtMap> blockPalette;
+    private final List<BlockPropertyData> blockProperties = new ObjectArrayList<>();
     private List<ItemEntry> itemEntries = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
     private boolean inventoriesServerAuthoritative;

@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v413;
+package com.nukkitx.protocol.bedrock.v414;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -16,28 +16,27 @@ import com.nukkitx.protocol.bedrock.v361.serializer.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
-import com.nukkitx.protocol.bedrock.v407.BedrockPacketHelper_v407;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
-import com.nukkitx.protocol.bedrock.v413.serializer.*;
+import com.nukkitx.protocol.bedrock.v414.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class Bedrock_v413 {
-    public static BedrockPacketCodec V413_CODEC = BedrockPacketCodec.builder()
-            .protocolVersion(413)
-            .minecraftVersion("1.16.100.54")
-            .helper(BedrockPacketHelper_v407.INSTANCE)
+public class Bedrock_v414 {
+    public static BedrockPacketCodec V414_CODEC = BedrockPacketCodec.builder()
+            .protocolVersion(414)
+            .minecraftVersion("1.16.100.55")
+            .helper(BedrockPacketHelper_v414.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
             .registerPacket(ClientToServerHandshakePacket.class, ClientToServerHandshakeSerializer_v291.INSTANCE, 4)
             .registerPacket(DisconnectPacket.class, DisconnectSerializer_v291.INSTANCE, 5)
             .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v332.INSTANCE, 6)
-            .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v388.INSTANCE, 7)
+            .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v414.INSTANCE, 7)
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v407.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, StartGameSerializer_v414.INSTANCE, 11)
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v388.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)
@@ -180,10 +179,10 @@ public class Bedrock_v413 {
             .registerPacket(PositionTrackingDBClientRequestPacket.class, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154)
             .registerPacket(DebugInfoPacket.class, DebugInfoSerializer_v407.INSTANCE, 155)
             .registerPacket(PacketViolationWarningPacket.class, PacketViolationWarningSerializer_v407.INSTANCE, 156)
-            .registerPacket(SetEntityMotionPlusPacket.class, SetEntityMotionPlusSerializer_v413.INSTANCE, 157)
-            .registerPacket(AnimateEntityPacket.class, AnimateEntitySerializer_v413.INSTANCE, 158)
-            .registerPacket(CameraShakePacket.class, CameraShakeSerializer_v413.INSTANCE, 159)
-            .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v413.INSTANCE, 160)
-            .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v413.INSTANCE, 161)
+            .registerPacket(SetEntityMotionPlusPacket.class, SetEntityMotionPlusSerializer_v414.INSTANCE, 157)
+            .registerPacket(AnimateEntityPacket.class, AnimateEntitySerializer_v414.INSTANCE, 158)
+            .registerPacket(CameraShakePacket.class, CameraShakeSerializer_v414.INSTANCE, 159)
+            .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v414.INSTANCE, 160)
+            .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v414.INSTANCE, 161)
             .build();
 }
