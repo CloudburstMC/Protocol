@@ -4,7 +4,6 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,7 +18,7 @@ public class UpdateBlockPacket extends BedrockPacket {
     public static final Set<Flag> FLAG_ALL_PRIORITY = Collections.unmodifiableSet(
             EnumSet.of(Flag.NEIGHBORS, Flag.NETWORK, Flag.PRIORITY));
 
-    private final Set<Flag> flags = new ObjectOpenHashSet<>();
+    private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
     private Vector3i blockPosition;
     private int runtimeId;
     private int dataLayer;

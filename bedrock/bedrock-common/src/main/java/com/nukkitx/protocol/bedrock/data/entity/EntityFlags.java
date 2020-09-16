@@ -4,17 +4,17 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import lombok.ToString;
 
 import javax.annotation.Nonnull;
+import java.util.EnumSet;
+import java.util.Set;
 
 @ToString
 public class EntityFlags {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(EntityFlags.class);
 
-    private final ObjectSet<EntityFlag> flags = new ObjectOpenHashSet<>();
+    private final Set<EntityFlag> flags = EnumSet.noneOf(EntityFlag.class);
 
     /**
      * Set {@link EntityFlag} value

@@ -3,10 +3,10 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.EnumSet;
 import java.util.Set;
 
 @Data
@@ -14,7 +14,7 @@ import java.util.Set;
 public class MoveEntityDeltaPacket extends BedrockPacket {
     private long runtimeEntityId;
 
-    private final Set<Flag> flags = new ObjectOpenHashSet<>();
+    private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
 
     private int deltaX;
     private int deltaY;
@@ -50,7 +50,7 @@ public class MoveEntityDeltaPacket extends BedrockPacket {
         HAS_Z,
         HAS_PITCH,
         HAS_YAW,
-        HAS_ROLL,
+        HAS_HEAD_YAW,
         ON_GROUND,
         TELEPORTING,
         FORCE_MOVE_LOCAL_ENTITY

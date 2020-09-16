@@ -4,10 +4,10 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.EmoteFlag;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.EnumSet;
 import java.util.Set;
 
 @Data
@@ -15,7 +15,7 @@ import java.util.Set;
 public class EmotePacket extends BedrockPacket {
     private long runtimeEntityId;
     private String emoteId;
-    private final Set<EmoteFlag> flags = new ObjectOpenHashSet<>();
+    private final Set<EmoteFlag> flags = EnumSet.noneOf(EmoteFlag.class);
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

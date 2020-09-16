@@ -24,7 +24,7 @@ public class MoveEntityDeltaSerializer_v388 implements BedrockPacketSerializer<M
             (buffer, helper, packet) -> packet.setPitch(helper.readByteAngle(buffer));
     protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> READER_YAW =
             (buffer, helper, packet) -> packet.setYaw(helper.readByteAngle(buffer));
-    protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> READER_ROLL =
+    protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> READER_HEAD_YAW =
             (buffer, helper, packet) -> packet.setHeadYaw(helper.readByteAngle(buffer));
 
     protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> WRITER_DELTA_X =
@@ -38,7 +38,7 @@ public class MoveEntityDeltaSerializer_v388 implements BedrockPacketSerializer<M
             (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getPitch());
     protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> WRITER_YAW =
             (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getYaw());
-    protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> WRITER_ROLL =
+    protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> WRITER_HEAD_YAW =
             (buffer, helper, packet) -> helper.writeByteAngle(buffer, packet.getHeadYaw());
 
     protected static final Flag[] FLAGS = Flag.values();
@@ -54,14 +54,14 @@ public class MoveEntityDeltaSerializer_v388 implements BedrockPacketSerializer<M
         this.readers.put(Flag.HAS_Z, READER_DELTA_Z);
         this.readers.put(Flag.HAS_PITCH, READER_PITCH);
         this.readers.put(Flag.HAS_YAW, READER_YAW);
-        this.readers.put(Flag.HAS_ROLL, READER_ROLL);
+        this.readers.put(Flag.HAS_HEAD_YAW, READER_HEAD_YAW);
 
         this.writers.put(Flag.HAS_X, WRITER_DELTA_X);
         this.writers.put(Flag.HAS_Y, WRITER_DELTA_Y);
         this.writers.put(Flag.HAS_Z, WRITER_DELTA_Z);
         this.writers.put(Flag.HAS_PITCH, WRITER_PITCH);
         this.writers.put(Flag.HAS_YAW, WRITER_YAW);
-        this.writers.put(Flag.HAS_ROLL, WRITER_ROLL);
+        this.writers.put(Flag.HAS_HEAD_YAW, WRITER_HEAD_YAW);
     }
 
     @Override
