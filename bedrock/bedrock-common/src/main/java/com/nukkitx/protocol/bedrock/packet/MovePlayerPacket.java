@@ -20,6 +20,7 @@ public class MovePlayerPacket extends BedrockPacket {
     private long ridingRuntimeEntityId;
     private TeleportationCause teleportationCause;
     private int entityType;
+    private long tick;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

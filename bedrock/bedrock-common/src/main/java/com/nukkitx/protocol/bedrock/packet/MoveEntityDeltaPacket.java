@@ -1,19 +1,32 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MoveEntityDeltaPacket extends BedrockPacket {
     private long runtimeEntityId;
-    private Vector3i movementDelta;
-    private Vector3f rotationDelta;
+
+    private final Set<Flag> flags = new ObjectOpenHashSet<>();
+
+    private int deltaX;
+    private int deltaY;
+    private int deltaZ;
+
+    private float x;
+    private float y;
+    private float z;
+
+    private float pitch;
+    private float yaw;
+    private float headYaw;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -22,5 +35,24 @@ public class MoveEntityDeltaPacket extends BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOVE_ENTITY_DELTA;
+    }
+
+    public String toString() {
+        return "MoveEntityDeltaPacket(runtimeEntityId=" + runtimeEntityId +
+                ", flags=" + flags + ", delta=(" + deltaX + ", " + deltaY + ", " + deltaZ +
+                "), position=(" + x + ", " + y + ", " + z +
+                "), rotation=(" + pitch + ", " + yaw + ", " + headYaw + "))";
+    }
+
+    public enum Flag {
+        HAS_X,
+        HAS_Y,
+        HAS_Z,
+        HAS_PITCH,
+        HAS_YAW,
+        HAS_ROLL,
+        ON_GROUND,
+        TELEPORTING,
+        FORCE_MOVE_LOCAL_ENTITY
     }
 }

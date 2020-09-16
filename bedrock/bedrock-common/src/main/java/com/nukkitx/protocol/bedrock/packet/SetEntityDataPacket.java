@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 public class SetEntityDataPacket extends BedrockPacket {
     private final EntityDataMap metadata = new EntityDataMap();
     private long runtimeEntityId;
+    private long tick;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

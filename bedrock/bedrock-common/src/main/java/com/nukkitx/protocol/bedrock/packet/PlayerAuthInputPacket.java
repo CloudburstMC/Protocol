@@ -19,8 +19,9 @@ public class PlayerAuthInputPacket extends BedrockPacket {
     private long inputData;
     private InputMode inputMode;
     private ClientPlayMode playMode;
-
     private Vector3f vrGazeDirection;
+    private long tick;
+    private Vector3f delta;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {
