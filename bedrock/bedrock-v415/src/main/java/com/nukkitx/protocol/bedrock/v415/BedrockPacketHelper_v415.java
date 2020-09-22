@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v414;
+package com.nukkitx.protocol.bedrock.v415;
 
 import com.nukkitx.protocol.bedrock.data.ExperimentData;
 import com.nukkitx.protocol.bedrock.v407.BedrockPacketHelper_v407;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BedrockPacketHelper_v414 extends BedrockPacketHelper_v407 {
+public class BedrockPacketHelper_v415 extends BedrockPacketHelper_v407 {
 
-    public static final BedrockPacketHelper_v414 INSTANCE = new BedrockPacketHelper_v414();
+    public static final BedrockPacketHelper_v415 INSTANCE = new BedrockPacketHelper_v415();
 
     @Override
     public boolean isBlockingItem(int id) {
