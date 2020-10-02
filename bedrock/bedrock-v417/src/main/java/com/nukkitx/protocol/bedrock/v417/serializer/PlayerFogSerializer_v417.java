@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v415.serializer;
+package com.nukkitx.protocol.bedrock.v417.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -8,9 +8,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerFogSerializer_v415 implements BedrockPacketSerializer<PlayerFogPacket> {
+public class PlayerFogSerializer_v417 implements BedrockPacketSerializer<PlayerFogPacket> {
 
-    public static final PlayerFogSerializer_v415 INSTANCE = new PlayerFogSerializer_v415();
+    public static final PlayerFogSerializer_v417 INSTANCE = new PlayerFogSerializer_v417();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerFogPacket packet) {

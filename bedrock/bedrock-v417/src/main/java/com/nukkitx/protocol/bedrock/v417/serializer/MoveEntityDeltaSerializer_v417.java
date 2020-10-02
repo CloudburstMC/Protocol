@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v415.serializer;
+package com.nukkitx.protocol.bedrock.v417.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityDeltaPacket;
@@ -7,7 +7,7 @@ import com.nukkitx.protocol.bedrock.util.TriConsumer;
 import com.nukkitx.protocol.bedrock.v388.serializer.MoveEntityDeltaSerializer_v388;
 import io.netty.buffer.ByteBuf;
 
-public class MoveEntityDeltaSerializer_v415 extends MoveEntityDeltaSerializer_v388 {
+public class MoveEntityDeltaSerializer_v417 extends MoveEntityDeltaSerializer_v388 {
 
     protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> READER_X =
             (buffer, helper, packet) -> packet.setX(buffer.readFloatLE());
@@ -23,9 +23,9 @@ public class MoveEntityDeltaSerializer_v415 extends MoveEntityDeltaSerializer_v3
     protected static final TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> WRITER_Z =
             (buffer, helper, packet) -> buffer.writeFloatLE(packet.getZ());
 
-    public static final MoveEntityDeltaSerializer_v415 INSTANCE = new MoveEntityDeltaSerializer_v415();
+    public static final MoveEntityDeltaSerializer_v417 INSTANCE = new MoveEntityDeltaSerializer_v417();
 
-    protected MoveEntityDeltaSerializer_v415() {
+    protected MoveEntityDeltaSerializer_v417() {
         super();
 
         this.readers.put(Flag.HAS_X, READER_X);

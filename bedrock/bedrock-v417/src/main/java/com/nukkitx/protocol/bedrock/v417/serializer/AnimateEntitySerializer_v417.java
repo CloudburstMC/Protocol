@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v415.serializer;
+package com.nukkitx.protocol.bedrock.v417.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -10,9 +10,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class AnimateEntitySerializer_v415 implements BedrockPacketSerializer<AnimateEntityPacket> {
+public class AnimateEntitySerializer_v417 implements BedrockPacketSerializer<AnimateEntityPacket> {
 
-    public static final AnimateEntitySerializer_v415 INSTANCE = new AnimateEntitySerializer_v415();
+    public static final AnimateEntitySerializer_v417 INSTANCE = new AnimateEntitySerializer_v417();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AnimateEntityPacket packet) {
