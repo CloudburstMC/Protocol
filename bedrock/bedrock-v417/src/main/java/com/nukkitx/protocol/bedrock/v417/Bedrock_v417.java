@@ -184,5 +184,6 @@ public class Bedrock_v417 {
             .registerPacket(CameraShakePacket.class, CameraShakeSerializer_v417.INSTANCE, 159)
             .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v417.INSTANCE, 160)
             .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v417.INSTANCE, 161)
+            .registerPacket(ItemComponentPacket.class, ItemComponentSerializer_v417.INSTANCE, 162)
             .build();
 }
