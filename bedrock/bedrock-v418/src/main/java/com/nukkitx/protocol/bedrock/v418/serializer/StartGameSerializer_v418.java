@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v417.serializer;
+package com.nukkitx.protocol.bedrock.v418.serializer;
 
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.network.VarInts;
@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 
 @SuppressWarnings("DuplicatedCode")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StartGameSerializer_v417 implements BedrockPacketSerializer<StartGamePacket> {
+public class StartGameSerializer_v418 implements BedrockPacketSerializer<StartGamePacket> {
 
-    public static final StartGameSerializer_v417 INSTANCE = new StartGameSerializer_v417();
+    public static final StartGameSerializer_v418 INSTANCE = new StartGameSerializer_v418();
 
     protected static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
     protected static final AuthoritativeMovementMode[] MOVEMENT_MODES = AuthoritativeMovementMode.values();

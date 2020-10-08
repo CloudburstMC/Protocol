@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v417.serializer;
+package com.nukkitx.protocol.bedrock.v418.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
@@ -8,9 +8,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class ResourcePackStackSerializer_v417 extends ResourcePackStackSerializer_v291 {
+public class ResourcePackStackSerializer_v418 extends ResourcePackStackSerializer_v291 {
 
-    public static final ResourcePackStackSerializer_v417 INSTANCE = new ResourcePackStackSerializer_v417();
+    public static final ResourcePackStackSerializer_v418 INSTANCE = new ResourcePackStackSerializer_v418();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackStackPacket packet) {

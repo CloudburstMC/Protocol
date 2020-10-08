@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v417.serializer;
+package com.nukkitx.protocol.bedrock.v418.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -8,9 +8,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ContainerCloseSerializer_v417 implements BedrockPacketSerializer<ContainerClosePacket> {
+public class ContainerCloseSerializer_v418 implements BedrockPacketSerializer<ContainerClosePacket> {
 
-    public static final ContainerCloseSerializer_v417 INSTANCE = new ContainerCloseSerializer_v417();
+    public static final ContainerCloseSerializer_v418 INSTANCE = new ContainerCloseSerializer_v418();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ContainerClosePacket packet) {

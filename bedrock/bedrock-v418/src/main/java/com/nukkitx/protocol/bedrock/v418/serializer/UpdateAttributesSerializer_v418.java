@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v417.serializer;
+package com.nukkitx.protocol.bedrock.v418.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateAttributesSerializer_v417 extends UpdateAttributesSerializer_v291 {
+public class UpdateAttributesSerializer_v418 extends UpdateAttributesSerializer_v291 {
 
-    public static final UpdateAttributesSerializer_v417 INSTANCE = new UpdateAttributesSerializer_v417();
+    public static final UpdateAttributesSerializer_v418 INSTANCE = new UpdateAttributesSerializer_v418();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, UpdateAttributesPacket packet) {
