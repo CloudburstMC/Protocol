@@ -1,7 +1,6 @@
 package com.nukkitx.protocol.bedrock.v390;
 
 import com.nukkitx.protocol.bedrock.data.skin.*;
-import com.nukkitx.protocol.bedrock.v388.BedrockPacketHelper_v388;
 import com.nukkitx.protocol.bedrock.v389.BedrockPacketHelper_v389;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
