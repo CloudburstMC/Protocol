@@ -15,7 +15,7 @@ public class BedrockPacketHelper_v418 extends BedrockPacketHelper_v407 {
 
     @Override
     public boolean isBlockingItem(int id) {
-        return id == 401; // FIXME: Come up with a solution for this hack
+        return id == 355; // FIXME: Come up with a solution for this hack
     }
 
     @Override
