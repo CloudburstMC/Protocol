@@ -12,10 +12,7 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
 import java.util.List;
 
@@ -97,8 +94,16 @@ public class StartGamePacket extends BedrockPacket {
     }
 
     @Value
+    @AllArgsConstructor
     public static class ItemEntry {
         private final String identifier;
         private final short id;
+        private final boolean componentBased;
+
+        public ItemEntry(String identifier, short id) {
+            this.identifier = identifier;
+            this.id = id;
+            this.componentBased = false;
+        }
     }
 }
