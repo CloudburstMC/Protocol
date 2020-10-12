@@ -16,11 +16,14 @@ public class CameraShakeSerializer_v418 implements BedrockPacketSerializer<Camer
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CameraShakePacket packet) {
         buffer.writeFloatLE(packet.getIntensity());
         buffer.writeFloatLE(packet.getDuration());
+        buffer.writeByte(packet.getShakeType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, CameraShakePacket packet) {
         packet.setIntensity(buffer.readFloatLE());
         packet.setDuration(buffer.readFloatLE());
+        CameraShakePacket.CameraShakeType cameraShakeType = CameraShakePacket.CameraShakeType.values()[buffer.readUnsignedByte()];
+        packet.setShakeType(cameraShakeType);
     }
 }

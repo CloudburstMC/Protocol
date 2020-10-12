@@ -31,6 +31,13 @@ public class CameraShakePacket extends BedrockPacket {
      */
     private float duration;
 
+    private CameraShakeType shakeType;
+
+    public enum CameraShakeType {
+        POSITIONAL,
+        ROTATIONAL
+    }
+
     @Override
     public boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
