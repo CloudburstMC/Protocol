@@ -92,6 +92,21 @@ public final class BedrockPacketCodec {
     }
 
     @SuppressWarnings("unchecked")
+    public Builder toBuilder() {
+        Builder builder = new Builder();
+
+        idBiMap.forEach((packetClass, id) ->
+                builder.registerPacket((Class<BedrockPacket>) packetClass, this.serializers[id], id));
+
+        builder.protocolVersion = this.protocolVersion;
+        builder.raknetProtocolVersion = this.raknetProtocolVersion;
+        builder.minecraftVersion = this.minecraftVersion;
+        builder.helper = this.helper;
+
+        return builder;
+    }
+
+    @SuppressWarnings("unchecked")
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
         private final Int2ObjectMap<BedrockPacketSerializer<BedrockPacket>> serializers = new Int2ObjectOpenHashMap<>();
@@ -118,7 +133,7 @@ public final class BedrockPacketCodec {
         }
 
         public Builder raknetProtocolVersion(@Nonnegative int version) {
-            Preconditions.checkArgument(protocolVersion >= 0, "raknetProtocolVersion cannot be negative");
+            Preconditions.checkArgument(version >= 0, "raknetProtocolVersion cannot be negative");
             this.raknetProtocolVersion = version;
             return this;
         }

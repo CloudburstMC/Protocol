@@ -3,11 +3,13 @@ package com.nukkitx.protocol.util;
 
 import com.nukkitx.network.util.Preconditions;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 import java.util.Objects;
+import java.util.function.ObjIntConsumer;
 
 public class Int2ObjectBiMap<T> {
     private final Int2ObjectMap<T> forwards;
@@ -78,6 +80,12 @@ public class Int2ObjectBiMap<T> {
         this.forwards.remove(key);
         this.backwards.removeInt(value);
         return true;
+    }
+
+    public void forEach(ObjIntConsumer<T> consumer) {
+        for (Int2ObjectMap.Entry<T> entry : Int2ObjectMaps.fastIterable(this.forwards)) {
+            consumer.accept(entry.getValue(), entry.getIntKey());
+        }
     }
 
     @Override
