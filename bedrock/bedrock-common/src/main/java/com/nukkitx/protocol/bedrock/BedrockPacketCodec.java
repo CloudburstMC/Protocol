@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock;
 
-import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.packet.UnknownPacket;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
@@ -18,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
+
+import static com.nukkitx.network.util.Preconditions.checkArgument;
+import static com.nukkitx.network.util.Preconditions.checkNotNull;
 
 @Immutable
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -124,51 +126,56 @@ public final class BedrockPacketCodec {
         private BedrockPacketHelper helper = null;
 
         public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, BedrockPacketSerializer<T> serializer, @Nonnegative int id) {
-            Preconditions.checkArgument(id >= 0, "id cannot be negative");
-            Preconditions.checkArgument(!idBiMap.containsKey(id), "Packet id already registered");
-            Preconditions.checkArgument(!idBiMap.containsValue(packetClass), "Packet class already registered");
+            checkArgument(id >= 0, "id cannot be negative");
+            checkArgument(!idBiMap.containsKey(id), "Packet id already registered");
+            checkArgument(!idBiMap.containsValue(packetClass), "Packet class already registered");
 
             serializers.put(id, (BedrockPacketSerializer<BedrockPacket>) serializer);
             idBiMap.put(id, packetClass);
             return this;
         }
 
+        public void deregisterPacket(Class<? extends BedrockPacket> packetClass) {
+            checkNotNull(packetClass, "packetClass");
+            this.idBiMap.remove(packetClass);
+        }
+
         public Builder protocolVersion(@Nonnegative int protocolVersion) {
-            Preconditions.checkArgument(protocolVersion >= 0, "protocolVersion cannot be negative");
+            checkArgument(protocolVersion >= 0, "protocolVersion cannot be negative");
             this.protocolVersion = protocolVersion;
             return this;
         }
 
         public Builder raknetProtocolVersion(@Nonnegative int version) {
-            Preconditions.checkArgument(version >= 0, "raknetProtocolVersion cannot be negative");
+            checkArgument(version >= 0, "raknetProtocolVersion cannot be negative");
             this.raknetProtocolVersion = version;
             return this;
         }
 
         public Builder minecraftVersion(@Nonnull String minecraftVersion) {
-            Preconditions.checkNotNull(minecraftVersion, "minecraftVersion");
-            Preconditions.checkArgument(!minecraftVersion.isEmpty() && minecraftVersion.split("\\.").length > 2, "Invalid minecraftVersion");
+            checkNotNull(minecraftVersion, "minecraftVersion");
+            checkArgument(!minecraftVersion.isEmpty() && minecraftVersion.split("\\.").length > 2, "Invalid minecraftVersion");
             this.minecraftVersion = minecraftVersion;
             return this;
         }
 
         public Builder helper(@Nonnull BedrockPacketHelper helper) {
-            Preconditions.checkNotNull(helper, "helper");
+            checkNotNull(helper, "helper");
             this.helper = helper;
             return this;
         }
 
         public BedrockPacketCodec build() {
-            Preconditions.checkArgument(protocolVersion >= 0, "No protocol version defined");
-            Preconditions.checkNotNull(minecraftVersion, "No Minecraft version defined");
-            Preconditions.checkNotNull(helper, "helper cannot be null");
+            checkArgument(protocolVersion >= 0, "No protocol version defined");
+            checkNotNull(minecraftVersion, "No Minecraft version defined");
+            checkNotNull(helper, "helper cannot be null");
             int largestId = -1;
             for (int id : serializers.keySet()) {
                 if (id > largestId) {
                     largestId = id;
                 }
             }
-            Preconditions.checkArgument(largestId > -1, "Must have at least one packet registered");
+            checkArgument(largestId > -1, "Must have at least one packet registered");
             BedrockPacketSerializer<BedrockPacket>[] serializers = new BedrockPacketSerializer[largestId + 1];
 
             for (Int2ObjectMap.Entry<BedrockPacketSerializer<BedrockPacket>> entry : this.serializers.int2ObjectEntrySet()) {
