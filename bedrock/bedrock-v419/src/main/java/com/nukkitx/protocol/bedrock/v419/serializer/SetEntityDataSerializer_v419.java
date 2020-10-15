@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v418.serializer;
+package com.nukkitx.protocol.bedrock.v419.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class SetEntityDataSerializer_v418 extends SetEntityDataSerializer_v291 {
+public class SetEntityDataSerializer_v419 extends SetEntityDataSerializer_v291 {
 
-    public static final SetEntityDataSerializer_v418 INSTANCE = new SetEntityDataSerializer_v418();
+    public static final SetEntityDataSerializer_v419 INSTANCE = new SetEntityDataSerializer_v419();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, SetEntityDataPacket packet) {

@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v418.serializer;
+package com.nukkitx.protocol.bedrock.v419.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CorrectPlayerMovePredictionSerializer_v418 implements BedrockPacketSerializer<CorrectPlayerMovePredictionPacket> {
+public class CorrectPlayerMovePredictionSerializer_v419 implements BedrockPacketSerializer<CorrectPlayerMovePredictionPacket> {
 
-    public static final CorrectPlayerMovePredictionSerializer_v418 INSTANCE = new CorrectPlayerMovePredictionSerializer_v418();
+    public static final CorrectPlayerMovePredictionSerializer_v419 INSTANCE = new CorrectPlayerMovePredictionSerializer_v419();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CorrectPlayerMovePredictionPacket packet) {

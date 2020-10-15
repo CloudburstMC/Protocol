@@ -621,7 +621,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(SetEntityMotionPlusPacket packet) {
+    default boolean handle(MotionPredictionHintsPacket packet) {
         return false;
     }
 

@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class SetEntityMotionPlusPacket extends BedrockPacket {
+public class MotionPredictionHintsPacket extends BedrockPacket {
 
     /**
      * The runtime ID of the entity to set motion.

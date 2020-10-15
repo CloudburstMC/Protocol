@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v418.serializer;
+package com.nukkitx.protocol.bedrock.v419.serializer;
 
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -10,9 +10,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ItemComponentSerializer_v418 implements BedrockPacketSerializer<ItemComponentPacket> {
+public class ItemComponentSerializer_v419 implements BedrockPacketSerializer<ItemComponentPacket> {
 
-    public static final ItemComponentSerializer_v418 INSTANCE = new ItemComponentSerializer_v418();
+    public static final ItemComponentSerializer_v419 INSTANCE = new ItemComponentSerializer_v419();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ItemComponentPacket packet) {

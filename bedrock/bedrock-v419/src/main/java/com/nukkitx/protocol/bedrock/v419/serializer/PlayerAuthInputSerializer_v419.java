@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v418.serializer;
+package com.nukkitx.protocol.bedrock.v419.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerAuthInputSerializer_v418 extends PlayerAuthInputSerializer_v388 {
+public class PlayerAuthInputSerializer_v419 extends PlayerAuthInputSerializer_v388 {
 
-    public static final PlayerAuthInputSerializer_v418 INSTANCE = new PlayerAuthInputSerializer_v418();
+    public static final PlayerAuthInputSerializer_v419 INSTANCE = new PlayerAuthInputSerializer_v419();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet) {
