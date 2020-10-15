@@ -24,10 +24,7 @@ public class BedrockPacketHelper_v390 extends BedrockPacketHelper_v389 {
         int animationCount = buffer.readIntLE();
         List<AnimationData> animations = new ObjectArrayList<>(animationCount);
         for (int i = 0; i < animationCount; i++) {
-            ImageData image = this.readImage(buffer);
-            int type = buffer.readIntLE();
-            float frames = buffer.readFloatLE();
-            animations.add(new AnimationData(image, type, frames));
+            animations.add(this.readAnimationData(buffer));
         }
 
         ImageData capeData = this.readImage(buffer);
@@ -79,9 +76,7 @@ public class BedrockPacketHelper_v390 extends BedrockPacketHelper_v389 {
         List<AnimationData> animations = skin.getAnimations();
         buffer.writeIntLE(animations.size());
         for (AnimationData animation : animations) {
-            this.writeImage(buffer, animation.getImage());
-            buffer.writeIntLE(animation.getType());
-            buffer.writeFloatLE(animation.getFrames());
+            this.writeAnimationData(buffer, animation);
         }
 
         this.writeImage(buffer, skin.getCapeData());
