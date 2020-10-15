@@ -27,7 +27,7 @@ public class BedrockWrapperSerializerV8 extends BedrockWrapperSerializer {
             for (BedrockPacket packet : packets) {
                 ByteBuf packetBuffer = ByteBufAllocator.DEFAULT.ioBuffer();
                 try {
-                    int id = codec.getId(packet.getClass());
+                    int id = codec.getId(packet);
                     packetBuffer.writeByte(id);
                     packetBuffer.writeByte(packet.getSenderId());
                     packetBuffer.writeByte(packet.getClientId());

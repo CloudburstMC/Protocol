@@ -83,6 +83,13 @@ public final class BedrockPacketCodec {
         }
     }
 
+    public int getId(BedrockPacket packet) {
+        if (packet instanceof UnknownPacket) {
+            return packet.getPacketId();
+        }
+        return getId(packet.getClass());
+    }
+
     public int getId(Class<? extends BedrockPacket> clazz) {
         int id = idBiMap.get(clazz);
         if (id == -1) {
