@@ -137,7 +137,10 @@ public final class BedrockPacketCodec {
 
         public void deregisterPacket(Class<? extends BedrockPacket> packetClass) {
             checkNotNull(packetClass, "packetClass");
+            if (!this.idBiMap.containsValue(packetClass)) return;
+            int packetId = this.idBiMap.get(packetClass);
             this.idBiMap.remove(packetClass);
+            this.serializers.remove(packetId);
         }
 
         public Builder protocolVersion(@Nonnegative int protocolVersion) {

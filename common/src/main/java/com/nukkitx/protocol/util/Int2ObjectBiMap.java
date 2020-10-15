@@ -82,6 +82,20 @@ public class Int2ObjectBiMap<T> {
         return true;
     }
 
+    public boolean remove(T t) {
+        if (!this.backwards.containsKey(t)) {
+            return false;
+        }
+
+        int value = this.backwards.getInt(t);
+        if (!this.forwards.containsKey(value)) {
+            return false;
+        }
+        this.backwards.removeInt(t);
+        this.forwards.remove(value);
+        return true;
+    }
+
     public void forEach(ObjIntConsumer<T> consumer) {
         for (Int2ObjectMap.Entry<T> entry : Int2ObjectMaps.fastIterable(this.forwards)) {
             consumer.accept(entry.getValue(), entry.getIntKey());
