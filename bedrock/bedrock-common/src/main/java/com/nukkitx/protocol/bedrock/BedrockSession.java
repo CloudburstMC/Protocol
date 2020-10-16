@@ -109,7 +109,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
 
         // Verify that the packet ID exists.
-        this.packetCodec.getId(packet.getClass());
+        this.packetCodec.getId(packet);
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
