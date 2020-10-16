@@ -66,6 +66,7 @@ public class BedrockWrapperSerializerV8 extends BedrockWrapperSerializer {
                 try {
                     int packetId = packetBuffer.readUnsignedByte();
                     BedrockPacket packet = codec.tryDecode(packetBuffer, packetId);
+                    packet.setPacketId(packetId);
                     packet.setSenderId(packetBuffer.readUnsignedByte());
                     packet.setClientId(packetBuffer.readUnsignedByte());
                     packets.add(packet);

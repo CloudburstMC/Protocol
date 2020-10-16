@@ -61,6 +61,7 @@ public class BedrockWrapperSerializerV7 extends BedrockWrapperSerializer {
                 try {
                     int packetId = packetBuffer.readUnsignedByte();
                     BedrockPacket packet = codec.tryDecode(packetBuffer, packetId);
+                    packet.setPacketId(packetId);
                     packets.add(packet);
                 } catch (PacketSerializeException e) {
                     log.debug("Error occurred whilst decoding packet", e);
