@@ -68,14 +68,12 @@ public class BedrockClient extends Bedrock {
     public CompletableFuture<BedrockClientSession> directConnect(InetSocketAddress address) {
         CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
 
-        RakNetClientSession connection = this.rakNetClient.create(address);
+        RakNetClientSession connection = this.rakNetClient.connect(address);
         BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
         this.session = new BedrockClientSession(connection, this.eventLoopGroup.next(), serializer);
         BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
                 connection, this, future);
         connection.setListener(listener);
-        connection.connect();
-
         return future;
     }
 
