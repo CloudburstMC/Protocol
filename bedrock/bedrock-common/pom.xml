@@ -16,31 +16,26 @@
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nukkitx.network</groupId>
             <artifactId>raknet</artifactId>
             <version>${network.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>5.2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nukkitx.fastutil</groupId>
             <artifactId>fastutil-long-common</artifactId>
             <version>8.3.1</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nukkitx.fastutil</groupId>
             <artifactId>fastutil-long-object-maps</artifactId>
             <version>8.3.1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

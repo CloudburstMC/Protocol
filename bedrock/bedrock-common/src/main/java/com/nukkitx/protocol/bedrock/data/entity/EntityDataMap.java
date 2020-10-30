@@ -14,7 +14,7 @@ import static com.nukkitx.protocol.bedrock.data.entity.EntityData.FLAGS_2;
 
 public class EntityDataMap implements Map<EntityData, Object> {
 
-    private final EnumMap<EntityData, Object> map = new EnumMap<>(EntityData.class);
+    private final Map<EntityData, Object> map = new LinkedHashMap<>();
 
     public byte getByte(EntityData key) {
         return getByte(key, (byte) 0);
