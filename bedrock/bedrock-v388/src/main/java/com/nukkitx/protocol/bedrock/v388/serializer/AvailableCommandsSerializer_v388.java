@@ -158,7 +158,9 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                     flagList, command.getPermission(), aliases, overloads));
         }
 
-        // Constraints
-        helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
+        // Read constraints if included
+        if (buffer.readableBytes() > 1){
+            helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
+        }
     }
 }
