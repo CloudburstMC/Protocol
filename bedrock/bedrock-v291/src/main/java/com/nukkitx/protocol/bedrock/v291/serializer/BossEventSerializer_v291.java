@@ -39,6 +39,8 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
             case UPDATE_NAME:
                 helper.writeString(buffer, packet.getTitle());
                 break;
+            case REMOVE:
+                break;
             default:
                 throw new RuntimeException("BossEvent transactionType was unknown!");
         }
