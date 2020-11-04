@@ -49,25 +49,6 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     }
 
     @Override
-    protected void registerCommandParams() {
-        this.addCommandParam(1, INT);
-        this.addCommandParam(2, FLOAT);
-        this.addCommandParam(3, VALUE);
-        this.addCommandParam(4, WILDCARD_INT);
-        this.addCommandParam(5, OPERATOR);
-        this.addCommandParam(6, TARGET);
-        this.addCommandParam(7, WILDCARD_TARGET);
-        this.addCommandParam(14, FILE_PATH);
-        this.addCommandParam(29, STRING);
-        this.addCommandParam(37, BLOCK_POSITION);
-        this.addCommandParam(38, POSITION);
-        this.addCommandParam(41, MESSAGE);
-        this.addCommandParam(43, TEXT);
-        this.addCommandParam(47, JSON);
-        this.addCommandParam(54, COMMAND);
-    }
-
-    @Override
     protected void registerLevelEvents() {
         super.registerLevelEvents();
 
