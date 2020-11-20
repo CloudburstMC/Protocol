@@ -9,6 +9,7 @@ import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
@@ -703,17 +704,17 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
     }
 
     @Override
-    public ItemData readNetItem(ByteBuf buffer) {
+    public ItemData readNetItem(ByteBuf buffer, BedrockSession session) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeNetItem(ByteBuf buffer, ItemData item) {
+    public void writeNetItem(ByteBuf buffer, ItemData item, BedrockSession session) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public ItemData readItem(ByteBuf buffer) {
+    public ItemData readItem(ByteBuf buffer, BedrockSession session) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         int id = VarInts.readInt(buffer);
@@ -746,7 +747,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
     }
 
     @Override
-    public void writeItem(ByteBuf buffer, ItemData item) {
+    public void writeItem(ByteBuf buffer, ItemData item, BedrockSession session) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(item, "item");
 
@@ -886,7 +887,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
                     object = readString(buffer);
                     break;
                 case NBT:
-                    object = this.readItem(buffer);
+                    object = this.readItem(buffer, null);
                     break;
                 case VECTOR3I:
                     object = readVector3i(buffer);
@@ -949,7 +950,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
                     } else {
                         item = (ItemData) object;
                     }
-                    this.writeItem(buffer, item);
+                    this.writeItem(buffer, item, null);
                     break;
                 case VECTOR3I:
                     writeVector3i(buffer, (Vector3i) object);

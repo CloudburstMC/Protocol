@@ -20,11 +20,6 @@ public class BedrockPacketHelper_v419 extends BedrockPacketHelper_v407 {
     protected static final AnimationExpressionType[] EXPRESSION_TYPES = AnimationExpressionType.values();
 
     @Override
-    public boolean isBlockingItem(int id) {
-        return id == 355; // FIXME: Come up with a solution for this hack
-    }
-
-    @Override
     public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
         int count = buffer.readIntLE(); // Actually unsigned
         for (int i = 0; i < count; i++) {

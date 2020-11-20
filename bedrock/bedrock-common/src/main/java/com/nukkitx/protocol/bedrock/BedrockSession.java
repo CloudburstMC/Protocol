@@ -55,6 +55,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
+    private int hardcodedBlockingId = -1;
+
     static {
         // Required for Android API versions prior to 26.
         HASH_LOCAL = new ThreadLocal<Sha256>() {
@@ -115,7 +117,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
         ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
         try {
-            this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel);
+            this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
             this.sendWrapped(compressed, encrypt);
         } catch (Exception e) {
             log.error("Unable to compress packets", e);
@@ -280,7 +282,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             batched.markReaderIndex();
 
             List<BedrockPacket> packets = new ObjectArrayList<>();
-            this.wrapperSerializer.deserialize(batched, this.packetCodec, packets);
+            this.wrapperSerializer.deserialize(batched, this.packetCodec, packets, this);
 
             this.batchHandler.handle(this, batched, packets);
         } catch (GeneralSecurityException ignore) {
@@ -336,6 +338,14 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void addDisconnectHandler(Consumer<DisconnectReason> disconnectHandler) {
         Objects.requireNonNull(disconnectHandler, "disconnectHandler");
         this.disconnectHandlers.add(disconnectHandler);
+    }
+
+    public void setHardcodedBlockingId(int hardcodedBlockingId) {
+        this.hardcodedBlockingId = hardcodedBlockingId;
+    }
+
+    public int getHardcodedBlockingId() {
+        return this.hardcodedBlockingId;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
@@ -80,7 +81,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
     }
 
     @Override
-    public ItemData readItem(ByteBuf buffer) {
+    public ItemData readItem(ByteBuf buffer, BedrockSession session) {
         int id = VarInts.readInt(buffer);
         if (id == 0) {
             // We don't need to read anything extra.
@@ -119,17 +120,17 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         }
 
         long blockingTicks = 0;
-        if (isBlockingItem(id)) {
+        if (this.isBlockingItem(id, session.getHardcodedBlockingId())) {
             blockingTicks = VarInts.readLong(buffer);
         }
         return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak, blockingTicks);
     }
 
     @Override
-    public void writeItem(ByteBuf buffer, ItemData item) {
-        super.writeItem(buffer, item);
+    public void writeItem(ByteBuf buffer, ItemData item, BedrockSession session) {
+        super.writeItem(buffer, item, session);
 
-        if (isBlockingItem(item.getId())) {
+        if (this.isBlockingItem(item.getId(), session.getHardcodedBlockingId())) {
             VarInts.writeLong(buffer, item.getBlockingTicks());
         }
     }
@@ -137,10 +138,5 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
         return super.readStructureSettings(buffer);
-    }
-
-    @Override
-    public boolean isBlockingItem(int id) {
-        return id == 513;
     }
 }

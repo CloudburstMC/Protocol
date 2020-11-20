@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.wrapper;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.util.Zlib;
 import io.netty.buffer.ByteBuf;
@@ -18,7 +19,7 @@ public class BedrockWrapperSerializerV7 extends BedrockWrapperSerializer {
     private static final Zlib ZLIB = Zlib.DEFAULT;
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level) {
+    public void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session) {
         ByteBuf uncompressed = ByteBufAllocator.DEFAULT.ioBuffer(packets.size() << 3);
         try {
             for (BedrockPacket packet : packets) {
@@ -26,7 +27,7 @@ public class BedrockWrapperSerializerV7 extends BedrockWrapperSerializer {
                 try {
                     int id = codec.getId(packet);
                     packetBuffer.writeByte(id);
-                    codec.tryEncode(packetBuffer, packet);
+                    codec.tryEncode(packetBuffer, packet, session);
 
                     VarInts.writeUnsignedInt(uncompressed, packetBuffer.readableBytes());
                     uncompressed.writeBytes(packetBuffer);
@@ -45,7 +46,7 @@ public class BedrockWrapperSerializerV7 extends BedrockWrapperSerializer {
     }
 
     @Override
-    public void deserialize(ByteBuf compressed, BedrockPacketCodec codec, Collection<BedrockPacket> packets) {
+    public void deserialize(ByteBuf compressed, BedrockPacketCodec codec, Collection<BedrockPacket> packets, BedrockSession session) {
         ByteBuf decompressed = null;
         try {
             decompressed = ZLIB.inflate(compressed, 2 * 1024 * 1024); // 2MBs
@@ -60,7 +61,7 @@ public class BedrockWrapperSerializerV7 extends BedrockWrapperSerializer {
 
                 try {
                     int packetId = packetBuffer.readUnsignedByte();
-                    BedrockPacket packet = codec.tryDecode(packetBuffer, packetId);
+                    BedrockPacket packet = codec.tryDecode(packetBuffer, packetId, session);
                     packet.setPacketId(packetId);
                     packets.add(packet);
                 } catch (PacketSerializeException e) {

@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
@@ -20,61 +21,61 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
 
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         TransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
-        helper.writeArray(buffer, packet.getActions(), this::writeAction);
+        helper.writeArray(buffer, packet.getActions(), (buf, action) -> this.writeAction(buf, helper, action, session));
 
         switch (transactionType) {
             case ITEM_USE:
-                this.writeItemUse(buffer, helper, packet);
+                this.writeItemUse(buffer, helper, packet, session);
                 break;
             case ITEM_USE_ON_ENTITY:
-                this.writeItemUseOnEntity(buffer, helper, packet);
+                this.writeItemUseOnEntity(buffer, helper, packet, session);
                 break;
             case ITEM_RELEASE:
-                this.writeItemRelease(buffer, helper, packet);
+                this.writeItemRelease(buffer, helper, packet, session);
                 break;
         }
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         TransactionType transactionType = TransactionType.values()[VarInts.readUnsignedInt(buffer)];
         packet.setTransactionType(transactionType);
 
-        helper.readArray(buffer, packet.getActions(), this::readAction);
+        helper.readArray(buffer, packet.getActions(), buf -> this.readAction(buf, helper, session));
 
         switch (transactionType) {
             case ITEM_USE:
-                this.readItemUse(buffer, helper, packet);
+                this.readItemUse(buffer, helper, packet, session);
                 break;
             case ITEM_USE_ON_ENTITY:
-                this.readItemUseOnEntity(buffer, helper, packet);
+                this.readItemUseOnEntity(buffer, helper, packet, session);
                 break;
             case ITEM_RELEASE:
-                this.readItemRelease(buffer, helper, packet);
+                this.readItemRelease(buffer, helper, packet, session);
                 break;
         }
     }
 
-    public InventoryActionData readAction(ByteBuf buffer, BedrockPacketHelper helper) {
+    public InventoryActionData readAction(ByteBuf buffer, BedrockPacketHelper helper, BedrockSession session) {
         InventorySource source = this.readSource(buffer);
         int slot = VarInts.readUnsignedInt(buffer);
-        ItemData fromItem = helper.readItem(buffer);
-        ItemData toItem = helper.readItem(buffer);
+        ItemData fromItem = helper.readItem(buffer, session);
+        ItemData toItem = helper.readItem(buffer, session);
 
         return new InventoryActionData(source, slot, fromItem, toItem);
     }
 
-    public void writeAction(ByteBuf buffer, BedrockPacketHelper helper, InventoryActionData action) {
+    public void writeAction(ByteBuf buffer, BedrockPacketHelper helper, InventoryActionData action, BedrockSession session) {
         requireNonNull(action, "InventoryActionData was null");
 
         this.writeSource(buffer, action.getSource());
         VarInts.writeUnsignedInt(buffer, action.getSlot());
-        helper.writeItem(buffer, action.getFromItem());
-        helper.writeItem(buffer, action.getToItem());
+        helper.writeItem(buffer, action.getFromItem(), session);
+        helper.writeItem(buffer, action.getToItem(), session);
     }
 
     public InventorySource readSource(ByteBuf buffer) {
@@ -116,55 +117,55 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
         }
     }
 
-    public void readItemUse(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void readItemUse(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         packet.setActionType(VarInts.readUnsignedInt(buffer));
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setBlockFace(VarInts.readInt(buffer));
         packet.setHotbarSlot(VarInts.readInt(buffer));
-        packet.setItemInHand(helper.readItem(buffer));
+        packet.setItemInHand(helper.readItem(buffer, session));
         packet.setPlayerPosition(helper.readVector3f(buffer));
         packet.setClickPosition(helper.readVector3f(buffer));
     }
 
-    public void writeItemUse(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void writeItemUse(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         VarInts.writeUnsignedInt(buffer, packet.getActionType());
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
         VarInts.writeInt(buffer, packet.getBlockFace());
         VarInts.writeInt(buffer, packet.getHotbarSlot());
-        helper.writeItem(buffer, packet.getItemInHand());
+        helper.writeItem(buffer, packet.getItemInHand(), session);
         helper.writeVector3f(buffer, packet.getPlayerPosition());
         helper.writeVector3f(buffer, packet.getClickPosition());
     }
 
-    public void readItemUseOnEntity(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void readItemUseOnEntity(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setActionType(VarInts.readUnsignedInt(buffer));
         packet.setHotbarSlot(VarInts.readInt(buffer));
-        packet.setItemInHand(helper.readItem(buffer));
+        packet.setItemInHand(helper.readItem(buffer, session));
         packet.setPlayerPosition(helper.readVector3f(buffer));
         packet.setClickPosition(helper.readVector3f(buffer));
     }
 
-    public void writeItemUseOnEntity(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void writeItemUseOnEntity(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
         VarInts.writeUnsignedInt(buffer, packet.getActionType());
         VarInts.writeInt(buffer, packet.getHotbarSlot());
-        helper.writeItem(buffer, packet.getItemInHand());
+        helper.writeItem(buffer, packet.getItemInHand(), session);
         helper.writeVector3f(buffer, packet.getPlayerPosition());
         helper.writeVector3f(buffer, packet.getClickPosition());
     }
 
-    public void readItemRelease(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void readItemRelease(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         packet.setActionType(VarInts.readUnsignedInt(buffer));
         packet.setHotbarSlot(VarInts.readInt(buffer));
-        packet.setItemInHand(helper.readItem(buffer));
+        packet.setItemInHand(helper.readItem(buffer, session));
         packet.setHeadPosition(helper.readVector3f(buffer));
     }
 
-    public void writeItemRelease(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet) {
+    public void writeItemRelease(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
         VarInts.writeUnsignedInt(buffer, packet.getActionType());
         VarInts.writeInt(buffer, packet.getHotbarSlot());
-        helper.writeItem(buffer, packet.getItemInHand());
+        helper.writeItem(buffer, packet.getItemInHand(), session);
         helper.writeVector3f(buffer, packet.getHeadPosition());
     }
 }

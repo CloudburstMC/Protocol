@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.v407;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
@@ -130,16 +131,16 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     }
 
     @Override
-    public ItemData readNetItem(ByteBuf buffer) {
+    public ItemData readNetItem(ByteBuf buffer, BedrockSession session) {
         int netId = VarInts.readInt(buffer);
-        ItemData item = this.readItem(buffer);
+        ItemData item = this.readItem(buffer, session);
         item.setNetId(netId);
         return item;
     }
 
     @Override
-    public void writeNetItem(ByteBuf buffer, ItemData item) {
+    public void writeNetItem(ByteBuf buffer, ItemData item, BedrockSession session) {
         VarInts.writeInt(buffer, item.getNetId());
-        this.writeItem(buffer, item);
+        this.writeItem(buffer, item, session);
     }
 }
