@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.compat;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
 import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
@@ -75,22 +76,22 @@ public class NoopBedrockPacketHelper extends BedrockPacketHelper {
     }
 
     @Override
-    public ItemData readNetItem(ByteBuf buffer) {
+    public ItemData readNetItem(ByteBuf buffer, BedrockSession session) {
         return null;
     }
 
     @Override
-    public void writeNetItem(ByteBuf buffer, ItemData item) {
+    public void writeNetItem(ByteBuf buffer, ItemData item, BedrockSession session) {
 
     }
 
     @Override
-    public ItemData readItem(ByteBuf buffer) {
+    public ItemData readItem(ByteBuf buffer, BedrockSession session) {
         return null;
     }
 
     @Override
-    public void writeItem(ByteBuf buffer, ItemData item) {
+    public void writeItem(ByteBuf buffer, ItemData item, BedrockSession session) {
 
     }
 

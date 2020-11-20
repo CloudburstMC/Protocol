@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v407.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
@@ -21,7 +22,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
     public static final ItemStackRequestSerializer_v407 INSTANCE = new ItemStackRequestSerializer_v407();
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackRequestPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackRequestPacket packet, BedrockSession session) {
         helper.writeArray(buffer, packet.getRequests(), (buf, requests) -> {
             VarInts.writeInt(buf, requests.getRequestId());
 
@@ -72,7 +73,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                     case CRAFT_NON_IMPLEMENTED_DEPRECATED:
                         break;
                     case CRAFT_RESULTS_DEPRECATED:
-                        helper.writeArray(byteBuf, ((CraftResultsDeprecatedStackRequestActionData) action).getResultItems(), helper::writeItem);
+                        helper.writeArray(byteBuf, ((CraftResultsDeprecatedStackRequestActionData) action).getResultItems(), (buf2, item) -> helper.writeItem(buf2, item, session));
                         byteBuf.writeByte(((CraftResultsDeprecatedStackRequestActionData) action).getTimesCrafted());
                         break;
                     default:
@@ -83,7 +84,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackRequestPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ItemStackRequestPacket packet, BedrockSession session) {
         helper.readArray(buffer, packet.getRequests(), buf -> {
             int requestId = VarInts.readInt(buf);
             List<StackRequestActionData> actions = new ArrayList<>();
@@ -152,7 +153,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                         return new CraftNonImplementedStackRequestActionData();
                     case CRAFT_RESULTS_DEPRECATED:
                         return new CraftResultsDeprecatedStackRequestActionData(
-                                helper.readArray(byteBuf, new ItemData[0], helper::readItem),
+                                helper.readArray(byteBuf, new ItemData[0], buf2 -> helper.readItem(buf2, session)),
                                 byteBuf.readByte()
                         );
                     default:

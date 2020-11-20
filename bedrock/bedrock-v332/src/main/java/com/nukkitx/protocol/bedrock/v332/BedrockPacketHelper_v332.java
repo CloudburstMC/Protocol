@@ -5,6 +5,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
@@ -64,7 +65,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
     }
 
     @Override
-    public ItemData readItem(ByteBuf buffer) {
+    public ItemData readItem(ByteBuf buffer, BedrockSession session) {
         int id = VarInts.readInt(buffer);
         if (id == 0) {
             // We don't need to read anything extra.
@@ -107,7 +108,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
     }
 
     @Override
-    public void writeItem(ByteBuf buffer, ItemData item) {
+    public void writeItem(ByteBuf buffer, ItemData item, BedrockSession session) {
         requireNonNull(item, "item is null!");
 
         // Write id

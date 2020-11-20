@@ -55,6 +55,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
+    private int hardcodedBlockingId = -1;
+
     static {
         // Required for Android API versions prior to 26.
         HASH_LOCAL = new ThreadLocal<Sha256>() {
@@ -336,6 +338,14 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void addDisconnectHandler(Consumer<DisconnectReason> disconnectHandler) {
         Objects.requireNonNull(disconnectHandler, "disconnectHandler");
         this.disconnectHandlers.add(disconnectHandler);
+    }
+
+    public void setHardcodedBlockingId(int hardcodedBlockingId) {
+        this.hardcodedBlockingId = hardcodedBlockingId;
+    }
+
+    public int getHardcodedBlockingId() {
+        return this.hardcodedBlockingId;
     }
 
     @Override

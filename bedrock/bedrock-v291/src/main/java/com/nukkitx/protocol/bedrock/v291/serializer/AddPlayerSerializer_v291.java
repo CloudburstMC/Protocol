@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.packet.AddPlayerPacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ public class AddPlayerSerializer_v291 implements BedrockPacketSerializer<AddPlay
     public static final AddPlayerSerializer_v291 INSTANCE = new AddPlayerSerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AddPlayerPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, AddPlayerPacket packet, BedrockSession session) {
         helper.writeUuid(buffer, packet.getUuid());
         helper.writeString(buffer, packet.getUsername());
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
@@ -22,7 +23,7 @@ public class AddPlayerSerializer_v291 implements BedrockPacketSerializer<AddPlay
         helper.writeVector3f(buffer, packet.getPosition());
         helper.writeVector3f(buffer, packet.getMotion());
         helper.writeVector3f(buffer, packet.getRotation());
-        helper.writeItem(buffer, packet.getHand());
+        helper.writeItem(buffer, packet.getHand(), session);
         helper.writeEntityData(buffer, packet.getMetadata());
         AdventureSettingsSerializer_v291.INSTANCE.serialize(buffer, helper, packet.getAdventureSettings());
         helper.writeArray(buffer, packet.getEntityLinks(), helper::writeEntityLink);
@@ -30,7 +31,7 @@ public class AddPlayerSerializer_v291 implements BedrockPacketSerializer<AddPlay
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, AddPlayerPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, AddPlayerPacket packet, BedrockSession session) {
         packet.setUuid(helper.readUuid(buffer));
         packet.setUsername(helper.readString(buffer));
         packet.setUniqueEntityId(VarInts.readLong(buffer));
@@ -39,7 +40,7 @@ public class AddPlayerSerializer_v291 implements BedrockPacketSerializer<AddPlay
         packet.setPosition(helper.readVector3f(buffer));
         packet.setMotion(helper.readVector3f(buffer));
         packet.setRotation(helper.readVector3f(buffer));
-        packet.setHand(helper.readItem(buffer));
+        packet.setHand(helper.readItem(buffer, session));
         helper.readEntityData(buffer, packet.getMetadata());
         AdventureSettingsSerializer_v291.INSTANCE.deserialize(buffer, helper, packet.getAdventureSettings());
         helper.readArray(buffer, packet.getEntityLinks(), helper::readEntityLink);
