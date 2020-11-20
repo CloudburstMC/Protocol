@@ -115,7 +115,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
         ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
         try {
-            this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel);
+            this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
             this.sendWrapped(compressed, encrypt);
         } catch (Exception e) {
             log.error("Unable to compress packets", e);
@@ -280,7 +280,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             batched.markReaderIndex();
 
             List<BedrockPacket> packets = new ObjectArrayList<>();
-            this.wrapperSerializer.deserialize(batched, this.packetCodec, packets);
+            this.wrapperSerializer.deserialize(batched, this.packetCodec, packets, this);
 
             this.batchHandler.handle(this, batched, packets);
         } catch (GeneralSecurityException ignore) {

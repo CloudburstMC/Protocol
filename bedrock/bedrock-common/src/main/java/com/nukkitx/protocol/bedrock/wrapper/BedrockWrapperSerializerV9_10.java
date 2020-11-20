@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.wrapper;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.util.Zlib;
 import io.netty.buffer.ByteBuf;
@@ -23,7 +24,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
     }
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level) {
+    public void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session) {
         ByteBuf uncompressed = ByteBufAllocator.DEFAULT.ioBuffer(packets.size() << 3);
         try {
             for (BedrockPacket packet : packets) {
@@ -35,7 +36,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
                     header |= (packet.getSenderId() & 3) << 10;
                     header |= (packet.getClientId() & 3) << 12;
                     VarInts.writeUnsignedInt(packetBuffer, header);
-                    codec.tryEncode(packetBuffer, packet);
+                    codec.tryEncode(packetBuffer, packet, session);
 
                     VarInts.writeUnsignedInt(uncompressed, packetBuffer.readableBytes());
                     uncompressed.writeBytes(packetBuffer);
@@ -54,7 +55,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
     }
 
     @Override
-    public void deserialize(ByteBuf compressed, BedrockPacketCodec codec, Collection<BedrockPacket> packets) {
+    public void deserialize(ByteBuf compressed, BedrockPacketCodec codec, Collection<BedrockPacket> packets, BedrockSession session) {
         ByteBuf decompressed = null;
         try {
             decompressed = zlib.inflate(compressed, 12 * 1024 * 1024); // 12MBs
@@ -70,7 +71,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
                 try {
                     int header = VarInts.readUnsignedInt(packetBuffer);
                     int packetId = header & 0x3ff;
-                    BedrockPacket packet = codec.tryDecode(packetBuffer, packetId);
+                    BedrockPacket packet = codec.tryDecode(packetBuffer, packetId, session);
                     packet.setPacketId(packetId);
                     packet.setSenderId((header >>> 10) & 3);
                     packet.setClientId((header >>> 12) & 3);

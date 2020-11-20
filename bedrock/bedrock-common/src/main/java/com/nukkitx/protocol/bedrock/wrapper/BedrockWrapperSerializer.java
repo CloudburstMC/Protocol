@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.wrapper;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -18,7 +19,7 @@ public abstract class BedrockWrapperSerializer {
      * @param codec  packet codec
      * @param level  compression level
      */
-    public abstract void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level);
+    public abstract void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session);
 
     /**
      * Decompress packets to handle
@@ -27,5 +28,5 @@ public abstract class BedrockWrapperSerializer {
      * @param codec   packet codec
      * @param packets received packets
      */
-    public abstract void deserialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets);
+    public abstract void deserialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, BedrockSession session);
 }

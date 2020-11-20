@@ -40,7 +40,7 @@ public final class BedrockPacketCodec {
         return new Builder();
     }
 
-    public BedrockPacket tryDecode(ByteBuf buf, int id) throws PacketSerializeException {
+    public BedrockPacket tryDecode(ByteBuf buf, int id, BedrockSession session) throws PacketSerializeException {
         BedrockPacket packet;
         BedrockPacketSerializer<BedrockPacket> serializer;
         try {
@@ -56,7 +56,7 @@ public final class BedrockPacketCodec {
         }
 
         try {
-            serializer.deserialize(buf, this.helper, packet);
+            serializer.deserialize(buf, this.helper, packet, session);
         } catch (Exception e) {
             throw new PacketSerializeException("Error whilst deserializing " + packet, e);
         }
@@ -68,7 +68,7 @@ public final class BedrockPacketCodec {
     }
 
     @SuppressWarnings("unchecked")
-    public void tryEncode(ByteBuf buf, BedrockPacket packet) throws PacketSerializeException {
+    public void tryEncode(ByteBuf buf, BedrockPacket packet, BedrockSession session) throws PacketSerializeException {
         try {
             BedrockPacketSerializer<BedrockPacket> serializer;
             if (packet instanceof UnknownPacket) {
@@ -77,7 +77,7 @@ public final class BedrockPacketCodec {
                 int packetId = getId(packet.getClass());
                 serializer = serializers[packetId];
             }
-            serializer.serialize(buf, this.helper, packet);
+            serializer.serialize(buf, this.helper, packet, session);
         } catch (Exception e) {
             throw new PacketSerializeException("Error whilst serializing " + packet, e);
         } finally {
