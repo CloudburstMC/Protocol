@@ -31,9 +31,13 @@ public enum EntityData {
     DISPLAY_ITEM(Type.INT),
     DISPLAY_OFFSET(null), // Can be long or int
     CUSTOM_DISPLAY(Type.BYTE),
-    SWELL(null),
-    OLD_SWELL(null),
-    SWELL_DIRECTION(null),
+    // These values are stored server side
+    @Deprecated
+    SWELL(Type.INT),
+    @Deprecated
+    OLD_SWELL(Type.INT),
+    @Deprecated
+    SWELL_DIRECTION(Type.INT),
     CHARGE_AMOUNT(Type.BYTE),
     CARRIED_BLOCK(Type.INT),
     CLIENT_EVENT(Type.BYTE),
