@@ -25,12 +25,14 @@ public class EntityFlags {
      */
     public boolean setFlag(@Nonnull EntityFlag flag, boolean value) {
         Preconditions.checkNotNull(flag, "flag");
-        boolean contains = flags.contains(flag);
-        if (contains && !value) {
-            flags.remove(flag);
-            return true;
-        } else if (!contains && value) {
-            flags.add(flag);
+        boolean oldValue = flags.contains(flag);
+
+        if (oldValue != value) {
+            if (value) {
+                flags.add(flag);
+            } else {
+                flags.remove(flag);
+            }
             return true;
         }
         return false;
