@@ -8,9 +8,11 @@ import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.v354.serializer.CraftingDataSerializer_v354;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -22,8 +24,12 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     @Override
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
         String recipeId = helper.readString(buffer);
-        ItemData[] inputs = helper.readArray(buffer, EMPTY_ARRAY, this::readIngredient);
-        ItemData[] outputs = helper.readArray(buffer, EMPTY_ARRAY, buf -> helper.readItem(buf, session));
+        List<ItemData> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, this::readIngredient);
+
+        List<ItemData> outputs = new ObjectArrayList<>();
+        helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
+
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
@@ -47,11 +53,12 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        ItemData[] inputs = new ItemData[inputCount];
+        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs[i] = this.readIngredient(buffer);
+            inputs.add(this.readIngredient(buffer));
         }
-        ItemData[] outputs = helper.readArray(buffer, EMPTY_ARRAY, buf -> helper.readItem(buf, session));
+        List<ItemData> outputs = new ObjectArrayList<>();
+        helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
@@ -65,9 +72,9 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         VarInts.writeInt(buffer, data.getWidth());
         VarInts.writeInt(buffer, data.getHeight());
         int count = data.getWidth() * data.getHeight();
-        ItemData[] inputs = data.getInputs();
+        List<ItemData> inputs = data.getInputs();
         for (int i = 0; i < count; i++) {
-            this.writeIngredient(buffer, inputs[i]);
+            this.writeIngredient(buffer, inputs.get(i));
         }
         helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item, session));
         helper.writeUuid(buffer, data.getUuid());
