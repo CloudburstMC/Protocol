@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class InventoryContentPacket extends BedrockPacket {
-    private List<ItemData> contents = new ObjectArrayList<>();;
+    private List<ItemData> contents = new ObjectArrayList<>();
     private int containerId;
 
     @Override
