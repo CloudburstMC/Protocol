@@ -30,6 +30,7 @@ import java.net.InetSocketAddress;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.zip.Deflater;
@@ -55,7 +56,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    private int hardcodedBlockingId = -1;
+    private AtomicInteger hardcodedBlockingId = new AtomicInteger(-1);
 
     static {
         // Required for Android API versions prior to 26.
@@ -340,11 +341,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         this.disconnectHandlers.add(disconnectHandler);
     }
 
-    public void setHardcodedBlockingId(int hardcodedBlockingId) {
-        this.hardcodedBlockingId = hardcodedBlockingId;
-    }
-
-    public int getHardcodedBlockingId() {
+    public AtomicInteger getHardcodedBlockingId() {
         return this.hardcodedBlockingId;
     }
 
