@@ -97,7 +97,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
-        int networkId = VarInts.readUnsignedInt(buffer);
+        int networkId = VarInts.readInt(buffer);
         return new CraftingData(type, recipeId,-1, -1, -1, -1, inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
@@ -109,7 +109,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getCraftingTag());
         VarInts.writeInt(buffer, data.getPriority());
-        VarInts.writeUnsignedInt(buffer, data.getNetworkId());
+        VarInts.writeInt(buffer, data.getNetworkId());
     }
 
     protected CraftingData readShapedRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
@@ -125,7 +125,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
-        int networkId = VarInts.readUnsignedInt(buffer);
+        int networkId = VarInts.readInt(buffer);
         return new CraftingData(type, recipeId, width, height, -1, -1, inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
@@ -142,7 +142,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getCraftingTag());
         VarInts.writeInt(buffer, data.getPriority());
-        VarInts.writeUnsignedInt(buffer, data.getNetworkId());
+        VarInts.writeInt(buffer, data.getNetworkId());
     }
 
     protected CraftingData readFurnaceRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
@@ -177,12 +177,12 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
     protected CraftingData readMultiRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type) {
         UUID uuid = helper.readUuid(buffer);
-        int networkId = VarInts.readUnsignedInt(buffer);
+        int networkId = VarInts.readInt(buffer);
         return CraftingData.fromMulti(uuid, networkId);
     }
 
     protected void writeMultiRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data) {
         helper.writeUuid(buffer, data.getUuid());
-        VarInts.writeUnsignedInt(buffer, data.getNetworkId());
+        VarInts.writeInt(buffer, data.getNetworkId());
     }
 }
