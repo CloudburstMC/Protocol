@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 public class InventoryContentSerializer_v407 implements BedrockPacketSerializer<InventoryContentPacket> {
     public static final InventoryContentSerializer_v407 INSTANCE = new InventoryContentSerializer_v407();
 
-    private static final ItemData[] EMPTY = new ItemData[0];
-
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryContentPacket packet, BedrockSession session) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
@@ -25,6 +23,6 @@ public class InventoryContentSerializer_v407 implements BedrockPacketSerializer<
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryContentPacket packet, BedrockSession session) {
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
-        packet.setContents(helper.readArray(buffer, EMPTY, buf -> helper.readNetItem(buf, session)));
+        helper.readArray(buffer, packet.getContents(), buf -> helper.readNetItem(buf, session));
     }
 }

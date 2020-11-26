@@ -4,6 +4,7 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.network.util.Preconditions;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 
@@ -18,7 +19,9 @@ public final class ItemData {
     private static final String[] EMPTY = new String[0];
     public static final ItemData AIR = new ItemData(0, (short) 0, 0, null, EMPTY, EMPTY, 0);
 
-    private final int id;
+    @NonNull
+    @NonFinal
+    private int id;
     private final short damage;
     private final int count;
     private final NbtMap tag;

@@ -21,7 +21,7 @@ public class PacketViolationWarningSerializer_v407 implements BedrockPacketSeria
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PacketViolationWarningPacket packet) {
         VarInts.writeInt(buffer, packet.getType().ordinal() - 1);
         VarInts.writeInt(buffer, packet.getSeverity().ordinal());
-        VarInts.writeInt(buffer, packet.getPacketId());
+        VarInts.writeInt(buffer, packet.getPacketCauseId());
         helper.writeString(buffer, packet.getContext());
     }
 
@@ -29,7 +29,7 @@ public class PacketViolationWarningSerializer_v407 implements BedrockPacketSeria
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PacketViolationWarningPacket packet) {
         packet.setType(TYPES[VarInts.readInt(buffer) + 1]);
         packet.setSeverity(SEVERITIES[VarInts.readInt(buffer)]);
-        packet.setPacketId(VarInts.readInt(buffer));
+        packet.setPacketCauseId(VarInts.readInt(buffer));
         packet.setContext(helper.readString(buffer));
     }
 }

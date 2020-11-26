@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 public class PacketViolationWarningPacket extends BedrockPacket {
     private PacketViolationType type;
     private PacketViolationSeverity severity;
-    private int packetId;
+    private int packetCauseId;
     private String context;
 
     @Override

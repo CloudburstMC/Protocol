@@ -9,16 +9,17 @@ import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.packet.CraftingDataPacket;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<CraftingDataPacket> {
     public static final CraftingDataSerializer_v407 INSTANCE = new CraftingDataSerializer_v407();
-
-    protected static final ItemData[] EMPTY_ARRAY = {};
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataPacket packet, BedrockSession session) {
@@ -91,8 +92,11 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
         String recipeId = helper.readString(buffer);
-        ItemData[] inputs = helper.readArray(buffer, EMPTY_ARRAY, helper::readRecipeIngredient);
-        ItemData[] outputs = helper.readArray(buffer, EMPTY_ARRAY, buf -> helper.readItem(buf, session));
+        List<ItemData> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, helper::readRecipeIngredient);
+
+        List<ItemData> outputs = new ObjectArrayList<>();
+        helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
 
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
@@ -117,11 +121,12 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        ItemData[] inputs = new ItemData[inputCount];
+        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs[i] = helper.readRecipeIngredient(buffer);
+            inputs.add(helper.readRecipeIngredient(buffer));
         }
-        ItemData[] outputs = helper.readArray(buffer, EMPTY_ARRAY, buf -> helper.readItem(buf, session));
+        List<ItemData> outputs = new ObjectArrayList<>();
+        helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
@@ -134,9 +139,9 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         VarInts.writeInt(buffer, data.getWidth());
         VarInts.writeInt(buffer, data.getHeight());
         int count = data.getWidth() * data.getHeight();
-        ItemData[] inputs = data.getInputs();
+        List<ItemData> inputs = data.getInputs();
         for (int i = 0; i < count; i++) {
-            helper.writeRecipeIngredient(buffer, inputs[i]);
+            helper.writeRecipeIngredient(buffer, inputs.get(i));
         }
         helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item, session));
         helper.writeUuid(buffer, data.getUuid());
@@ -147,7 +152,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
     protected CraftingData readFurnaceRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
         int inputId = VarInts.readInt(buffer);
-        ItemData[] output = new ItemData[]{helper.readItem(buffer, session)};
+        List<ItemData> output = new ObjectArrayList<>(Collections.singleton(helper.readItem(buffer, session)));
         String craftingTag = helper.readString(buffer);
         return new CraftingData(type, -1, -1, inputId, -1, null, output,
                 null, craftingTag);
@@ -155,14 +160,14 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
     protected void writeFurnaceRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
         VarInts.writeInt(buffer, data.getInputId());
-        helper.writeItem(buffer, data.getOutputs()[0], session);
+        helper.writeItem(buffer, data.getOutputs().get(0), session);
         helper.writeString(buffer, data.getCraftingTag());
     }
 
     protected CraftingData readFurnaceDataRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
         int inputId = VarInts.readInt(buffer);
         int inputDamage = VarInts.readInt(buffer);
-        ItemData[] output = new ItemData[]{helper.readItem(buffer, session)};
+        List<ItemData> output = new ObjectArrayList<>(Collections.singleton(helper.readItem(buffer, session)));
         String craftingTag = helper.readString(buffer);
         return new CraftingData(type, -1, -1, inputId, inputDamage, null, output,
                 null, craftingTag);
@@ -171,7 +176,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
     protected void writeFurnaceDataRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
         VarInts.writeInt(buffer, data.getInputId());
         VarInts.writeInt(buffer, data.getInputDamage());
-        helper.writeItem(buffer, data.getOutputs()[0], session);
+        helper.writeItem(buffer, data.getOutputs().get(0), session);
         helper.writeString(buffer, data.getCraftingTag());
     }
 
