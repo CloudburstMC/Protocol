@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePacksInfoSerializer_v422 extends ResourcePacksInfoSerializer_v332 {
-    public static final com.nukkitx.protocol.bedrock.v332.serializer.ResourcePacksInfoSerializer_v332 INSTANCE = new ResourcePacksInfoSerializer_v422();
+    public static final ResourcePacksInfoSerializer_v422 INSTANCE = new ResourcePacksInfoSerializer_v422();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePacksInfoPacket packet) {
