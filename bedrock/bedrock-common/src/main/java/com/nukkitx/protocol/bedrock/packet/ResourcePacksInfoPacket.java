@@ -36,5 +36,6 @@ public class ResourcePacksInfoPacket extends BedrockPacket {
         private final String subPackName;
         private final String contentId;
         private final boolean scripting;
+        private final boolean raytracingCapable;
     }
 }
