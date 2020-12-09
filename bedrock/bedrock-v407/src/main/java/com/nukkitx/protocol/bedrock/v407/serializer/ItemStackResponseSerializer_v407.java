@@ -30,7 +30,7 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
                 buf2.writeByte(containerEntry.getContainer().ordinal());
 
-                helper.writeArray(buf2, containerEntry.getItems(), (this::writeItemEntry);
+                helper.writeArray(buf2, containerEntry.getItems(), this::writeItemEntry);
             });
         });
     }
