@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.v407;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
@@ -9,6 +10,7 @@ import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
 import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
