@@ -18,6 +18,7 @@ import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
+import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
 import com.nukkitx.protocol.bedrock.util.TriConsumer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
@@ -630,6 +631,14 @@ public abstract class BedrockPacketHelper {
     }
 
     public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+        throw new UnsupportedOperationException();
+    }
+
+    public ItemStackResponsePacket.ItemEntry readItemEntry(ByteBuf buffer, BedrockPacketHelper helper) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void writeItemEntry(ByteBuf buffer, BedrockPacketHelper helper, ItemStackResponsePacket.ItemEntry itemEntry) {
         throw new UnsupportedOperationException();
     }
 }
