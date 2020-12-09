@@ -27,7 +27,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
                 buf2.writeByte(containerEntry.getContainer().ordinal());
 
-                helper.writeArray(buf2, containerEntry.getItems(), helper::writeItemEntry);
+                helper.writeArray(buf2, containerEntry.getItems(), this::writeItemEntry);
             });
         });
     }
@@ -47,7 +47,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
                 ContainerSlotType container = ContainerSlotType.values()[buf2.readByte()];
 
                 List<ItemStackResponsePacket.ItemEntry> itemEntries = new ArrayList<>();
-                helper.readArray(buf2, itemEntries, byteBuf -> helper.readItemEntry(buf2, helper));
+                helper.readArray(buf2, itemEntries, byteBuf -> this.readItemEntry(buf2, helper));
                 return new ItemStackResponsePacket.ContainerEntry(container, itemEntries);
             });
             return new ItemStackResponsePacket.Response(result, requestId, containerEntries);

@@ -19,6 +19,7 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.BedrockPacketHelper_v419;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
+import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
 import lombok.experimental.UtilityClass;
 
@@ -27,7 +28,7 @@ public class Bedrock_v422 {
     public static BedrockPacketCodec V422_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(422)
             .minecraftVersion("1.16.200.5")
-            .helper(BedrockPacketHelper_v422.INSTANCE)
+            .helper(BedrockPacketHelper_v419.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
@@ -172,7 +173,7 @@ public class Bedrock_v422 {
             .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
             .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v407.INSTANCE, 147)
-            .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v419.INSTANCE, 148)
+            .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v422.INSTANCE, 148)
             .registerPacket(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v407.INSTANCE, 149)
             .registerPacket(CodeBuilderPacket.class, CodeBuilderSerializer_v407.INSTANCE, 150)
             .registerPacket(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v407.INSTANCE, 151)

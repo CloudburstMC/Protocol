@@ -145,22 +145,4 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         VarInts.writeInt(buffer, item.getNetId());
         this.writeItem(buffer, item, session);
     }
-
-    @Override
-    public ItemStackResponsePacket.ItemEntry readItemEntry(ByteBuf buffer, BedrockPacketHelper helper) {
-        return new ItemStackResponsePacket.ItemEntry(
-                buffer.readByte(),
-                buffer.readByte(),
-                buffer.readByte(),
-                VarInts.readInt(buffer),
-                "");
-    }
-
-    @Override
-    public void writeItemEntry(ByteBuf buffer, BedrockPacketHelper helper, ItemStackResponsePacket.ItemEntry itemEntry) {
-        buffer.writeByte(itemEntry.getSlot());
-        buffer.writeByte(itemEntry.getHotbarSlot());
-        buffer.writeByte(itemEntry.getCount());
-        VarInts.writeInt(buffer, itemEntry.getStackNetworkId());
-    }
 }
