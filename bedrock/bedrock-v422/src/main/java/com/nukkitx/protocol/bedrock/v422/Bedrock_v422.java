@@ -8,7 +8,6 @@ import com.nukkitx.protocol.bedrock.v313.serializer.AvailableEntityIdentifiersSe
 import com.nukkitx.protocol.bedrock.v313.serializer.BiomeDefinitionListSerializer_v313;
 import com.nukkitx.protocol.bedrock.v313.serializer.NetworkChunkPublisherUpdateSerializer_v313;
 import com.nukkitx.protocol.bedrock.v332.serializer.NetworkStackLatencySerializer_v332;
-import com.nukkitx.protocol.bedrock.v332.serializer.ResourcePacksInfoSerializer_v332;
 import com.nukkitx.protocol.bedrock.v332.serializer.SpawnParticleEffectSerializer_v332;
 import com.nukkitx.protocol.bedrock.v332.serializer.TextSerializer_v332;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
@@ -19,6 +18,7 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.BedrockPacketHelper_v419;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
+import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
 import lombok.experimental.UtilityClass;
@@ -188,6 +188,7 @@ public class Bedrock_v422 {
             .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v419.INSTANCE, 160)
             .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
             .registerPacket(ItemComponentPacket.class, ItemComponentSerializer_v419.INSTANCE, 162)
+            .registerPacket(FilterTextPacket.class, FilterTextSerializer_v422.INSTANCE, 163)
             .build();
 
 }
