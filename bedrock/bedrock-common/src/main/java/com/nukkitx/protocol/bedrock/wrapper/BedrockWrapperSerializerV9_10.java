@@ -62,6 +62,10 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
 
             while (decompressed.isReadable()) {
                 int length = VarInts.readUnsignedInt(decompressed);
+                if (length == 0) {
+                    continue;
+                }
+
                 ByteBuf packetBuffer = decompressed.readSlice(length);
 
                 if (!packetBuffer.isReadable()) {
