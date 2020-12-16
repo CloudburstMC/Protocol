@@ -93,6 +93,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(FilterTextPacket packet) {
+        return false;
+    }
+
     default boolean handle(InteractPacket packet) {
         return false;
     }

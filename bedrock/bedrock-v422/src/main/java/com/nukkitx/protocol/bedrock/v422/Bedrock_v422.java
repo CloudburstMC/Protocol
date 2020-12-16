@@ -17,6 +17,7 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
+import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackRequestSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
@@ -187,6 +188,7 @@ public class Bedrock_v422 {
             .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v419.INSTANCE, 160)
             .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
             .registerPacket(ItemComponentPacket.class, ItemComponentSerializer_v419.INSTANCE, 162)
+            .registerPacket(FilterTextPacket.class, FilterTextSerializer_v422.INSTANCE, 163)
             .build();
 
 }
