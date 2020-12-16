@@ -33,13 +33,23 @@ public class ItemStackRequestPacket extends BedrockPacket {
      */
     @Value
     public static class Request {
-        // requestId is a unique ID for the request. This ID is used by the server to send a response for this
-        // specific request in the ItemStackResponse packet.
+        /**
+         * requestId is a unique ID for the request. This ID is used by the server to send a response for this
+         * specific request in the ItemStackResponse packet.
+         */
         int requestId;
 
-        // actions is a list of actions performed by the client. The actual type of the actions depends on which
-        // ID was present
+        /**
+         * actions is a list of actions performed by the client. The actual type of the actions depends on which
+         * ID was present
+         */
         StackRequestActionData[] actions;
+
+        /**
+         * Used for the server to determine which strings should be filtered.
+         * @since v422
+         */
+        String[] filterStrings;
     }
 
 }

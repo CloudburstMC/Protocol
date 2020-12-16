@@ -14,6 +14,7 @@ import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
@@ -631,6 +632,18 @@ public abstract class BedrockPacketHelper {
     }
 
     public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected void registerStackActionRequestTypes() {
+        throw new UnsupportedOperationException();
+    }
+
+    public StackRequestActionType getStackRequestActionTypeFromId(int id) {
+        throw new UnsupportedOperationException();
+    }
+
+    public int getIdFromStackRequestActionType(StackRequestActionType type) {
         throw new UnsupportedOperationException();
     }
 }
