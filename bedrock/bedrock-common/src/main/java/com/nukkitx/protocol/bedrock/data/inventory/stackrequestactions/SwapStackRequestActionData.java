@@ -8,7 +8,7 @@ import lombok.Value;
  * container. The two item stacks swap places.
  */
 @Value
-public class SwapStackRequestActionData implements StackRequestActionData {
+public class SwapStackRequestActionData extends StackRequestActionData {
     StackRequestSlotInfoData source;
     StackRequestSlotInfoData destination;
 

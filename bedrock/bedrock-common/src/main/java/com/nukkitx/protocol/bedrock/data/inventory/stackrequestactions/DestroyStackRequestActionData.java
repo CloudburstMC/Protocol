@@ -8,7 +8,7 @@ import lombok.Value;
  * back into the creative inventory.
  */
 @Value
-public class DestroyStackRequestActionData implements StackRequestActionData {
+public class DestroyStackRequestActionData extends StackRequestActionData {
     byte count;
     StackRequestSlotInfoData source;
 

@@ -6,11 +6,11 @@ import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
  * TransferStackRequestActionData is the structure shared by StackRequestActions that transfer items from one
  * slot into another
  */
-public interface TransferStackRequestActionData extends StackRequestActionData {
+public abstract class TransferStackRequestActionData extends StackRequestActionData {
 
-    byte getCount();
+    public abstract byte getCount();
 
-    StackRequestSlotInfoData getSource();
+    public abstract StackRequestSlotInfoData getSource();
 
-    StackRequestSlotInfoData getDestination();
+    public abstract StackRequestSlotInfoData getDestination();
 }

@@ -11,7 +11,7 @@ import lombok.Value;
  * turned into their respective resulting items.
  */
 @Value
-public class CreateStackRequestActionData implements StackRequestActionData {
+public class CreateStackRequestActionData extends StackRequestActionData {
     byte slot;
 
     @Override

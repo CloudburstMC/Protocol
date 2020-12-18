@@ -28,6 +28,8 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.util.AsciiString;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -293,20 +295,20 @@ public abstract class BedrockPacketHelper {
         buffer.writeBytes(string.toByteArray());
     }
 
-    public AsciiString readVarIntAsciiString(ByteBuf buffer) {
+    public String readVarIntAsciiString(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         int length = VarInts.readUnsignedInt(buffer);
         byte[] bytes = new byte[length];
         buffer.readBytes(bytes);
-        return new AsciiString(bytes);
+        return new AsciiString(bytes).toString();
     }
 
-    public void writeVarIntAsciiString(ByteBuf buffer, AsciiString string) {
+    public void writeVarIntAsciiString(ByteBuf buffer, String string) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(string, "string");
         VarInts.writeUnsignedInt(buffer, string.length());
-        buffer.writeBytes(string.toByteArray());
+        buffer.writeBytes(new AsciiString(string).toByteArray());
     }
 
     public UUID readUuid(ByteBuf buffer) {

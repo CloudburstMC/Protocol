@@ -10,7 +10,7 @@ import lombok.Value;
  * crafting, where the old item is consumed.
  */
 @Value
-public class CraftResultsDeprecatedStackRequestActionData implements StackRequestActionData {
+public class CraftResultsDeprecatedStackRequestActionData extends StackRequestActionData {
     ItemData[] resultItems;
     byte timesCrafted;
 

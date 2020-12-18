@@ -10,6 +10,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.StackRequestSlotInfoData;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.*;
 import com.nukkitx.protocol.bedrock.packet.ItemStackRequestPacket;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.AsciiString;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +30,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
             helper.writeArray(buf, requests.getActions(), (byteBuf, action) -> {
                 StackRequestActionType type = action.getType();
                 byteBuf.writeByte(helper.getIdFromStackRequestActionType(type));
-                writeRequestActionData(byteBuf, action, type, helper, session);
+                writeRequestActionData(byteBuf, action, helper, session);
             });
         });
     }
@@ -44,12 +45,12 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                 StackRequestActionType type = helper.getStackRequestActionTypeFromId(byteBuf.readByte());
                 return readRequestActionData(byteBuf, type, helper, session);
             });
-            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]), new String[0]);
+            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]));
         });
     }
 
-    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, StackRequestActionType type, BedrockPacketHelper helper, BedrockSession session) {
-        switch (type) {
+    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockPacketHelper helper, BedrockSession session) {
+        switch (action.getType()) {
             case TAKE:
             case PLACE:
                 byteBuf.writeByte(((TransferStackRequestActionData) action).getCount());
@@ -96,7 +97,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                 byteBuf.writeByte(((CraftResultsDeprecatedStackRequestActionData) action).getTimesCrafted());
                 break;
             default:
-                throw new UnsupportedOperationException("Unhandled stack request action type: " + type);
+                throw new UnsupportedOperationException("Unhandled stack request action type: " + action.getType());
         }
     }
 

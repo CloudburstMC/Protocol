@@ -16,13 +16,4 @@ public enum StackRequestActionType {
     CRAFT_RECIPE_OPTIONAL,
     CRAFT_NON_IMPLEMENTED_DEPRECATED,
     CRAFT_RESULTS_DEPRECATED;
-
-    private static final StackRequestActionType[] VALUES = values();
-
-    public static StackRequestActionType byId(int id) {
-        if (id >= 0 && id < VALUES.length) {
-            return VALUES[id];
-        }
-        throw new UnsupportedOperationException("Unknown StackRequestActionType ID: " + id);
-    }
 }

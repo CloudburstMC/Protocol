@@ -9,7 +9,7 @@ import lombok.Value;
  * crafting, where the old item is consumed.
  */
 @Value
-public class CraftRecipeStackRequestActionData implements RecipeStackRequestActionData {
+public class CraftRecipeStackRequestActionData extends RecipeStackRequestActionData {
     int recipeNetworkId;
 
     @Override

@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import io.netty.util.AsciiString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -44,12 +45,6 @@ public class ItemStackRequestPacket extends BedrockPacket {
          * ID was present
          */
         StackRequestActionData[] actions;
-
-        /**
-         * Used for the server to determine which strings should be filtered.
-         * @since v422
-         */
-        String[] filterStrings;
     }
 
 }

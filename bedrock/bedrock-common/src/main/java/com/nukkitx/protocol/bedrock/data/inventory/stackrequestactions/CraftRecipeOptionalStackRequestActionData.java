@@ -3,7 +3,7 @@ package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 import lombok.Value;
 
 @Value
-public class CraftRecipeOptionalStackRequestActionData implements StackRequestActionData {
+public class CraftRecipeOptionalStackRequestActionData extends StackRequestActionData {
     int recipeId;
 
     @Override
