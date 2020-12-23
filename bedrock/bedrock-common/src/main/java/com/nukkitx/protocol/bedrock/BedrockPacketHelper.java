@@ -295,22 +295,6 @@ public abstract class BedrockPacketHelper {
         buffer.writeBytes(string.toByteArray());
     }
 
-    public String readVarIntAsciiString(ByteBuf buffer) {
-        Preconditions.checkNotNull(buffer, "buffer");
-
-        int length = VarInts.readUnsignedInt(buffer);
-        byte[] bytes = new byte[length];
-        buffer.readBytes(bytes);
-        return new AsciiString(bytes).toString();
-    }
-
-    public void writeVarIntAsciiString(ByteBuf buffer, String string) {
-        Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(string, "string");
-        VarInts.writeUnsignedInt(buffer, string.length());
-        buffer.writeBytes(new AsciiString(string).toByteArray());
-    }
-
     public UUID readUuid(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
         return new UUID(buffer.readLongLE(), buffer.readLongLE());

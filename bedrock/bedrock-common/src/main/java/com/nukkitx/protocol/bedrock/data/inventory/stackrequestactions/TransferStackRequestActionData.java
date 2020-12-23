@@ -10,7 +10,7 @@ public interface TransferStackRequestActionData extends StackRequestActionData {
 
     byte getCount();
 
-   StackRequestSlotInfoData getSource();
+    StackRequestSlotInfoData getSource();
 
     StackRequestSlotInfoData getDestination();
 }
