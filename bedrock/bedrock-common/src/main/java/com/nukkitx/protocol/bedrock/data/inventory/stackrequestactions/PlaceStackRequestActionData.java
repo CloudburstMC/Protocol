@@ -9,7 +9,7 @@ import lombok.Value;
  * in the cursor into a slot.
  */
 @Value
-public class PlaceStackRequestActionData extends TransferStackRequestActionData {
+public class PlaceStackRequestActionData implements TransferStackRequestActionData {
     byte count;
     StackRequestSlotInfoData source;
     StackRequestSlotInfoData destination;

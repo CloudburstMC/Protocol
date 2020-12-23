@@ -8,7 +8,7 @@ import lombok.Value;
  * item is 'consumed'.
  */
 @Value
-public class ConsumeStackRequestActionData extends StackRequestActionData {
+public class ConsumeStackRequestActionData implements StackRequestActionData {
     byte count;
     StackRequestSlotInfoData source;
 

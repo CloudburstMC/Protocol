@@ -7,7 +7,7 @@ import lombok.Value;
  * in the new system. These include, for example, anvils
  */
 @Value
-public class CraftNonImplementedStackRequestActionData extends StackRequestActionData {
+public class CraftNonImplementedStackRequestActionData implements StackRequestActionData {
 
     @Override
     public StackRequestActionType getType() {

@@ -45,6 +45,12 @@ public class ItemStackRequestPacket extends BedrockPacket {
          * ID was present
          */
         StackRequestActionData[] actions;
+
+        /**
+         * Used for the server to determine which strings should be filtered. Used in anvils to verify a renamed item.
+         * @since v422
+         */
+        String[] filterStrings;
     }
 
 }

@@ -8,7 +8,7 @@ import lombok.Value;
  * container to the cursor.
  */
 @Value
-public class TakeStackRequestActionData extends TransferStackRequestActionData {
+public class TakeStackRequestActionData implements TransferStackRequestActionData {
     byte count;
     StackRequestSlotInfoData source;
     StackRequestSlotInfoData destination;

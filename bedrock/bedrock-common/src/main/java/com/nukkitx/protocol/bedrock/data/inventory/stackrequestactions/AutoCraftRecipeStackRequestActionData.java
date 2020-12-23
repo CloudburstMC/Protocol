@@ -7,7 +7,7 @@ import lombok.Value;
  * only difference is that the recipe is automatically created and crafted by shift clicking the recipe book.
  */
 @Value
-public class AutoCraftRecipeStackRequestActionData extends RecipeStackRequestActionData {
+public class AutoCraftRecipeStackRequestActionData implements RecipeStackRequestActionData {
     int recipeNetworkId;
 
     @Override

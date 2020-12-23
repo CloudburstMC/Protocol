@@ -45,7 +45,7 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
                 StackRequestActionType type = helper.getStackRequestActionTypeFromId(byteBuf.readByte());
                 return readRequestActionData(byteBuf, type, helper, session);
             });
-            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]));
+            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]), new String[0]);
         });
     }
 

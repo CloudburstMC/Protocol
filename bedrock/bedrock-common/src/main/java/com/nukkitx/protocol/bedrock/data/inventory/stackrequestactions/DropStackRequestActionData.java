@@ -10,7 +10,7 @@ import lombok.Value;
  * whether the item stack network IDs are used or not.
  */
 @Value
-public class DropStackRequestActionData extends StackRequestActionData {
+public class DropStackRequestActionData implements StackRequestActionData {
     byte count;
     StackRequestSlotInfoData source;
     boolean randomly; // ?? Perhaps deals with order of items being dropped? Normally false.

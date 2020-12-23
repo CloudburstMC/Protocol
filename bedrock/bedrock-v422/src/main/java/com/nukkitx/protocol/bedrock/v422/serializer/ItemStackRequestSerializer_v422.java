@@ -11,6 +11,7 @@ import com.nukkitx.protocol.bedrock.v407.serializer.ItemStackRequestSerializer_v
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_v407 {
@@ -27,6 +28,7 @@ public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_
                 byteBuf.writeByte(helper.getIdFromStackRequestActionType(type));
                 writeRequestActionData(byteBuf, action, helper, session);
             });
+            helper.writeArray(buffer, Collections.emptyList(), helper::writeString);
         });
     }
 
@@ -40,41 +42,34 @@ public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_
                 StackRequestActionType type = helper.getStackRequestActionTypeFromId(byteBuf.readByte());
                 return readRequestActionData(byteBuf, type, helper, session);
             });
-            List<String> filterStrings = new ArrayList<>();
-            helper.readArray(buffer, filterStrings, (byteBuf1 -> {
-                String string = helper.readString(byteBuf1);
-                System.out.println(string);
-                return string;
-            }));
-            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]));
+            List<String> filteredStrings = new ArrayList<>();
+            helper.readArray(buf, filteredStrings, helper::readString);
+            return new ItemStackRequestPacket.Request(requestId, actions.toArray(new StackRequestActionData[0]), filteredStrings.toArray(new String[0]));
         });
     }
 
     @Override
     protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockPacketHelper helper, BedrockSession session) {
         if (action.getType() == StackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            VarInts.writeInt(byteBuf, ((CraftRecipeOptionalStackRequestActionData) action).getRecipeId());
+            //VarInts.writeInt(byteBuf, ((CraftRecipeOptionalStackRequestActionData) action).getRecipeNetworkId());
         } else {
             super.writeRequestActionData(byteBuf, action, helper, session);
         }
-        //helper.writeArray(byteBuf, action.getFilterStrings(), helper::writeVarIntAsciiString);
     }
 
     @Override
     protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockPacketHelper helper, BedrockSession session) {
         StackRequestActionData action;
         if (type == StackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            action = new CraftRecipeOptionalStackRequestActionData(VarInts.readInt(byteBuf));
+            action = new CraftRecipeOptionalStackRequestActionData();
+            System.out.println(byteBuf.readByte());
+            System.out.println(byteBuf.readByte());
+            System.out.println(byteBuf.readByte());
+            System.out.println(byteBuf.readByte());
+            System.out.println(byteBuf.readByte());
         } else {
             action = super.readRequestActionData(byteBuf, type, helper, session);
         }
-//        List<String> filterStrings = new ArrayList<>();
-//        helper.readArray(byteBuf, filterStrings, (byteBuf1 -> {
-//            String string = helper.readString(byteBuf1);
-//            System.out.println(string);
-//            return string;
-//        }));
-//        action.setFilterStrings(filterStrings.toArray(new String[0]));
         return action;
     }
 }
