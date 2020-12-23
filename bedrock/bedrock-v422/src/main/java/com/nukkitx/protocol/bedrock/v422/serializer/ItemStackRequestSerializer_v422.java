@@ -28,7 +28,7 @@ public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_
                 byteBuf.writeByte(helper.getIdFromStackRequestActionType(type));
                 writeRequestActionData(byteBuf, action, helper, session);
             });
-            helper.writeArray(buffer, Collections.emptyList(), helper::writeString);
+            helper.writeArray(buffer, requests.getFilterStrings(), helper::writeString);
         });
     }
 
