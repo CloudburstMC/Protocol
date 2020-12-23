@@ -11,7 +11,6 @@ import com.nukkitx.protocol.bedrock.v407.serializer.ItemStackRequestSerializer_v
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_v407 {
