@@ -24,9 +24,17 @@ public class DefaultBatchHandler implements BatchHandler {
             }
 
             BedrockPacketHandler handler = session.getPacketHandler();
-            if (handler == null || !packet.handle(handler)) {
-                log.debug("Unhandled packet for {}: {}", session.getAddress(), packet);
-                ReferenceCountUtil.release(packet);
+            boolean release = true;
+            try {
+                if (handler != null && packet.handle(handler)) {
+                    release = false;
+                } else {
+                    log.debug("Unhandled packet for {}: {}", session.getAddress(), packet);
+                }
+            } finally {
+                if (release) {
+                    ReferenceCountUtil.release(packet);
+                }
             }
         }
     }
