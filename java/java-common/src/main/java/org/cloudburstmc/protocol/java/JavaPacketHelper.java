@@ -2,18 +2,29 @@ package org.cloudburstmc.protocol.java;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.cloudburstmc.protocol.java.data.entity.EntityType;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.data.profile.property.Property;
 import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
+import org.cloudburstmc.protocol.java.data.world.BlockEntityAction;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public abstract class JavaPacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(JavaPacketHelper.class);
+
+    protected final Int2ObjectBiMap<EntityType> entityTypes = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<BlockEntityAction> blockEntityActions = new Int2ObjectBiMap<>();
+
+    protected JavaPacketHelper() {
+        this.registerEntityTypes();
+        this.registerBlockEntityActions();
+    }
 
     public byte[] readByteArray(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
@@ -92,4 +103,24 @@ public abstract class JavaPacketHelper {
         buffer.writeLong(uuid.getMostSignificantBits());
         buffer.writeLong(uuid.getLeastSignificantBits());
     }
+
+    public final int getEntityId(EntityType entityType) {
+        return this.entityTypes.get(entityType);
+    }
+
+    public final EntityType getEntityType(int entityId) {
+        return this.entityTypes.get(entityId);
+    }
+
+    public final int getBlockEntityActionId(BlockEntityAction action) {
+        return this.blockEntityActions.get(action);
+    }
+
+    public final BlockEntityAction getBlockEntityAction(int actionId) {
+        return this.blockEntityActions.get(actionId);
+    }
+
+    protected abstract void registerEntityTypes();
+
+    protected abstract void registerBlockEntityActions();
 }
