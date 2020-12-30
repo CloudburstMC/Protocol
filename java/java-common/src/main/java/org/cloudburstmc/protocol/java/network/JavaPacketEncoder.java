@@ -8,6 +8,7 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AllArgsConstructor;
 import org.cloudburstmc.protocol.java.JavaPacket;
+import org.cloudburstmc.protocol.java.JavaPacketCodec;
 import org.cloudburstmc.protocol.java.JavaSession;
 
 @AllArgsConstructor
@@ -18,10 +19,11 @@ public class JavaPacketEncoder extends MessageToByteEncoder<JavaPacket<?>> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, JavaPacket<?> packet, ByteBuf out) throws Exception {
-        int packetId = this.session.getPacketCodec().getId(packet);
+        JavaPacketCodec.JavaStateCodec stateCodec = this.session.getPacketCodec().getCodec(packet.getPacketType().getState());
+        int packetId = stateCodec.getId(packet);
         try {
             VarInts.writeUnsignedInt(out, packetId);
-            this.session.getPacketCodec().tryEncode(out, packet, this.session);
+            stateCodec.tryEncode(out, packet, this.session);
         } catch (Throwable ex) {
             log.error("Error encoding packet: %s", packetId, ex);
         }

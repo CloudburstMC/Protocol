@@ -53,11 +53,14 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
 
     public void setPacketCodec(JavaPacketCodec packetCodec) {
         this.packetCodec = packetCodec;
-        this.protocolState = packetCodec.getProtocolState();
     }
 
     public void setPacketHandler(@Nonnull JavaPacketHandler packetHandler) {
         this.packetHandler = packetHandler;
+    }
+
+    public void setProtocolState(@Nonnull State protocolState) {
+        this.protocolState = protocolState;
     }
 
     void checkForClosed() {
@@ -123,7 +126,7 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
         }
 
         // Verify that the packet ID exists.
-        this.packetCodec.getId(packet);
+        this.packetCodec.getCodec(this.protocolState).getId(packet);
     }
 
     @Override
