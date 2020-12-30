@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.exception;
+package com.nukkitx.protocol.exception;
 
 public class PacketSerializeException extends RuntimeException {
 
