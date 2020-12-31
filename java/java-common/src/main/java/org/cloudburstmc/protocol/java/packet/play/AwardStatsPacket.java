@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.java.packet.play;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
-import org.cloudburstmc.protocol.java.data.entity.Statistic;
+import org.cloudburstmc.protocol.java.data.statistic.Statistic;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;

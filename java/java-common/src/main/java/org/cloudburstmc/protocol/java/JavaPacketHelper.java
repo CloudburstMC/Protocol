@@ -1,19 +1,35 @@
 package org.cloudburstmc.protocol.java;
 
+import com.nukkitx.math.vector.Vector2f;
+import com.nukkitx.math.vector.Vector3d;
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NBTOutputStream;
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
+import com.nukkitx.protocol.util.TriConsumer;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.java.data.entity.EntityType;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.data.profile.property.Property;
 import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
 import org.cloudburstmc.protocol.java.data.world.BlockEntityAction;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public abstract class JavaPacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(JavaPacketHelper.class);
@@ -102,6 +118,187 @@ public abstract class JavaPacketHelper {
     public void writeUUID(ByteBuf buffer, UUID uuid) {
         buffer.writeLong(uuid.getMostSignificantBits());
         buffer.writeLong(uuid.getLeastSignificantBits());
+    }
+
+    public Vector3d readPosition(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        double x = buffer.readDouble();
+        double y = buffer.readDouble();
+        double z = buffer.readDouble();
+        return Vector3d.from(x, y, z);
+    }
+
+    public void writePosition(ByteBuf buffer, Vector3d vector3d) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector3d, "vector3d");
+        buffer.writeDouble(vector3d.getX());
+        buffer.writeDouble(vector3d.getY());
+        buffer.writeDouble(vector3d.getZ());
+    }
+
+    public Vector3d readVelocity(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        double x = buffer.readShort() / 8000D;
+        double y = buffer.readShort() / 8000D;
+        double z = buffer.readShort() / 8000D;
+        return Vector3d.from(x, y, z);
+    }
+
+    public void writeVelocity(ByteBuf buffer, Vector3d vector3d) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector3d, "vector3d");
+        buffer.writeDouble(vector3d.getX() * 8000D);
+        buffer.writeDouble(vector3d.getY() * 8000D);
+        buffer.writeDouble(vector3d.getZ() * 8000D);
+    }
+
+    public Vector2f readRotation2f(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        float pitch = buffer.readByte() * 360 / 256F;
+        float yaw = buffer.readByte() * 360 / 256F;
+        return Vector2f.from(pitch, yaw);
+    }
+
+    public Vector3f readRotation3f(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        float pitch = buffer.readByte() * 360 / 256F;
+        float yaw = buffer.readByte() * 360 / 256F;
+        float headYaw = buffer.readByte() * 360 / 256F;
+        return Vector3f.from(pitch, yaw, headYaw);
+    }
+
+    public void writeRotation2f(ByteBuf buffer, Vector2f vector2f) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector2f, "vector2f");
+        buffer.writeByte((int) (vector2f.getX() * 256F / 360));
+        buffer.writeByte((int) (vector2f.getY() * 256F / 360));
+    }
+
+    public void writeRotation3f(ByteBuf buffer, Vector3f vector3f) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector3f, "vector3f");
+        buffer.writeByte((int) (vector3f.getX() * 256F / 360));
+        buffer.writeByte((int) (vector3f.getY() * 256F / 360));
+        buffer.writeByte((int) (vector3f.getZ() * 256F / 360));
+    }
+
+    public Vector3i readBlockPosition(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        long position = buffer.readLong();
+        return Vector3i.from((int) (position >> 38), (int) (position >> 12), (int) (position << 26 >> 38));
+    }
+
+    public void writeBlockPosition(ByteBuf buffer, Vector3i vector3i) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector3i, "vector3i");
+        buffer.writeLong((long) (vector3i.getX() & 0x3FFFFFF) << 38 | (long) (vector3i.getZ() & 0x3FFFFFF) << 12 | (long) (vector3i.getY() & 0xFFF));
+    }
+    
+    /*
+        Helper array serialization
+     */
+
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, JavaPacketHelper, T> function) {
+        int length = VarInts.readUnsignedInt(buffer);
+        for (int i = 0; i < length; i++) {
+            array.add(function.apply(buffer, this));
+        }
+    }
+
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, JavaPacketHelper, T> biConsumer) {
+        VarInts.writeUnsignedInt(buffer, array.size());
+        for (T val : array) {
+            biConsumer.accept(buffer, this, val);
+        }
+    }
+
+    public <T> T[] readArray(ByteBuf buffer, T[] array, BiFunction<ByteBuf, JavaPacketHelper, T> function) {
+        ObjectArrayList<T> list = new ObjectArrayList<>();
+        readArray(buffer, list, function);
+        return list.toArray(array);
+    }
+
+    public <T> void writeArray(ByteBuf buffer, T[] array, TriConsumer<ByteBuf, JavaPacketHelper, T> biConsumer) {
+        VarInts.writeUnsignedInt(buffer, array.length);
+        for (T val : array) {
+            biConsumer.accept(buffer, this, val);
+        }
+    }
+
+    public <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, JavaPacketHelper, T> function) {
+        int length = buffer.readUnsignedShortLE();
+        for (int i = 0; i < length; i++) {
+            array.add(function.apply(buffer, this));
+        }
+    }
+
+    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, JavaPacketHelper, T> biConsumer) {
+        buffer.writeShortLE(array.size());
+        for (T val : array) {
+            biConsumer.accept(buffer, this, val);
+        }
+    }
+
+    /*
+        Non-helper array serialization
+     */
+
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
+        int length = VarInts.readUnsignedInt(buffer);
+        for (int i = 0; i < length; i++) {
+            array.add(function.apply(buffer));
+        }
+    }
+
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, BiConsumer<ByteBuf, T> biConsumer) {
+        VarInts.writeUnsignedInt(buffer, array.size());
+        for (T val : array) {
+            biConsumer.accept(buffer, val);
+        }
+    }
+
+    public <T> T[] readArray(ByteBuf buffer, T[] array, Function<ByteBuf, T> function) {
+        ObjectArrayList<T> list = new ObjectArrayList<>();
+        readArray(buffer, list, function);
+        return list.toArray(array);
+    }
+
+    public <T> void writeArray(ByteBuf buffer, T[] array, BiConsumer<ByteBuf, T> biConsumer) {
+        VarInts.writeUnsignedInt(buffer, array.length);
+        for (T val : array) {
+            biConsumer.accept(buffer, val);
+        }
+    }
+
+    public <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
+        int length = buffer.readUnsignedShortLE();
+        for (int i = 0; i < length; i++) {
+            array.add(function.apply(buffer));
+        }
+    }
+
+    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, BiConsumer<ByteBuf, T> biConsumer) {
+        buffer.writeShortLE(array.size());
+        for (T val : array) {
+            biConsumer.accept(buffer, val);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T readTag(ByteBuf buffer) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
+            return (T) reader.readTag();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <T> void writeTag(ByteBuf buffer, T tag) {
+        try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
+            writer.writeTag(tag);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public final int getEntityId(EntityType entityType) {

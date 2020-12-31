@@ -10,16 +10,7 @@ public enum BarFlag {
     END_MUSIC(0x02),
     CREATE_FOG(0x04);
 
-    private static final BarFlag[] VALUES = values();
+    public static final BarFlag[] VALUES = values();
 
-    private final int id;
-
-    public static BarFlag getById(int id) {
-        for (BarFlag flag : VALUES) {
-            if (flag.id == id) {
-                return flag;
-            }
-        }
-        return null;
-    }
+    private final int bitMask;
 }

@@ -9,7 +9,7 @@ public enum BarDivision {
 
     private static final BarDivision[] VALUES = values();
 
-    public BarDivision getById(int id) {
+    public static BarDivision getById(int id) {
         return VALUES[id];
     }
 }

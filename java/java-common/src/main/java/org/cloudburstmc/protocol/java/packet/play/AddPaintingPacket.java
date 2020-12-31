@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.java.packet.play;
 
-import com.nukkitx.math.vector.Vector3d;
-import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
@@ -19,7 +18,7 @@ public class AddPaintingPacket extends JavaPacket<JavaPlayPacketHandler> {
     private int entityId;
     private UUID uuid;
     private PaintingType painting;
-    private Vector3f position;
+    private Vector3i position;
     private Direction direction;
 
     @Override

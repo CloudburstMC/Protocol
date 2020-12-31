@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 public class BlockDestructionPacket extends JavaPacket<JavaPlayPacketHandler> {
     private int entityId;
     private Vector3i position;
-    private byte destroyStage;
+    private short destroyStage;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
