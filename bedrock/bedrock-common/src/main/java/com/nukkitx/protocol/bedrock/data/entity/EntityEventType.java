@@ -68,5 +68,5 @@ public enum EntityEventType {
     TREASURE_HUNT,
     SUMMON_AGENT,
     FINISHED_CHARGING_CROSSBOW,
-    FALL
+    LANDED_ON_GROUND
 }

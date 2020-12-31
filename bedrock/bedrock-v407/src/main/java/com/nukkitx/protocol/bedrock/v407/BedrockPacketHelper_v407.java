@@ -56,7 +56,7 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     protected void registerEntityEvents() {
         super.registerEntityEvents();
 
-        this.addEntityEvent(75, EntityEventType.FALL);
+        this.addEntityEvent(75, EntityEventType.LANDED_ON_GROUND);
     }
 
     @Override
