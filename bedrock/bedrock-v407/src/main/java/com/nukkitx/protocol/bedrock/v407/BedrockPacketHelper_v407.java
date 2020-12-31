@@ -7,6 +7,7 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
+import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
@@ -49,6 +50,13 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addEntityFlag(92, EntityFlag.CELEBRATING);
         this.addEntityFlag(93, EntityFlag.ADMIRING);
         this.addEntityFlag(94, EntityFlag.CELEBRATING_SPECIAL);
+    }
+
+    @Override
+    protected void registerEntityEvents() {
+        super.registerEntityEvents();
+
+        this.addEntityEvent(75, EntityEventType.LANDED_ON_GROUND);
     }
 
     @Override
