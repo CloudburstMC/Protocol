@@ -65,6 +65,14 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(CommandSuggestionsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CommandsPacket packet) {
+        return false;
+    }
+
     default boolean handle(DisconnectPacket packet) {
         return false;
     }

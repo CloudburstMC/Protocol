@@ -54,6 +54,8 @@ public class Java_v754 {
                     .registerClientbound(BossEventPacket.class, BossEventSerializer_v754.INSTANCE, 12)
                     .registerClientbound(ChangeDifficultyPacket.class, ChangeDifficultySerializer_v754.INSTANCE, 13)
                     .registerClientbound(ChatPacket.class, ChatSerializer_v754.INSTANCE, 14)
+                    .registerClientbound(CommandSuggestionsPacket.class, CommandSuggestionsSerializer_v754.INSTANCE, 15)
+                    .registerClientbound(CommandsPacket.class, CommandsSerializer_v754.INSTANCE, 16)
                     .registerClientbound(org.cloudburstmc.protocol.java.packet.play.DisconnectPacket.class, org.cloudburstmc.protocol.java.v754.serializer.play.DisconnectSerializer_v754.INSTANCE, 25)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
