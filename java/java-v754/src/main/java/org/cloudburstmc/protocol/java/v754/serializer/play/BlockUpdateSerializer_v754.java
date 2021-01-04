@@ -6,20 +6,20 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
-import org.cloudburstmc.protocol.java.packet.play.BlockEventPacket;
+import org.cloudburstmc.protocol.java.packet.play.BlockUpdatePacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BlockUpdateSerializer_v754 implements JavaPacketSerializer<BlockEventPacket> {
+public class BlockUpdateSerializer_v754 implements JavaPacketSerializer<BlockUpdatePacket> {
     public static final BlockUpdateSerializer_v754 INSTANCE = new BlockUpdateSerializer_v754();
 
     @Override
-    public void serialize(ByteBuf buffer, JavaPacketHelper helper, BlockEventPacket packet) {
+    public void serialize(ByteBuf buffer, JavaPacketHelper helper, BlockUpdatePacket packet) {
         helper.writeBlockPosition(buffer, packet.getPosition());
         VarInts.writeUnsignedInt(buffer, packet.getBlockState());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, JavaPacketHelper helper, BlockEventPacket packet) {
+    public void deserialize(ByteBuf buffer, JavaPacketHelper helper, BlockUpdatePacket packet) {
         packet.setPosition(helper.readBlockPosition(buffer));
         packet.setBlockState(VarInts.readUnsignedInt(buffer));
     }

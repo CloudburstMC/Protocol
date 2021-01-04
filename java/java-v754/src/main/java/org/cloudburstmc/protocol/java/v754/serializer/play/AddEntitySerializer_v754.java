@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.AddEntityPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AddEntityPacketSerializer_v754 implements JavaPacketSerializer<AddEntityPacket> {
-    public static final AddEntityPacketSerializer_v754 INSTANCE = new AddEntityPacketSerializer_v754();
+public class AddEntitySerializer_v754 implements JavaPacketSerializer<AddEntityPacket> {
+    public static final AddEntitySerializer_v754 INSTANCE = new AddEntitySerializer_v754();
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, AddEntityPacket packet) {
