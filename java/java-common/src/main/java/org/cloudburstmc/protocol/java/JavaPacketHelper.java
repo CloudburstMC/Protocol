@@ -17,6 +17,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.data.entity.EntityType;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.data.profile.property.Property;
@@ -68,6 +69,14 @@ public abstract class JavaPacketHelper {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(string, "string");
         writeByteArray(buffer, string.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public Key readKey(ByteBuf buffer) {
+        return Key.key(this.readString(buffer));
+    }
+
+    public void writeKey(ByteBuf buffer, Key key) {
+        this.writeString(buffer, key.asString());
     }
 
     public GameProfile readGameProfile(ByteBuf buffer) {
@@ -286,7 +295,7 @@ public abstract class JavaPacketHelper {
 
     @SuppressWarnings("unchecked")
     public <T> T readTag(ByteBuf buffer) {
-        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
+        try (NBTInputStream reader = NbtUtils.createReader(new ByteBufInputStream(buffer))) {
             return (T) reader.readTag();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -294,7 +303,7 @@ public abstract class JavaPacketHelper {
     }
 
     public <T> void writeTag(ByteBuf buffer, T tag) {
-        try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
+        try (NBTOutputStream writer = NbtUtils.createWriter(new ByteBufOutputStream(buffer))) {
             writer.writeTag(tag);
         } catch (IOException e) {
             throw new RuntimeException(e);

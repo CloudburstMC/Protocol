@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.login.DisconnectPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DisconnectPacketSerializer_v754 implements JavaPacketSerializer<DisconnectPacket> {
-    public static final DisconnectPacketSerializer_v754 INSTANCE = new DisconnectPacketSerializer_v754();
+public class DisconnectSerializer_v754 implements JavaPacketSerializer<DisconnectPacket> {
+    public static final DisconnectSerializer_v754 INSTANCE = new DisconnectSerializer_v754();
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, DisconnectPacket packet) {

@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class SetCompressionPacket extends JavaPacket<JavaLoginPacketHandler> {
-    private int compression;
+    private int compressionThreshold;
 
     @Override
     public boolean handle(JavaLoginPacketHandler handler) {

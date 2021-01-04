@@ -7,11 +7,13 @@ import org.cloudburstmc.protocol.java.handler.JavaLoginPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaLoginPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 
+import java.security.PublicKey;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class EncryptionRequestPacket extends JavaPacket<JavaLoginPacketHandler> {
-    private byte[] publicKey;
-    private byte[] privateKey;
+    private PublicKey publicKey;
+    private byte[] verifyToken;
 
     @Override
     public boolean handle(JavaLoginPacketHandler handler) {

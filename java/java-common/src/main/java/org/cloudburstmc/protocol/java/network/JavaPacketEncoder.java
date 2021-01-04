@@ -25,7 +25,7 @@ public class JavaPacketEncoder extends MessageToByteEncoder<JavaPacket<?>> {
             VarInts.writeUnsignedInt(out, packetId);
             stateCodec.tryEncode(out, packet, this.session);
         } catch (Throwable ex) {
-            log.error("Error encoding packet: %s", packetId, ex);
+            log.error("Error encoding packet: {}", packetId, ex);
         }
     }
 }

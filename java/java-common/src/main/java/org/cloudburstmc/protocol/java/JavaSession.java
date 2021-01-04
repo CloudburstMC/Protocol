@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.java;
 
 import com.google.common.base.Preconditions;
+import com.nukkitx.natives.aes.AesFactory;
+import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.protocol.MinecraftSession;
 import io.netty.channel.Channel;
@@ -12,14 +14,28 @@ import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.handler.JavaPacketHandler;
+import org.cloudburstmc.protocol.java.network.JavaPacketCompressor;
+import org.cloudburstmc.protocol.java.network.JavaPacketDecompressor;
+import org.cloudburstmc.protocol.java.network.JavaPacketDecrypter;
+import org.cloudburstmc.protocol.java.network.JavaPacketEncrypter;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.play.DisconnectPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.security.auth.DestroyFailedException;
 import java.net.InetSocketAddress;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Queue;
@@ -31,19 +47,24 @@ import java.util.function.Consumer;
 @Getter
 public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket<?>> implements MinecraftSession<JavaPacket<?>> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(JavaSession.class);
+    private static final AesFactory AES_FACTORY = Natives.AES_CFB8.get();
 
     private final Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Queue<JavaPacket<?>> queuedPackets = PlatformDependent.newMpscQueue();
-    private final InetSocketAddress address;
     private final EventLoop eventLoop;
-    private JavaPacketCodec packetCodec = null;
+    protected final InetSocketAddress address;
+    protected JavaPacketCodec packetCodec = null;
+    protected Channel channel;
+    private SecretKey agreedKey;
+    private Cipher encryptionCipher = null;
+    private Cipher decryptionCipher = null;
     private JavaPacketHandler packetHandler;
     private State protocolState = State.HANDSHAKING;
-    private Channel channel;
-    private boolean compression = false;
-    private int compressionThreshold;
+    private int compressionThreshold = 256;
     private volatile boolean closed = false;
     private volatile boolean logging = true;
+
+    @Setter protected GameProfile profile;
 
     JavaSession(InetSocketAddress address, Channel channel, EventLoop eventLoop) {
         this.address = address;
@@ -75,13 +96,20 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
     }
 
     public boolean isConnected() {
-        return this.closed && this.channel.isOpen();
+        return !this.closed && this.channel.isOpen();
     }
 
     public void close() {
         this.closed = true;
         if (this.channel.isOpen()) {
             this.channel.close();
+        }
+        if (this.agreedKey != null && !this.agreedKey.isDestroyed()) {
+            try {
+                this.agreedKey.destroy();
+            } catch (DestroyFailedException e) {
+                // Ignore - throws exception by default
+            }
         }
     }
 
@@ -172,6 +200,51 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
             this.sendPacketImmediately(packet);
         }
         this.close();
+    }
+
+    public synchronized void enableEncryption(@Nonnull SecretKey secretKey) {
+        this.checkForClosed();
+        log.debug("Encryption enabled.");
+        Objects.requireNonNull(secretKey, "secretKey");
+        if (!secretKey.getAlgorithm().equals("AES")) {
+            throw new IllegalArgumentException("Invalid key algorithm");
+        }
+        if (this.encryptionCipher != null || this.decryptionCipher != null) {
+            throw new IllegalStateException("Encryption has already been enabled");
+        }
+
+        this.agreedKey = secretKey;
+        try {
+            this.encryptionCipher = Cipher.getInstance("AES/CFB8/NoPadding");
+            this.decryptionCipher = Cipher.getInstance("AES/CFB8/NoPadding");
+
+            this.encryptionCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(secretKey.getEncoded()));
+            this.decryptionCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(secretKey.getEncoded()));
+
+            this.channel.pipeline().addBefore("prepender", "encrypt", new JavaPacketEncrypter(this.encryptionCipher));
+            this.channel.pipeline().addBefore("splitter", "decrypt", new JavaPacketDecrypter(this.decryptionCipher));
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException ex) {
+            throw new RuntimeException("Failed to enable encryption!", ex);
+        }
+    }
+
+    public void setCompressionThreshold(int compressionThreshold) {
+        this.compressionThreshold = compressionThreshold;
+
+        if (this.compressionThreshold < 0) {
+            if (this.channel.pipeline().get("compress") != null) {
+                this.channel.pipeline().remove("compress");
+            }
+            if (this.channel.pipeline().get("decompress") != null) {
+                this.channel.pipeline().remove("decompress");
+            }
+        }
+        if (this.channel.pipeline().get("compress") == null) {
+            this.channel.pipeline().addBefore("encoder", "compress", new JavaPacketCompressor(this));
+        }
+        if (this.channel.pipeline().get("decompress") == null) {
+            this.channel.pipeline().addBefore("decoder", "decompress", new JavaPacketDecompressor(this));
+        }
     }
 
     @Override

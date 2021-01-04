@@ -4,6 +4,7 @@ import org.cloudburstmc.protocol.java.packet.play.*;
 
 public interface JavaPlayPacketHandler extends JavaPacketHandler {
 
+    // Clientbound packets
     default boolean handle(AddEntityPacket packet) {
         return false;
     }
@@ -60,11 +61,32 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(ChatPacket packet) {
+        return false;
+    }
+
     default boolean handle(DisconnectPacket packet) {
         return false;
     }
 
-    default boolean handle(ChatPacket packet) {
+    default boolean handle(LoginPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerPositionPacket packet) {
+        return false;
+    }
+
+    // Serverbound packets
+    default boolean handle(AcceptTeleportationPacket packet) {
+        return false;
+    }
+
+    default boolean handle(MovePlayerPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ContainerClosePacket packet) {
         return false;
     }
 }

@@ -5,7 +5,6 @@ import com.nukkitx.network.util.EventLoops;
 import com.nukkitx.network.util.Preconditions;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -15,6 +14,8 @@ import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import lombok.Getter;
+import lombok.Setter;
 import org.cloudburstmc.protocol.java.network.JavaPacketDecoder;
 import org.cloudburstmc.protocol.java.network.JavaPacketEncoder;
 import org.cloudburstmc.protocol.java.network.JavaVarInt21FrameDecoder;
@@ -28,10 +29,13 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Getter
+@Setter
 public class JavaServer extends Java {
     final Set<JavaServerSession> sessions = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private JavaServerEventHandler handler;
+    private JavaEventHandler<JavaServerSession> handler;
     private boolean closed = false;
+    private boolean onlineMode = true;
 
     public JavaServer(InetSocketAddress bindAddress) {
         super(bindAddress, EventLoops.commonGroup());
@@ -57,7 +61,7 @@ public class JavaServer extends Java {
                 .childHandler(new ChannelInitializer<Channel>() {
             @Override
             public void initChannel(Channel channel) throws Exception {
-                JavaServerSession session = new JavaServerSession((InetSocketAddress) channel.remoteAddress(), channel, channel.eventLoop());
+                JavaServerSession session = new JavaServerSession(JavaServer.this, (InetSocketAddress) channel.remoteAddress(), channel, channel.eventLoop());
                 channel.pipeline()
                         .addLast("timeout", new ReadTimeoutHandler(30))
                         .addLast("splitter", new JavaVarInt21FrameDecoder())
@@ -70,18 +74,6 @@ public class JavaServer extends Java {
             }
         }).bind().syncUninterruptibly();
         return Bootstraps.allOf(future);
-    }
-
-    public JavaServerEventHandler getHandler() {
-        return this.handler;
-    }
-
-    public void setHandler(JavaServerEventHandler handler) {
-        this.handler = handler;
-    }
-
-    public boolean isClosed() {
-        return this.closed;
     }
 
     @Override

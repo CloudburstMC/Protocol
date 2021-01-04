@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.java;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public interface JavaServerEventHandler {
-    void onSessionCreation(JavaServerSession session);
+public interface JavaEventHandler<T extends JavaSession> {
+    void onSessionCreation(T session);
+
+    void onLogin(T session);
 }

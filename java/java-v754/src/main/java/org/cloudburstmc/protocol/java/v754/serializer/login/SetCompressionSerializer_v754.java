@@ -14,11 +14,11 @@ public class SetCompressionSerializer_v754 implements JavaPacketSerializer<SetCo
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, SetCompressionPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getCompression());
+        VarInts.writeUnsignedInt(buffer, packet.getCompressionThreshold());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, SetCompressionPacket packet) {
-        packet.setCompression(VarInts.readUnsignedInt(buffer));
+        packet.setCompressionThreshold(VarInts.readUnsignedInt(buffer));
     }
 }

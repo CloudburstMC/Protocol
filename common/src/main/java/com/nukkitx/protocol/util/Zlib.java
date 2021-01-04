@@ -72,7 +72,7 @@ public class Zlib {
         }
     }
 
-    public void deflate(ByteBuf uncompressed, ByteBuf compressed, int level) throws DataFormatException {
+    public void deflate(ByteBuf uncompressed, ByteBuf compressed, int level) {
         ByteBuf destination = null;
         ByteBuf source = null;
         try {

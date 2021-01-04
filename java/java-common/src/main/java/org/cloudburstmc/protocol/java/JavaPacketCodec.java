@@ -131,7 +131,7 @@ public final class JavaPacketCodec {
             try {
                 serializer.deserialize(buf, this.helper, packet, session);
             } catch (Exception e) {
-                throw new PacketSerializeException("Error whilst deserializing " + packet, e);
+                throw new PacketSerializeException("Error whilst deserializing " + packet + " during state " + session.getProtocolState(), e);
             }
 
             if (log.isDebugEnabled() && buf.isReadable()) {
