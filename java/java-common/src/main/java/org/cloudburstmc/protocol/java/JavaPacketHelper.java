@@ -19,6 +19,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.data.entity.EntityType;
+import org.cloudburstmc.protocol.java.data.entity.metadata.ItemStack;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.data.profile.property.Property;
 import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
@@ -189,6 +190,26 @@ public abstract class JavaPacketHelper {
         buffer.writeByte((int) (vector3f.getX() * 256F / 360));
         buffer.writeByte((int) (vector3f.getY() * 256F / 360));
         buffer.writeByte((int) (vector3f.getZ() * 256F / 360));
+    }
+
+    // TODO: Move these to version helpers as they have changed between versions
+    public ItemStack readItemStack(ByteBuf buffer) {
+        boolean present = buffer.readBoolean();
+        if (!present) {
+            return null;
+        }
+
+        int item = VarInts.readUnsignedInt(buffer);
+        return new ItemStack(item, buffer.readByte(), readTag(buffer));
+    }
+
+    public void writeItemStack(ByteBuf buffer, ItemStack item) {
+        buffer.writeBoolean(item != null);
+        if (item != null) {
+            VarInts.writeUnsignedInt(buffer, item.getId());
+            buffer.writeByte(item.getAmount());
+            writeTag(buffer, item.getNbt());
+        }
     }
 
     public Vector3i readBlockPosition(ByteBuf buffer) {

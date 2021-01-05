@@ -73,6 +73,22 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(ContainerAckPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ContainerSetContentPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ContainerSetDataPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ContainerSetSlotPacket packet) {
+        return false;
+    }
+
     default boolean handle(DisconnectPacket packet) {
         return false;
     }
