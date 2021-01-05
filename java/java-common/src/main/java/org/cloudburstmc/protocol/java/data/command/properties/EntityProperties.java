@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class EntityProperties implements CommandProperties{
+public class EntityProperties implements CommandProperties {
     boolean singleTarget;
     boolean playersOnly;
 }

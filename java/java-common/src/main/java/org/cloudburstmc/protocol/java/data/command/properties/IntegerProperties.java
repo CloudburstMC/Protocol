@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @AllArgsConstructor
-public class IntegerProperties implements CommandProperties{
+public class IntegerProperties implements CommandProperties {
     int min;
     int max;
 

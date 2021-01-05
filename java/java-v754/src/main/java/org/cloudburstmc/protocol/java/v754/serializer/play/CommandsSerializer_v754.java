@@ -1,13 +1,11 @@
 package org.cloudburstmc.protocol.java.v754.serializer.play;
 
-import com.nukkitx.nbt.NbtType;
 import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
-import org.cloudburstmc.protocol.java.data.Identifier;
 import org.cloudburstmc.protocol.java.data.command.CommandNode;
 import org.cloudburstmc.protocol.java.data.command.CommandParser;
 import org.cloudburstmc.protocol.java.data.command.CommandType;
@@ -195,7 +193,7 @@ public class CommandsSerializer_v754 implements JavaPacketSerializer<CommandsPac
             CommandParser parser = null;
             CommandProperties properties = null;
             if (type == CommandType.ARGUMENT.ordinal()) {
-                String identifier = Identifier.formalize(helper.readString(buffer));
+                String identifier = helper.readKey(buffer).asString();
                 if (identifier.equals("minecraft:")) continue;
                 parser = CommandParser.valueOf(identifier);
                 switch (parser) {
@@ -269,7 +267,7 @@ public class CommandsSerializer_v754 implements JavaPacketSerializer<CommandsPac
 
             SuggestionType suggestionType = null;
             if ((flags & FLAG_SUGGESTION_TYPE) != 0) {
-                suggestionType = SuggestionType.valueOf(Identifier.formalize(helper.readString(buffer)));
+                suggestionType = SuggestionType.valueOf(helper.readKey(buffer).asString());
             }
 
             CommandNode[] nodes = packet.getNodes();
