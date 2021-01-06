@@ -15,37 +15,14 @@ public class ContainerSetDataSerializer_v754 implements JavaPacketSerializer<Con
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, ContainerSetDataPacket packet) {
         buffer.writeByte(packet.getContainerId());
-
-        int value = 0;
-        if (packet.getRawProperty() instanceof FurnaceProperty) {
-            value = ((FurnaceProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof EnchantmentTableProperty) {
-            value = ((EnchantmentTableProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof BeaconProperty) {
-            value = ((BeaconProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof AnvilProperty) {
-            value = ((AnvilProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof BrewingStandProperty) {
-            value = ((BrewingStandProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof StonecutterProperty) {
-            value = ((StonecutterProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof LoomProperty) {
-            value = ((LoomProperty) packet.getRawProperty()).ordinal();
-        } else if (packet.getRawProperty() instanceof LecternProperty) {
-            value = ((LecternProperty) packet.getRawProperty()).ordinal();
-        }
-
-        buffer.writeShort(value);
-
+        buffer.writeShort(packet.getProperty().ordinal());
         buffer.writeShort(packet.getValue());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, ContainerSetDataPacket packet) {
         packet.setContainerId(buffer.readUnsignedByte());
-
-        int data = buffer.readShort();
-
+        packet.setProperty(ContainerProperty.getById(buffer.readShort()));
         packet.setValue(buffer.readShort());
     }
 }

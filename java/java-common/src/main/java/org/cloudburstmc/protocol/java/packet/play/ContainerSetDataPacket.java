@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @AllArgsConstructor
 public class ContainerSetDataPacket extends JavaPacket<JavaPlayPacketHandler> {
     private int containerId;
-    private ContainerProperty rawProperty;
+    private ContainerProperty property;
     private int value;
 
     @Override
