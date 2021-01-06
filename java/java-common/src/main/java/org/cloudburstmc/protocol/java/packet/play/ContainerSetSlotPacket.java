@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ContainerSetSlotPacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int windowId;
+    private int containerId;
     private int slot;
     private ItemStack item;
 

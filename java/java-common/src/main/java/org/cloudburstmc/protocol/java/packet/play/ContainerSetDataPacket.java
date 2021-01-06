@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.java.packet.play;
 
 import lombok.*;
 import org.cloudburstmc.protocol.java.JavaPacket;
-import org.cloudburstmc.protocol.java.data.window.property.WindowProperty;
+import org.cloudburstmc.protocol.java.data.container.property.ContainerProperty;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
@@ -10,13 +10,9 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @AllArgsConstructor
 public class ContainerSetDataPacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int windowId;
-    private int rawProperty;
+    private int containerId;
+    private ContainerProperty rawProperty;
     private int value;
-
-    public ContainerSetDataPacket(int windowId, WindowProperty rawProperty, int value) {
-        this(windowId, Integer.parseInt(rawProperty.toString()), value);
-    }
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {

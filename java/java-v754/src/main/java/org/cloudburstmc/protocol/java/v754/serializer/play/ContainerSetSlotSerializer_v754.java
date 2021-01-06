@@ -13,14 +13,14 @@ public class ContainerSetSlotSerializer_v754 implements JavaPacketSerializer<Con
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, ContainerSetSlotPacket packet) {
-        buffer.writeByte(packet.getWindowId());
+        buffer.writeByte(packet.getContainerId());
         buffer.writeShort(packet.getSlot());
         helper.writeItemStack(buffer, packet.getItem());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, ContainerSetSlotPacket packet) {
-        packet.setWindowId(buffer.readUnsignedByte());
+        packet.setContainerId(buffer.readUnsignedByte());
         packet.setSlot(buffer.readShort());
         packet.setItem(helper.readItemStack(buffer));
     }
