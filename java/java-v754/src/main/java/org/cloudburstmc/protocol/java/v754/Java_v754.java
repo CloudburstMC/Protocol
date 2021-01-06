@@ -60,6 +60,7 @@ public class Java_v754 {
                     .registerClientbound(ContainerSetContentPacket.class, ContainerSetContentSerializer_v754.INSTANCE, 19)
                     .registerClientbound(ContainerSetDataPacket.class, ContainerSetDataSerializer_v754.INSTANCE, 20)
                     .registerClientbound(ContainerSetSlotPacket.class, ContainerSetSlotSerializer_v754.INSTANCE, 21)
+                    .registerClientbound(CooldownPacket.class, CooldownSerializer_v754.INSTANCE, 22)
                     .registerClientbound(org.cloudburstmc.protocol.java.packet.play.DisconnectPacket.class, org.cloudburstmc.protocol.java.v754.serializer.play.DisconnectSerializer_v754.INSTANCE, 25)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)

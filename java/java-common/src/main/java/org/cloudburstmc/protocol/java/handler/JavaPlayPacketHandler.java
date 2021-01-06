@@ -89,6 +89,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(CooldownPacket packet) {
+        return false;
+    }
+
     default boolean handle(DisconnectPacket packet) {
         return false;
     }
