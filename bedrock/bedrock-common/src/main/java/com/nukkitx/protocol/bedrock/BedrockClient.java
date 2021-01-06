@@ -48,6 +48,7 @@ public class BedrockClient extends Bedrock {
             session.disconnect();
         }
         rakNetClient.close();
+        tickFuture.cancel(false);
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
