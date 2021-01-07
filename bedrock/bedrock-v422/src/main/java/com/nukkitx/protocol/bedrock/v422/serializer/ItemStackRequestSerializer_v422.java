@@ -50,7 +50,8 @@ public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_
     @Override
     protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockPacketHelper helper, BedrockSession session) {
         if (action.getType() == StackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            //VarInts.writeInt(byteBuf, ((CraftRecipeOptionalStackRequestActionData) action).getRecipeNetworkId());
+            VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeOptionalStackRequestActionData) action).getRecipeNetworkId());
+            byteBuf.writeIntLE(((CraftRecipeOptionalStackRequestActionData) action).getFilteredStringIndex());
         } else {
             super.writeRequestActionData(byteBuf, action, helper, session);
         }
@@ -60,12 +61,7 @@ public class ItemStackRequestSerializer_v422 extends ItemStackRequestSerializer_
     protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockPacketHelper helper, BedrockSession session) {
         StackRequestActionData action;
         if (type == StackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
-            action = new CraftRecipeOptionalStackRequestActionData();
-            System.out.println(byteBuf.readByte());
-            System.out.println(byteBuf.readByte());
-            System.out.println(byteBuf.readByte());
-            System.out.println(byteBuf.readByte());
-            System.out.println(byteBuf.readByte());
+            action = new CraftRecipeOptionalStackRequestActionData(VarInts.readUnsignedInt(byteBuf), byteBuf.readIntLE());
         } else {
             action = super.readRequestActionData(byteBuf, type, helper, session);
         }
