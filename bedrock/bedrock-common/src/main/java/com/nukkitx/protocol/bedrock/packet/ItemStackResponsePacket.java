@@ -4,10 +4,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +46,7 @@ public class ItemStackResponsePacket extends BedrockPacket {
          * will be empty.
          * @deprecated as of v419
          */
+        @ToString.Exclude
         @Deprecated
         boolean success;
 

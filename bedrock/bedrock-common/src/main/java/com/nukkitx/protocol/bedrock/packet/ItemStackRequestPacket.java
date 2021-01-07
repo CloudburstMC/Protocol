@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import io.netty.util.AsciiString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -33,13 +34,23 @@ public class ItemStackRequestPacket extends BedrockPacket {
      */
     @Value
     public static class Request {
-        // requestId is a unique ID for the request. This ID is used by the server to send a response for this
-        // specific request in the ItemStackResponse packet.
+        /**
+         * requestId is a unique ID for the request. This ID is used by the server to send a response for this
+         * specific request in the ItemStackResponse packet.
+         */
         int requestId;
 
-        // actions is a list of actions performed by the client. The actual type of the actions depends on which
-        // ID was present
+        /**
+         * actions is a list of actions performed by the client. The actual type of the actions depends on which
+         * ID was present
+         */
         StackRequestActionData[] actions;
+
+        /**
+         * Used for the server to determine which strings should be filtered. Used in anvils to verify a renamed item.
+         * @since v422
+         */
+        String[] filterStrings;
     }
 
 }
