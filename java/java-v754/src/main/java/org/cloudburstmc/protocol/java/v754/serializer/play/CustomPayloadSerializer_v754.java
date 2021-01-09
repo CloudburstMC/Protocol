@@ -21,6 +21,6 @@ public class CustomPayloadSerializer_v754 implements JavaPacketSerializer<Custom
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, CustomPayloadPacket packet) throws PacketSerializeException {
         packet.setChannel(helper.readKey(buffer));
-        packet.setBuffer(buffer.readBytes(buffer.readableBytes()));
+        packet.setBuffer(buffer.readBytes(buffer.readableBytes()).retain());
     }
 }
