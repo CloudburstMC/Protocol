@@ -1,5 +1,6 @@
-package org.cloudburstmc.protocol.java.packet.play;
+package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
+import com.nukkitx.math.vector.Vector3i;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
@@ -9,8 +10,10 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int id;
+public class BlockDestructionPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private int entityId;
+    private Vector3i position;
+    private short destroyStage;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -19,6 +22,6 @@ public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLOSE_C2S;
+        return JavaPlayPacketType.BLOCK_DESTRUCTION_S2C;
     }
 }

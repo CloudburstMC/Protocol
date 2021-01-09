@@ -1,6 +1,9 @@
 package org.cloudburstmc.protocol.java.handler;
 
-import org.cloudburstmc.protocol.java.packet.play.*;
+import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
+import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
+import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 
 public interface JavaPlayPacketHandler extends JavaPacketHandler {
 
@@ -115,6 +118,11 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(ContainerClosePacket packet) {
+        return false;
+    }
+
+    // Bidirectional packets
+    default boolean handle(CustomPayloadPacket packet) {
         return false;
     }
 }

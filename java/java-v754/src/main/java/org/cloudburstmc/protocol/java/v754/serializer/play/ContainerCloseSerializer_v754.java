@@ -14,11 +14,11 @@ public class ContainerCloseSerializer_v754 implements JavaPacketSerializer<Conta
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, ContainerClosePacket packet) throws PacketSerializeException {
-        buffer.writeByte(packet.getContainerId());
+        buffer.writeByte(packet.getId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, ContainerClosePacket packet) throws PacketSerializeException {
-        packet.setContainerId(buffer.readUnsignedByte());
+        packet.setId(buffer.readUnsignedByte());
     }
 }

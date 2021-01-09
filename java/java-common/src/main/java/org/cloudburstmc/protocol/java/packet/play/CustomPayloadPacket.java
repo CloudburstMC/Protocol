@@ -1,7 +1,9 @@
 package org.cloudburstmc.protocol.java.packet.play;
 
+import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.JavaPacket;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
@@ -9,8 +11,9 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int id;
+public class CustomPayloadPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private Key channel;
+    private ByteBuf buffer;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -19,6 +22,6 @@ public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLOSE_C2S;
+        return JavaPlayPacketType.CUSTOM_PAYLOAD_C2S;
     }
 }

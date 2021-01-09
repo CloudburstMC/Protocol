@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.packet.play;
+package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,8 +9,9 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int id;
+public class CooldownPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private int itemId;
+    private int cooldownTicks;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -19,6 +20,6 @@ public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLOSE_C2S;
+        return JavaPlayPacketType.COOLDOWN_S2C;
     }
 }

@@ -23,7 +23,7 @@ import org.cloudburstmc.protocol.java.network.JavaPacketDecompressor;
 import org.cloudburstmc.protocol.java.network.JavaPacketDecrypter;
 import org.cloudburstmc.protocol.java.network.JavaPacketEncrypter;
 import org.cloudburstmc.protocol.java.packet.State;
-import org.cloudburstmc.protocol.java.packet.play.DisconnectPacket;
+import org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

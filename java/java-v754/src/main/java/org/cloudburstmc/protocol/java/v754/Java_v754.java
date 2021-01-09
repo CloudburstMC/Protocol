@@ -5,11 +5,16 @@ import org.cloudburstmc.protocol.java.JavaPacketCodec;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.handshake.*;
 import org.cloudburstmc.protocol.java.packet.login.*;
-import org.cloudburstmc.protocol.java.packet.play.*;
+import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
+import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
+import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 import org.cloudburstmc.protocol.java.packet.status.*;
 import org.cloudburstmc.protocol.java.v754.serializer.handshake.*;
 import org.cloudburstmc.protocol.java.v754.serializer.login.*;
+import org.cloudburstmc.protocol.java.v754.serializer.play.clientbound.*;
 import org.cloudburstmc.protocol.java.v754.serializer.play.*;
+import org.cloudburstmc.protocol.java.v754.serializer.play.serverbound.*;
 import org.cloudburstmc.protocol.java.v754.serializer.status.*;
 
 @UtilityClass
@@ -57,15 +62,18 @@ public class Java_v754 {
                     .registerClientbound(CommandSuggestionsPacket.class, CommandSuggestionsSerializer_v754.INSTANCE, 15)
                     .registerClientbound(CommandsPacket.class, CommandsSerializer_v754.INSTANCE, 16)
                     .registerClientbound(ContainerAckPacket.class, ContainerAckSerializer_v754.INSTANCE, 17)
+                    .registerClientbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 18)
                     .registerClientbound(ContainerSetContentPacket.class, ContainerSetContentSerializer_v754.INSTANCE, 19)
                     .registerClientbound(ContainerSetDataPacket.class, ContainerSetDataSerializer_v754.INSTANCE, 20)
                     .registerClientbound(ContainerSetSlotPacket.class, ContainerSetSlotSerializer_v754.INSTANCE, 21)
                     .registerClientbound(CooldownPacket.class, CooldownSerializer_v754.INSTANCE, 22)
-                    .registerClientbound(org.cloudburstmc.protocol.java.packet.play.DisconnectPacket.class, org.cloudburstmc.protocol.java.v754.serializer.play.DisconnectSerializer_v754.INSTANCE, 25)
+                    .registerClientbound(CustomPayloadPacket.class, CustomPayloadSerializer_v754.INSTANCE, 23)
+                    .registerClientbound(org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket.class, org.cloudburstmc.protocol.java.v754.serializer.play.clientbound.DisconnectSerializer_v754.INSTANCE, 25)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 10)
+                    .registerServerbound(CustomPayloadPacket.class, CustomPayloadSerializer_v754.INSTANCE, 11)
                     .registerServerbound(MovePlayerPacket.class, MovePlayerSerializer_v754.INSTANCE, 18)
                     .build()
             ).build();

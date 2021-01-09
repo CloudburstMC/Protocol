@@ -20,6 +20,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.data.entity.EntityType;
 import org.cloudburstmc.protocol.java.data.entity.metadata.ItemStack;
+import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.data.profile.property.Property;
 import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
@@ -38,6 +39,7 @@ public abstract class JavaPacketHelper {
 
     protected final Int2ObjectBiMap<EntityType> entityTypes = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<BlockEntityAction> blockEntityActions = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<ContainerType> containerTypes = new Int2ObjectBiMap<>();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
@@ -347,7 +349,17 @@ public abstract class JavaPacketHelper {
         return this.blockEntityActions.get(actionId);
     }
 
+    public final int getContainerId(ContainerType containerType) {
+        return this.containerTypes.get(containerType);
+    }
+
+    public final ContainerType getContainerType(int containerId) {
+        return this.containerTypes.get(containerId);
+    }
+
     protected abstract void registerEntityTypes();
 
     protected abstract void registerBlockEntityActions();
+
+    protected abstract void registerContainerTypes();
 }

@@ -1,8 +1,10 @@
 package org.cloudburstmc.protocol.java.v754;
 
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
+import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 
 import static org.cloudburstmc.protocol.java.data.entity.EntityType.*;
+import static org.cloudburstmc.protocol.java.data.inventory.ContainerType.*;
 import static org.cloudburstmc.protocol.java.data.world.BlockEntityAction.*;
 
 public class JavaPacketHelper_v754 extends JavaPacketHelper {
@@ -135,5 +137,33 @@ public class JavaPacketHelper_v754 extends JavaPacketHelper {
         this.blockEntityActions.put(12, JIGSAW_DATA);
         this.blockEntityActions.put(13, CAMPFIRE_ITEMS);
         this.blockEntityActions.put(14, BEEHIVE_INFO);
+    }
+
+    @Override
+    protected void registerContainerTypes() {
+        this.containerTypes.put(0, GENERIC_9X1);
+        this.containerTypes.put(1, GENERIC_9X2);
+        this.containerTypes.put(2, GENERIC_9X3);
+        this.containerTypes.put(3, GENERIC_9X4);
+        this.containerTypes.put(4, GENERIC_9X5);
+        this.containerTypes.put(5, GENERIC_9X6);
+        this.containerTypes.put(6, GENERIC_3X3);
+        this.containerTypes.put(7, ANVIL);
+        this.containerTypes.put(8, BEACON);
+        this.containerTypes.put(9, BLAST_FURNACE);
+        this.containerTypes.put(10, BREWING_STAND);
+        this.containerTypes.put(11, CRAFTING);
+        this.containerTypes.put(12, ENCHANTMENT);
+        this.containerTypes.put(13, FURNACE);
+        this.containerTypes.put(14, GRINDSTONE);
+        this.containerTypes.put(15, HOPPER);
+        this.containerTypes.put(16, LECTERN);
+        this.containerTypes.put(17, LOOM);
+        this.containerTypes.put(18, MERCHANT);
+        this.containerTypes.put(19, SHULKER_BOX);
+        this.containerTypes.put(20, SMITHING);
+        this.containerTypes.put(21, SMOKER);
+        this.containerTypes.put(22, CARTOGRAPHY_TABLE);
+        this.containerTypes.put(23, STONECUTTER);
     }
 }
