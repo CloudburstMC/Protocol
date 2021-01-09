@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.data.entity.metadata;
+package org.cloudburstmc.protocol.java.data.inventory;
 
 import com.nukkitx.nbt.NbtMap;
 import lombok.AllArgsConstructor;
