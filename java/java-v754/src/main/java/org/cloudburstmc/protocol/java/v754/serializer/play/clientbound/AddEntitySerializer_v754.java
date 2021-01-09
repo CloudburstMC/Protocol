@@ -6,8 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
-import org.cloudburstmc.protocol.java.data.entity.EntityType;
-import org.cloudburstmc.protocol.java.data.entity.object.*;
+import org.cloudburstmc.protocol.java.data.entity.spawn.*;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.AddEntityPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,22 +20,7 @@ public class AddEntitySerializer_v754 implements JavaPacketSerializer<AddEntityP
         VarInts.writeUnsignedInt(buffer, helper.getEntityId(packet.getEntityType()));
         helper.writePosition(buffer, packet.getPosition());
         helper.writeRotation2f(buffer, packet.getRotation());
-
-        int data = 0;
-        if (packet.getObjectData() instanceof MinecartType) {
-            data = ((MinecartType) packet.getObjectData()).ordinal();
-        } else if (packet.getObjectData() instanceof HangingDirection) {
-            data = ((HangingDirection) packet.getObjectData()).ordinal();
-        } else if (packet.getObjectData() instanceof FallingBlockData) {
-            data = ((FallingBlockData) packet.getObjectData()).getId() | ((FallingBlockData) packet.getObjectData()).getMetadata() << 16;
-        } else if (packet.getObjectData() instanceof ProjectileData) {
-            data = ((ProjectileData) packet.getObjectData()).getOwnerId();
-        } else if (packet.getObjectData() instanceof GenericObjectData) {
-            data = ((GenericObjectData) packet.getObjectData()).getValue();
-        }
-
-        buffer.writeInt(data);
-
+        buffer.writeInt(packet.getSpawnData().getValue());
         helper.writeVelocity(buffer, packet.getVelocity());
     }
 
@@ -49,21 +33,23 @@ public class AddEntitySerializer_v754 implements JavaPacketSerializer<AddEntityP
         packet.setRotation(helper.readRotation2f(buffer));
 
         int data = buffer.readInt();
-        if (packet.getEntityType() == EntityType.MINECART) {
-            packet.setObjectData(MinecartType.getById(data));
-        } else if (packet.getEntityType() == EntityType.ITEM_FRAME) {
-            packet.setObjectData(HangingDirection.getById(data));
-        } else if (packet.getEntityType() == EntityType.FALLING_BLOCK) {
-            packet.setObjectData(new FallingBlockData(data & 65535, data >> 16)); //I think this should be 12 but we'll go with it for now
-        } else if (packet.getEntityType() == EntityType.FISHING_BOBBER || packet.getEntityType() == EntityType.ARROW
-                || packet.getEntityType() == EntityType.SPECTRAL_ARROW || packet.getEntityType() == EntityType.FIREBALL
-                || packet.getEntityType() == EntityType.SMALL_FIREBALL || packet.getEntityType() == EntityType.DRAGON_FIREBALL
-                || packet.getEntityType() == EntityType.WITHER_SKULL) {
-            packet.setObjectData(new ProjectileData(data));
-        } else {
-            packet.setObjectData(new GenericObjectData(data));
+        switch (packet.getEntityType()) {
+            case MINECART:
+                packet.setSpawnData(new MinecartSpawnData(data));
+                break;
+            case ITEM_FRAME:
+                packet.setSpawnData(new DirectionSpawnData(data));
+                break;
+            case FALLING_BLOCK:
+                packet.setSpawnData(new FallingBlockSpawnData(data));
+                break;
+            case ARROW:
+            case SPECTRAL_ARROW:
+                packet.setSpawnData(new ArrowSpawnData(data));
+                break;
+            default:
+                packet.setSpawnData(new SpawnData(data));
         }
-
         packet.setVelocity(helper.readVelocity(buffer));
     }
 }

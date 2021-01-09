@@ -1,10 +1,12 @@
 package org.cloudburstmc.protocol.java.data;
 
 public enum Direction {
-    SOUTH,
-    WEST,
+    DOWN,
+    UP,
     NORTH,
-    EAST;
+    SOUTH,
+    EAST,
+    WEST;
 
     private static final Direction[] VALUES = values();
 

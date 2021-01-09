@@ -1,7 +1,7 @@
-package org.cloudburstmc.protocol.java.data.entity.object;
+package org.cloudburstmc.protocol.java.data.entity;
 
-public enum MinecartType implements ObjectData {
-    NORMAL,
+public enum MinecartType {
+    EMPTY,
     CHEST,
     POWERED,
     TNT,

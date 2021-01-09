@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
 import org.cloudburstmc.protocol.java.data.entity.EntityType;
-import org.cloudburstmc.protocol.java.data.entity.object.ObjectData;
+import org.cloudburstmc.protocol.java.data.entity.spawn.SpawnData;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
@@ -21,7 +21,7 @@ public class AddEntityPacket extends JavaPacket<JavaPlayPacketHandler> {
     private EntityType entityType;
     private Vector3d position;
     private Vector2f rotation;
-    private ObjectData objectData;
+    private SpawnData spawnData;
     private Vector3d velocity;
 
     @Override
