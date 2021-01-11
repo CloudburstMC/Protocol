@@ -44,11 +44,11 @@ public class BedrockClient extends Bedrock {
 
     @Override
     public void close() {
-        if (session != null) {
-            session.disconnect();
+        if (this.session != null && !this.session.isClosed()) {
+            this.session.disconnect();
         }
-        rakNetClient.close();
-        tickFuture.cancel(false);
+        this.rakNetClient.close();
+        this.tickFuture.cancel(false);
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
