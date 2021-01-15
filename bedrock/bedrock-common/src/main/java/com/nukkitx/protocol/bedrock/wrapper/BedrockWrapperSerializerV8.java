@@ -37,7 +37,7 @@ public class BedrockWrapperSerializerV8 extends BedrockWrapperSerializer {
                     VarInts.writeUnsignedInt(uncompressed, packetBuffer.readableBytes());
                     uncompressed.writeBytes(packetBuffer);
                 } catch (PacketSerializeException e) {
-                    log.debug("Error occurred whilst encoding " + packet.getClass().getSimpleName(), e);
+                    log.error("Error occurred whilst encoding " + packet.getClass().getSimpleName(), e);
                 } finally {
                     packetBuffer.release();
                 }
@@ -73,7 +73,9 @@ public class BedrockWrapperSerializerV8 extends BedrockWrapperSerializer {
                     packets.add(packet);
                 } catch (PacketSerializeException e) {
                     log.debug("Error occurred whilst decoding packet", e);
-                    log.trace("Packet contents\n{}", ByteBufUtil.prettyHexDump(packetBuffer.readerIndex(0)));
+                    if (log.isTraceEnabled()) {
+                        log.trace("Packet contents\n{}", ByteBufUtil.prettyHexDump(packetBuffer.readerIndex(0)));
+                    }
                 }
             }
         } catch (DataFormatException e) {
