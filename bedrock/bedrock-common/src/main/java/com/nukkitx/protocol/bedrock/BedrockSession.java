@@ -282,10 +282,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             }
             batched.markReaderIndex();
 
-            List<BedrockPacket> packets = new ObjectArrayList<>();
-            this.wrapperSerializer.deserialize(batched, this.packetCodec, packets, this);
-
-            this.batchHandler.handle(this, batched, packets);
+            if (batched.isReadable()) {
+                List<BedrockPacket> packets = new ObjectArrayList<>();
+                this.wrapperSerializer.deserialize(batched, this.packetCodec, packets, this);
+                this.batchHandler.handle(this, batched, packets);
+            }
         } catch (GeneralSecurityException ignore) {
         } catch (PacketSerializeException e) {
             log.warn("Error whilst decoding packets", e);
