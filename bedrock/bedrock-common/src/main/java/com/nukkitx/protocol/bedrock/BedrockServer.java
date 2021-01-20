@@ -82,8 +82,8 @@ public class BedrockServer extends Bedrock {
     private class BedrockServerListener implements RakNetServerListener {
 
         @Override
-        public boolean onConnectionRequest(InetSocketAddress address) {
-            return BedrockServer.this.handler == null || BedrockServer.this.handler.onConnectionRequest(address);
+        public boolean onConnectionRequest(InetSocketAddress address, InetSocketAddress realAddress) {
+            return BedrockServer.this.handler == null || BedrockServer.this.handler.onConnectionRequest(address, realAddress);
         }
 
         @Nullable
