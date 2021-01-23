@@ -1,7 +1,9 @@
-package org.cloudburstmc.protocol.java.packet.play;
+package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.cloudburstmc.protocol.java.JavaPacket;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
@@ -9,8 +11,14 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int containerId;
+public class CustomSoundPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private Key name;
+    private Sound.Source source;
+    private int x;
+    private int y;
+    private int z;
+    private float volume;
+    private float pitch;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -19,6 +27,6 @@ public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLOSE;
+        return JavaPlayPacketType.CUSTOM_SOUND_S2C;
     }
 }

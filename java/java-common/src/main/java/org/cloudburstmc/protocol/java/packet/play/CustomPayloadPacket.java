@@ -22,6 +22,6 @@ public class CustomPayloadPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CUSTOM_PAYLOAD_C2S;
+        return JavaPlayPacketType.CUSTOM_PAYLOAD;
     }
 }

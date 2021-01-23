@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.packet.play;
+package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,8 +9,17 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int containerId;
+public class MapItemDataPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private int mapId;
+    private byte scale;
+    private boolean trackingPosition;
+    private boolean locked;
+    private MapDecorations[] decorations;
+    private int startX;
+    private int startY;
+    private int width;
+    private int height;
+    private byte[] mapColors;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -19,6 +28,6 @@ public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLOSE;
+        return JavaPlayPacketType.MAP_ITEM_DATA_S2C;
     }
 }

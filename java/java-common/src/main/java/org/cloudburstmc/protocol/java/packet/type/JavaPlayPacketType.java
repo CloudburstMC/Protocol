@@ -5,6 +5,12 @@ import org.cloudburstmc.protocol.java.packet.State;
 
 @AllArgsConstructor
 public enum JavaPlayPacketType implements JavaPacketType {
+    // bi-directional packets
+    CONTAINER_CLOSE(Direction.BI_DIRECTIONAL),
+    CUSTOM_PAYLOAD(Direction.BI_DIRECTIONAL),
+    KEEP_ALIVE(Direction.BI_DIRECTIONAL),
+
+    // clientbound packets
     ADD_ENTITY_S2C(Direction.CLIENTBOUND),
     ADD_EXPERIENCE_ORB_S2C(Direction.CLIENTBOUND),
     ADD_MOB_S2C(Direction.CLIENTBOUND),
@@ -24,12 +30,10 @@ public enum JavaPlayPacketType implements JavaPacketType {
     COMMAND_SUGGESTIONS_S2C(Direction.CLIENTBOUND),
     COMMANDS_S2C(Direction.CLIENTBOUND),
     CONTAINER_ACK_S2C(Direction.CLIENTBOUND),
-    CONTAINER_CLOSE_S2C(Direction.CLIENTBOUND),
     CONTAINER_SET_CONTENT_S2C(Direction.CLIENTBOUND),
     CONTAINER_SET_DATA_S2C(Direction.CLIENTBOUND),
     CONTAINER_SET_SLOT_S2C(Direction.CLIENTBOUND),
     COOLDOWN_S2C(Direction.CLIENTBOUND),
-    CUSTOM_PAYLOAD_S2C(Direction.CLIENTBOUND),
     CUSTOM_SOUND_S2C(Direction.CLIENTBOUND),
     DISCONNECT_S2C(Direction.CLIENTBOUND),
     ENTITY_EVENT_S2C(Direction.CLIENTBOUND),
@@ -37,7 +41,6 @@ public enum JavaPlayPacketType implements JavaPacketType {
     FORGET_LEVEL_CHUNK_S2C(Direction.CLIENTBOUND),
     GAME_EVENT_S2C(Direction.CLIENTBOUND),
     HORSE_SCREEN_OPEN_S2C(Direction.CLIENTBOUND),
-    KEEP_ALIVE_S2C(Direction.CLIENTBOUND),
     LEVEL_CHUNK_S2C(Direction.CLIENTBOUND),
     LEVEL_EVENT_S2C(Direction.CLIENTBOUND),
     LEVEL_PARTICLES_S2C(Direction.CLIENTBOUND),
@@ -95,6 +98,7 @@ public enum JavaPlayPacketType implements JavaPacketType {
     UPDATE_RECIPES_S2C(Direction.CLIENTBOUND),
     UPDATE_TAGS_S2C(Direction.CLIENTBOUND),
 
+    // serverbound packets
     ACCEPT_TELEPORTATION_C2S(Direction.SERVERBOUND),
     BLOCK_ENTITY_TAG_QUERY_C2S(Direction.SERVERBOUND),
     CHANGE_DIFFICULTY_C2S(Direction.SERVERBOUND),
@@ -105,13 +109,10 @@ public enum JavaPlayPacketType implements JavaPacketType {
     CONTAINER_ACK_C2S(Direction.SERVERBOUND),
     CONTAINER_BUTTON_CLICK_C2S(Direction.SERVERBOUND),
     CONTAINER_CLICK_C2S(Direction.SERVERBOUND),
-    CONTAINER_CLOSE_C2S(Direction.SERVERBOUND),
-    CUSTOM_PAYLOAD_C2S(Direction.SERVERBOUND),
     EDIT_BOOK_C2S(Direction.SERVERBOUND),
     ENTITY_TAG_QUERY_C2S(Direction.SERVERBOUND),
     INTERACT_C2S(Direction.SERVERBOUND),
     JIGSAW_GENERATE_C2S(Direction.SERVERBOUND),
-    KEEP_ALIVE_C2S(Direction.SERVERBOUND),
     LOCK_DIFFICULTY_C2S(Direction.SERVERBOUND),
     MOVE_PLAYER_C2S(Direction.SERVERBOUND),
     PADDLE_BOAT_C2S(Direction.SERVERBOUND),

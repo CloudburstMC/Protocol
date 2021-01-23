@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int containerId;
+public class KeepAlivePacket extends JavaPacket<JavaPlayPacketHandler> {
+    private long id;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -19,6 +19,6 @@ public class ContainerClosePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLOSE;
+        return JavaPlayPacketType.KEEP_ALIVE;
     }
 }
