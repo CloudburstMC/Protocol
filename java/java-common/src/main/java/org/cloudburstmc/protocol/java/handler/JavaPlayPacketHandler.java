@@ -96,11 +96,55 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(CustomSoundPacket packet) {
+        return false;
+    }
+
     default boolean handle(DisconnectPacket packet) {
         return false;
     }
 
+    default boolean handle(EntityEventPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ExplodePacket packet) {
+        return false;
+    }
+
+    default boolean handle(ForgetLevelChunkPacket packet) {
+        return false;
+    }
+
+    default boolean handle(GameEventPacket packet) {
+        return false;
+    }
+
+    default boolean handle(HorseScreenOpenPacket packet) {
+        return false;
+    }
+
+    default boolean handle(LevelChunkPacket packet) {
+        return false;
+    }
+
+    default boolean handle(LevelEventPacket packet) {
+        return false;
+    }
+
+    default boolean handle(LevelParticlesPacket packet) {
+        return false;
+    }
+
+    default boolean handle(LightUpdatePacket packet) {
+        return false;
+    }
+
     default boolean handle(LoginPacket packet) {
+        return false;
+    }
+
+    default boolean handle(MapItemDataPacket packet) {
         return false;
     }
 

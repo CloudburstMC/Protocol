@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
+import com.nukkitx.math.vector.Vector3d;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.key.Key;
@@ -14,9 +15,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 public class CustomSoundPacket extends JavaPacket<JavaPlayPacketHandler> {
     private Key name;
     private Sound.Source source;
-    private int x;
-    private int y;
-    private int z;
+    private Vector3d position;
     private float volume;
     private float pitch;
 
