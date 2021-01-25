@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.java.packet.play.clientbound;
 import com.nukkitx.math.vector.Vector3d;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
@@ -17,7 +18,10 @@ import java.util.List;
 public class ExplodePacket extends JavaPacket<JavaPlayPacketHandler> {
     private Vector3d center;
     private float power;
-    private List<Vector3i> toBlow;
+    /**
+     * Contains the final absolute positions of each block to modify.
+     */
+    private final List<Vector3i> toBlow = new ObjectArrayList<>();
     private Vector3f knockback;
 
     @Override

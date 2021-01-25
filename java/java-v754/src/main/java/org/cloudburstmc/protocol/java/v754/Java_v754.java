@@ -71,6 +71,8 @@ public class Java_v754 {
                     .registerClientbound(CustomSoundPacket.class, CustomSoundSerializer_v754.INSTANCE, 24)
                     .registerClientbound(org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket.class, org.cloudburstmc.protocol.java.v754.serializer.play.clientbound.DisconnectSerializer_v754.INSTANCE, 25)
                     .registerClientbound(EntityEventPacket.class, EntityEventSerializer_v754.INSTANCE, 26)
+                    .registerClientbound(ExplodePacket.class, ExplodeSerializer_v754.INSTANCE, 27)
+                    .registerClientbound(ForgetLevelChunkPacket.class, ForgetLevelChunkSerializer_v754.INSTANCE, 28)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
