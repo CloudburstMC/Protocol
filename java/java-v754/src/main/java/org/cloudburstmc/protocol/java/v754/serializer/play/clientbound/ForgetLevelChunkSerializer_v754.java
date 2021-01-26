@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -14,13 +13,13 @@ public class ForgetLevelChunkSerializer_v754 implements JavaPacketSerializer<For
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, ForgetLevelChunkPacket packet) {
-        VarInts.writeInt(buffer, packet.getX());
-        VarInts.writeInt(buffer, packet.getZ());
+        buffer.writeInt(packet.getX());
+        buffer.writeInt(packet.getZ());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, ForgetLevelChunkPacket packet) {
-        packet.setX(VarInts.readInt(buffer));
-        packet.setZ(VarInts.readInt(buffer));
+        packet.setX(buffer.readInt());
+        packet.setZ(buffer.readInt());
     }
 }

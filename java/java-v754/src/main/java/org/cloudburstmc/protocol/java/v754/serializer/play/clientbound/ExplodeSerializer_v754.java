@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
 import com.nukkitx.math.vector.Vector3d;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ public class ExplodeSerializer_v754 implements JavaPacketSerializer<ExplodePacke
         buffer.writeFloat((float) packet.getCenter().getZ());
         buffer.writeFloat(packet.getPower());
         Vector3i flooredCenter = packet.getCenter().toInt();
-        VarInts.writeInt(buffer, packet.getToBlow().size());
+        buffer.writeInt(packet.getToBlow().size());
         for (Vector3i toBlow : packet.getToBlow()) {
             buffer.writeByte(toBlow.getX() - flooredCenter.getX());
             buffer.writeByte(toBlow.getY() - flooredCenter.getY());
@@ -42,7 +41,7 @@ public class ExplodeSerializer_v754 implements JavaPacketSerializer<ExplodePacke
         ));
         packet.setPower(buffer.readFloat());
         Vector3i flooredCenter = packet.getCenter().toInt();
-        int toBlowCount = VarInts.readInt(buffer);
+        int toBlowCount = buffer.readInt();
         for (int i = 0; i < toBlowCount; i++) {
             packet.getToBlow().add(Vector3i.from(
                     buffer.readByte() + flooredCenter.getX(),

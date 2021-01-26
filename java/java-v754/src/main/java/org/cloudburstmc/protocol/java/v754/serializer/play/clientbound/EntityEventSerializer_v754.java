@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,13 +14,13 @@ public class EntityEventSerializer_v754 implements JavaPacketSerializer<EntityEv
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, EntityEventPacket packet) {
-        VarInts.writeInt(buffer, packet.getEntityId());
+        buffer.writeInt(packet.getEntityId());
         buffer.writeByte(packet.getEventId().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, EntityEventPacket packet) {
-        packet.setEntityId(VarInts.readInt(buffer));
+        packet.setEntityId(buffer.readInt());
         packet.setEventId(EntityEventType.values()[buffer.readByte()]);
     }
 }

@@ -19,9 +19,9 @@ public class CustomSoundSerializer_v754 implements JavaPacketSerializer<CustomSo
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, CustomSoundPacket packet) {
         helper.writeString(buffer, packet.getName().asString());
         VarInts.writeUnsignedInt(buffer, packet.getSource().ordinal());
-        VarInts.writeInt(buffer, (int) (packet.getPosition().getX() * 8));
-        VarInts.writeInt(buffer, (int) (packet.getPosition().getY() * 8));
-        VarInts.writeInt(buffer, (int) (packet.getPosition().getZ() * 8));
+        buffer.writeInt((int) (packet.getPosition().getX() * 8));
+        buffer.writeInt((int) (packet.getPosition().getY() * 8));
+        buffer.writeInt((int) (packet.getPosition().getZ() * 8));
         buffer.writeFloat(packet.getVolume());
         buffer.writeFloat(packet.getPitch());
     }
@@ -31,9 +31,9 @@ public class CustomSoundSerializer_v754 implements JavaPacketSerializer<CustomSo
         packet.setName(Key.key(helper.readString(buffer)));
         packet.setSource(Sound.Source.values()[VarInts.readUnsignedInt(buffer)]);
         packet.setPosition(Vector3d.from(
-                VarInts.readInt(buffer) / 8D,
-                VarInts.readInt(buffer) / 8D,
-                VarInts.readInt(buffer) / 8D
+                buffer.readInt() / 8D,
+                buffer.readInt() / 8D,
+                buffer.readInt() / 8D
         ));
         packet.setVolume(buffer.readFloat());
         packet.setPitch(buffer.readFloat());
