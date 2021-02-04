@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
+import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -74,7 +75,7 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
         boolean boundingBoxVisible = buffer.readBoolean();
 
         StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, size, offset,
-                -1, rotation, mirror, structureIntegrity, integritySeed);
+                -1, rotation, mirror, structureIntegrity, integritySeed, Vector3f.ZERO);
         StructureEditorData editorData = new StructureEditorData(name, dataField, includePlayers, boundingBoxVisible,
                 structureType, settings, StructureRedstoneSaveMode.SAVES_TO_DISK);
 
