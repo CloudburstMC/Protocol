@@ -1,11 +1,11 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.cloudburstmc.math.vector.Vector3f;
 
 /**
  * Sent to the client when the server's movement prediction system does not match what the client is sending.

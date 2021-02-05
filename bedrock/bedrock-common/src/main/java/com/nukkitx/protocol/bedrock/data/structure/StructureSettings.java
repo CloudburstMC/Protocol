@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.data.structure;
 
-import com.nukkitx.math.vector.Vector3i;
 import lombok.Value;
+import org.cloudburstmc.math.vector.Vector3i;
 
 @Value
 public class StructureSettings {

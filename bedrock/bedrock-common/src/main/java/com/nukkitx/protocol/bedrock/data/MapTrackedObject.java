@@ -1,8 +1,8 @@
 package com.nukkitx.protocol.bedrock.data;
 
-import com.nukkitx.math.vector.Vector3i;
 import lombok.Getter;
 import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector3i;
 
 @Getter
 @ToString

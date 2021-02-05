@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -8,6 +7,7 @@ import com.nukkitx.protocol.bedrock.data.structure.StructureTemplateRequestOpera
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.cloudburstmc.math.vector.Vector3i;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)

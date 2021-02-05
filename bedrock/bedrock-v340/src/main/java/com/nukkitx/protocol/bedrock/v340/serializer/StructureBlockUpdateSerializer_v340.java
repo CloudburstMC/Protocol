@@ -1,6 +1,5 @@
 package com.nukkitx.protocol.bedrock.v340.serializer;
 
-import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -9,6 +8,7 @@ import com.nukkitx.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.math.vector.Vector3i;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StructureBlockUpdateSerializer_v340 implements BedrockPacketSerializer<StructureBlockUpdatePacket> {
