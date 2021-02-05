@@ -78,8 +78,12 @@ public class BedrockClient extends Bedrock {
         return future;
     }
 
+    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
+    }
+
     public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
-        return this.rakNetClient.ping(address, 10, TimeUnit.SECONDS).thenApply(BedrockPong::fromRakNet);
+        return ping(address, 10, TimeUnit.SECONDS);
     }
 
     public BedrockClientSession getSession() {
