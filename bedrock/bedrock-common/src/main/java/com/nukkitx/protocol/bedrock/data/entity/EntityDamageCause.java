@@ -27,7 +27,8 @@ public enum EntityDamageCause {
     FIREWORKS,
     LIGHTNING,
     CHARGING,
-    TEMPERATURE;
+    TEMPERATURE,
+    FREEZING;
 
     private static final EntityDamageCause[] VALUES = EntityDamageCause.values();
 

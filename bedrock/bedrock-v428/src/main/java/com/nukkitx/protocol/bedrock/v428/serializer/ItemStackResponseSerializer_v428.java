@@ -1,14 +1,14 @@
-package com.nukkitx.protocol.bedrock.v422.serializer;
+package com.nukkitx.protocol.bedrock.v428.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
-import com.nukkitx.protocol.bedrock.v419.serializer.ItemStackResponseSerializer_v419;
+import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
 import io.netty.buffer.ByteBuf;
 
-public class ItemStackResponseSerializer_v422 extends ItemStackResponseSerializer_v419 {
+public class ItemStackResponseSerializer_v428 extends ItemStackResponseSerializer_v422 {
 
-    public static final ItemStackResponseSerializer_v422 INSTANCE = new ItemStackResponseSerializer_v422();
+    public static final ItemStackResponseSerializer_v428 INSTANCE = new ItemStackResponseSerializer_v428();
 
     @Override
     protected ItemStackResponsePacket.ItemEntry readItemEntry(ByteBuf buffer, BedrockPacketHelper helper) {
@@ -18,12 +18,12 @@ public class ItemStackResponseSerializer_v422 extends ItemStackResponseSerialize
                 buffer.readByte(),
                 VarInts.readInt(buffer),
                 helper.readString(buffer),
-                0);
+                VarInts.readInt(buffer));
     }
 
     @Override
     protected void writeItemEntry(ByteBuf buffer, BedrockPacketHelper helper, ItemStackResponsePacket.ItemEntry itemEntry) {
         super.writeItemEntry(buffer, helper, itemEntry);
-        helper.writeString(buffer, itemEntry.getCustomName());
+        VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
     }
 }

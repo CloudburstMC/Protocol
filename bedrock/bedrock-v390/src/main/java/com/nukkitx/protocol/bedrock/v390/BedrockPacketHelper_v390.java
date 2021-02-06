@@ -61,7 +61,7 @@ public class BedrockPacketHelper_v390 extends BedrockPacketHelper_v389 {
             tintColors.add(new PersonaPieceTintData(pieceType, colors));
         }
 
-        return SerializedSkin.of(skinId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
+        return SerializedSkin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
 
