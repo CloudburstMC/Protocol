@@ -20,10 +20,7 @@ import com.nukkitx.protocol.bedrock.v419.serializer.*;
 import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackRequestSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
-import com.nukkitx.protocol.bedrock.v428.serializer.CameraShakeSerializer_v428;
-import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSerializer_v428;
-import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_v428;
-import com.nukkitx.protocol.bedrock.v428.serializer.StartGameSerializer_v428;
+import com.nukkitx.protocol.bedrock.v428.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -172,7 +169,7 @@ public class Bedrock_v428 {
             .registerPacket(AnvilDamagePacket.class, AnvilDamageSerializer_v388.INSTANCE, 141)
             .registerPacket(CompletedUsingItemPacket.class, CompletedUsingItemSerializer_v388.INSTANCE, 142)
             .registerPacket(NetworkSettingsPacket.class, NetworkSettingsSerializer_v388.INSTANCE, 143)
-            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v419.INSTANCE, 144)
+            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v428.INSTANCE, 144)
             .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
             .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v422.INSTANCE, 147)

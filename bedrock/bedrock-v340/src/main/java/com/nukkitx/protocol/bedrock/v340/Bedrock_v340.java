@@ -43,7 +43,7 @@ public class Bedrock_v340 {
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v291.INSTANCE, 27)
             .registerPacket(MobEffectPacket.class, MobEffectSerializer_v291.INSTANCE, 28)
             .registerPacket(UpdateAttributesPacket.class, UpdateAttributesSerializer_v291.INSTANCE, 29)
-            .registerPacket(InventoryTransactionPacket.class, InventoryTransactionSerializer_v340.INSTANCE, 30)
+            .registerPacket(InventoryTransactionPacket.class, InventoryTransactionSerializer_v291.INSTANCE, 30)
             .registerPacket(MobEquipmentPacket.class, MobEquipmentSerializer_v291.INSTANCE, 31)
             .registerPacket(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v291.INSTANCE, 32)
             .registerPacket(InteractPacket.class, InteractSerializer_v291.INSTANCE, 33)

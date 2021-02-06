@@ -9,6 +9,8 @@ import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
+import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.v390.BedrockPacketHelper_v390;
@@ -142,6 +144,27 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         buffer.writeByte(entityLink.getType().ordinal());
         buffer.writeBoolean(entityLink.isImmediate());
         buffer.writeBoolean(entityLink.isRiderInitiated());
+    }
+
+    @Override
+    public InventoryActionData readInventoryAction(ByteBuf buffer, BedrockSession session, boolean hasNetworkIds) {
+        InventorySource source = this.readSource(buffer);
+        int slot = VarInts.readUnsignedInt(buffer);
+        ItemData fromItem = this.readItem(buffer, session);
+        ItemData toItem = this.readItem(buffer, session);
+        int networkStackId = 0;
+        if (hasNetworkIds) {
+            networkStackId = VarInts.readInt(buffer);
+        }
+        return new InventoryActionData(source, slot, fromItem, toItem, networkStackId);
+    }
+
+    @Override
+    public void writeInventoryAction(ByteBuf buffer, InventoryActionData action, BedrockSession session, boolean hasNetworkIds) {
+        super.writeInventoryAction(buffer, action, session, hasNetworkIds);
+        if (hasNetworkIds) {
+            VarInts.writeInt(buffer, action.getStackNetworkId());
+        }
     }
 
     @Override
