@@ -28,37 +28,24 @@
 
     <organization>
         <name>NukkitX</name>
-        <url>https://github.com/NukkitX</url>
+        <url>https://github.com/CloudburstMC</url>
     </organization>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/NukkitX/Protocol/issues</url>
+        <url>https://github.com/CloudburstMC/Protocol/issues</url>
     </issueManagement>
 
     <ciManagement>
         <system>Jenkins</system>
-        <url>https://ci.nukkitx.com/job/NukkitX/job/Protocol</url>
+        <url>https://ci.opencollab.dev/job/NukkitX/job/Protocol</url>
     </ciManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/NukkitX/Protocol.git</connection>
-        <developerConnection>scm:git:git@github.com:NukkitX/Protocol.git</developerConnection>
-        <url>https://github.com/NukkitX/Protocol</url>
+        <connection>scm:git:https://github.com/CloudburstMC/Protocol.git</connection>
+        <developerConnection>scm:git:git@github.com:CloudburstMC/Protocol.git</developerConnection>
+        <url>https://github.com/CloudburstMC/Protocol</url>
     </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>opencollab-releases</name>
-            <url>https://repo.opencollab.dev/release</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>nukkitx-snapshots</name>
-            <url>https://repo.opencollab.dev/snapshot</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
