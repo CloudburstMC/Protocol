@@ -2,9 +2,11 @@ package com.nukkitx.protocol.bedrock.v428.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.data.PlayerAuthInputData;
 import com.nukkitx.protocol.bedrock.data.PlayerBlockActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemUseTransaction;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
 import com.nukkitx.protocol.bedrock.v419.serializer.PlayerAuthInputSerializer_v419;
 import io.netty.buffer.ByteBuf;
@@ -17,15 +19,22 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
     public static final PlayerAuthInputSerializer_v428 INSTANCE = new PlayerAuthInputSerializer_v428();
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet, BedrockSession session) {
         super.serialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-
+            //TODO use inventory transaction packet serialization
+            VarInts.writeUnsignedInt(buffer, packet.getItemUseTransaction().getActionType());
+            helper.writeBlockPosition(buffer, packet.getItemUseTransaction().getBlockPosition());
+            VarInts.writeInt(buffer, packet.getItemUseTransaction().getBlockFace());
+            VarInts.writeInt(buffer, packet.getItemUseTransaction().getHotbarSlot());
+            helper.writeItem(buffer, packet.getItemUseTransaction().getItemInHand(), session);
+            helper.writeVector3f(buffer, packet.getItemUseTransaction().getPlayerPosition());
+            helper.writeVector3f(buffer, packet.getItemUseTransaction().getClickPosition());
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
-
+            helper.writeItemStackRequest(buffer, session, packet.getItemStackRequest());
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
@@ -37,15 +46,23 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet, BedrockSession session) {
         super.deserialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-
+            ItemUseTransaction itemTransaction = new ItemUseTransaction();
+            itemTransaction.setActionType(VarInts.readUnsignedInt(buffer));
+            itemTransaction.setBlockPosition(helper.readBlockPosition(buffer));
+            itemTransaction.setBlockFace(VarInts.readInt(buffer));
+            itemTransaction.setHotbarSlot(VarInts.readInt(buffer));
+            itemTransaction.setItemInHand(helper.readItem(buffer, session));
+            itemTransaction.setPlayerPosition(helper.readVector3f(buffer));
+            itemTransaction.setClickPosition(helper.readVector3f(buffer));
+            itemTransaction.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
-
+            packet.setItemStackRequest(helper.readItemStackRequest(buffer, session));
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
@@ -64,7 +81,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
             case CONTINUE_BREAK:
             case BLOCK_PREDICT_DESTROY:
             case BLOCK_CONTINUE_DESTROY:
-                helper.writeBlockPosition(buffer, actionData.getBlockPosition());
+                helper.writeVector3i(buffer, actionData.getBlockPosition());
                 VarInts.writeInt(buffer, actionData.getFace());
         }
     }
@@ -78,7 +95,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
             case CONTINUE_BREAK:
             case BLOCK_PREDICT_DESTROY:
             case BLOCK_CONTINUE_DESTROY:
-                actionData.setBlockPosition(helper.readBlockPosition(buffer));
+                actionData.setBlockPosition(helper.readVector3i(buffer));
                 actionData.setFace(VarInts.readInt(buffer));
         }
         return actionData;

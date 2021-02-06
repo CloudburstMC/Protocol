@@ -705,4 +705,12 @@ public abstract class BedrockPacketHelper {
     public int getIdFromStackRequestActionType(StackRequestActionType type) {
         throw new UnsupportedOperationException();
     }
+
+    public ItemStackRequest readItemStackRequest(ByteBuf buffer, BedrockSession session) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void writeItemStackRequest(ByteBuf buffer, BedrockSession session, ItemStackRequest request) {
+        throw new UnsupportedOperationException();
+    }
 }
