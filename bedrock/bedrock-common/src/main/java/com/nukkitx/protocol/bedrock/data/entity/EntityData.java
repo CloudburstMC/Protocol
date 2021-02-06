@@ -136,6 +136,13 @@ public enum EntityData {
     HITBOX(Type.NBT),
     IS_BUOYANT(Type.BYTE),
     BUOYANCY_DATA(Type.STRING),
+    /**
+     * @since v428
+     */
+    FREEZING_EFFECT_STRENGTH(null),
+    /**
+     * @since v428
+     */
     GOAT_HORN_COUNT(null);
 
     private final Type type;
