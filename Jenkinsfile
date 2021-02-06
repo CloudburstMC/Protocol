@@ -26,22 +26,24 @@ pipeline {
                         branch 'develop'
                     }}
 
-                    steps {
-                        rtMavenDeployer (
-                                id: "maven-deployer",
-                                serverId: "opencollab-artifactory",
-                                releaseRepo: "maven-releases",
-                                snapshotRepo: "maven-snapshots"
-                        )
-                        rtMavenResolver (
-                                id: "maven-resolver",
-                                serverId: "opencollab-artifactory",
-                                releaseRepo: "release",
-                                snapshotRepo: "snapshot"
-                        )
-                    }
-
                     stages {
+                        stage ('Setup') {
+                            steps {
+                                rtMavenDeployer (
+                                        id: "maven-deployer",
+                                        serverId: "opencollab-artifactory",
+                                        releaseRepo: "maven-releases",
+                                        snapshotRepo: "maven-snapshots"
+                                )
+                                rtMavenResolver (
+                                        id: "maven-resolver",
+                                        serverId: "opencollab-artifactory",
+                                        releaseRepo: "release",
+                                        snapshotRepo: "snapshot"
+                                )
+                            }
+                        }
+
                         stage ('Release') {
                             when {
                                 branch 'master'
@@ -58,6 +60,7 @@ pipeline {
                                 step([$class: 'JavadocArchiver', javadocDir: 'target/site/apidocs', keepAll: false])
                             }
                         }
+
                         stage ('Snapshot') {
                             when {
                                 branch 'develop'
@@ -71,12 +74,14 @@ pipeline {
                                 )
                             }
                         }
-                    }
 
-                    steps {
-                        rtPublishBuildInfo (
-                                serverId: "opencollab-artifactory"
-                        )
+                        stage ('Publish') {
+                            steps {
+                                rtPublishBuildInfo (
+                                        serverId: "opencollab-artifactory"
+                                )
+                            }
+                        }
                     }
                 }
             }
