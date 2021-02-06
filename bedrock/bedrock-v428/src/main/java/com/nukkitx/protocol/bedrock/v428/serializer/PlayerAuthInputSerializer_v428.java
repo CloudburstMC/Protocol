@@ -59,6 +59,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
             itemTransaction.setPlayerPosition(helper.readVector3f(buffer));
             itemTransaction.setClickPosition(helper.readVector3f(buffer));
             itemTransaction.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
+            packet.setItemUseTransaction(itemTransaction);
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
