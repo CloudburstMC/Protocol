@@ -52,7 +52,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>HHmm-ddMMyyyy</maven.build.timestamp.format>
-        <network.version>1.6.23</network.version>
+        <network.version>1.6.25-SNAPSHOT</network.version>
     </properties>
 
     <repositories>

@@ -43,11 +43,11 @@ public class BedrockClient extends Bedrock {
     }
 
     @Override
-    public void close() {
+    public void close(boolean force) {
         if (this.session != null && !this.session.isClosed()) {
             this.session.disconnect();
         }
-        this.rakNetClient.close();
+        this.rakNetClient.close(force);
         this.tickFuture.cancel(false);
     }
 
