@@ -10,7 +10,6 @@ import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.v332.BedrockPacketHelper_v332;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -133,10 +132,5 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         if (this.isBlockingItem(item.getId(), session.getHardcodedBlockingId().get())) {
             VarInts.writeLong(buffer, item.getBlockingTicks());
         }
-    }
-
-    @Override
-    public StructureSettings readStructureSettings(ByteBuf buffer) {
-        return super.readStructureSettings(buffer);
     }
 }

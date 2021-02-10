@@ -1,5 +1,8 @@
 package com.nukkitx.protocol.bedrock.v388;
 
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
@@ -10,6 +13,9 @@ import com.nukkitx.protocol.bedrock.data.skin.AnimatedTextureType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
+import com.nukkitx.protocol.bedrock.data.structure.StructureMirror;
+import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
+import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.v361.BedrockPacketHelper_v361;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -198,5 +204,29 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         buffer.writeIntLE(image.getWidth());
         buffer.writeIntLE(image.getHeight());
         writeByteArray(buffer, image.getImage());
+    }
+
+    @Override
+    public StructureSettings readStructureSettings(ByteBuf buffer) {
+        String paletteName = this.readString(buffer);
+        boolean ignoringEntities = buffer.readBoolean();
+        boolean ignoringBlocks = buffer.readBoolean();
+        Vector3i size = this.readBlockPosition(buffer);
+        Vector3i offset = this.readBlockPosition(buffer);
+        long lastEditedByEntityId = VarInts.readLong(buffer);
+        StructureRotation rotation = StructureRotation.from(buffer.readByte());
+        StructureMirror mirror = StructureMirror.from(buffer.readByte());
+        float integrityValue = buffer.readFloatLE();
+        int integritySeed = buffer.readIntLE();
+        Vector3f pivot = this.readVector3f(buffer);
+
+        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
+                rotation, mirror, integrityValue, integritySeed, pivot);
+    }
+
+    @Override
+    public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
+        super.writeStructureSettings(buffer, settings);
+        this.writeVector3f(buffer, settings.getPivot());
     }
 }
