@@ -351,6 +351,14 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         return this.connection.getPing();
     }
 
+    public EventLoop getEventLoop() {
+        return this.eventLoop;
+    }
+
+    public SessionConnection<ByteBuf> getConnection() {
+        return this.connection;
+    }
+
 //    @ParametersAreNonnullByDefault
 //    abstract class BedrockSessionListener implements RakNetSessionListener {
 //

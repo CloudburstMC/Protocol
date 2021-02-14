@@ -52,7 +52,11 @@ public class BedrockClient extends Bedrock {
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        return this.ping(address).thenApply(pong -> {
+        return this.connect(address, 10, TimeUnit.SECONDS);
+    }
+
+    public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.ping(address, timeout, unit).thenApply(pong -> {
             int port;
             if (address.getAddress() instanceof Inet4Address && pong.getIpv4Port() != -1) {
                 port = pong.getIpv4Port();
@@ -78,12 +82,12 @@ public class BedrockClient extends Bedrock {
         return future;
     }
 
-    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
-        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
+    public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
+        return this.ping(address, 10, TimeUnit.SECONDS);
     }
 
-    public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
-        return ping(address, 10, TimeUnit.SECONDS);
+    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
     }
 
     public BedrockClientSession getSession() {
