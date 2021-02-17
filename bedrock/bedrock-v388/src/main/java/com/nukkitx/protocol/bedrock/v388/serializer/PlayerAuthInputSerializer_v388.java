@@ -7,10 +7,13 @@ import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.ClientPlayMode;
 import com.nukkitx.protocol.bedrock.data.InputMode;
+import com.nukkitx.protocol.bedrock.data.PlayerAuthInputData;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<PlayerAuthInputPacket> {
@@ -29,7 +32,11 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         buffer.writeFloatLE(packet.getMotion().getX());
         buffer.writeFloatLE(packet.getMotion().getY());
         buffer.writeFloatLE(rotation.getZ());
-        VarInts.writeUnsignedLong(buffer, packet.getInputData());
+        int flagValue = 0;
+        for (PlayerAuthInputData data : packet.getInputData()) {
+            flagValue |= (1 << data.ordinal());
+        }
+        VarInts.writeUnsignedLong(buffer, flagValue);
         VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
         VarInts.writeUnsignedInt(buffer, packet.getPlayMode().ordinal());
 
@@ -46,7 +53,13 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         packet.setMotion(Vector2f.from(buffer.readFloatLE(), buffer.readFloatLE()));
         float z = buffer.readFloatLE();
         packet.setRotation(Vector3f.from(x, y, z));
-        packet.setInputData(VarInts.readUnsignedLong(buffer));
+        long flagValue = VarInts.readUnsignedLong(buffer);
+        Set<PlayerAuthInputData> flags = packet.getInputData();
+        for (PlayerAuthInputData flag : PlayerAuthInputData.values()) {
+            if ((flagValue & (1 << flag.ordinal())) != 0) {
+                flags.add(flag);
+            }
+        }
         packet.setInputMode(INPUT_MODES[VarInts.readUnsignedInt(buffer)]);
         packet.setPlayMode(CLIENT_PLAY_MODES[VarInts.readUnsignedInt(buffer)]);
 

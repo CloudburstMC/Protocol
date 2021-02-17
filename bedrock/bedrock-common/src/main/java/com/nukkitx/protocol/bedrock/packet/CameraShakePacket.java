@@ -2,6 +2,8 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.CameraShakeAction;
+import com.nukkitx.protocol.bedrock.data.CameraShakeType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +32,13 @@ public class CameraShakePacket extends BedrockPacket {
      * @return seconds to shake
      */
     private float duration;
+
+    private CameraShakeType shakeType;
+
+    /**
+     * @since v428
+     */
+    private CameraShakeAction shakeAction;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

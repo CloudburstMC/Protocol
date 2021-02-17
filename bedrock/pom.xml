@@ -9,7 +9,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>com.nukkitx.protocol</groupId>
-        <version>2.6.1-SNAPSHOT</version>
+        <version>2.6.2-SNAPSHOT</version>
     </parent>
 
     <modules>
@@ -27,5 +27,6 @@
         <module>bedrock-v408</module>
         <module>bedrock-v419</module>
         <module>bedrock-v422</module>
+        <module>bedrock-v428</module>
     </modules>
 </project>

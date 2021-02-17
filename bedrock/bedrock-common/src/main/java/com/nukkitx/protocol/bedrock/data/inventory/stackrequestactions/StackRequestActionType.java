@@ -10,6 +10,7 @@ public enum StackRequestActionType {
     CREATE,
     LAB_TABLE_COMBINE,
     BEACON_PAYMENT,
+    MINE_BLOCK,
     CRAFT_RECIPE,
     CRAFT_RECIPE_AUTO,
     CRAFT_CREATIVE,

@@ -23,6 +23,10 @@ public class SerializedSkin {
     public static final int SKIN_128_128_SIZE = 128 * 128 * PIXEL_SIZE;
 
     private final String skinId;
+    /**
+     * @since v428
+     */
+    private final String playFabId;
     private final String geometryName;
     private final String skinResourcePatch;
     private final ImageData skinData;
@@ -40,28 +44,28 @@ public class SerializedSkin {
     private final List<PersonaPieceData> personaPieces;
     private final List<PersonaPieceTintData> tintColors;
 
-    public static SerializedSkin of(String skinId, ImageData skinData, ImageData capeData, String geometryName,
+    public static SerializedSkin of(String skinId, String playFabId, ImageData skinData, ImageData capeData, String geometryName,
                                     String geometryData, boolean premiumSkin) {
         skinData.checkLegacySkinSize();
         capeData.checkLegacyCapeSize();
 
         String skinResourcePatch = convertLegacyGeometryName(geometryName);
 
-        return new SerializedSkin(skinId, geometryName, skinResourcePatch, skinData, Collections.emptyList(), capeData,
+        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData, Collections.emptyList(), capeData,
                 geometryData, "", premiumSkin, false, false, "", "",
                 "wide", "#0", Collections.emptyList(), Collections.emptyList());
     }
 
-    public static SerializedSkin of(String skinId, String skinResourcePatch, ImageData skinData,
+    public static SerializedSkin of(String skinId, String playFabId, String skinResourcePatch, ImageData skinData,
                                     List<AnimationData> animations, ImageData capeData, String geometryData,
                                     String animationData, boolean premium, boolean persona, boolean capeOnClassic,
                                     String capeId, String fullSkinId) {
-        return of(skinId, skinResourcePatch, skinData, Collections.unmodifiableList(new ObjectArrayList<>(animations)),
+        return of(skinId, playFabId, skinResourcePatch, skinData, Collections.unmodifiableList(new ObjectArrayList<>(animations)),
                 capeData, geometryData, animationData, premium, persona, capeOnClassic, capeId, fullSkinId,
                 "wide", "#0", Collections.emptyList(), Collections.emptyList());
     }
 
-    public static SerializedSkin of(String skinId, String skinResourcePatch, ImageData skinData,
+    public static SerializedSkin of(String skinId, String playFabId, String skinResourcePatch, ImageData skinData,
                                     List<AnimationData> animations, ImageData capeData, String geometryData,
                                     String animationData, boolean premium, boolean persona, boolean capeOnClassic,
                                     String capeId, String fullSkinId, String armSize, String skinColor,
@@ -69,7 +73,7 @@ public class SerializedSkin {
 
         String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
 
-        return new SerializedSkin(skinId, geometryName, skinResourcePatch, skinData,
+        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData,
                 Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
@@ -125,6 +129,7 @@ public class SerializedSkin {
 
     public static class Builder {
         private String skinId;
+        private String playFabId;
         private String geometryName;
         private String skinResourcePatch;
         private ImageData skinData;
@@ -147,6 +152,11 @@ public class SerializedSkin {
 
         public Builder skinId(String skinId) {
             this.skinId = skinId;
+            return this;
+        }
+
+        public Builder playFabId(String playFabId) {
+            this.playFabId = playFabId;
             return this;
         }
 
@@ -231,6 +241,7 @@ public class SerializedSkin {
         }
 
         public SerializedSkin build() {
+            if (playFabId == null) playFabId = "";
             if (animationData == null) animationData = "";
             if (capeData == null) capeData = ImageData.EMPTY;
             if (capeId == null) capeId = "";
@@ -241,16 +252,17 @@ public class SerializedSkin {
             if (tintColors == null) tintColors = Collections.emptyList();
 
             if (skinResourcePatch == null) {
-                return SerializedSkin.of(skinId, geometryName, skinData, animations, capeData, geometryData,
+                return SerializedSkin.of(skinId, playFabId, geometryName, skinData, animations, capeData, geometryData,
                         animationData, premium, persona, capeOnClassic, capeId, fullSkinId);
             } else {
-                return SerializedSkin.of(skinId, skinResourcePatch, skinData, animations, capeData, geometryData,
+                return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData,
                         animationData, premium, persona, capeOnClassic, capeId, fullSkinId);
             }
         }
 
         public String toString() {
             return "SerializedSkin.Builder(skinId=" + this.skinId +
+                    ", playFabId=" + this.playFabId +
                     ", geometryName=" + this.geometryName +
                     ", skinResourcePatch=" + this.skinResourcePatch +
                     ", skinData=" + this.skinData +

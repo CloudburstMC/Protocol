@@ -1,10 +1,13 @@
 package com.nukkitx.protocol.bedrock.v313;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
 import com.nukkitx.protocol.bedrock.v291.BedrockPacketHelper_v291;
+import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -92,5 +95,15 @@ public class BedrockPacketHelper_v313 extends BedrockPacketHelper_v291 {
         this.addLevelEvent(52 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_UP);
         this.addLevelEvent(53 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_DOWN);
         this.addLevelEvent(54 + legacy, LevelEventType.PARTICLE_SNEEZE);
+    }
+
+    @Override
+    public InventorySource readSource(ByteBuf buffer) {
+        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer.duplicate()));
+
+        if (type == InventorySource.Type.UNTRACKED_INTERACTION_UI) {
+            return InventorySource.fromUntrackedInteractionUI(VarInts.readInt(buffer));
+        }
+        return super.readSource(buffer);
     }
 }

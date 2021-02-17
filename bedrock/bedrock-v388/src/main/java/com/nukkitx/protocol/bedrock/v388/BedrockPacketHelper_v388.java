@@ -144,7 +144,7 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         String capeId = this.readString(buffer);
         String fullSkinId = this.readString(buffer);
 
-        return SerializedSkin.of(skinId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
+        return SerializedSkin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId);
     }
 
