@@ -9,8 +9,13 @@ import java.net.InetSocketAddress;
 
 @ParametersAreNonnullByDefault
 public interface BedrockServerEventHandler {
+    default boolean onConnectionRequest(InetSocketAddress address, InetSocketAddress realAddress) {
+        return onConnectionRequest(address);
+    }
 
-    boolean onConnectionRequest(InetSocketAddress address);
+    default boolean onConnectionRequest(InetSocketAddress address) {
+        throw new UnsupportedOperationException("BedrockServerEventHandler#onConnectionRequest is not implemented");
+    }
 
     @Nullable
     BedrockPong onQuery(InetSocketAddress address);

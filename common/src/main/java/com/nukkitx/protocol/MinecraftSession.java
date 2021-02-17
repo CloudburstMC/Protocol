@@ -12,6 +12,10 @@ public interface MinecraftSession<T extends MinecraftPacket> {
 
     InetSocketAddress getAddress();
 
+    default InetSocketAddress getRealAddress() {
+        return getAddress();
+    }
+
     void sendPacket(T packet);
 
     void sendPacketImmediately(T packet);

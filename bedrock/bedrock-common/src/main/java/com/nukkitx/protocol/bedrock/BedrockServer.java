@@ -31,8 +31,12 @@ public class BedrockServer extends Bedrock {
     }
 
     public BedrockServer(InetSocketAddress bindAddress, int maxThreads, EventLoopGroup eventLoopGroup) {
+        this(bindAddress, maxThreads, eventLoopGroup, false);
+    }
+
+    public BedrockServer(InetSocketAddress bindAddress, int maxThreads, EventLoopGroup eventLoopGroup, boolean allowProxyProtocol) {
         super(eventLoopGroup);
-        this.rakNetServer = new RakNetServer(bindAddress, maxThreads, eventLoopGroup);
+        this.rakNetServer = new RakNetServer(bindAddress, maxThreads, eventLoopGroup, allowProxyProtocol);
         this.rakNetServer.setProtocolVersion(-1);
         this.rakNetServer.setListener(new BedrockServerListener());
     }
@@ -78,8 +82,8 @@ public class BedrockServer extends Bedrock {
     private class BedrockServerListener implements RakNetServerListener {
 
         @Override
-        public boolean onConnectionRequest(InetSocketAddress address) {
-            return BedrockServer.this.handler == null || BedrockServer.this.handler.onConnectionRequest(address);
+        public boolean onConnectionRequest(InetSocketAddress address, InetSocketAddress realAddress) {
+            return BedrockServer.this.handler == null || BedrockServer.this.handler.onConnectionRequest(address, realAddress);
         }
 
         @Nullable
