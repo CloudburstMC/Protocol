@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.data.PlayerAuthInputData;
 import com.nukkitx.protocol.bedrock.data.PlayerBlockActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemUseTransaction;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
 import com.nukkitx.protocol.bedrock.v419.serializer.PlayerAuthInputSerializer_v419;
@@ -24,6 +25,11 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
             //TODO use inventory transaction packet serialization
+            buffer.writeBoolean(packet.getItemUseTransaction().isHasNetworkIds());
+            VarInts.writeUnsignedInt(buffer, packet.getItemUseTransaction().getActions().size());
+            for (InventoryActionData actionData : packet.getItemUseTransaction().getActions()) {
+                helper.writeInventoryAction(buffer, actionData, session, packet.getItemUseTransaction().isHasNetworkIds());
+            }
             VarInts.writeUnsignedInt(buffer, packet.getItemUseTransaction().getActionType());
             helper.writeBlockPosition(buffer, packet.getItemUseTransaction().getBlockPosition());
             VarInts.writeInt(buffer, packet.getItemUseTransaction().getBlockFace());
@@ -51,6 +57,11 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
             ItemUseTransaction itemTransaction = new ItemUseTransaction();
+            itemTransaction.setHasNetworkIds(buffer.readBoolean());
+            int actionLength = VarInts.readUnsignedInt(buffer);
+            for (int i = 0; i < actionLength; i++) {
+                itemTransaction.getActions().add(helper.readInventoryAction(buffer, session, itemTransaction.isHasNetworkIds()));
+            }
             itemTransaction.setActionType(VarInts.readUnsignedInt(buffer));
             itemTransaction.setBlockPosition(helper.readBlockPosition(buffer));
             itemTransaction.setBlockFace(VarInts.readInt(buffer));
