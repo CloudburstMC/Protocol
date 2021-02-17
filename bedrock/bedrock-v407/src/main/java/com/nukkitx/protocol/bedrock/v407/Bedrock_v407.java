@@ -14,6 +14,7 @@ import com.nukkitx.protocol.bedrock.v332.serializer.TextSerializer_v332;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
+import com.nukkitx.protocol.bedrock.v389.serializer.EventSerializer_v389;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
@@ -88,7 +89,7 @@ public class Bedrock_v407 {
             .registerPacket(SetPlayerGameTypePacket.class, SetPlayerGameTypeSerializer_v291.INSTANCE, 62)
             .registerPacket(PlayerListPacket.class, PlayerListSerializer_v390.INSTANCE, 63)
             .registerPacket(SimpleEventPacket.class, SimpleEventSerializer_v291.INSTANCE, 64)
-            .registerPacket(EventPacket.class, EventSerializer_v388.INSTANCE, 65)
+            .registerPacket(EventPacket.class, EventSerializer_v389.INSTANCE, 65)
             .registerPacket(SpawnExperienceOrbPacket.class, SpawnExperienceOrbSerializer_v291.INSTANCE, 66)
             .registerPacket(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v354.INSTANCE, 67)
             .registerPacket(MapInfoRequestPacket.class, MapInfoRequestSerializer_v291.INSTANCE, 68)

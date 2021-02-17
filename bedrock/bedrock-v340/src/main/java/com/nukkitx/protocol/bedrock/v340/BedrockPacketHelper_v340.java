@@ -10,7 +10,6 @@ import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
 import com.nukkitx.protocol.bedrock.v332.BedrockPacketHelper_v332;
 import io.netty.buffer.ByteBuf;
@@ -148,10 +147,5 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         super.writeItemUse(buffer, packet, session);
 
         VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
-    }
-
-    @Override
-    public StructureSettings readStructureSettings(ByteBuf buffer) {
-        return super.readStructureSettings(buffer);
     }
 }

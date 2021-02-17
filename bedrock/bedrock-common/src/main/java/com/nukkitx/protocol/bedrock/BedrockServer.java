@@ -51,7 +51,7 @@ public class BedrockServer extends Bedrock {
     }
 
     @Override
-    public void close() {
+    public void close(boolean force) {
         this.close("disconnect.disconnected");
     }
 
