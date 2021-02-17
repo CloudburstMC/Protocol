@@ -6,7 +6,6 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
-import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
@@ -264,11 +263,20 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
         int integritySeed = buffer.readIntLE();
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
-                rotation, mirror, integrityValue, integritySeed);
+                rotation, mirror, integrityValue, integritySeed, Vector3f.ZERO);
     }
 
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
-
+        this.writeString(buffer, settings.getPaletteName());
+        buffer.writeBoolean(settings.isIgnoringBlocks());
+        buffer.writeBoolean(settings.isIgnoringBlocks());
+        this.writeBlockPosition(buffer, settings.getSize());
+        this.writeBlockPosition(buffer, settings.getOffset());
+        VarInts.writeLong(buffer, settings.getLastEditedByEntityId());
+        buffer.writeByte(settings.getRotation().ordinal());
+        buffer.writeByte(settings.getMirror().ordinal());
+        buffer.writeFloatLE(settings.getIntegrityValue());
+        buffer.writeIntLE(settings.getIntegritySeed());
     }
 }

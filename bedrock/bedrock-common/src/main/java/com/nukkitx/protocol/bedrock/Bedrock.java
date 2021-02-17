@@ -35,5 +35,9 @@ public abstract class Bedrock implements MinecraftInterface {
         return this.getRakNet().bind();
     }
 
-    public abstract void close();
+    public void close() {
+        this.close(false);
+    }
+
+    public abstract void close(boolean force);
 }

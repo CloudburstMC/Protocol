@@ -56,6 +56,9 @@ public class Zlib {
                 decompressed.ensureWritable(CHUNK);
                 int index = decompressed.writerIndex();
                 int written = inflater.inflate(decompressed.internalNioBuffer(index, CHUNK));
+                if (written < 1) {
+                    break;
+                }
                 decompressed.writerIndex(index + written);
                 if (maxSize > 0 && decompressed.writerIndex() >= maxSize) {
                     throw new DataFormatException("Inflated data exceeds maximum size");
