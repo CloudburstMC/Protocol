@@ -38,6 +38,7 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.ObjIntConsumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -162,6 +163,14 @@ public abstract class BedrockPacketHelper {
         return this.commandParams.get(commandParam);
     }
 
+    public final void removeCommandParam(int index) {
+        this.commandParams.remove(index);
+    }
+
+    public final void removeCommandParam(CommandParamType type) {
+        this.commandParams.remove(type);
+    }
+    
     public final void addResourcePackType(int index, ResourcePackType resourcePackType) {
         this.resourcePackTypes.put(index, resourcePackType);
     }
