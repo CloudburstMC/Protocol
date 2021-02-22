@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v5000425;
+package com.nukkitx.protocol.genoa.v425;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -18,23 +18,26 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
-import com.nukkitx.protocol.bedrock.v5000425.serializer.FilterTextSerializer_v5000425;
-import com.nukkitx.protocol.bedrock.v5000425.serializer.ItemStackResponseSerializer_v5000425;
-import com.nukkitx.protocol.bedrock.v5000425.serializer.ResourcePacksInfoSerializer_v5000425;
+import com.nukkitx.protocol.bedrock.v422.BedrockPacketHelper_v422;
+import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
+import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
+import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
+import com.nukkitx.protocol.genoa.packet.*;
+import com.nukkitx.protocol.genoa.v425.serializer.GenoaWorldManipulationSerializer;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class Bedrock_v5000425 {
-    public static BedrockPacketCodec v5000425_CODEC = BedrockPacketCodec.builder()
+public class Genoa_v425 {
+    public static BedrockPacketCodec GENOA_v425_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(5000425)
             .minecraftVersion("0.33.0")
-            .helper(BedrockPacketHelper_v5000425.INSTANCE)
+            .helper(BedrockPacketHelper_v422.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
             .registerPacket(ClientToServerHandshakePacket.class, ClientToServerHandshakeSerializer_v291.INSTANCE, 4)
             .registerPacket(DisconnectPacket.class, DisconnectSerializer_v291.INSTANCE, 5)
-            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v5000425.INSTANCE, 6)
+            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v422.INSTANCE, 6)
             .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v419.INSTANCE, 7)
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
@@ -152,32 +155,32 @@ public class Bedrock_v5000425 {
             .registerPacket(LevelSoundEventPacket.class, LevelSoundEventSerializer_v407.INSTANCE, 123)
             .registerPacket(LevelEventGenericPacket.class, LevelEventGenericSerializer_v361.INSTANCE, 124)
             .registerPacket(LecternUpdatePacket.class, LecternUpdateSerializer_v354.INSTANCE, 125)
-            .registerPacket(VideoStreamConnectPacket.class, VideoStreamConnectSerializer_v361.INSTANCE, 126)
+            .registerPacket(GenoaInventoryDataPacket.class, VideoStreamConnectSerializer_v361.INSTANCE, 126)
             // AddEntityPacket 127
             // RemoveEntityPacket 128
-            .registerPacket(ClientCacheStatusPacket.class, ClientCacheStatusSerializer_v361.INSTANCE, 129)
-            .registerPacket(OnScreenTextureAnimationPacket.class, OnScreenTextureAnimationSerializer_v354.INSTANCE, 130)
-            .registerPacket(MapCreateLockedCopyPacket.class, MapCreateLockedCopySerializer_v354.INSTANCE, 131)
-            .registerPacket(StructureTemplateDataRequestPacket.class, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132)
+            .registerPacket(GenoaOpenInventoryPacket.class, ClientCacheStatusSerializer_v361.INSTANCE, 129)
+            .registerPacket(GenoaItemPickupPacket.class, OnScreenTextureAnimationSerializer_v354.INSTANCE, 130)
+            .registerPacket(GenoaShareAnchorPacket.class, MapCreateLockedCopySerializer_v354.INSTANCE, 131)
+            .registerPacket(GenoaWorldManipulationPacket.class, GenoaWorldManipulationSerializer.INSTANCE, 132)
             .registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v388.INSTANCE, 133)
             .registerPacket(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
             .registerPacket(ClientCacheMissResponsePacket.class, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
-            .registerPacket(EducationSettingsPacket.class, EducationSettingsSerializer_v388.INSTANCE, 137)
+            .registerPacket(GenoaNetworkTransformPacket.class, EducationSettingsSerializer_v388.INSTANCE, 137)
             .registerPacket(EmotePacket.class, EmoteSerializer_v388.INSTANCE, 138)
-            .registerPacket(MultiplayerSettingsPacket.class, MultiplayerSettingsSerializer_v388.INSTANCE, 139)
+            .registerPacket(PersonaMobRequestPacket.class, MultiplayerSettingsSerializer_v388.INSTANCE, 139)
             .registerPacket(SettingsCommandPacket.class, SettingsCommandSerializer_v388.INSTANCE, 140)
             .registerPacket(AnvilDamagePacket.class, AnvilDamageSerializer_v388.INSTANCE, 141)
-            .registerPacket(CompletedUsingItemPacket.class, CompletedUsingItemSerializer_v388.INSTANCE, 142)
+            .registerPacket(GenoaNetworkOwnershipRequestPacket.class, CompletedUsingItemSerializer_v388.INSTANCE, 142)
             .registerPacket(NetworkSettingsPacket.class, NetworkSettingsSerializer_v388.INSTANCE, 143)
             .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v419.INSTANCE, 144)
-            .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
+            .registerPacket(GenoaSetActorMolangVariablesPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
             .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v407.INSTANCE, 147)
-            .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v5000425.INSTANCE, 148)
+            .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v422.INSTANCE, 148)
             .registerPacket(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v407.INSTANCE, 149)
             .registerPacket(CodeBuilderPacket.class, CodeBuilderSerializer_v407.INSTANCE, 150)
-            .registerPacket(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v407.INSTANCE, 151)
-            .registerPacket(EmoteListPacket.class, EmoteListSerializer_v407.INSTANCE, 152)
+            .registerPacket(GenoaGuestPlayerJoinRequestPacket.class, UpdatePlayerGameTypeSerializer_v407.INSTANCE, 151)
+            .registerPacket(GenoaGuestPlayerJoinResponsePacket.class, EmoteListSerializer_v407.INSTANCE, 152)
             .registerPacket(PositionTrackingDBServerBroadcastPacket.class, PositionTrackingDBServerBroadcastSerializer_v407.INSTANCE, 153)
             .registerPacket(PositionTrackingDBClientRequestPacket.class, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154)
             .registerPacket(DebugInfoPacket.class, DebugInfoSerializer_v407.INSTANCE, 155)
@@ -188,7 +191,7 @@ public class Bedrock_v5000425 {
             .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v419.INSTANCE, 160)
             .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
             .registerPacket(ItemComponentPacket.class, ItemComponentSerializer_v419.INSTANCE, 162)
-            .registerPacket(FilterTextPacket.class, FilterTextSerializer_v5000425.INSTANCE, 163)
+            .registerPacket(FilterTextPacket.class, FilterTextSerializer_v422.INSTANCE, 163)
             .build();
 
 }
