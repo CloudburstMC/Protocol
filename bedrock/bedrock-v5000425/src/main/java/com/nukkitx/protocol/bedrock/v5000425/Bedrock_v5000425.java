@@ -18,23 +18,24 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
-import com.nukkitx.protocol.bedrock.v5000425.serializer.FilterTextSerializer_v5000425;
-import com.nukkitx.protocol.bedrock.v5000425.serializer.ItemStackResponseSerializer_v5000425;
-import com.nukkitx.protocol.bedrock.v5000425.serializer.ResourcePacksInfoSerializer_v5000425;
+import com.nukkitx.protocol.bedrock.v422.BedrockPacketHelper_v422;
+import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
+import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
+import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Bedrock_v5000425 {
     public static BedrockPacketCodec V5000425_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(5000425)
-            .minecraftVersion("1.16.200.5")
-            .helper(BedrockPacketHelper_v5000425.INSTANCE)
+            .minecraftVersion("0.33.0")
+            .helper(BedrockPacketHelper_v422.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
             .registerPacket(ClientToServerHandshakePacket.class, ClientToServerHandshakeSerializer_v291.INSTANCE, 4)
             .registerPacket(DisconnectPacket.class, DisconnectSerializer_v291.INSTANCE, 5)
-            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v5000425.INSTANCE, 6)
+            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v422.INSTANCE, 6)
             .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v419.INSTANCE, 7)
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
@@ -173,7 +174,7 @@ public class Bedrock_v5000425 {
             .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
             .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v407.INSTANCE, 147)
-            .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v5000425.INSTANCE, 148)
+            .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v422.INSTANCE, 148)
             .registerPacket(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v407.INSTANCE, 149)
             .registerPacket(CodeBuilderPacket.class, CodeBuilderSerializer_v407.INSTANCE, 150)
             .registerPacket(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v407.INSTANCE, 151)
@@ -188,7 +189,7 @@ public class Bedrock_v5000425 {
             .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v419.INSTANCE, 160)
             .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
             .registerPacket(ItemComponentPacket.class, ItemComponentSerializer_v419.INSTANCE, 162)
-            .registerPacket(FilterTextPacket.class, FilterTextSerializer_v5000425.INSTANCE, 163)
+            .registerPacket(FilterTextPacket.class, FilterTextSerializer_v422.INSTANCE, 163)
             .build();
 
 }
