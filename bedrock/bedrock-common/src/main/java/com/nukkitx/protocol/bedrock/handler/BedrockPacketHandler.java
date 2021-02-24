@@ -28,6 +28,32 @@ public interface BedrockPacketHandler extends PacketHandler {
 
     default boolean handle(GenoaNetworkOwnershipRequestPacket packet){return false;}
 
+    default boolean handle(GenoaItemParticlePacket packet) { return false; };
+
+    default boolean handle(GenoaThirdPersonItemParticlePacket packet) { return false; };
+
+    default boolean handle(GenoaNetworkOwnershipStatusPacket packet) { return false; };
+
+    default boolean handle(GenoaUpdateBlockPacket packet) { return false; };
+
+    default boolean handle(GenoaBlockDestroyPacket packet) { return false; };
+
+    default boolean handle(GenoaPlayerHurtPacket packet) { return false; };
+
+    default boolean handle(GenoaDisconnectRequest packet) { return false; };
+
+    default boolean handle(GenoaDisconnectStart packet) { return false; };
+
+    default boolean handle(GenoaGameplaySettings packet) { return false; };
+
+    default boolean handle(GenoaBlockHitNoDamagePacket packet) { return false; };
+
+    default boolean handle(GenoaItemBrokeNotificationPacket packet) { return false; };
+
+    default boolean handle(GenoaItemAwardedNotificationPacket packet) { return false; };
+
+    default boolean handle(GenoaEventFlatbufferPacket packet) { return false; };
+
     //Default bedrock
     default boolean handle(AdventureSettingsPacket packet) {
         return false;
@@ -674,4 +700,5 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(ClientboundDebugRendererPacket packet) { return false; }
+
 }

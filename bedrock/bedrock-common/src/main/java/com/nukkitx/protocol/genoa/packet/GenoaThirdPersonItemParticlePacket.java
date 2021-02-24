@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.genoa.packet;
 
+import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -8,11 +9,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class PersonaMobRequestPacket extends BedrockPacket {
+public class GenoaThirdPersonItemParticlePacket extends BedrockPacket {
 
-    public long UnsignedLong1;
-    public String s1;
-    public String s2;
+    public int int1;
+    public int int2;
+    public Vector3f itemPos; // Could also be flipped
+    public Vector3f viewDirection;
+    public long unsignedVarLong1;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -20,7 +23,6 @@ public class PersonaMobRequestPacket extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PERSONA_MOB_REQUEST;
+        return BedrockPacketType.GENOA_THIRD_PERSON_ITEM_PARTICLE;
     }
 }
-

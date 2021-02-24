@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.genoa.v425.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.genoa.packet.GenoaItemPickupPacket;
@@ -14,12 +15,14 @@ public class GenoaItemPickupSerializer implements BedrockPacketSerializer<GenoaI
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaItemPickupPacket packet) {
-        System.out.println(packet);
+        VarInts.writeUnsignedLong(buffer,packet.getL1());
+        VarInts.writeUnsignedLong(buffer,packet.getL2());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaItemPickupPacket packet) {
-        System.out.println(packet);
+        packet.setL1(VarInts.readUnsignedLong(buffer));
+        packet.setL2(VarInts.readUnsignedLong(buffer));
     }
 }
 

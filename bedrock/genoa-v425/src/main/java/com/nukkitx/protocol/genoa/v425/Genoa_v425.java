@@ -142,22 +142,34 @@ public class Genoa_v425 {
             .registerPacket(LevelSoundEventPacket.class, LevelSoundEventSerializer_v332.INSTANCE, 123)
             .registerPacket(LevelEventGenericPacket.class, LevelEventGenericSerializer_v361.INSTANCE, 124)
             .registerPacket(LecternUpdatePacket.class, LecternUpdateSerializer_v354.INSTANCE, 125)
-            .registerPacket(GenoaInventoryDataPacket.class, GenoaInventoryDataPacketSerializer.INSTANCE, 126)
             // AddEntityPacket 127
             // RemoveEntityPacket 128
+            .registerPacket(GenoaInventoryDataPacket.class, GenoaInventoryDataPacketSerializer.INSTANCE, 128)
             .registerPacket(GenoaOpenInventoryPacket.class, GenoaOpenInventorySerializer.INSTANCE, 129)
             .registerPacket(GenoaItemPickupPacket.class, GenoaItemPickupSerializer.INSTANCE, 130)
             .registerPacket(GenoaShareAnchorPacket.class, GenoaShareAnchorSerializer.INSTANCE, 131)
             .registerPacket(GenoaWorldManipulationPacket.class, GenoaWorldManipulationSerializer.INSTANCE, 132)
-            //.registerPacket(GenoaDisconnectId.class, GenoaDisconnectIdSerializer.INSTANCE, 134)
-            .registerPacket(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
-            .registerPacket(ClientCacheMissResponsePacket.class, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
+            //.registerPacket(GenoaDisconnectId.class, GenoaDisconnectIdSerializer.INSTANCE, 134) TODO:
+            .registerPacket(GenoaItemParticlePacket.class, GenoaItemParticlePacketSerializer.INSTANCE, 135)
+            .registerPacket(GenoaThirdPersonItemParticlePacket.class, GenoaThirdPersonItemParticlePacketSerializer.INSTANCE, 136)
             .registerPacket(GenoaNetworkTransformPacket.class,GenoaNetworkTransformSerializer.INSTANCE,137)
+            .registerPacket(GenoaUpdateBlockPacket.class,GenoaUpdateBlockPacketSerializer.INSTANCE,138)
             .registerPacket(PersonaMobRequestPacket.class, PersonaMobRequestSeralizer.INSTANCE, 139)
+            //.registerPacket(GenoaBannerMessagePacket.class, GenoaBannerMessagePacketSeralizer.INSTANCE, 140) TODO:
+            .registerPacket(GenoaBlockDestroyPacket.class, GenoaBlockDestroyPacketSeralizer.INSTANCE, 141)
             .registerPacket(GenoaNetworkOwnershipRequestPacket.class, GenoaNetworkOwnershipRequestSerializer.INSTANCE, 142)
+            .registerPacket(GenoaNetworkOwnershipStatusPacket.class, GenoaNetworkOwnershipStatusPacketSerializer.INSTANCE, 143)
+            .registerPacket(GenoaPlayerHurtPacket.class, GenoaPlayerHurtPacketSerializer.INSTANCE, 144)
             .registerPacket(GenoaSetActorMolangVariablesPacket.class,GenoaSetActorMolangVariablesSerializer.INSTANCE,145)
+            .registerPacket(GenoaDisconnectRequest.class,GenoaDisconnectRequestSerializer.INSTANCE,146)
+            .registerPacket(GenoaDisconnectStart.class,GenoaDisconnectStartSerializer.INSTANCE,147)
+            .registerPacket(GenoaGameplaySettings.class,GenoaGameplaySettingsSerializer.INSTANCE,148)
+            .registerPacket(GenoaBlockHitNoDamagePacket.class,GenoaBlockHitNoDamagePacketSerializer.INSTANCE,149)
+            .registerPacket(GenoaItemBrokeNotificationPacket.class,GenoaItemBrokeNotificationPacketSerializer.INSTANCE,150)
             .registerPacket(GenoaGuestPlayerJoinRequestPacket.class, GenoaGuestPlayerJoinRequestSerializer.INSTANCE, 151)
             .registerPacket(GenoaGuestPlayerJoinResponsePacket.class, GenoaGuestPlayerJoinResponseSerializer.INSTANCE, 152)
+            .registerPacket(GenoaItemAwardedNotificationPacket.class,GenoaItemAwardedNotificationPacketSerializer.INSTANCE,153)
+            .registerPacket(GenoaEventFlatbufferPacket.class,GenoaEventFlatbufferPacketSerializer.INSTANCE,154)
             .build();
     //.registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133)
 }

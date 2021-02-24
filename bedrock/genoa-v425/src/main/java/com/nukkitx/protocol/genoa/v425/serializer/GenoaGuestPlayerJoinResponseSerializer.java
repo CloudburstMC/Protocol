@@ -14,12 +14,14 @@ public class GenoaGuestPlayerJoinResponseSerializer implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaGuestPlayerJoinResponsePacket packet) {
-        System.out.println(packet);
+        helper.writeString(buffer,packet.getStringVal());
+        buffer.writeBoolean(packet.isBoolVal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaGuestPlayerJoinResponsePacket packet) {
-        System.out.println(packet);
+       packet.setStringVal(helper.readString(buffer));
+       packet.setBoolVal(buffer.readBoolean());
     }
 }
 

@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.genoa.v425.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.genoa.packet.PersonaMobRequestPacket;
@@ -14,12 +15,16 @@ public class PersonaMobRequestSeralizer implements BedrockPacketSerializer<Perso
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PersonaMobRequestPacket packet) {
-        System.out.println(packet);
+        VarInts.writeUnsignedLong(buffer,packet.getUnsignedLong1());
+        helper.writeString(buffer,packet.getS1());
+        helper.writeString(buffer,packet.getS2());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PersonaMobRequestPacket packet) {
-        System.out.println(packet);
+        packet.setUnsignedLong1(VarInts.readUnsignedLong(buffer));
+        packet.setS1(helper.readString(buffer));
+        packet.setS2(helper.readString(buffer));
     }
 }
 

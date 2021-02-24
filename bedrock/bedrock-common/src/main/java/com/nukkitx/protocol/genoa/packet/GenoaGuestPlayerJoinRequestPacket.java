@@ -14,7 +14,7 @@ public class GenoaGuestPlayerJoinRequestPacket extends BedrockPacket {
 
     public String s1;
     public boolean b1;
-    public Optional<String> s2;
+    public String s2;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

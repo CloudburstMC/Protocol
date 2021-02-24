@@ -8,11 +8,16 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class PersonaMobRequestPacket extends BedrockPacket {
+public class GenoaUpdateBlockPacket extends BedrockPacket {
 
-    public long UnsignedLong1;
-    public String s1;
-    public String s2;
+    public int VarInt1;
+    public int UnsignedVarInt1;
+    public int VarInt2;
+    public int UnsignedVarInt2;
+    public int UnsignedVarInt3;
+    public int UnsignedVarInt4; // Either this or the next two ones if bool is true
+    public float Float1;
+    public boolean CheckForFloat;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -20,7 +25,6 @@ public class PersonaMobRequestPacket extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.PERSONA_MOB_REQUEST;
+        return BedrockPacketType.GENOA_UPDATE_BLOCK;
     }
 }
-
