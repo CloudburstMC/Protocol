@@ -15,14 +15,12 @@ public class GenoaItemPickupSerializer implements BedrockPacketSerializer<GenoaI
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaItemPickupPacket packet) {
-        VarInts.writeUnsignedLong(buffer,packet.getL1());
-        VarInts.writeUnsignedLong(buffer,packet.getL2());
+        helper.writeUuid(buffer,packet.getUuid());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaItemPickupPacket packet) {
-        packet.setL1(VarInts.readUnsignedLong(buffer));
-        packet.setL2(VarInts.readUnsignedLong(buffer));
+        packet.setUuid(helper.readUuid(buffer));
     }
 }
 

@@ -2,6 +2,7 @@ package com.nukkitx.protocol.genoa.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.ItemAwardedNotification;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,11 +14,7 @@ public class GenoaItemAwardedNotificationPacket extends BedrockPacket {
     public String String1;
     public String String2;
     public String String3;
-    // Loop:
-    // public int UnsignedInt;
-    // public int Int;
-    // public long UnsignedLong1;
-    // public long UnsignedLong2;
+    public ItemAwardedNotification[] arr;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

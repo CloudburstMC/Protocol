@@ -6,12 +6,13 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.UUID;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaItemPickupPacket extends BedrockPacket {
 
-    public long l1;
-    public long l2;
+    public UUID Uuid;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

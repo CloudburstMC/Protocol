@@ -13,7 +13,7 @@ public class GenoaItemParticlePacket extends BedrockPacket {
 
     public int int1;
     public int int2;
-    public Vector3f itemPos;
+    public Vector3f position;
     public long unsignedVarLong1;
 
     @Override

@@ -14,14 +14,12 @@ public class GenoaBlockDestroyPacketSeralizer implements BedrockPacketSerializer
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaBlockDestroyPacket packet) {
         VarInts.writeUnsignedLong(buffer,packet.getUnsignedVarLong());
-        VarInts.writeLong(buffer,packet.getUnsignedLong());
-        VarInts.writeLong(buffer,packet.getUnsignedLong2());
+        helper.writeUuid(buffer,packet.getUuid());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaBlockDestroyPacket packet) {
         packet.setUnsignedVarLong(VarInts.readUnsignedLong(buffer));
-        packet.setUnsignedLong(buffer.readLong()); // Maybe wrong
-        packet.setUnsignedLong2(buffer.readLong());
+        packet.setUuid(helper.readUuid(buffer));
     }
 }

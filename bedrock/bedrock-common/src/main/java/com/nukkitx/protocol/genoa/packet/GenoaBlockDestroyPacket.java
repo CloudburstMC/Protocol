@@ -6,13 +6,16 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.UUID;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaBlockDestroyPacket extends BedrockPacket {
 
     public long UnsignedVarLong;
-    public long UnsignedLong;
-    public long UnsignedLong2;
+    //public long UnsignedLong;
+    //public long UnsignedLong2;
+    public UUID Uuid;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

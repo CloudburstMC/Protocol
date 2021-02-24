@@ -1,10 +1,13 @@
 package com.nukkitx.protocol.genoa.v425.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.ItemAwardedNotification;
 import com.nukkitx.protocol.genoa.packet.GenoaItemAwardedNotificationPacket;
-import com.nukkitx.protocol.genoa.packet.GenoaItemBrokeNotificationPacket;
 import io.netty.buffer.ByteBuf;
+
+import java.util.UUID;
 
 public class GenoaItemAwardedNotificationPacketSerializer implements BedrockPacketSerializer<GenoaItemAwardedNotificationPacket> {
     public static final GenoaItemAwardedNotificationPacketSerializer INSTANCE = new GenoaItemAwardedNotificationPacketSerializer();
@@ -14,7 +17,11 @@ public class GenoaItemAwardedNotificationPacketSerializer implements BedrockPack
         helper.writeString(buffer,packet.getString1());
         helper.writeString(buffer,packet.getString2());
         helper.writeString(buffer,packet.getString3());
-        // TODO: Implement the loop function
+        helper.writeArray(buffer, packet.getArr(), (buf,help,pac) -> {
+            buffer.writeInt(pac.getUnsignedInt());
+            buffer.writeInt(pac.getSignedInt());
+            helper.writeUuid(buffer,pac.getUuid());
+        });
     }
 
     @Override
@@ -22,6 +29,12 @@ public class GenoaItemAwardedNotificationPacketSerializer implements BedrockPack
         packet.setString1(helper.readString(buffer));
         packet.setString2(helper.readString(buffer));
         packet.setString3(helper.readString(buffer));
+        helper.readArray(buffer,packet.getArr(), (buf,help) -> {
+            int UnsignedInt = buffer.readInt();
+            int SignedInt = buffer.readInt();
+            UUID Uuid = helper.readUuid(buffer);
+            return new ItemAwardedNotification(UnsignedInt,SignedInt,Uuid);
+        });
 
     }
 }
