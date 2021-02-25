@@ -18,8 +18,8 @@ public class GenoaItemAwardedNotificationPacketSerializer implements BedrockPack
         helper.writeString(buffer,packet.getString2());
         helper.writeString(buffer,packet.getString3());
         helper.writeArray(buffer, packet.getArr(), (buf,help,pac) -> {
-            buffer.writeInt(pac.getUnsignedInt());
-            buffer.writeInt(pac.getSignedInt());
+            buffer.writeIntLE(pac.getUnsignedInt());
+            buffer.writeIntLE(pac.getSignedInt());
             helper.writeUuid(buffer,pac.getUuid());
         });
     }
@@ -30,8 +30,8 @@ public class GenoaItemAwardedNotificationPacketSerializer implements BedrockPack
         packet.setString2(helper.readString(buffer));
         packet.setString3(helper.readString(buffer));
         helper.readArray(buffer,packet.getArr(), (buf,help) -> {
-            int UnsignedInt = buffer.readInt();
-            int SignedInt = buffer.readInt();
+            int UnsignedInt = buffer.readIntLE();
+            int SignedInt = buffer.readIntLE();
             UUID Uuid = helper.readUuid(buffer);
             return new ItemAwardedNotification(UnsignedInt,SignedInt,Uuid);
         });

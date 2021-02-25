@@ -10,21 +10,21 @@ public class GenoaPlayerHurtPacketSerializer implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaPlayerHurtPacket packet) {
-        buffer.writeInt(packet.getInt1());
-        buffer.writeInt(packet.getInt2());
-        buffer.writeFloat(packet.getFloat1());
-        buffer.writeFloat(packet.getFloat2());
-        buffer.writeFloat(packet.getFloat3());
-        buffer.writeFloat(packet.getFloat4());
+        buffer.writeIntLE(packet.getInt1());
+        buffer.writeIntLE(packet.getInt2());
+        buffer.writeFloatLE(packet.getFloat1());
+        buffer.writeFloatLE(packet.getFloat2());
+        buffer.writeFloatLE(packet.getFloat3());
+        buffer.writeFloatLE(packet.getFloat4());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaPlayerHurtPacket packet) {
-        packet.setInt1(buffer.readInt());
-        packet.setInt2(buffer.readInt());
-        packet.setFloat1(buffer.readFloat());
-        packet.setFloat2(buffer.readFloat());
-        packet.setFloat3(buffer.readFloat());
-        packet.setFloat4(buffer.readFloat());
+        packet.setInt1(buffer.readIntLE());
+        packet.setInt2(buffer.readIntLE());
+        packet.setFloat1(buffer.readFloatLE());
+        packet.setFloat2(buffer.readFloatLE());
+        packet.setFloat3(buffer.readFloatLE());
+        packet.setFloat4(buffer.readFloatLE());
     }
 }

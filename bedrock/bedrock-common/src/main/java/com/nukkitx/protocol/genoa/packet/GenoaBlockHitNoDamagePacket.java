@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.genoa.packet;
 
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -10,9 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaBlockHitNoDamagePacket extends BedrockPacket {
 
-    public int VarInt1;
-    public int UnsignedVarInt1;
-    public int VarInt2;
+    public Vector3i position;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

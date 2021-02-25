@@ -14,12 +14,10 @@ public class GenoaOpenInventorySerializer implements BedrockPacketSerializer<Gen
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaOpenInventoryPacket packet) {
-        System.out.println(packet);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaOpenInventoryPacket packet) {
-        System.out.println(packet);
     }
 }
 

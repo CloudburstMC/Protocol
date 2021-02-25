@@ -13,7 +13,7 @@ public class GenoaThirdPersonItemParticlePacket extends BedrockPacket {
 
     public int int1;
     public int int2;
-    public Vector3f itemPos; // Could also be flipped
+    public Vector3f position; // Could also be flipped
     public Vector3f viewDirection;
     public long unsignedVarLong1;
 

@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 public class GenoaNetworkOwnershipRequestPacket extends BedrockPacket {
 
     public byte byte1;
-    public int u_varint64;
+    public long UnsignedVarLong;
     public boolean b1;
 
     @Override

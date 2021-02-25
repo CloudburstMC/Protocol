@@ -12,15 +12,11 @@ public class GenoaBlockHitNoDamagePacketSerializer implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaBlockHitNoDamagePacket packet) {
-        VarInts.writeInt(buffer,packet.getVarInt1());
-        VarInts.writeUnsignedInt(buffer,packet.getUnsignedVarInt1());
-        VarInts.writeInt(buffer,packet.getVarInt2());
+        helper.writeBlockPosition(buffer,packet.getPosition());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaBlockHitNoDamagePacket packet) {
-        packet.setVarInt1(VarInts.readInt(buffer));
-        packet.setUnsignedVarInt1(VarInts.readUnsignedInt(buffer));
-        packet.setVarInt2(VarInts.readInt(buffer));
+        packet.setPosition(helper.readBlockPosition(buffer));
     }
 }

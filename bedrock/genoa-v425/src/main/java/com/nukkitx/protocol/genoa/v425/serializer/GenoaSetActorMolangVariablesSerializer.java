@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.genoa.v425.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.genoa.packet.GenoaSetActorMolangVariablesPacket;
@@ -14,12 +15,14 @@ public class GenoaSetActorMolangVariablesSerializer implements BedrockPacketSeri
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaSetActorMolangVariablesPacket packet) {
-        System.out.println(packet);
+        buffer.writeLongLE(packet.getUint64());
+        VarInts.writeUnsignedInt(buffer,packet.getU_varint());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaSetActorMolangVariablesPacket packet) {
-        System.out.println(packet);
+        packet.setUint64(buffer.readLongLE());
+        packet.setU_varint(VarInts.readUnsignedInt(buffer));
     }
 }
 

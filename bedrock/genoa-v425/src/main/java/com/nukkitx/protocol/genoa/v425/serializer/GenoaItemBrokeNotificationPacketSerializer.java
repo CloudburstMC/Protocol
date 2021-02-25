@@ -12,11 +12,11 @@ public class GenoaItemBrokeNotificationPacketSerializer implements BedrockPacket
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaItemBrokeNotificationPacket packet) {
-        buffer.writeInt(packet.getUnsignedInt());
+        buffer.writeIntLE(packet.getUnsignedInt());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaItemBrokeNotificationPacket packet) {
-        packet.setUnsignedInt(buffer.readInt());
+        packet.setUnsignedInt(buffer.readIntLE());
     }
 }

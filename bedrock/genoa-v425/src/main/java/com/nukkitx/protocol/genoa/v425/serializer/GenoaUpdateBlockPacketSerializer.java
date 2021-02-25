@@ -32,7 +32,7 @@ public class GenoaUpdateBlockPacketSerializer implements BedrockPacketSerializer
         packet.setBlockPos(helper.readBlockPosition(buffer));
         packet.setUnsignedVarInt2(VarInts.readUnsignedInt(buffer));
         packet.setUnsignedVarInt3(VarInts.readUnsignedInt(buffer));
-        float ftemp = buffer.readFloat();
+        float ftemp = buffer.readFloatLE();
         boolean temp = buffer.readBoolean();
         if (!temp) {
             packet.setUnsignedVarInt4(VarInts.readUnsignedInt(buffer));
