@@ -16,10 +16,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.Getter;
 import lombok.Setter;
-import org.cloudburstmc.protocol.java.network.JavaPacketDecoder;
-import org.cloudburstmc.protocol.java.network.JavaPacketEncoder;
-import org.cloudburstmc.protocol.java.network.JavaVarInt21FrameDecoder;
-import org.cloudburstmc.protocol.java.network.JavaVarInt21LengthFieldPrepender;
+import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecoder;
+import org.cloudburstmc.protocol.java.pipeline.JavaPacketEncoder;
+import org.cloudburstmc.protocol.java.pipeline.JavaVarInt21FrameDecoder;
+import org.cloudburstmc.protocol.java.pipeline.JavaVarInt21LengthFieldPrepender;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 
 import java.net.InetSocketAddress;

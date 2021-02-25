@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.network;
+package org.cloudburstmc.protocol.java.pipeline;
 
 import com.nukkitx.natives.util.Natives;
 import com.nukkitx.natives.zlib.Deflater;

@@ -1,21 +1,24 @@
 package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
-import com.nukkitx.math.vector.Vector3i;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
-import org.cloudburstmc.protocol.java.data.LevelEventType;
+import org.cloudburstmc.protocol.java.data.MerchantOffer;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class LevelEventPacket extends JavaPacket<JavaPlayPacketHandler> {
-    private LevelEventType type;
-    private Vector3i pos;
-    private int data;
-    private boolean globalEvent;
+public class MerchantOffersPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private int containerId;
+    private List<MerchantOffer> offers;
+    private int villagerLevel;
+    private int villagerXp;
+    private boolean showProgress;
+    private boolean canRestock;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -24,6 +27,6 @@ public class LevelEventPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.LEVEL_EVENT_S2C;
+        return JavaPlayPacketType.MERCHANT_OFFERS_S2C;
     }
 }

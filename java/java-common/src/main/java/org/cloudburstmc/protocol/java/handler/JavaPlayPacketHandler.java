@@ -148,7 +148,27 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(MerchantOffersPacket packet) {
+        return false;
+    }
+
     default boolean handle(PlayerPositionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(MoveEntityPacket.Pos packet) {
+        return false;
+    }
+
+    default boolean handle(MoveEntityPacket.PosRot packet) {
+        return false;
+    }
+
+    default boolean handle(MoveEntityPacket.Rot packet) {
+        return false;
+    }
+
+    default boolean handle(MoveVehiclePacket packet) {
         return false;
     }
 

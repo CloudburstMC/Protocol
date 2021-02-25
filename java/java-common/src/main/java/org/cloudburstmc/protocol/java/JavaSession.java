@@ -18,10 +18,10 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.handler.JavaPacketHandler;
-import org.cloudburstmc.protocol.java.network.JavaPacketCompressor;
-import org.cloudburstmc.protocol.java.network.JavaPacketDecompressor;
-import org.cloudburstmc.protocol.java.network.JavaPacketDecrypter;
-import org.cloudburstmc.protocol.java.network.JavaPacketEncrypter;
+import org.cloudburstmc.protocol.java.pipeline.JavaPacketCompressor;
+import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecompressor;
+import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecrypter;
+import org.cloudburstmc.protocol.java.pipeline.JavaPacketEncrypter;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket;
 

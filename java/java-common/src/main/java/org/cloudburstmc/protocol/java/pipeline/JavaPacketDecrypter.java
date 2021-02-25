@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.network;
+package org.cloudburstmc.protocol.java.pipeline;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

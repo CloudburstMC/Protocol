@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.network;
+package org.cloudburstmc.protocol.java.pipeline;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.util.Zlib;
