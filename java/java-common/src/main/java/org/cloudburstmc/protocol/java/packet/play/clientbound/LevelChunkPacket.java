@@ -21,7 +21,7 @@ public class LevelChunkPacket extends JavaPacket<JavaPlayPacketHandler> {
     @Nullable
     private int[] biomes;
     private byte[] buffer;
-    private List<NbtMap> blockEntitiesTags;
+    private List<NbtMap> blockEntities;
     private boolean fullChunk;
 
     @Override

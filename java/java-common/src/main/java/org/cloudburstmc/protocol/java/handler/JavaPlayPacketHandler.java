@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.java.handler;
 
 import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
+import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
@@ -152,10 +153,6 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
-    default boolean handle(PlayerPositionPacket packet) {
-        return false;
-    }
-
     default boolean handle(MoveEntityPacket.Pos packet) {
         return false;
     }
@@ -169,6 +166,102 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(MoveVehiclePacket packet) {
+        return false;
+    }
+
+    default boolean handle(OpenBookPacket packet) {
+        return false;
+    }
+
+    default boolean handle(OpenScreenPacket packet) {
+        return false;
+    }
+
+    default boolean handle(OpenSignEditorPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlaceGhostRecipePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerAbilitiesPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerCombatPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerInfoPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerLookAtPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerPositionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RecipePacket packet) {
+        return false;
+    }
+
+    default boolean handle(RemoveEntitiesPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RemoveMobEffectPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ResourcePackPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RespawnPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RotateHeadPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SectionBlocksUpdatePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SelectAdvancementsTabPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetBorderPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetCameraPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetCarriedItemPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetChunkCacheCenterPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetChunkCacheRadiusPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetDefaultSpawnPositionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetDisplayObjectivePacket packet) {
         return false;
     }
 

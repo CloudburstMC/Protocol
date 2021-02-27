@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
+import org.cloudburstmc.protocol.java.data.GameType;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.LoginPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,8 +19,8 @@ public class LoginSerializer_v754 implements JavaPacketSerializer<LoginPacket> {
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, LoginPacket packet) throws PacketSerializeException {
         buffer.writeInt(packet.getEntityId());
         buffer.writeBoolean(packet.isHardcore());
-        buffer.writeByte(packet.getGamemode());
-        buffer.writeByte(packet.getPreviousGamemode());
+        buffer.writeByte(packet.getGameType().ordinal());
+        buffer.writeByte(packet.getPreviousGameType().ordinal());
         helper.writeArray(buffer, packet.getDimensions(), helper::writeKey);
         helper.writeTag(buffer, packet.getDimensionCodec());
         helper.writeTag(buffer, packet.getDimension());
@@ -37,8 +38,8 @@ public class LoginSerializer_v754 implements JavaPacketSerializer<LoginPacket> {
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, LoginPacket packet) throws PacketSerializeException {
         packet.setEntityId(buffer.readInt());
         packet.setHardcore(buffer.readBoolean());
-        packet.setGamemode(buffer.readUnsignedByte());
-        packet.setPreviousGamemode(buffer.readUnsignedByte());
+        packet.setGameType(GameType.getById(buffer.readUnsignedByte()));
+        packet.setPreviousGameType(GameType.getById(buffer.readUnsignedByte()));
         packet.setDimensions(helper.readArray(buffer, new Key[0], helper::readKey));
         packet.setDimensionCodec(helper.readTag(buffer));
         packet.setDimension(helper.readTag(buffer));
