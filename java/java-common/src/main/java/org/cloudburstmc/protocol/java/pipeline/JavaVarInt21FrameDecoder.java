@@ -1,8 +1,6 @@
 package org.cloudburstmc.protocol.java.pipeline;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -18,17 +16,17 @@ public class JavaVarInt21FrameDecoder extends ByteToMessageDecoder {
             return;
         }
         in.markReaderIndex();
-        byte[] bytes = new byte[3];
-        for (int i = 0; i < bytes.length; i++) {
+        int length = 0;
+        for (int shift = 0; shift < 24; shift += 7) {
             if (!in.isReadable()) {
                 in.resetReaderIndex();
                 return;
             }
-            bytes[i] = in.readByte();
-            if (bytes[i] < 0) {
+            byte b = in.readByte();
+            length |= (b & 127) << shift;
+            if ((b & 128) == 0) {
                 continue;
             }
-            int length = VarInts.readUnsignedInt(Unpooled.wrappedBuffer(bytes));
             if (in.readableBytes() < length) {
                 in.resetReaderIndex();
                 return;
