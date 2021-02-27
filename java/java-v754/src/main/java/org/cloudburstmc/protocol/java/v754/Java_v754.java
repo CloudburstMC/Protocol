@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.handshake.*;
 import org.cloudburstmc.protocol.java.packet.login.*;
 import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
+import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
@@ -73,6 +74,11 @@ public class Java_v754 {
                     .registerClientbound(EntityEventPacket.class, EntityEventSerializer_v754.INSTANCE, 26)
                     .registerClientbound(ExplodePacket.class, ExplodeSerializer_v754.INSTANCE, 27)
                     .registerClientbound(ForgetLevelChunkPacket.class, ForgetLevelChunkSerializer_v754.INSTANCE, 28)
+                    .registerClientbound(GameEventPacket.class, GameEventSerializer_v754.INSTANCE, 29)
+                    .registerClientbound(HorseScreenOpenPacket.class, HorseScreenOpenSerializer_v754.INSTANCE, 30)
+                    .registerClientbound(KeepAlivePacket.class, KeepAliveSerializer_v754.INSTANCE, 31)
+                    .registerClientbound(LevelChunkPacket.class, LevelChunkSerializer_v754.INSTANCE, 32)
+                    .registerClientbound(LevelEventPacket.class, LevelEventSerializer_v754.INSTANCE, 33)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)

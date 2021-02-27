@@ -65,4 +65,10 @@ public enum LevelEventType {
     // Level
     END_GATEWAY_SPAWN,
     DRAGON_GROWL;
+
+    private static final LevelEventType[] VALUES = values();
+
+    public static LevelEventType getById(int id) {
+        return VALUES[id];
+    }
 }

@@ -12,5 +12,11 @@ public enum GameEvent {
     THUNDER_LEVEL_CHANGE,
     PUFFER_FISH_STING,
     GUARDIAN_ELDER_EFFECT,
-    IMMEDIATE_RESPAWN
+    IMMEDIATE_RESPAWN;
+
+    private static final GameEvent[] VALUES = values();
+
+    public static GameEvent getById(int id) {
+        return VALUES[id];
+    }
 }

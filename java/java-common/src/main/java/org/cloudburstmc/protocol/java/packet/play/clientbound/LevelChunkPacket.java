@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
 import com.nukkitx.nbt.NbtMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -21,7 +22,7 @@ public class LevelChunkPacket extends JavaPacket<JavaPlayPacketHandler> {
     @Nullable
     private int[] biomes;
     private byte[] buffer;
-    private List<NbtMap> blockEntities;
+    private final List<NbtMap> blockEntities = new ObjectArrayList<>();
     private boolean fullChunk;
 
     @Override
