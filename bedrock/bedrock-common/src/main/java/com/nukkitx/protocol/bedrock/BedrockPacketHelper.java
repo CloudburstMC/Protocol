@@ -162,6 +162,14 @@ public abstract class BedrockPacketHelper {
         return this.commandParams.get(commandParam);
     }
 
+    public final void removeCommandParam(int index) {
+        this.commandParams.remove(index);
+    }
+
+    public final void removeCommandParam(CommandParamType type) {
+        this.commandParams.remove(type);
+    }
+    
     public final void addResourcePackType(int index, ResourcePackType resourcePackType) {
         this.resourcePackTypes.put(index, resourcePackType);
     }
