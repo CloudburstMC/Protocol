@@ -39,13 +39,13 @@
         <dependency>
             <groupId>com.nukkitx.fastutil</groupId>
             <artifactId>fastutil-int-object-maps</artifactId>
-            <version>8.3.1</version>
+            <version>8.5.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nukkitx.fastutil</groupId>
             <artifactId>fastutil-object-int-maps</artifactId>
-            <version>8.3.1</version>
+            <version>8.5.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
