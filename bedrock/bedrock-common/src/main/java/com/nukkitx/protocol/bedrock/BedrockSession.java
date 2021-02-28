@@ -27,6 +27,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.security.auth.DestroyFailedException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -131,31 +132,24 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt) {
         Objects.requireNonNull(compressed, "compressed");
-        ByteBuf withTrailer = null;
         try {
-            int startIndex = compressed.readerIndex();
             ByteBuf finalPayload = ByteBufAllocator.DEFAULT.ioBuffer(compressed.readableBytes() + 9);
             finalPayload.writeByte(0xfe); // Wrapped packet ID
             if (this.encryptionCipher != null && encrypt) {
-                withTrailer = ByteBufAllocator.DEFAULT.ioBuffer(compressed.readableBytes() + 8);
-                compressed.readerIndex(startIndex);
-                byte[] trailer = this.generateTrailer(compressed);
-                compressed.readerIndex(startIndex);
-                withTrailer.writeBytes(compressed);
-                withTrailer.writeBytes(trailer);
+                ByteBuffer trailer = ByteBuffer.wrap(this.generateTrailer(compressed));
 
-                this.encryptionCipher.cipher(withTrailer.nioBuffer(), finalPayload.internalNioBuffer(1, withTrailer.readableBytes()));
-                finalPayload.writerIndex(finalPayload.readerIndex()+withTrailer.readableBytes()+1);
+                ByteBuffer outBuffer = finalPayload.internalNioBuffer(1, compressed.readableBytes() + 8);
+                ByteBuffer inBuffer = compressed.internalNioBuffer(compressed.readerIndex(), compressed.readableBytes());
+
+                this.encryptionCipher.cipher(trailer, outBuffer);
+                this.encryptionCipher.cipher(inBuffer, outBuffer);
+                finalPayload.writerIndex(finalPayload.writerIndex() + compressed.readableBytes() + 8);
             } else {
                 finalPayload.writeBytes(compressed);
             }
             this.connection.send(finalPayload);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt package", e);
-        } finally {
-            if (withTrailer != null) {
-                withTrailer.release();
-            }
         }
     }
 
@@ -213,26 +207,19 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     private byte[] generateTrailer(ByteBuf buf) {
         Sha256 hash = HASH_LOCAL.get();
-        ByteBuf counterBuf = null;
-        ByteBuf keyBuf = null;
+        ByteBuf counterBuf = ByteBufAllocator.DEFAULT.directBuffer(8);
         try {
-            counterBuf = ByteBufAllocator.DEFAULT.directBuffer(8);
-            keyBuf = ByteBufAllocator.DEFAULT.directBuffer(this.agreedKey.getEncoded().length);
             counterBuf.writeLongLE(this.sentEncryptedPacketCount.getAndIncrement());
-            keyBuf.writeBytes(this.agreedKey.getEncoded());
+            ByteBuffer keyBuffer = ByteBuffer.wrap(this.agreedKey.getEncoded());
 
             hash.update(counterBuf.internalNioBuffer(0, 8));
-            hash.update(buf.nioBuffer());
-            hash.update(keyBuf.nioBuffer());
+            hash.update(buf.internalNioBuffer(buf.readerIndex(), buf.readableBytes()));
+            hash.update(keyBuffer);
             byte[] digested = hash.digest();
             return Arrays.copyOf(digested, 8);
         } finally {
-            if (counterBuf != null) {
-                counterBuf.release();
-            }
-            if (keyBuf != null) {
-                keyBuf.release();
-            }
+            counterBuf.release();
+            hash.reset();
         }
     }
 
@@ -266,19 +253,18 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    public void onWrappedPacket(final ByteBuf wrappedData) {
-        ByteBuf batched = null;
+    public void onWrappedPacket(final ByteBuf batched) {
         try {
             if (this.isEncrypted()) {
-                // Decryption
-                batched = ByteBufAllocator.DEFAULT.directBuffer(wrappedData.readableBytes());
-                this.decryptionCipher.cipher(wrappedData.nioBuffer(), batched.internalNioBuffer(0, wrappedData.readableBytes()));
+                // This method only supports contiguous buffers, not composite.
+                ByteBuffer inBuffer = batched.internalNioBuffer(batched.readerIndex(), batched.readableBytes());
+                ByteBuffer outBuffer = inBuffer.duplicate();
+                // Copy-safe so we can use the same buffer.
+                this.decryptionCipher.cipher(inBuffer, outBuffer);
 
                 // TODO: Maybe verify the checksum?
-                batched.writerIndex(wrappedData.readableBytes()+1-8);
-            } else {
-                // Encryption not enabled so it should be readable.
-                batched = wrappedData;
+
+                batched.writerIndex(batched.writerIndex() - 8);
             }
             batched.markReaderIndex();
 
@@ -290,10 +276,6 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         } catch (GeneralSecurityException ignore) {
         } catch (PacketSerializeException e) {
             log.warn("Error whilst decoding packets", e);
-        } finally {
-            if (batched != null && batched != wrappedData) {
-                batched.release();
-            }
         }
     }
 
