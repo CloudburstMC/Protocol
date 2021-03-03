@@ -9,6 +9,8 @@ import com.nukkitx.protocol.bedrock.v340.serializer.AvailableCommandsSerializer_
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
 import com.nukkitx.protocol.bedrock.v361.BedrockPacketHelper_v361;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
+import com.nukkitx.protocol.bedrock.v388.serializer.PlayerListSerializer_v388;
+import com.nukkitx.protocol.bedrock.v407.serializer.InventoryTransactionSerializer_v407;
 import com.nukkitx.protocol.genoa.packet.*;
 import com.nukkitx.protocol.genoa.v425.serializer.*;
 import lombok.experimental.UtilityClass;
@@ -18,7 +20,7 @@ public class Genoa_v425 {
     public static BedrockPacketCodec v425_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(5000425)
             .minecraftVersion("0.33.0")
-            .helper(BedrockPacketHelper_v361.INSTANCE)
+            .helper(GenoaPacketHelper.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
@@ -29,7 +31,7 @@ public class Genoa_v425 {
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, GenoaStartGameSerializer.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, GenoaStartGameSerializer.INSTANCE, 11) // Custom Serializer, but normal packet: V1Villagers not set
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v291.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)
@@ -47,7 +49,7 @@ public class Genoa_v425 {
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v291.INSTANCE, 27)
             .registerPacket(MobEffectPacket.class, MobEffectSerializer_v291.INSTANCE, 28)
             .registerPacket(UpdateAttributesPacket.class, UpdateAttributesSerializer_v291.INSTANCE, 29)
-            .registerPacket(InventoryTransactionPacket.class, InventoryTransactionSerializer_v291.INSTANCE, 30)
+            .registerPacket(InventoryTransactionPacket.class, InventoryTransactionSerializer_v407.INSTANCE, 30) // Not working properly atm, but not sent from server?
             .registerPacket(MobEquipmentPacket.class, MobEquipmentSerializer_v291.INSTANCE, 31)
             .registerPacket(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v291.INSTANCE, 32)
             .registerPacket(InteractPacket.class, InteractSerializer_v291.INSTANCE, 33)
@@ -75,12 +77,12 @@ public class Genoa_v425 {
             .registerPacket(AdventureSettingsPacket.class, AdventureSettingsSerializer_v291.INSTANCE, 55)
             .registerPacket(BlockEntityDataPacket.class, BlockEntityDataSerializer_v291.INSTANCE, 56)
             .registerPacket(PlayerInputPacket.class, PlayerInputSerializer_v291.INSTANCE, 57)
-            .registerPacket(LevelChunkPacket.class, GenoaFullChunkDataSerializer.INSTANCE, 58)
+            .registerPacket(LevelChunkPacket.class, GenoaFullChunkDataSerializer.INSTANCE, 58) // Custom Serializer, but normal packet: subchunk length + caching not set
             .registerPacket(SetCommandsEnabledPacket.class, SetCommandsEnabledSerializer_v291.INSTANCE, 59)
             .registerPacket(SetDifficultyPacket.class, SetDifficultySerializer_v291.INSTANCE, 60)
             .registerPacket(ChangeDimensionPacket.class, ChangeDimensionSerializer_v291.INSTANCE, 61)
             .registerPacket(SetPlayerGameTypePacket.class, SetPlayerGameTypeSerializer_v291.INSTANCE, 62)
-            .registerPacket(PlayerListPacket.class, PlayerListSerializer_v291.INSTANCE, 63)
+            .registerPacket(PlayerListPacket.class, GenoaPlayerListSerializer.INSTANCE, 63) // Custom Serializer, but normal packet: BuildPlatformId is not set
             .registerPacket(SimpleEventPacket.class, SimpleEventSerializer_v291.INSTANCE, 64)
             .registerPacket(EventPacket.class, EventSerializer_v354.INSTANCE, 65) // Internal TelemetryEventPacket
             .registerPacket(SpawnExperienceOrbPacket.class, SpawnExperienceOrbSerializer_v291.INSTANCE, 66)
