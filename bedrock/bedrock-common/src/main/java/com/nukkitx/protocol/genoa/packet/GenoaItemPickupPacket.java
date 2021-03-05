@@ -12,7 +12,9 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaItemPickupPacket extends BedrockPacket {
 
-    public UUID Uuid;
+    //public UUID Uuid;
+    public long itemId; // Might be wrong!
+    public long runtimeEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

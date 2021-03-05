@@ -13,13 +13,13 @@ public class GenoaEventFlatbufferPacketSerializer implements BedrockPacketSerial
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaEventFlatbufferPacket packet) {
         // TODO: Array
-        helper.writeArray(buffer,packet.getEventIds(),((byteBuf, bedrockPacketHelper, uuid) -> helper.writeLEAsciiString(buffer,uuid)));
-        helper.writeString(buffer,packet.getPlayerId());
+
+        helper.writeByteArray(buffer,packet.getByteArr());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaEventFlatbufferPacket packet) {
-        helper.readArray(buffer, packet.getEventIds(), (buf,help) -> help.readLEAsciiString(buf));
-        packet.setPlayerId(helper.readString(buffer));
+
+        packet.setByteArr(helper.readByteArray(buffer));
     }
 }

@@ -12,8 +12,9 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaEventFlatbufferPacket extends BedrockPacket {
-    public AsciiString[] EventIds;
-    public String playerId;
+    //public AsciiString[] EventIds;
+    //public String playerId;
+    public byte[] ByteArr;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
