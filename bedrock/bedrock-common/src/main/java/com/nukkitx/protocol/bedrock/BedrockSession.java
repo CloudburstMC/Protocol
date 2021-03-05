@@ -141,8 +141,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
                 ByteBuffer outBuffer = finalPayload.internalNioBuffer(1, compressed.readableBytes() + 8);
                 ByteBuffer inBuffer = compressed.internalNioBuffer(compressed.readerIndex(), compressed.readableBytes());
 
-                this.encryptionCipher.cipher(trailer, outBuffer);
                 this.encryptionCipher.cipher(inBuffer, outBuffer);
+                this.encryptionCipher.cipher(trailer, outBuffer);
                 finalPayload.writerIndex(finalPayload.writerIndex() + compressed.readableBytes() + 8);
             } else {
                 finalPayload.writeBytes(compressed);
