@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.java.JavaSession;
 import java.util.List;
 
 @AllArgsConstructor
-public class JavaPacketDecompressor extends ByteToMessageDecoder {
+public class PacketDecompressor extends ByteToMessageDecoder {
     private static final int MAX_COMPRESSED_SIZE = 0x200000;
 
     private final JavaSession session;

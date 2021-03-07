@@ -9,7 +9,7 @@ import javax.crypto.Cipher;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class JavaPacketDecrypter extends MessageToMessageDecoder<ByteBuf> {
+public class PacketDecrypter extends MessageToMessageDecoder<ByteBuf> {
     private final Cipher cipher;
 
     @Override

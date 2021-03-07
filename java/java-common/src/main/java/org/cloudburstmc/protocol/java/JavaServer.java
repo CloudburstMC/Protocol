@@ -12,10 +12,10 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.Getter;
 import lombok.Setter;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecoder;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketEncoder;
-import org.cloudburstmc.protocol.java.pipeline.JavaVarInt21FrameDecoder;
-import org.cloudburstmc.protocol.java.pipeline.JavaVarInt21LengthFieldPrepender;
+import org.cloudburstmc.protocol.java.pipeline.PacketDecoder;
+import org.cloudburstmc.protocol.java.pipeline.PacketEncoder;
+import org.cloudburstmc.protocol.java.pipeline.VarInt21FrameDecoder;
+import org.cloudburstmc.protocol.java.pipeline.VarInt21LengthFieldPrepender;
 
 import java.net.InetSocketAddress;
 import java.util.Collections;
@@ -59,10 +59,10 @@ public class JavaServer extends Java {
                 JavaServerSession session = new JavaServerSession(JavaServer.this, (InetSocketAddress) channel.remoteAddress(), channel, channel.eventLoop());
                 channel.pipeline()
                         .addLast("timeout", new ReadTimeoutHandler(30))
-                        .addLast("splitter", new JavaVarInt21FrameDecoder())
-                        .addLast("prepender", new JavaVarInt21LengthFieldPrepender())
-                        .addLast("encoder", new JavaPacketEncoder(session))
-                        .addLast("decoder", new JavaPacketDecoder(session, JavaPacketType.Direction.SERVERBOUND))
+                        .addLast("splitter", new VarInt21FrameDecoder())
+                        .addLast("prepender", new VarInt21LengthFieldPrepender())
+                        .addLast("encoder", new PacketEncoder(session))
+                        .addLast("decoder", new PacketDecoder(session, JavaPacketType.Direction.SERVERBOUND))
                         .addLast("session", session);
                 JavaServer.this.sessions.add(session);
                 JavaServer.this.handler.onSessionCreation(session);

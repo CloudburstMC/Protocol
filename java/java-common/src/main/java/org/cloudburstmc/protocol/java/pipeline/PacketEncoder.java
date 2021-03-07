@@ -12,8 +12,8 @@ import org.cloudburstmc.protocol.java.JavaPacketCodec;
 import org.cloudburstmc.protocol.java.JavaSession;
 
 @AllArgsConstructor
-public class JavaPacketEncoder extends MessageToByteEncoder<JavaPacket<?>> {
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(JavaPacketEncoder.class);
+public class PacketEncoder extends MessageToByteEncoder<JavaPacket<?>> {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(PacketEncoder.class);
 
     private final JavaSession session;
 

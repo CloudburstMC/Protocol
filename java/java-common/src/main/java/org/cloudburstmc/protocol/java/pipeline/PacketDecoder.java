@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import java.util.List;
 
 @AllArgsConstructor
-public class JavaPacketDecoder extends ByteToMessageDecoder {
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(JavaPacketEncoder.class);
+public class PacketDecoder extends ByteToMessageDecoder {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(PacketEncoder.class);
 
     private final JavaSession session;
     private final JavaPacketType.Direction direction;

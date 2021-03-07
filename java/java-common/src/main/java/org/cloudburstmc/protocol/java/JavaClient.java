@@ -16,10 +16,10 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.Getter;
 import lombok.Setter;
 import org.cloudburstmc.protocol.java.handler.JavaStatusPacketHandler;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecoder;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketEncoder;
-import org.cloudburstmc.protocol.java.pipeline.JavaVarInt21FrameDecoder;
-import org.cloudburstmc.protocol.java.pipeline.JavaVarInt21LengthFieldPrepender;
+import org.cloudburstmc.protocol.java.pipeline.PacketDecoder;
+import org.cloudburstmc.protocol.java.pipeline.PacketEncoder;
+import org.cloudburstmc.protocol.java.pipeline.VarInt21FrameDecoder;
+import org.cloudburstmc.protocol.java.pipeline.VarInt21LengthFieldPrepender;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.handshake.HandshakingPacket;
 import org.cloudburstmc.protocol.java.packet.status.StatusRequestPacket;
@@ -104,10 +104,10 @@ public class JavaClient extends Java {
                         JavaClientSession session = new JavaClientSession(JavaClient.this, (InetSocketAddress) channel.localAddress(), channel, channel.eventLoop());
                         channel.pipeline()
                                 .addLast("timeout", new ReadTimeoutHandler(JavaClient.this.timeout))
-                                .addLast("splitter", new JavaVarInt21FrameDecoder())
-                                .addLast("prepender", new JavaVarInt21LengthFieldPrepender())
-                                .addLast("encoder", new JavaPacketEncoder(session))
-                                .addLast("decoder", new JavaPacketDecoder(session, JavaPacketType.Direction.CLIENTBOUND))
+                                .addLast("splitter", new VarInt21FrameDecoder())
+                                .addLast("prepender", new VarInt21LengthFieldPrepender())
+                                .addLast("encoder", new PacketEncoder(session))
+                                .addLast("decoder", new PacketDecoder(session, JavaPacketType.Direction.CLIENTBOUND))
                                 .addLast("session", session);
                         JavaClient.this.session = session;
                         JavaClient.this.handler.onSessionCreation(session);

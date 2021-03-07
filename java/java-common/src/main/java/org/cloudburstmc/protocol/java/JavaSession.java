@@ -18,10 +18,10 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.handler.JavaPacketHandler;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketCompressor;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecompressor;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketDecrypter;
-import org.cloudburstmc.protocol.java.pipeline.JavaPacketEncrypter;
+import org.cloudburstmc.protocol.java.pipeline.PacketCompressor;
+import org.cloudburstmc.protocol.java.pipeline.PacketDecompressor;
+import org.cloudburstmc.protocol.java.pipeline.PacketDecrypter;
+import org.cloudburstmc.protocol.java.pipeline.PacketEncrypter;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket;
 
@@ -221,8 +221,8 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
             this.encryptionCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(secretKey.getEncoded()));
             this.decryptionCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(secretKey.getEncoded()));
 
-            this.channel.pipeline().addBefore("prepender", "encrypt", new JavaPacketEncrypter(this.encryptionCipher));
-            this.channel.pipeline().addBefore("splitter", "decrypt", new JavaPacketDecrypter(this.decryptionCipher));
+            this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(this.encryptionCipher));
+            this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(this.decryptionCipher));
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException ex) {
             throw new RuntimeException("Failed to enable encryption!", ex);
         }
@@ -240,10 +240,10 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
             }
         }
         if (this.channel.pipeline().get("compress") == null) {
-            this.channel.pipeline().addBefore("encoder", "compress", new JavaPacketCompressor(this));
+            this.channel.pipeline().addBefore("encoder", "compress", new PacketCompressor(this));
         }
         if (this.channel.pipeline().get("decompress") == null) {
-            this.channel.pipeline().addBefore("decoder", "decompress", new JavaPacketDecompressor(this));
+            this.channel.pipeline().addBefore("decoder", "decompress", new PacketDecompressor(this));
         }
     }
 

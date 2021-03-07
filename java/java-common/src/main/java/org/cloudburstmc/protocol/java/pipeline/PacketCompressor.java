@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.java.JavaSession;
 import java.util.zip.Deflater;
 
 @AllArgsConstructor
-public class JavaPacketCompressor extends MessageToByteEncoder<ByteBuf> {
+public class PacketCompressor extends MessageToByteEncoder<ByteBuf> {
 
     private final JavaSession session;
 
