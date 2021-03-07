@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
+package org.cloudburstmc.protocol.java.v754.serializer.play.serverbound;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.exception.PacketSerializeException;

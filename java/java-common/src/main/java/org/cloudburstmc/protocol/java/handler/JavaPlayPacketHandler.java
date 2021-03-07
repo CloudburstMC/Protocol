@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.java.handler;
 
 import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
+import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
@@ -122,6 +123,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(HorseScreenOpenPacket packet) {
+        return false;
+    }
+
+    default boolean handle(KeepAlivePacket packet) {
         return false;
     }
 

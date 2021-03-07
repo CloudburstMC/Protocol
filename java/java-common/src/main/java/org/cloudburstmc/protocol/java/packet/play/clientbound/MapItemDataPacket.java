@@ -14,7 +14,7 @@ public class MapItemDataPacket extends JavaPacket<JavaPlayPacketHandler> {
     private byte scale;
     private boolean trackingPosition;
     private boolean locked;
-    private MapDecorations[] decorations;
+    // private MapDecorations[] decorations;
     private int startX;
     private int startY;
     private int width;

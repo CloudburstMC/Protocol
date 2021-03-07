@@ -191,7 +191,7 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
     }
 
     public void disconnect(@Nullable String reason, boolean hideReason) {
-        if (this.protocolState == State.PLAY) {
+        if (this.protocolState == State.PLAY && this.channel.isOpen()) {
             DisconnectPacket packet = new DisconnectPacket();
             if (reason == null || hideReason) {
                 reason = "disconnect.disconnected";

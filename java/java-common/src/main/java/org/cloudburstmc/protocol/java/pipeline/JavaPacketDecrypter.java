@@ -16,8 +16,8 @@ public class JavaPacketDecrypter extends MessageToMessageDecoder<ByteBuf> {
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         // TODO: Native encryption?
         // Encryption is copy safe so we can use the same buffer.
-        this.cipher.update(in.internalNioBuffer(in.readerIndex(), in.readableBytes()),
-                in.internalNioBuffer(in.readerIndex(), in.readableBytes()));
+        this.cipher.update(in.retain().internalNioBuffer(in.readerIndex(), in.readableBytes()),
+                in.internalNioBuffer(in.readerIndex(), in.readableBytes()).slice());
 
         out.add(in);
     }

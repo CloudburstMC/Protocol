@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
-import org.cloudburstmc.protocol.java.data.entity.metadata.ItemStack;
+import org.cloudburstmc.protocol.java.data.inventory.ItemStack;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.ContainerSetContentPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

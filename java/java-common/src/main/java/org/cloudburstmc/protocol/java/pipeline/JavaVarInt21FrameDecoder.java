@@ -23,8 +23,8 @@ public class JavaVarInt21FrameDecoder extends ByteToMessageDecoder {
                 return;
             }
             byte b = in.readByte();
-            length |= (b & 127) << shift;
-            if ((b & 128) == 0) {
+            length |= (b & 0x7FL) << shift;
+            if (b < 0) {
                 continue;
             }
             if (in.readableBytes() < length) {
