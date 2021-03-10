@@ -60,7 +60,7 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
                 ImageData capeData = ImageData.of(64, 32, helper.readByteArray(buffer));
                 String geometryName = helper.readString(buffer);
                 String geometryData = helper.readString(buffer);
-                entry.setSkin(SerializedSkin.of(skinId, skinData, capeData, geometryName, geometryData, false));
+                entry.setSkin(SerializedSkin.of(skinId, "", skinData, capeData, geometryName, geometryData, false));
                 entry.setXuid(helper.readString(buffer));
                 entry.setPlatformChatId(helper.readString(buffer));
             }

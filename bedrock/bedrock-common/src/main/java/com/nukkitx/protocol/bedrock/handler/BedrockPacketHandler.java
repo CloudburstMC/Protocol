@@ -648,4 +648,6 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(ItemComponentPacket packet) {
         return false;
     }
+
+    default boolean handle(ClientboundDebugRendererPacket packet) { return false; }
 }

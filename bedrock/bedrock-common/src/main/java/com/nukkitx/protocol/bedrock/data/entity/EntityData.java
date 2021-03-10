@@ -78,6 +78,7 @@ public enum EntityData {
     RIDER_ROTATION_LOCKED(Type.BYTE),
     RIDER_MAX_ROTATION(Type.FLOAT),
     RIDER_MIN_ROTATION(Type.FLOAT),
+    RIDER_ROTATION_OFFSET(null),
     AREA_EFFECT_CLOUD_RADIUS(Type.FLOAT),
     AREA_EFFECT_CLOUD_WAITING(Type.INT),
     AREA_EFFECT_CLOUD_PARTICLE_ID(Type.INT),
@@ -134,7 +135,15 @@ public enum EntityData {
     NEARBY_CURED_DISCOUNT_TIME_STAMP(Type.INT),
     HITBOX(Type.NBT),
     IS_BUOYANT(Type.BYTE),
-    BUOYANCY_DATA(null);
+    BUOYANCY_DATA(Type.STRING),
+    /**
+     * @since v428
+     */
+    FREEZING_EFFECT_STRENGTH(null),
+    /**
+     * @since v428
+     */
+    GOAT_HORN_COUNT(null);
 
     private final Type type;
     private final boolean flags;

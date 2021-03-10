@@ -7,7 +7,7 @@
     <groupId>com.nukkitx.protocol</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.6.1-SNAPSHOT</version>
+    <version>2.6.2-SNAPSHOT</version>
     <name>Protocol Parent</name>
     <description>A protocol library for Minecraft</description>
     <url>https://github.com/NukkitX/Protocol</url>
@@ -52,7 +52,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>HHmm-ddMMyyyy</maven.build.timestamp.format>
-        <network.version>1.6.23</network.version>
+        <network.version>1.6.26-SNAPSHOT</network.version>
     </properties>
 
     <repositories>

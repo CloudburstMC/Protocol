@@ -113,6 +113,15 @@ public class ItemStackResponsePacket extends BedrockPacket {
          */
         int stackNetworkId;
 
+        /**
+         * Holds the final custom name of a renamed item, if relevant.
+         * @since v422
+         */
         @NonNull String customName;
+
+        /**
+         * @since v428
+         */
+        int durabilityCorrection;
     }
 }

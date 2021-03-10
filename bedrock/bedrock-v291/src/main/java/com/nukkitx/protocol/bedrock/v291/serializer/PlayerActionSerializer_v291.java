@@ -3,12 +3,11 @@ package com.nukkitx.protocol.bedrock.v291.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.packet.PlayerActionPacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import static com.nukkitx.protocol.bedrock.packet.PlayerActionPacket.Action;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerActionSerializer_v291 implements BedrockPacketSerializer<PlayerActionPacket> {
@@ -26,7 +25,7 @@ public class PlayerActionSerializer_v291 implements BedrockPacketSerializer<Play
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerActionPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setAction(Action.values()[VarInts.readInt(buffer)]);
+        packet.setAction(PlayerActionType.values()[VarInts.readInt(buffer)]);
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setFace(VarInts.readInt(buffer));
     }

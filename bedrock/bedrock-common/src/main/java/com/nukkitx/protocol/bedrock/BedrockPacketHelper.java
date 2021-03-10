@@ -1,5 +1,8 @@
 package com.nukkitx.protocol.bedrock;
 
+import com.nukkitx.math.vector.Vector2f;
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtUtils;
@@ -8,14 +11,13 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
+import com.nukkitx.protocol.bedrock.data.inventory.*;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
+import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
 import com.nukkitx.protocol.bedrock.util.TriConsumer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
@@ -27,9 +29,6 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.math.vector.Vector2f;
-import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.math.vector.Vector3i;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -163,6 +162,14 @@ public abstract class BedrockPacketHelper {
         return this.commandParams.get(commandParam);
     }
 
+    public final void removeCommandParam(int index) {
+        this.commandParams.remove(index);
+    }
+
+    public final void removeCommandParam(CommandParamType type) {
+        this.commandParams.remove(type);
+    }
+    
     public final void addResourcePackType(int index, ResourcePackType resourcePackType) {
         this.resourcePackTypes.put(index, resourcePackType);
     }
@@ -502,6 +509,83 @@ public abstract class BedrockPacketHelper {
         }
     }
 
+    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+        packet.setActionType(VarInts.readUnsignedInt(buffer));
+        packet.setBlockPosition(this.readBlockPosition(buffer));
+        packet.setBlockFace(VarInts.readInt(buffer));
+        packet.setHotbarSlot(VarInts.readInt(buffer));
+        packet.setItemInHand(this.readItem(buffer, session));
+        packet.setPlayerPosition(this.readVector3f(buffer));
+        packet.setClickPosition(this.readVector3f(buffer));
+    }
+
+    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+        VarInts.writeUnsignedInt(buffer, packet.getActionType());
+        this.writeBlockPosition(buffer, packet.getBlockPosition());
+        VarInts.writeInt(buffer, packet.getBlockFace());
+        VarInts.writeInt(buffer, packet.getHotbarSlot());
+        this.writeItem(buffer, packet.getItemInHand(), session);
+        this.writeVector3f(buffer, packet.getPlayerPosition());
+        this.writeVector3f(buffer, packet.getClickPosition());
+    }
+
+    public InventoryActionData readInventoryAction(ByteBuf buffer, BedrockSession session, boolean hasNetworkIds) {
+        InventorySource source = this.readSource(buffer);
+        int slot = VarInts.readUnsignedInt(buffer);
+        ItemData fromItem = this.readItem(buffer, session);
+        ItemData toItem = this.readItem(buffer, session);
+
+        return new InventoryActionData(source, slot, fromItem, toItem);
+    }
+
+    public void writeInventoryAction(ByteBuf buffer, InventoryActionData action, BedrockSession session, boolean hasNetworkIds) {
+        requireNonNull(action, "InventoryActionData was null");
+
+        this.writeSource(buffer, action.getSource());
+        VarInts.writeUnsignedInt(buffer, action.getSlot());
+        this.writeItem(buffer, action.getFromItem(), session);
+        this.writeItem(buffer, action.getToItem(), session);
+    }
+
+    public InventorySource readSource(ByteBuf buffer) {
+        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer));
+
+        switch (type) {
+            case CONTAINER:
+                int containerId = VarInts.readInt(buffer);
+                return InventorySource.fromContainerWindowId(containerId);
+            case GLOBAL:
+                return InventorySource.fromGlobalInventory();
+            case WORLD_INTERACTION:
+                InventorySource.Flag flag = InventorySource.Flag.values()[VarInts.readUnsignedInt(buffer)];
+                return InventorySource.fromWorldInteraction(flag);
+            case CREATIVE:
+                return InventorySource.fromCreativeInventory();
+            case NON_IMPLEMENTED_TODO:
+                containerId = VarInts.readInt(buffer);
+                return InventorySource.fromNonImplementedTodo(containerId);
+            default:
+                return InventorySource.fromInvalid();
+        }
+    }
+
+    public void writeSource(ByteBuf buffer, InventorySource inventorySource) {
+        requireNonNull(inventorySource, "InventorySource was null");
+
+        VarInts.writeUnsignedInt(buffer, inventorySource.getType().id());
+
+        switch (inventorySource.getType()) {
+            case CONTAINER:
+            case UNTRACKED_INTERACTION_UI:
+            case NON_IMPLEMENTED_TODO:
+                VarInts.writeInt(buffer, inventorySource.getContainerId());
+                break;
+            case WORLD_INTERACTION:
+                VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
+                break;
+        }
+    }
+
     public ItemData readRecipeIngredient(ByteBuf buffer) {
         requireNonNull(buffer, "buffer is null");
 
@@ -627,6 +711,14 @@ public abstract class BedrockPacketHelper {
     }
 
     public int getIdFromStackRequestActionType(StackRequestActionType type) {
+        throw new UnsupportedOperationException();
+    }
+
+    public ItemStackRequest readItemStackRequest(ByteBuf buffer, BedrockSession session) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void writeItemStackRequest(ByteBuf buffer, BedrockSession session, ItemStackRequest request) {
         throw new UnsupportedOperationException();
     }
 }

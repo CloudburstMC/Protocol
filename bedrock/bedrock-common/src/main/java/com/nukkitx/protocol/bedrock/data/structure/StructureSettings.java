@@ -1,7 +1,8 @@
 package com.nukkitx.protocol.bedrock.data.structure;
 
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import lombok.Value;
-import org.cloudburstmc.math.vector.Vector3i;
 
 @Value
 public class StructureSettings {
@@ -15,4 +16,5 @@ public class StructureSettings {
     private final StructureMirror mirror;
     private final float integrityValue;
     private final int integritySeed;
+    private final Vector3f pivot;
 }

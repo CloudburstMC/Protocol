@@ -43,16 +43,20 @@ public class BedrockClient extends Bedrock {
     }
 
     @Override
-    public void close() {
+    public void close(boolean force) {
         if (this.session != null && !this.session.isClosed()) {
             this.session.disconnect();
         }
-        this.rakNetClient.close();
+        this.rakNetClient.close(force);
         this.tickFuture.cancel(false);
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        return this.ping(address).thenApply(pong -> {
+        return this.connect(address, 10, TimeUnit.SECONDS);
+    }
+
+    public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.ping(address, timeout, unit).thenApply(pong -> {
             int port;
             if (address.getAddress() instanceof Inet4Address && pong.getIpv4Port() != -1) {
                 port = pong.getIpv4Port();
@@ -78,12 +82,12 @@ public class BedrockClient extends Bedrock {
         return future;
     }
 
-    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
-        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
+    public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
+        return this.ping(address, 10, TimeUnit.SECONDS);
     }
 
-    public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
-        return ping(address, 10, TimeUnit.SECONDS);
+    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
     }
 
     public BedrockClientSession getSession() {

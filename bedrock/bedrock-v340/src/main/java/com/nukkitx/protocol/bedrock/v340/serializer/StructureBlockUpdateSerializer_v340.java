@@ -1,5 +1,7 @@
 package com.nukkitx.protocol.bedrock.v340.serializer;
 
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -8,7 +10,6 @@ import com.nukkitx.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.cloudburstmc.math.vector.Vector3i;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StructureBlockUpdateSerializer_v340 implements BedrockPacketSerializer<StructureBlockUpdatePacket> {
@@ -74,7 +75,7 @@ public class StructureBlockUpdateSerializer_v340 implements BedrockPacketSeriali
         boolean boundingBoxVisible = buffer.readBoolean();
 
         StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, size, offset,
-                -1, rotation, mirror, structureIntegrity, integritySeed);
+                -1, rotation, mirror, structureIntegrity, integritySeed, Vector3f.ZERO);
         StructureEditorData editorData = new StructureEditorData(name, dataField, includePlayers, boundingBoxVisible,
                 structureType, settings, StructureRedstoneSaveMode.SAVES_TO_DISK);
 

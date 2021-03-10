@@ -13,12 +13,12 @@ import com.nukkitx.protocol.bedrock.v332.serializer.TextSerializer_v332;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
+import com.nukkitx.protocol.bedrock.v389.serializer.EventSerializer_v389;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
 import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
-import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackRequestSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ItemStackResponseSerializer_v422;
 import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
 import lombok.experimental.UtilityClass;
@@ -92,7 +92,7 @@ public class Bedrock_v422 {
             .registerPacket(SetPlayerGameTypePacket.class, SetPlayerGameTypeSerializer_v291.INSTANCE, 62)
             .registerPacket(PlayerListPacket.class, PlayerListSerializer_v390.INSTANCE, 63)
             .registerPacket(SimpleEventPacket.class, SimpleEventSerializer_v291.INSTANCE, 64)
-            .registerPacket(EventPacket.class, EventSerializer_v388.INSTANCE, 65)
+            .registerPacket(EventPacket.class, EventSerializer_v389.INSTANCE, 65)
             .registerPacket(SpawnExperienceOrbPacket.class, SpawnExperienceOrbSerializer_v291.INSTANCE, 66)
             .registerPacket(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v354.INSTANCE, 67)
             .registerPacket(MapInfoRequestPacket.class, MapInfoRequestSerializer_v291.INSTANCE, 68)
@@ -172,7 +172,7 @@ public class Bedrock_v422 {
             .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v419.INSTANCE, 144)
             .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
-            .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v422.INSTANCE, 147)
+            .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v407.INSTANCE, 147)
             .registerPacket(ItemStackResponsePacket.class, ItemStackResponseSerializer_v422.INSTANCE, 148)
             .registerPacket(PlayerArmorDamagePacket.class, PlayerArmorDamageSerializer_v407.INSTANCE, 149)
             .registerPacket(CodeBuilderPacket.class, CodeBuilderSerializer_v407.INSTANCE, 150)

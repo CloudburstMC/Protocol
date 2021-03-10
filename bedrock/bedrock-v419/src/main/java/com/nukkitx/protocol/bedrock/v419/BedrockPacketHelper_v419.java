@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.v419;
 
 import com.nukkitx.protocol.bedrock.data.ExperimentData;
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimatedTextureType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
@@ -39,6 +40,14 @@ public class BedrockPacketHelper_v419 extends BedrockPacketHelper_v407 {
         this.addCommandParam(45, CommandParamType.TEXT);
         this.addCommandParam(49, CommandParamType.JSON);
         this.addCommandParam(56, CommandParamType.COMMAND);
+    }
+
+    @Override
+    protected void registerSoundEvents() {
+        super.registerSoundEvents();
+
+        this.addSoundEvent(317, SoundEvent.EQUIP_NETHERITE);
+        this.addSoundEvent(318, SoundEvent.UNDEFINED);
     }
 
     @Override
