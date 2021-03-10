@@ -1,7 +1,11 @@
 package com.nukkitx.protocol.bedrock.data.command;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+@Getter
 public class CommandParam {
 
     public static final CommandParam INT = new CommandParam(CommandParamType.INT);
@@ -34,25 +38,12 @@ public class CommandParam {
         this.paramType = null;
     }
 
-    public CommandParam(CommandParamType type, int defaultValue) {
-        this.paramType = type;
-        this.defaultValue = defaultValue;
-    }
-
     public int getValue(BedrockPacketHelper helper) {
         if (this.defaultValue > 0 || this.paramType == null) {
             return this.defaultValue;
         } else {
             return helper.getCommandParamId(this);
         }
-    }
-
-    public CommandParamType getParamType() {
-        return this.paramType;
-    }
-
-    public int getDefaultValue() {
-        return this.defaultValue;
     }
 
     @Override
