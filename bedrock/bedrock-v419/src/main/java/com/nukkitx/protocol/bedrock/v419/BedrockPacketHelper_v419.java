@@ -2,7 +2,7 @@ package com.nukkitx.protocol.bedrock.v419;
 
 import com.nukkitx.protocol.bedrock.data.ExperimentData;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.skin.AnimatedTextureType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationExpressionType;
@@ -23,23 +23,23 @@ public class BedrockPacketHelper_v419 extends BedrockPacketHelper_v407 {
 
     @Override
     protected void registerCommandParams() {
-        this.addCommandParam(1, CommandParamType.INT);
-        this.addCommandParam(2, CommandParamType.FLOAT);
-        this.addCommandParam(3, CommandParamType.VALUE);
-        this.addCommandParam(4, CommandParamType.WILDCARD_INT);
-        this.addCommandParam(5, CommandParamType.OPERATOR);
-        this.addCommandParam(6, CommandParamType.TARGET);
-        this.addCommandParam(7, CommandParamType.WILDCARD_TARGET);
+        this.addCommandParam(1, CommandParam.INT);
+        this.addCommandParam(2, CommandParam.FLOAT);
+        this.addCommandParam(3, CommandParam.VALUE);
+        this.addCommandParam(4, CommandParam.WILDCARD_INT);
+        this.addCommandParam(5, CommandParam.OPERATOR);
+        this.addCommandParam(6, CommandParam.TARGET);
+        this.addCommandParam(7, CommandParam.WILDCARD_TARGET);
 
-        this.addCommandParam(15, CommandParamType.FILE_PATH);
+        this.addCommandParam(15, CommandParam.FILE_PATH);
 
-        this.addCommandParam(31, CommandParamType.STRING);
-        this.addCommandParam(39, CommandParamType.BLOCK_POSITION);
-        this.addCommandParam(40, CommandParamType.POSITION);
-        this.addCommandParam(43, CommandParamType.MESSAGE);
-        this.addCommandParam(45, CommandParamType.TEXT);
-        this.addCommandParam(49, CommandParamType.JSON);
-        this.addCommandParam(56, CommandParamType.COMMAND);
+        this.addCommandParam(31, CommandParam.STRING);
+        this.addCommandParam(39, CommandParam.BLOCK_POSITION);
+        this.addCommandParam(40, CommandParam.POSITION);
+        this.addCommandParam(43, CommandParam.MESSAGE);
+        this.addCommandParam(45, CommandParam.TEXT);
+        this.addCommandParam(49, CommandParam.JSON);
+        this.addCommandParam(56, CommandParam.COMMAND);
     }
 
     @Override

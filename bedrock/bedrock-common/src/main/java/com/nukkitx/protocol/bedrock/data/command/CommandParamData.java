@@ -12,7 +12,7 @@ public class CommandParamData {
     private final String name;
     private final boolean optional;
     private final CommandEnumData enumData;
-    private final CommandParamType type;
+    private final CommandParam type;
     private final String postfix;
     private final List<CommandParamOption> options; // Bit flags. Gamerule command is the only one to use it.
 

@@ -51,7 +51,7 @@ public abstract class BedrockPacketHelper {
     protected final Object2IntMap<Class<?>> gameRuleTypes = new Object2IntOpenHashMap<>(3, 0.5f);
     protected final Int2ObjectBiMap<SoundEvent> soundEvents = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<LevelEventType> levelEvents = new Int2ObjectBiMap<>();
-    protected final Int2ObjectBiMap<CommandParamType> commandParams = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<CommandParam> commandParams = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ResourcePackType> resourcePackTypes = new Int2ObjectBiMap<>();
 
     protected BedrockPacketHelper() {
@@ -150,15 +150,20 @@ public abstract class BedrockPacketHelper {
 
     }
 
-    public final void addCommandParam(int index, CommandParamType commandParam) {
+    public final void addCommandParam(int index, CommandParam commandParam) {
         this.commandParams.put(index, commandParam);
     }
 
-    public final CommandParamType getCommandParam(int index) {
-        return this.commandParams.get(index);
+    public final CommandParam getCommandParam(int index) {
+        CommandParam commandParam = this.commandParams.get(index);
+        if (commandParam == null) {
+            log.debug("Requested undefined CommandParam {}", index);
+            return new CommandParam(index);
+        }
+        return commandParam;
     }
 
-    public final int getCommandParamId(CommandParamType commandParam) {
+    public final int getCommandParamId(CommandParam commandParam) {
         return this.commandParams.get(commandParam);
     }
 
@@ -166,7 +171,7 @@ public abstract class BedrockPacketHelper {
         this.commandParams.remove(index);
     }
 
-    public final void removeCommandParam(CommandParamType type) {
+    public final void removeCommandParam(CommandParam type) {
         this.commandParams.remove(type);
     }
     

@@ -126,17 +126,15 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
 
                     String postfix = null;
                     CommandEnumData enumData = null;
-                    CommandParamType paramType = null;
+                    CommandParam commandParam = null;
                     if (type.isPostfix()) {
                         postfix = postFixes.get(type.getValue());
+                    } else if (type.isCommandEnum()) {
+                        enumData = enums.get(type.getValue());
+                    } else if (type.isSoftEnum()) {
+                        enumData = softEnums.get(type.getValue());
                     } else {
-                        if (type.isCommandEnum()) {
-                            enumData = enums.get(type.getValue());
-                        } else if (type.isSoftEnum()) {
-                            enumData = softEnums.get(type.getValue());
-                        } else {
-                            paramType = helper.getCommandParam(type.getValue());
-                        }
+                        commandParam = helper.getCommandParam(type.getValue());
                     }
 
                     List<CommandParamOption> options = new ObjectArrayList<>();
@@ -146,7 +144,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                         }
                     }
 
-                    overloads[i][i2] = new CommandParamData(name, optional, enumData, paramType, postfix, options);
+                    overloads[i][i2] = new CommandParamData(name, optional, enumData, commandParam, postfix, options);
                 }
             }
 
@@ -266,7 +264,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 index = enums.indexOf(param.getEnumData());
             }
         } else if (param.getType() != null) {
-            index = helper.getCommandParamId(param.getType());
+            index = param.getType().getValue(helper);
         } else {
             throw new IllegalStateException("No param type specified: " + param);
         }

@@ -13,10 +13,7 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
-import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
-import com.nukkitx.protocol.bedrock.data.command.CommandOriginType;
-import com.nukkitx.protocol.bedrock.data.command.CommandParamType;
+import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
@@ -515,21 +512,21 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
 
     @Override
     protected void registerCommandParams() {
-        this.addCommandParam(1, CommandParamType.INT);
-        this.addCommandParam(2, CommandParamType.FLOAT);
-        this.addCommandParam(3, CommandParamType.VALUE);
-        this.addCommandParam(4, CommandParamType.WILDCARD_INT);
-        this.addCommandParam(5, CommandParamType.OPERATOR);
-        this.addCommandParam(6, CommandParamType.TARGET);
-        this.addCommandParam(7, CommandParamType.WILDCARD_TARGET);
-        this.addCommandParam(14, CommandParamType.FILE_PATH);
-        this.addCommandParam(18, CommandParamType.INT_RANGE);
-        this.addCommandParam(26, CommandParamType.STRING);
-        this.addCommandParam(28, CommandParamType.POSITION);
-        this.addCommandParam(31, CommandParamType.MESSAGE);
-        this.addCommandParam(33, CommandParamType.TEXT);
-        this.addCommandParam(36, CommandParamType.JSON);
-        this.addCommandParam(43, CommandParamType.COMMAND);
+        this.addCommandParam(1, CommandParam.INT);
+        this.addCommandParam(2, CommandParam.FLOAT);
+        this.addCommandParam(3, CommandParam.VALUE);
+        this.addCommandParam(4, CommandParam.WILDCARD_INT);
+        this.addCommandParam(5, CommandParam.OPERATOR);
+        this.addCommandParam(6, CommandParam.TARGET);
+        this.addCommandParam(7, CommandParam.WILDCARD_TARGET);
+        this.addCommandParam(14, CommandParam.FILE_PATH);
+        this.addCommandParam(18, CommandParam.INT_RANGE);
+        this.addCommandParam(26, CommandParam.STRING);
+        this.addCommandParam(28, CommandParam.POSITION);
+        this.addCommandParam(31, CommandParam.MESSAGE);
+        this.addCommandParam(33, CommandParam.TEXT);
+        this.addCommandParam(36, CommandParam.JSON);
+        this.addCommandParam(43, CommandParam.COMMAND);
     }
 
     @Override
