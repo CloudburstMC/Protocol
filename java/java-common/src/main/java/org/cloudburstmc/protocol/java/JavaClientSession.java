@@ -52,7 +52,8 @@ public class JavaClientSession extends JavaSession implements MinecraftSession<J
         HandshakingPacket handshakingPacket = new HandshakingPacket();
         handshakingPacket.setProtocolVersion(this.packetCodec.getProtocolVersion());
         handshakingPacket.setNextState(State.LOGIN);
-        handshakingPacket.setAddress(remoteAddress);
+        handshakingPacket.setAddress(remoteAddress.getHostName());
+        handshakingPacket.setPort(remoteAddress.getPort());
         this.sendPacket(handshakingPacket);
         this.setProtocolState(State.LOGIN);
         createLoginStart().whenComplete((loginStartPacket, ex) -> {

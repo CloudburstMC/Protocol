@@ -1,22 +1,16 @@
-package org.cloudburstmc.protocol.java.packet.play.clientbound;
+package org.cloudburstmc.protocol.java.packet.play.serverbound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.java.JavaPacket;
-import org.cloudburstmc.protocol.java.data.text.ChatPosition;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
-import java.util.UUID;
-
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class ChatPacket extends JavaPacket<JavaPlayPacketHandler> {
-    private Component message;
-    private ChatPosition position;
-    private UUID senderUuid;
+public class ClientChatPacket extends JavaPacket<JavaPlayPacketHandler> {
+    private String message;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {
@@ -25,6 +19,6 @@ public class ChatPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CHAT_S2C;
+        return JavaPlayPacketType.CHAT_C2S;
     }
 }

@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
 import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientChatPacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 import org.cloudburstmc.protocol.java.packet.status.*;
 import org.cloudburstmc.protocol.java.v754.serializer.handshake.*;
@@ -27,14 +28,14 @@ public class Java_v754 {
             .codec(State.HANDSHAKING, JavaPacketCodec.JavaStateCodec.builder()
                     .registerServerbound(HandshakingPacket.class, HandshakingSerializer_v754.INSTANCE, 0)
                     // .registerClientbound(LegacyServerListPingPacket.class, LegacyServerListPingSerializer_v754.INSTANCE, 254) // TODO
-                    .build()
-            ).codec(State.STATUS, JavaPacketCodec.JavaStateCodec.builder()
+                    .build())
+            .codec(State.STATUS, JavaPacketCodec.JavaStateCodec.builder()
                     .registerClientbound(StatusResponsePacket.class, StatusResponseSerializer_v754.INSTANCE, 0)
                     .registerClientbound(PongPacket.class, PongSerializer_v754.INSTANCE, 1)
                     .registerServerbound(StatusRequestPacket.class, StatusRequestSerializer_v754.INSTANCE, 0)
                     .registerServerbound(PingPacket.class, PingSerializer_v754.INSTANCE, 1)
-                    .build()
-            ).codec(State.LOGIN, JavaPacketCodec.JavaStateCodec.builder()
+                    .build())
+            .codec(State.LOGIN, JavaPacketCodec.JavaStateCodec.builder()
                     .registerClientbound(org.cloudburstmc.protocol.java.packet.login.DisconnectPacket.class, org.cloudburstmc.protocol.java.v754.serializer.login.DisconnectSerializer_v754.INSTANCE, 0)
                     .registerClientbound(EncryptionRequestPacket.class, EncryptionRequestSerializer_v754.INSTANCE, 1)
                     .registerClientbound(LoginSuccessPacket.class, LoginSuccessSerializer_v754.INSTANCE, 2)
@@ -43,8 +44,8 @@ public class Java_v754 {
                     .registerServerbound(LoginStartPacket.class, LoginStartSerializer_v754.INSTANCE, 0)
                     .registerServerbound(EncryptionResponsePacket.class, EncryptionResponseSerializer_v754.INSTANCE, 1)
                     .registerServerbound(CustomQueryResponsePacket.class, CustomQueryResponseSerializer_v754.INSTANCE, 2)
-                    .build()
-            ).codec(State.PLAY, JavaPacketCodec.JavaStateCodec.builder()
+                    .build())
+            .codec(State.PLAY, JavaPacketCodec.JavaStateCodec.builder()
                     .registerClientbound(AddEntityPacket.class, AddEntitySerializer_v754.INSTANCE, 0)
                     .registerClientbound(AddExperienceOrbPacket.class, AddExperienceOrbSerializer_v754.INSTANCE, 1)
                     .registerClientbound(AddMobPacket.class, AddMobSerializer_v754.INSTANCE, 2)
@@ -59,7 +60,7 @@ public class Java_v754 {
                     .registerClientbound(BlockUpdatePacket.class, BlockUpdateSerializer_v754.INSTANCE, 11)
                     .registerClientbound(BossEventPacket.class, BossEventSerializer_v754.INSTANCE, 12)
                     .registerClientbound(ChangeDifficultyPacket.class, ChangeDifficultySerializer_v754.INSTANCE, 13)
-                    .registerClientbound(ChatPacket.class, ChatSerializer_v754.INSTANCE, 14)
+                    .registerClientbound(ServerChatPacket.class, ServerChatSerializer_v754.INSTANCE, 14)
                     .registerClientbound(CommandSuggestionsPacket.class, CommandSuggestionsSerializer_v754.INSTANCE, 15)
                     .registerClientbound(CommandsPacket.class, CommandsSerializer_v754.INSTANCE, 16)
                     .registerClientbound(ContainerAckPacket.class, ContainerAckSerializer_v754.INSTANCE, 17)
@@ -81,9 +82,12 @@ public class Java_v754 {
                     .registerClientbound(LevelEventPacket.class, LevelEventSerializer_v754.INSTANCE, 33)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
+
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
+                    .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
                     .registerServerbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 10)
                     .registerServerbound(CustomPayloadPacket.class, CustomPayloadSerializer_v754.INSTANCE, 11)
+                    .registerServerbound(KeepAlivePacket.class, KeepAliveSerializer_v754.INSTANCE, 16)
                     .registerServerbound(MovePlayerPacket.class, MovePlayerSerializer_v754.INSTANCE, 18)
                     .build()
             ).build();

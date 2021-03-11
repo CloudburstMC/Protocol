@@ -11,13 +11,15 @@ import org.cloudburstmc.protocol.java.exception.ProfileException;
 import org.cloudburstmc.protocol.java.handler.JavaHandshakePacketHandler;
 import org.cloudburstmc.protocol.java.handler.JavaLoginPacketHandler;
 import org.cloudburstmc.protocol.java.handler.JavaPacketHandler;
+import org.cloudburstmc.protocol.java.handler.JavaStatusPacketHandler;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.handshake.HandshakingPacket;
-import org.cloudburstmc.protocol.java.packet.login.EncryptionRequestPacket;
-import org.cloudburstmc.protocol.java.packet.login.EncryptionResponsePacket;
-import org.cloudburstmc.protocol.java.packet.login.LoginStartPacket;
-import org.cloudburstmc.protocol.java.packet.login.LoginSuccessPacket;
-import org.cloudburstmc.protocol.java.packet.login.SetCompressionPacket;
+import org.cloudburstmc.protocol.java.packet.login.*;
+import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
+import org.cloudburstmc.protocol.java.packet.status.PingPacket;
+import org.cloudburstmc.protocol.java.packet.status.PongPacket;
+import org.cloudburstmc.protocol.java.packet.status.StatusRequestPacket;
+import org.cloudburstmc.protocol.java.packet.status.StatusResponsePacket;
 import org.cloudburstmc.protocol.java.util.EncryptionUtils;
 
 import javax.crypto.SecretKey;
@@ -28,6 +30,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
 
 public class JavaServerSession extends JavaSession implements MinecraftServerSession<JavaPacket<?>> {
     private final JavaServer server;
@@ -45,6 +48,41 @@ public class JavaServerSession extends JavaSession implements MinecraftServerSes
         if (onlineMode) {
             ThreadLocalRandom.current().nextBytes(this.verifyToken);
         }
+    }
+
+    protected void handleStatus(Function<JavaServerSession, JavaPong> response) {
+        setProtocolState(State.STATUS);
+        setPacketHandler(new StatusPacketHandler(this, response));
+    }
+
+    @Override
+    public void tick() {
+        long ctm;
+
+        if (server.isHandleKeepalive() && getProtocolState() == State.PLAY &&
+                (ctm = System.currentTimeMillis()) - lastKeepAlive > 10_000) {
+            lastKeepAlive = ctm;
+
+            KeepAlivePacket keepAlive = new KeepAlivePacket();
+            keepAlive.setId(lastKeepAlive);
+            sendPacket(keepAlive);
+        }
+
+        super.tick();
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, JavaPacket<?> packet) throws Exception {
+        if ((this.server.handleLogin || this.server.pong != null) && packet instanceof HandshakingPacket) {
+            HandshakingPacket handshakingPacket = (HandshakingPacket) packet;
+            if (this.server.handleLogin && handshakingPacket.getNextState() == State.LOGIN) {
+                this.handleLogin(this.server.isOnlineMode());
+            } else if (this.server.pong != null && handshakingPacket.getNextState() == State.STATUS) {
+                handleStatus(this.server.pong);
+            }
+        }
+
+        super.channelRead0(ctx, packet);
     }
 
     @AllArgsConstructor
@@ -107,14 +145,27 @@ public class JavaServerSession extends JavaSession implements MinecraftServerSes
         }
     }
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, JavaPacket<?> packet) throws Exception {
-        if (this.server.handleLogin && (packet instanceof HandshakingPacket)) {
-            HandshakingPacket handshakingPacket = (HandshakingPacket) packet;
-            if (handshakingPacket.getNextState() == State.LOGIN) {
-                this.handleLogin(this.server.isOnlineMode());
-            }
+    @AllArgsConstructor
+    private static final class StatusPacketHandler implements JavaStatusPacketHandler, JavaHandshakePacketHandler {
+        private final JavaServerSession session;
+        private final Function<JavaServerSession, JavaPong> pong;
+
+        @Override
+        public boolean handle(StatusRequestPacket packet) {
+            StatusResponsePacket response = new StatusResponsePacket();
+            response.setResponse(pong.apply(session));
+
+            session.sendPacket(response);
+            return true;
         }
-        super.channelRead0(ctx, packet);
+
+        @Override
+        public boolean handle(PingPacket packet) {
+            PongPacket pong = new PongPacket();
+            pong.setTimestamp(packet.getTimestamp());
+
+            session.sendPacket(pong);
+            return true;
+        }
     }
 }

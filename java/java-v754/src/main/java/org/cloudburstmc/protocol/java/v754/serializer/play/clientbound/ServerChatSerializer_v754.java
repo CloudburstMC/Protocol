@@ -7,21 +7,21 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.data.text.ChatPosition;
-import org.cloudburstmc.protocol.java.packet.play.clientbound.ChatPacket;
+import org.cloudburstmc.protocol.java.packet.play.clientbound.ServerChatPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatSerializer_v754 implements JavaPacketSerializer<ChatPacket> {
-    public static final ChatSerializer_v754 INSTANCE = new ChatSerializer_v754();
+public class ServerChatSerializer_v754 implements JavaPacketSerializer<ServerChatPacket> {
+    public static final ServerChatSerializer_v754 INSTANCE = new ServerChatSerializer_v754();
 
     @Override
-    public void serialize(ByteBuf buffer, JavaPacketHelper helper, ChatPacket packet) {
+    public void serialize(ByteBuf buffer, JavaPacketHelper helper, ServerChatPacket packet) {
         helper.writeString(buffer, GsonComponentSerializer.gson().serialize(packet.getMessage()));
         buffer.writeByte(packet.getPosition().ordinal());
         helper.writeUUID(buffer, packet.getSenderUuid());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, JavaPacketHelper helper, ChatPacket packet) {
+    public void deserialize(ByteBuf buffer, JavaPacketHelper helper, ServerChatPacket packet) {
         packet.setMessage(GsonComponentSerializer.gson().deserialize(helper.readString(buffer)));
         packet.setPosition(ChatPosition.getById(buffer.readByte()));
         packet.setSenderUuid(helper.readUUID(buffer));

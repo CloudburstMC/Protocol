@@ -8,13 +8,12 @@ import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.type.JavaHandshakePacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 
-import java.net.InetSocketAddress;
-
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class HandshakingPacket extends JavaPacket<JavaHandshakePacketHandler> {
     private int protocolVersion;
-    private InetSocketAddress address;
+    private String address;
+    private int port;
     private State nextState;
 
     @Override

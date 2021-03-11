@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 @Getter
 @Setter
@@ -31,6 +32,13 @@ public class JavaServer extends Java {
     private JavaEventHandler<JavaServerSession> handler;
     private boolean closed = false;
     private boolean onlineMode = true;
+    private boolean handleKeepalive = true;
+
+    /**
+     * Comparable to the handleLogin option, but then for the 'status' stage.
+     * This handles the 'status' stage for you and sends the given pong to the client.
+     */
+    protected Function<JavaServerSession, JavaPong> pong;
 
     public JavaServer(InetSocketAddress bindAddress) {
         super(bindAddress, EventLoops.commonGroup());

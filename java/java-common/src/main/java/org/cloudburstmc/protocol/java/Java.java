@@ -32,10 +32,9 @@ public abstract class Java implements MinecraftInterface {
             .create();
 
     protected final InetSocketAddress bindAddress;
+    final EventLoopGroup eventLoopGroup;
     private final Bootstrap bootstrap;
     protected boolean handleLogin = true;
-
-    final EventLoopGroup eventLoopGroup;
 
     Java(InetSocketAddress bindAddress, EventLoopGroup eventLoopGroup) {
         this.bindAddress = bindAddress;

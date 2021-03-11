@@ -140,11 +140,11 @@ public final class JavaPacketCodec {
             return packet;
         }
 
-        public void tryEncode(ByteBuf buf, JavaPacket<?> packet, JavaSession session) throws PacketSerializeException {
+        public void tryEncode(ByteBuf buf, JavaPacket<?> packet, JavaSession session, boolean clientbound) throws PacketSerializeException {
             try {
                 JavaPacketSerializer<JavaPacket<?>> serializer;
-                int packetId = getId(packet);
-                serializer = packet.getPacketType().getDirection() == JavaPacketType.Direction.CLIENTBOUND ? this.clientboundSerializers[packetId] : this.serverboundSerializers[packetId];
+                int packetId = getId(packet, clientbound);
+                serializer = clientbound ? this.clientboundSerializers[packetId] : this.serverboundSerializers[packetId];
                 serializer.serialize(buf, this.helper, packet, session);
             } catch (Exception e) {
                 throw new PacketSerializeException("Error whilst serializing " + packet, e);
@@ -154,12 +154,12 @@ public final class JavaPacketCodec {
         }
 
         @SuppressWarnings("unchecked")
-        public int getId(JavaPacket<?> packet) {
-            return getId((Class<? extends JavaPacket<?>>) packet.getClass(), packet.getPacketType().getDirection());
+        public int getId(JavaPacket<?> packet, boolean clientbound) {
+            return getId((Class<? extends JavaPacket<?>>) packet.getClass(), clientbound);
         }
 
-        public int getId(Class<? extends JavaPacket<?>> clazz, JavaPacketType.Direction direction) {
-            int id = direction == JavaPacketType.Direction.CLIENTBOUND ? this.clientboundIdBiMap.get(clazz) : this.serverboundIdBiMap.get(clazz);
+        public int getId(Class<? extends JavaPacket<?>> clazz, boolean clientbound) {
+            int id = clientbound ? this.clientboundIdBiMap.get(clazz) : this.serverboundIdBiMap.get(clazz);
             if (id == -1) {
                 throw new IllegalArgumentException("Packet ID for " + clazz.getName() + " does not exist.");
             }

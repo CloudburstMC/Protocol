@@ -5,25 +5,23 @@ import com.nukkitx.natives.aes.AesFactory;
 import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.protocol.MinecraftSession;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.EventLoop;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.handler.JavaPacketHandler;
+import org.cloudburstmc.protocol.java.packet.State;
+import org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket;
+import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.pipeline.PacketCompressor;
 import org.cloudburstmc.protocol.java.pipeline.PacketDecompressor;
 import org.cloudburstmc.protocol.java.pipeline.PacketDecrypter;
 import org.cloudburstmc.protocol.java.pipeline.PacketEncrypter;
-import org.cloudburstmc.protocol.java.packet.State;
-import org.cloudburstmc.protocol.java.packet.play.clientbound.DisconnectPacket;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,10 +34,7 @@ import java.net.InetSocketAddress;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
@@ -61,6 +56,11 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
     private JavaPacketHandler packetHandler;
     private State protocolState = State.HANDSHAKING;
     private int compressionThreshold = 256;
+
+    protected long lastKeepAlive;
+    @Getter(AccessLevel.NONE)
+    private boolean outgoingClientbound;
+
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
@@ -70,6 +70,7 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
         this.address = address;
         this.channel = channel;
         this.eventLoop = eventLoop;
+        outgoingClientbound = this instanceof JavaServerSession;
     }
 
     public void setPacketCodec(JavaPacketCodec packetCodec) {
@@ -153,8 +154,16 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
             log.trace("Outbound {}: {}", to, packet);
         }
 
+        // Validate direction
+        JavaPacketType.Direction direction = packet.getPacketType().getDirection();
+        if (outgoingClientbound && direction == JavaPacketType.Direction.SERVERBOUND ||
+                !outgoingClientbound && direction == JavaPacketType.Direction.CLIENTBOUND) {
+            throw new IllegalArgumentException(
+                    "Cannot send a " + direction.name().toLowerCase(Locale.ROOT));
+        }
+
         // Verify that the packet ID exists.
-        this.packetCodec.getCodec(this.protocolState).getId(packet);
+        this.packetCodec.getCodec(this.protocolState).getId(packet, outgoingClientbound);
     }
 
     @Override
@@ -170,6 +179,7 @@ public abstract class JavaSession extends SimpleChannelInboundHandler<JavaPacket
         if (this.closed) {
             return;
         }
+        //todo check if player should timeout
 
         this.sendQueued();
     }

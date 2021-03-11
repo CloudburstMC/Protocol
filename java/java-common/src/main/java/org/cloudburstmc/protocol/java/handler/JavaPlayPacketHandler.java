@@ -1,10 +1,11 @@
 package org.cloudburstmc.protocol.java.handler;
 
+import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
 import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
 import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
-import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientChatPacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 
 public interface JavaPlayPacketHandler extends JavaPacketHandler {
@@ -66,7 +67,7 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
-    default boolean handle(ChatPacket packet) {
+    default boolean handle(ClientChatPacket packet) {
         return false;
     }
 
@@ -239,6 +240,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(SelectAdvancementsTabPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ServerChatPacket packet) {
         return false;
     }
 

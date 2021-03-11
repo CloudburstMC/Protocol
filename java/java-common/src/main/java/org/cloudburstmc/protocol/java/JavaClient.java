@@ -131,7 +131,8 @@ public class JavaClient extends Java {
             HandshakingPacket handshakingPacket = new HandshakingPacket();
             handshakingPacket.setProtocolVersion(this.session.getPacketCodec().getProtocolVersion());
             handshakingPacket.setNextState(State.STATUS);
-            handshakingPacket.setAddress(this.getBindAddress());
+            handshakingPacket.setAddress(this.getBindAddress().getHostName());
+            handshakingPacket.setPort(this.getBindAddress().getPort());
             this.session.sendPacket(handshakingPacket);
             this.session.setProtocolState(State.STATUS);
             this.session.sendPacket(new StatusRequestPacket());
