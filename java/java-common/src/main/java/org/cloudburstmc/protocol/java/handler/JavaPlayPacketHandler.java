@@ -5,9 +5,7 @@ import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
 import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
-import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientChatPacket;
-import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientInformationPacket;
-import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.*;
 
 public interface JavaPlayPacketHandler extends JavaPacketHandler {
     // Clientbound packets
@@ -280,6 +278,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(ContainerClickPacket packet) {
+        return false;
+    }
+
     default boolean handle(MovePlayerPacket.Pos packet) {
         return false;
     }
@@ -289,6 +291,14 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(MovePlayerPacket.Rot packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerActionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RecipeBookChangeSettingsPacket packet) {
         return false;
     }
 

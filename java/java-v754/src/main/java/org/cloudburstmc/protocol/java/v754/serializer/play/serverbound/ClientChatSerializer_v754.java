@@ -7,8 +7,8 @@ import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientChatPacket;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ClientChatSerializer_v754 implements JavaPacketSerializer<ClientChatPacket> {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ClientChatSerializer_v754 implements JavaPacketSerializer<ClientChatPacket> {
     public static final ClientChatSerializer_v754 INSTANCE = new ClientChatSerializer_v754();
 
     @Override

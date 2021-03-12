@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java.packet.play.clientbound;
+package org.cloudburstmc.protocol.java.packet.play.serverbound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +10,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AcceptTeleportationPacket extends JavaPacket<JavaPlayPacketHandler> {
-    private int teleportId;
+    private int id;
 
     @Override
     public boolean handle(JavaPlayPacketHandler handler) {

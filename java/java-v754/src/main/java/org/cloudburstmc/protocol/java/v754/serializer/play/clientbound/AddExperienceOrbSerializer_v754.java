@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -14,14 +13,14 @@ public class AddExperienceOrbSerializer_v754 implements JavaPacketSerializer<Add
 
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, AddExperienceOrbPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getEntityId());
+        helper.writeVarInt(buffer, packet.getEntityId());
         helper.writePosition(buffer, packet.getPosition());
         buffer.writeShort(packet.getAmount());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, AddExperienceOrbPacket packet) {
-        packet.setEntityId(VarInts.readInt(buffer));
+        packet.setEntityId(helper.readVarInt(buffer));
         packet.setPosition(helper.readPosition(buffer));
         packet.setAmount(buffer.readShort());
     }

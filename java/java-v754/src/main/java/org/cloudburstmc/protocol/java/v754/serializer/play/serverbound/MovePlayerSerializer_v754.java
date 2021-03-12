@@ -9,11 +9,11 @@ import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 
-public class MovePlayerSerializer_v754<T extends MovePlayerPacket>
-        implements JavaPacketSerializer<T> {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class MovePlayerSerializer_v754<T extends MovePlayerPacket> implements JavaPacketSerializer<T> {
 
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Pos extends MovePlayerSerializer_v754<MovePlayerPacket.Pos> {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Pos extends MovePlayerSerializer_v754<MovePlayerPacket.Pos> {
         public static final Pos INSTANCE = new Pos();
 
         @Override
@@ -24,21 +24,19 @@ public class MovePlayerSerializer_v754<T extends MovePlayerPacket>
         }
 
         @Override
-        public void deserialize(ByteBuf buffer, JavaPacketHelper helper,
-                                MovePlayerPacket.Pos packet)
+        public void deserialize(ByteBuf buffer, JavaPacketHelper helper, MovePlayerPacket.Pos packet)
                 throws PacketSerializeException {
             packet.setPosition(helper.readPosition(buffer));
             packet.setOnGround(buffer.readBoolean());
         }
     }
 
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class PosRot extends MovePlayerSerializer_v754<MovePlayerPacket.PosRot> {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class PosRot extends MovePlayerSerializer_v754<MovePlayerPacket.PosRot> {
         public static final PosRot INSTANCE = new PosRot();
 
         @Override
-        public void serialize(ByteBuf buffer, JavaPacketHelper helper,
-                              MovePlayerPacket.PosRot packet)
+        public void serialize(ByteBuf buffer, JavaPacketHelper helper, MovePlayerPacket.PosRot packet)
                 throws PacketSerializeException {
             helper.writePosition(buffer, packet.getPosition());
             buffer.writeFloat(packet.getRotation().getX());
@@ -47,8 +45,7 @@ public class MovePlayerSerializer_v754<T extends MovePlayerPacket>
         }
 
         @Override
-        public void deserialize(ByteBuf buffer, JavaPacketHelper helper,
-                                MovePlayerPacket.PosRot packet)
+        public void deserialize(ByteBuf buffer, JavaPacketHelper helper, MovePlayerPacket.PosRot packet)
                 throws PacketSerializeException {
             packet.setPosition(helper.readPosition(buffer));
             packet.setRotation(Vector2f.from(buffer.readFloat(), buffer.readFloat()));
@@ -56,8 +53,8 @@ public class MovePlayerSerializer_v754<T extends MovePlayerPacket>
         }
     }
 
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Rot extends MovePlayerSerializer_v754<MovePlayerPacket.Rot> {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Rot extends MovePlayerSerializer_v754<MovePlayerPacket.Rot> {
         public static final Rot INSTANCE = new Rot();
 
         @Override
@@ -69,8 +66,7 @@ public class MovePlayerSerializer_v754<T extends MovePlayerPacket>
         }
 
         @Override
-        public void deserialize(ByteBuf buffer, JavaPacketHelper helper,
-                                MovePlayerPacket.Rot packet)
+        public void deserialize(ByteBuf buffer, JavaPacketHelper helper, MovePlayerPacket.Rot packet)
                 throws PacketSerializeException {
             packet.setRotation(Vector2f.from(buffer.readFloat(), buffer.readFloat()));
             packet.setOnGround(buffer.readBoolean());

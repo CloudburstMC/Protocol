@@ -46,6 +46,16 @@ public abstract class JavaPacketHelper {
         this.registerBlockEntityActions();
     }
 
+    public int readVarInt(ByteBuf buffer) {
+        // don't use the signed version! Only Bedrock knows that concept
+        return VarInts.readUnsignedInt(buffer);
+    }
+
+    public void writeVarInt(ByteBuf buffer, int varint) {
+        // don't use the signed version! Only Bedrock knows that concept
+        VarInts.writeUnsignedInt(buffer, varint);
+    }
+
     public byte[] readByteArray(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
         int length = VarInts.readUnsignedInt(buffer);

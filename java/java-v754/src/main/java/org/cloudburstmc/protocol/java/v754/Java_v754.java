@@ -85,12 +85,15 @@ public class Java_v754 {
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
                     .registerServerbound(ClientInformationPacket.class, ClientInformationSerializer_v754.INSTANCE, 5)
+                    .registerServerbound(ContainerClickPacket.class, ContainerClickSerializer_v754.INSTANCE, 9)
                     .registerServerbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 10)
                     .registerServerbound(CustomPayloadPacket.class, CustomPayloadSerializer_v754.INSTANCE, 11)
                     .registerServerbound(KeepAlivePacket.class, KeepAliveSerializer_v754.INSTANCE, 16)
                     .registerServerbound(MovePlayerPacket.Pos.class, MovePlayerSerializer_v754.Pos.INSTANCE, 18)
                     .registerServerbound(MovePlayerPacket.PosRot.class, MovePlayerSerializer_v754.PosRot.INSTANCE, 19)
                     .registerServerbound(MovePlayerPacket.Rot.class, MovePlayerSerializer_v754.Rot.INSTANCE, 20)
+                    .registerServerbound(PlayerActionPacket.class, PlayerActionSerializer_v754.INSTANCE, 27)
+                    .registerServerbound(RecipeBookChangeSettingsPacket.class, RecipeBookChangeSettingsSerializer_v754.INSTANCE, 30)
                     .build()
             ).build();
 }
