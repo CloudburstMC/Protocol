@@ -9,8 +9,7 @@ import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
 import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
-import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientChatPacket;
-import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.*;
 import org.cloudburstmc.protocol.java.packet.status.*;
 import org.cloudburstmc.protocol.java.v754.serializer.handshake.*;
 import org.cloudburstmc.protocol.java.v754.serializer.login.*;
@@ -85,10 +84,13 @@ public class Java_v754 {
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
+                    .registerServerbound(ClientInformationPacket.class, ClientInformationSerializer_v754.INSTANCE, 5)
                     .registerServerbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 10)
                     .registerServerbound(CustomPayloadPacket.class, CustomPayloadSerializer_v754.INSTANCE, 11)
                     .registerServerbound(KeepAlivePacket.class, KeepAliveSerializer_v754.INSTANCE, 16)
-                    .registerServerbound(MovePlayerPacket.class, MovePlayerSerializer_v754.INSTANCE, 18)
+                    .registerServerbound(MovePlayerPacket.Pos.class, MovePlayerSerializer_v754.Pos.INSTANCE, 18)
+                    .registerServerbound(MovePlayerPacket.PosRot.class, MovePlayerSerializer_v754.PosRot.INSTANCE, 19)
+                    .registerServerbound(MovePlayerPacket.Rot.class, MovePlayerSerializer_v754.Rot.INSTANCE, 20)
                     .build()
             ).build();
 }

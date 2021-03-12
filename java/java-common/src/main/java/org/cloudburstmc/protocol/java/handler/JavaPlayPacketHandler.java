@@ -6,10 +6,10 @@ import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientChatPacket;
+import org.cloudburstmc.protocol.java.packet.play.serverbound.ClientInformationPacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 
 public interface JavaPlayPacketHandler extends JavaPacketHandler {
-
     // Clientbound packets
     default boolean handle(AddEntityPacket packet) {
         return false;
@@ -67,10 +67,6 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
-    default boolean handle(ClientChatPacket packet) {
-        return false;
-    }
-
     default boolean handle(CommandSuggestionsPacket packet) {
         return false;
     }
@@ -124,10 +120,6 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(HorseScreenOpenPacket packet) {
-        return false;
-    }
-
-    default boolean handle(KeepAlivePacket packet) {
         return false;
     }
 
@@ -280,16 +272,36 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
-    default boolean handle(MovePlayerPacket packet) {
+    default boolean handle(ClientChatPacket packet) {
         return false;
     }
 
-    default boolean handle(ContainerClosePacket packet) {
+    default boolean handle(ClientInformationPacket packet) {
+        return false;
+    }
+
+    default boolean handle(MovePlayerPacket.Pos packet) {
+        return false;
+    }
+
+    default boolean handle(MovePlayerPacket.PosRot packet) {
+        return false;
+    }
+
+    default boolean handle(MovePlayerPacket.Rot packet) {
         return false;
     }
 
     // Bidirectional packets
+    default boolean handle(ContainerClosePacket packet) {
+        return false;
+    }
+
     default boolean handle(CustomPayloadPacket packet) {
+        return false;
+    }
+
+    default boolean handle(KeepAlivePacket packet) {
         return false;
     }
 }
