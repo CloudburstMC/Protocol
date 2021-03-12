@@ -245,10 +245,6 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
-    default boolean handle(SetCarriedItemPacket packet) {
-        return false;
-    }
-
     default boolean handle(SetChunkCacheCenterPacket packet) {
         return false;
     }
@@ -271,6 +267,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(ClientChatPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ClientCommandPacket packet) {
         return false;
     }
 
@@ -302,6 +302,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(SeenAdvancementsPacket packet) {
+        return false;
+    }
+
     // Bidirectional packets
     default boolean handle(ContainerClosePacket packet) {
         return false;
@@ -312,6 +316,10 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
     }
 
     default boolean handle(KeepAlivePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetCarriedItemPacket packet) {
         return false;
     }
 }

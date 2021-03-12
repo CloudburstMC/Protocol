@@ -9,6 +9,7 @@ public enum JavaPlayPacketType implements JavaPacketType {
     CONTAINER_CLOSE(Direction.BI_DIRECTIONAL),
     CUSTOM_PAYLOAD(Direction.BI_DIRECTIONAL),
     KEEP_ALIVE(Direction.BI_DIRECTIONAL),
+    SET_CARRIED_ITEM(Direction.BI_DIRECTIONAL),
 
     // clientbound packets
     ADD_ENTITY_S2C(Direction.CLIENTBOUND),
@@ -135,8 +136,6 @@ public enum JavaPlayPacketType implements JavaPacketType {
     SEEN_ADVANCEMENTS_C2S(Direction.SERVERBOUND),
     SELECT_TRADE_C2S(Direction.SERVERBOUND),
     SET_BEACON_C2S(Direction.SERVERBOUND),
-    SET_CARRIED_ITEM_C2S(Direction.SERVERBOUND),
-    SET_COMMAND_BLOCK_C2S(Direction.SERVERBOUND),
     SET_COMMAND_MINECART_C2S(Direction.SERVERBOUND),
     SET_CREATIVE_MODE_SLOT_C2S(Direction.SERVERBOUND),
     SET_JIGSAW_BLOCK_C2S(Direction.SERVERBOUND),

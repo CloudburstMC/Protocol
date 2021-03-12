@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.java.packet.handshake.*;
 import org.cloudburstmc.protocol.java.packet.login.*;
 import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
 import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
+import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
 import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.*;
@@ -81,9 +82,11 @@ public class Java_v754 {
                     .registerClientbound(LevelEventPacket.class, LevelEventSerializer_v754.INSTANCE, 33)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
+                    .registerClientbound(SetCarriedItemPacket.class, SetCarriedItemSerializer_v754.INSTANCE, 63)
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
+                    .registerServerbound(ClientCommandPacket.class, ClientCommandSerializer_v754.INSTANCE, 4)
                     .registerServerbound(ClientInformationPacket.class, ClientInformationSerializer_v754.INSTANCE, 5)
                     .registerServerbound(ContainerClickPacket.class, ContainerClickSerializer_v754.INSTANCE, 9)
                     .registerServerbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 10)
@@ -94,6 +97,8 @@ public class Java_v754 {
                     .registerServerbound(MovePlayerPacket.Rot.class, MovePlayerSerializer_v754.Rot.INSTANCE, 20)
                     .registerServerbound(PlayerActionPacket.class, PlayerActionSerializer_v754.INSTANCE, 27)
                     .registerServerbound(RecipeBookChangeSettingsPacket.class, RecipeBookChangeSettingsSerializer_v754.INSTANCE, 30)
+                    .registerServerbound(SeenAdvancementsPacket.class, SeenAdvancementsSerializer_v754.INSTANCE, 34)
+                    .registerServerbound(SetCarriedItemPacket.class, SetCarriedItemSerializer_v754.INSTANCE, 37)
                     .build()
             ).build();
 }
