@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.v428;
 
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.skin.*;
@@ -98,6 +99,27 @@ public class BedrockPacketHelper_v428 extends BedrockPacketHelper_v422 {
 
         this.addLevelEvent(3514, LevelEventType.CAULDRON_FILL_POWDER_SNOW);
         this.addLevelEvent(3515, LevelEventType.CAULDRON_TAKE_POWDER_SNOW);
+    }
+
+    @Override
+    protected void registerCommandParams() {
+        this.addCommandParam(1, CommandParam.INT);
+        this.addCommandParam(3, CommandParam.FLOAT);
+        this.addCommandParam(4, CommandParam.VALUE);
+        this.addCommandParam(5, CommandParam.WILDCARD_INT);
+        this.addCommandParam(6, CommandParam.OPERATOR);
+        this.addCommandParam(7, CommandParam.TARGET);
+        this.addCommandParam(8, CommandParam.WILDCARD_TARGET);
+
+        this.addCommandParam(16, CommandParam.FILE_PATH);
+
+        this.addCommandParam(32, CommandParam.STRING);
+        this.addCommandParam(40, CommandParam.BLOCK_POSITION);
+        this.addCommandParam(41, CommandParam.POSITION);
+        this.addCommandParam(44, CommandParam.MESSAGE);
+        this.addCommandParam(46, CommandParam.TEXT);
+        this.addCommandParam(50, CommandParam.JSON);
+        this.addCommandParam(63, CommandParam.COMMAND);
     }
 
     @Override

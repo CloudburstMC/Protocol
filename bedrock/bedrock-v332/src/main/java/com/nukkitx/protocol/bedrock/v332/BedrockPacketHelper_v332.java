@@ -7,6 +7,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.v313.BedrockPacketHelper_v313;
@@ -17,7 +18,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
 import static java.util.Objects.requireNonNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,21 +27,21 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
 
     @Override
     protected void registerCommandParams() {
-        this.addCommandParam(1, INT);
-        this.addCommandParam(2, FLOAT);
-        this.addCommandParam(3, VALUE);
-        this.addCommandParam(4, WILDCARD_INT);
-        this.addCommandParam(5, OPERATOR);
-        this.addCommandParam(6, TARGET);
-        this.addCommandParam(7, WILDCARD_TARGET);
-        this.addCommandParam(15, FILE_PATH);
-        this.addCommandParam(19, INT_RANGE);
-        this.addCommandParam(28, STRING);
-        this.addCommandParam(30, POSITION);
-        this.addCommandParam(33, MESSAGE);
-        this.addCommandParam(35, TEXT);
-        this.addCommandParam(38, JSON);
-        this.addCommandParam(45, COMMAND);
+        this.addCommandParam(1, CommandParam.INT);
+        this.addCommandParam(2, CommandParam.FLOAT);
+        this.addCommandParam(3, CommandParam.VALUE);
+        this.addCommandParam(4, CommandParam.WILDCARD_INT);
+        this.addCommandParam(5, CommandParam.OPERATOR);
+        this.addCommandParam(6, CommandParam.TARGET);
+        this.addCommandParam(7, CommandParam.WILDCARD_TARGET);
+        this.addCommandParam(15, CommandParam.FILE_PATH);
+        this.addCommandParam(19, CommandParam.INT_RANGE);
+        this.addCommandParam(28, CommandParam.STRING);
+        this.addCommandParam(30, CommandParam.POSITION);
+        this.addCommandParam(33, CommandParam.MESSAGE);
+        this.addCommandParam(35, CommandParam.TEXT);
+        this.addCommandParam(38, CommandParam.JSON);
+        this.addCommandParam(45, CommandParam.COMMAND);
     }
 
     @Override
