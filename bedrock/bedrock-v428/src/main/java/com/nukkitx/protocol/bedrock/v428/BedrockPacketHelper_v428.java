@@ -172,7 +172,7 @@ public class BedrockPacketHelper_v428 extends BedrockPacketHelper_v422 {
         ImageData skinData = this.readImage(buffer);
 
         int animationCount = buffer.readIntLE();
-        List<AnimationData> animations = new ObjectArrayList<>(animationCount);
+        List<AnimationData> animations = new ObjectArrayList<>();
         for (int i = 0; i < animationCount; i++) {
             animations.add(this.readAnimationData(buffer));
         }
