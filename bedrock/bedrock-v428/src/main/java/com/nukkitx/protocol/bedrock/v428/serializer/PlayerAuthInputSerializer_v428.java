@@ -8,6 +8,7 @@ import com.nukkitx.protocol.bedrock.data.PlayerAuthInputData;
 import com.nukkitx.protocol.bedrock.data.PlayerBlockActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemUseTransaction;
+import com.nukkitx.protocol.bedrock.data.inventory.LegacySetItemSlotData;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
 import com.nukkitx.protocol.bedrock.v419.serializer.PlayerAuthInputSerializer_v419;
 import io.netty.buffer.ByteBuf;
@@ -24,7 +25,17 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.serialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            //TODO use inventory transaction packet serialization
+            //TODO use inventory transaction packet serialization?
+            int legacyRequestId = packet.getItemUseTransaction().getLegacyRequestId();
+            VarInts.writeInt(buffer, legacyRequestId);
+
+            if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
+                helper.writeArray(buffer, packet.getItemUseTransaction().getLegacySlots(), (buf, packetHelper, data) -> {
+                    buf.writeByte(data.getContainerId());
+                    packetHelper.writeByteArray(buf, data.getSlots());
+                });
+            }
+
             buffer.writeBoolean(packet.getItemUseTransaction().isHasNetworkIds());
             VarInts.writeUnsignedInt(buffer, packet.getItemUseTransaction().getActions().size());
             for (InventoryActionData actionData : packet.getItemUseTransaction().getActions()) {
@@ -57,6 +68,18 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
             ItemUseTransaction itemTransaction = new ItemUseTransaction();
+
+            int legacyRequestId = VarInts.readInt(buffer);
+            itemTransaction.setLegacyRequestId(legacyRequestId);
+
+            if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
+                helper.readArray(buffer, itemTransaction.getLegacySlots(), (buf, packetHelper) -> {
+                    byte containerId = buf.readByte();
+                    byte[] slots = packetHelper.readByteArray(buf);
+                    return new LegacySetItemSlotData(containerId, slots);
+                });
+            }
+
             itemTransaction.setHasNetworkIds(buffer.readBoolean());
             int actionLength = VarInts.readUnsignedInt(buffer);
             for (int i = 0; i < actionLength; i++) {

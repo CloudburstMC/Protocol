@@ -34,7 +34,7 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         buffer.writeFloatLE(rotation.getZ());
         int flagValue = 0;
         for (PlayerAuthInputData data : packet.getInputData()) {
-            flagValue |= (1 << data.ordinal());
+            flagValue |= (1L << data.ordinal());
         }
         VarInts.writeUnsignedLong(buffer, flagValue);
         VarInts.writeUnsignedInt(buffer, packet.getInputMode().ordinal());
@@ -56,7 +56,7 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         long flagValue = VarInts.readUnsignedLong(buffer);
         Set<PlayerAuthInputData> flags = packet.getInputData();
         for (PlayerAuthInputData flag : PlayerAuthInputData.values()) {
-            if ((flagValue & (1 << flag.ordinal())) != 0) {
+            if ((flagValue & (1L << flag.ordinal())) != 0) {
                 flags.add(flag);
             }
         }
