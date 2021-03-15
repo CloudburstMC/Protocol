@@ -21,7 +21,7 @@ public class StructureTemplateDataResponseSerializer_v388 implements BedrockPack
         if (save) {
             helper.writeTag(buffer, packet.getTag());
         }
-        packet.setType(StructureTemplateResponseType.from(buffer.readByte()));
+        buffer.writeByte(packet.getType().ordinal());
     }
 
     @Override
@@ -34,6 +34,6 @@ public class StructureTemplateDataResponseSerializer_v388 implements BedrockPack
         if (save) {
             packet.setTag(helper.readTag(buffer));
         }
-        buffer.writeByte(packet.getType().ordinal());
+        packet.setType(StructureTemplateResponseType.from(buffer.readByte()));
     }
 }
