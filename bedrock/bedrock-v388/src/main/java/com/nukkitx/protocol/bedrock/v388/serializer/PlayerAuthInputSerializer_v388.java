@@ -32,7 +32,7 @@ public class PlayerAuthInputSerializer_v388 implements BedrockPacketSerializer<P
         buffer.writeFloatLE(packet.getMotion().getX());
         buffer.writeFloatLE(packet.getMotion().getY());
         buffer.writeFloatLE(rotation.getZ());
-        int flagValue = 0;
+        long flagValue = 0;
         for (PlayerAuthInputData data : packet.getInputData()) {
             flagValue |= (1L << data.ordinal());
         }
