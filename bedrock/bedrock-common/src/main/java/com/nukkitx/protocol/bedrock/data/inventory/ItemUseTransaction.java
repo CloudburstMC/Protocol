@@ -9,6 +9,8 @@ import java.util.List;
 
 @Data
 public class ItemUseTransaction {
+    private int legacyRequestId;
+    private final List<LegacySetItemSlotData> legacySlots = new ObjectArrayList<>();
     private boolean hasNetworkIds;
     private final List<InventoryActionData> actions = new ObjectArrayList<>();
     private int actionType;
