@@ -2,10 +2,14 @@ package com.nukkitx.protocol.genoa.v425;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.nbt.NBTInputStream;
+import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtUtils;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
@@ -20,12 +24,16 @@ import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureMirror;
 import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
+import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
+import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.bedrock.v354.BedrockPacketHelper_v354;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -342,6 +350,79 @@ public class GenoaPacketHelper extends BedrockPacketHelper_v354 {
                     break;
             }
         }
+    }
+
+    @Override
+    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+
+        packet.setActionType(VarInts.readUnsignedInt(buffer));
+        packet.setBlockPosition(this.readBlockPosition(buffer));
+        packet.setBlockFace(VarInts.readInt(buffer));
+        packet.setHotbarSlot(VarInts.readInt(buffer));
+        packet.setItemInHand(this.readItem(buffer, session));
+        packet.setPlayerPosition(this.readVector3f(buffer));
+        packet.setClickPosition(this.readVector3f(buffer));
+
+        packet.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
+    }
+
+    @Override
+    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+
+        VarInts.writeUnsignedInt(buffer, packet.getActionType());
+        this.writeBlockPosition(buffer, packet.getBlockPosition());
+        VarInts.writeInt(buffer, packet.getBlockFace());
+        VarInts.writeInt(buffer, packet.getHotbarSlot());
+        this.writeItem(buffer, packet.getItemInHand(), session);
+        this.writeVector3f(buffer, packet.getPlayerPosition());
+        this.writeVector3f(buffer, packet.getClickPosition());
+
+        VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
+    }
+
+    @Override
+    public Vector3i readBlockPosition(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+
+        int w = VarInts.readInt(buffer);
+        int x = VarInts.readInt(buffer);
+        int y = VarInts.readUnsignedInt(buffer)-1;
+        int z = VarInts.readInt(buffer);
+
+        // Prev: Z X Y
+
+        return Vector3i.from(x, y, z);
+    }
+
+    @Override
+    public void writeBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(blockPosition, "blockPosition");
+
+        VarInts.writeInt(buffer, -63);
+        VarInts.writeInt(buffer, blockPosition.getX());
+        VarInts.writeUnsignedInt(buffer, blockPosition.getY()+1);
+        VarInts.writeInt(buffer, blockPosition.getZ());
+    }
+
+    @Override
+    public Vector3i readOrigBlockPosition(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+
+        int x = VarInts.readInt(buffer);
+        int y = VarInts.readUnsignedInt(buffer)-1;
+        int z = VarInts.readInt(buffer);
+
+        return Vector3i.from(x, y, z);
+    }
+
+    @Override
+    public void writeOrigBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(blockPosition, "blockPosition");
+        VarInts.writeInt(buffer, blockPosition.getX());
+        VarInts.writeUnsignedInt(buffer, blockPosition.getY()+1);
+        VarInts.writeInt(buffer, blockPosition.getZ());
     }
 
     @Override

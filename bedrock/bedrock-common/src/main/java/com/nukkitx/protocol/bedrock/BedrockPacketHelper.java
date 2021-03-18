@@ -368,6 +368,23 @@ public abstract class BedrockPacketHelper {
         VarInts.writeInt(buffer, blockPosition.getZ());
     }
 
+    public Vector3i readOrigBlockPosition(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        int x = VarInts.readInt(buffer);
+        int y = VarInts.readUnsignedInt(buffer);
+        int z = VarInts.readInt(buffer);
+
+        return Vector3i.from(x, y, z);
+    }
+
+    public void writeOrigBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(blockPosition, "blockPosition");
+        VarInts.writeInt(buffer, blockPosition.getX());
+        VarInts.writeUnsignedInt(buffer, blockPosition.getY());
+        VarInts.writeInt(buffer, blockPosition.getZ());
+    }
+
     public Vector3f readByteRotation(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
         float pitch = readByteAngle(buffer);

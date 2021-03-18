@@ -17,22 +17,15 @@ public class GenoaInventoryTransactionSerializer extends InventoryTransactionSer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
-        // TODO: Still not working, needs proper fixing
-        /*int legacyRequestId = packet.getLegacyRequestId();
-        VarInts.writeInt(buffer, legacyRequestId);
 
-        if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-            helper.writeArray(buffer, packet.getLegacySlots(), (buf, packetHelper, data) -> {
-                buf.writeByte(data.getContainerId());
-                packetHelper.writeByteArray(buf, data.getSlots());
-            });
-        }*/
+        // TODO: Still not working, needs proper fixing
 
         TransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
         //buffer.writeBoolean(packet.isHasNetworkIds());
         //helper.writeArray(buffer, packet.getActions(), (buf, action) -> helper.writeInventoryAction(buf, action, session, packet.isHasNetworkIds()));
+
         helper.writeArray(buffer, packet.getActions(), (buf, action) -> helper.writeInventoryAction(buf, action, session, false));
 
         switch (transactionType) {
@@ -50,23 +43,12 @@ public class GenoaInventoryTransactionSerializer extends InventoryTransactionSer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventoryTransactionPacket packet, BedrockSession session) {
-        /*int legacyRequestId = VarInts.readInt(buffer);
-        packet.setLegacyRequestId(legacyRequestId);
-
-        if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-            helper.readArray(buffer, packet.getLegacySlots(), (buf, packetHelper) -> {
-                byte containerId = buf.readByte();
-                byte[] slots = packetHelper.readByteArray(buf);
-                return new LegacySetItemSlotData(containerId, slots);
-            });
-        }*/
 
         TransactionType transactionType = TransactionType.values()[VarInts.readUnsignedInt(buffer)];
         packet.setTransactionType(transactionType);
 
         //boolean hasNetworkIds = buffer.readBoolean();
         //packet.setHasNetworkIds(hasNetworkIds);
-        //helper.readArray(buffer, packet.getActions(), buf -> helper.readInventoryAction(buf, session, hasNetworkIds));
 
         helper.readArray(buffer, packet.getActions(), buf -> helper.readInventoryAction(buf, session, false));
 

@@ -4,17 +4,27 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import com.nukkitx.protocol.bedrock.packet.UpdateBlockPacket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaUpdateBlockPacket extends BedrockPacket {
 
-    public Vector3i blockPos;
-    public int UnsignedVarInt2;
-    public int UnsignedVarInt3;
-    public int UnsignedVarInt4; // Either this or the next two ones if bool is true
+    public static final Set<UpdateBlockPacket.Flag> FLAG_ALL = Collections.unmodifiableSet(EnumSet.of(UpdateBlockPacket.Flag.NEIGHBORS, UpdateBlockPacket.Flag.NETWORK));
+    public static final Set<UpdateBlockPacket.Flag> FLAG_ALL_PRIORITY = Collections.unmodifiableSet(
+            EnumSet.of(UpdateBlockPacket.Flag.NEIGHBORS, UpdateBlockPacket.Flag.NETWORK, UpdateBlockPacket.Flag.PRIORITY));
+
+    private final Set<UpdateBlockPacket.Flag> flags = EnumSet.noneOf(UpdateBlockPacket.Flag.class);
+    private Vector3i blockPosition;
+    private int runtimeId;
+    private int dataLayer;
+
     public float Float1;
     public boolean CheckForFloat;
 
