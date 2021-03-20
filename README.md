@@ -127,6 +127,7 @@ server.bind().join();
 | bedrock-v408 | 1.16.20 |
 | bedrock-v419 | 1.16.100 |
 | bedrock-v422 | 1.16.200 - 1.16.201 |
+| bedrock-v428 | 1.16.210 |
 
 ##### Repository:
 
