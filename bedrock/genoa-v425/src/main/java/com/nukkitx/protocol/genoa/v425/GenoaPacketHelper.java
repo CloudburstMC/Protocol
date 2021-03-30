@@ -356,7 +356,7 @@ public class GenoaPacketHelper extends BedrockPacketHelper_v354 {
     public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
 
         packet.setActionType(VarInts.readUnsignedInt(buffer));
-        packet.setBlockPosition(this.readBlockPosition(buffer));
+        packet.setBlockPosition(this.readGenoaBlockPosition(buffer));
         packet.setBlockFace(VarInts.readInt(buffer));
         packet.setHotbarSlot(VarInts.readInt(buffer));
         packet.setItemInHand(this.readItem(buffer, session));
@@ -370,7 +370,7 @@ public class GenoaPacketHelper extends BedrockPacketHelper_v354 {
     public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
 
         VarInts.writeUnsignedInt(buffer, packet.getActionType());
-        this.writeBlockPosition(buffer, packet.getBlockPosition());
+        this.writeGenoaBlockPosition(buffer, packet.getBlockPosition());
         VarInts.writeInt(buffer, packet.getBlockFace());
         VarInts.writeInt(buffer, packet.getHotbarSlot());
         this.writeItem(buffer, packet.getItemInHand(), session);
@@ -380,16 +380,36 @@ public class GenoaPacketHelper extends BedrockPacketHelper_v354 {
         VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
     }
 
-    @Override
-    public Vector3i readBlockPosition(ByteBuf buffer) {
+    public Vector3i readGenoaBlockPosition(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 
         int w = VarInts.readInt(buffer);
         int x = VarInts.readInt(buffer);
-        int y = VarInts.readUnsignedInt(buffer)-1;
+        int y = VarInts.readUnsignedInt(buffer);
         int z = VarInts.readInt(buffer);
 
         // Prev: Z X Y
+
+        return Vector3i.from(x, y, z);
+    }
+
+    public void writeGenoaBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(blockPosition, "blockPosition");
+
+        VarInts.writeInt(buffer, -63);
+        VarInts.writeInt(buffer, blockPosition.getX());
+        VarInts.writeUnsignedInt(buffer, blockPosition.getY());
+        VarInts.writeInt(buffer, blockPosition.getZ());
+    }
+
+    @Override
+    public Vector3i readBlockPosition(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+
+        int x = VarInts.readInt(buffer);
+        int y = VarInts.readUnsignedInt(buffer);
+        int z = VarInts.readInt(buffer);
 
         return Vector3i.from(x, y, z);
     }
@@ -398,30 +418,8 @@ public class GenoaPacketHelper extends BedrockPacketHelper_v354 {
     public void writeBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(blockPosition, "blockPosition");
-
-        VarInts.writeInt(buffer, -63);
         VarInts.writeInt(buffer, blockPosition.getX());
-        VarInts.writeUnsignedInt(buffer, blockPosition.getY()+1);
-        VarInts.writeInt(buffer, blockPosition.getZ());
-    }
-
-    @Override
-    public Vector3i readOrigBlockPosition(ByteBuf buffer) {
-        Preconditions.checkNotNull(buffer, "buffer");
-
-        int x = VarInts.readInt(buffer);
-        int y = VarInts.readUnsignedInt(buffer)-1;
-        int z = VarInts.readInt(buffer);
-
-        return Vector3i.from(x, y, z);
-    }
-
-    @Override
-    public void writeOrigBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
-        Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(blockPosition, "blockPosition");
-        VarInts.writeInt(buffer, blockPosition.getX());
-        VarInts.writeUnsignedInt(buffer, blockPosition.getY()+1);
+        VarInts.writeUnsignedInt(buffer, blockPosition.getY());
         VarInts.writeInt(buffer, blockPosition.getZ());
     }
 

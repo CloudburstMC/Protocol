@@ -19,7 +19,7 @@ public class GenoaUpdateBlockPacketSerializer implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaUpdateBlockPacket packet) {
-        helper.writeOrigBlockPosition(buffer, packet.getBlockPosition()); // 32, 36, 44
+        helper.writeBlockPosition(buffer, packet.getBlockPosition()); // 32, 36, 44
         VarInts.writeUnsignedInt(buffer, packet.getRuntimeId()); // 64
         int flagValue = 0;
         for (UpdateBlockPacket.Flag flag : packet.getFlags()) {
@@ -38,7 +38,7 @@ public class GenoaUpdateBlockPacketSerializer implements BedrockPacketSerializer
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaUpdateBlockPacket packet) {
 
-        packet.setBlockPosition(helper.readOrigBlockPosition(buffer));
+        packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setRuntimeId(VarInts.readUnsignedInt(buffer));
 
         int flagValue = VarInts.readUnsignedInt(buffer);

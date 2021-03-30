@@ -12,10 +12,8 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaBlockDestroyPacket extends BedrockPacket {
 
-    public long UnsignedVarLong;
-    //public long UnsignedLong;
-    //public long UnsignedLong2;
-    public UUID Uuid;
+    public long runtimeEntityId;
+    public UUID itemCatalogUuid;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 
         @Override
         public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaWorldManipulationPacket packet) {
-            buffer.writeByte(packet.getByte1());
+            buffer.writeByte(packet.getIsWorldTicking());
         }
 
         @Override
         public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaWorldManipulationPacket packet) {
-            packet.setByte1(buffer.readByte());
+            packet.setIsWorldTicking(buffer.readByte());
         }
     }
 

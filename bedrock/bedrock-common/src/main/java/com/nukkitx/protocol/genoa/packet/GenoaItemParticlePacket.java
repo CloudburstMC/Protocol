@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.genoa.packet;
 
 import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector4f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -11,10 +12,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaItemParticlePacket extends BedrockPacket {
 
-    public int int1;
-    public int int2;
+    public int particleId;
+    public int dimensionId;
     public Vector3f position;
-    public long unsignedVarLong1;
+    public long uniqueEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

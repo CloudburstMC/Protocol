@@ -14,42 +14,18 @@ public class GenoaShareAnchorSerializer implements BedrockPacketSerializer<Genoa
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaShareAnchorPacket packet) {
-        buffer.writeFloatLE(packet.getF1());
-        buffer.writeFloatLE(packet.getF2());
-        buffer.writeFloatLE(packet.getF3());
-        buffer.writeFloatLE(packet.getF4());
-        buffer.writeFloatLE(packet.getF5());
-        buffer.writeFloatLE(packet.getF6());
-        buffer.writeFloatLE(packet.getF7());
-        buffer.writeFloatLE(packet.getF8());
-        buffer.writeFloatLE(packet.getF9());
-        buffer.writeFloatLE(packet.getF10());
-        buffer.writeFloatLE(packet.getF11());
-        buffer.writeFloatLE(packet.getF12());
-        buffer.writeFloatLE(packet.getF13());
-        buffer.writeFloatLE(packet.getF14());
-        buffer.writeFloatLE(packet.getF15());
-        buffer.writeFloatLE(packet.getF16());
+        helper.writeVector4f(buffer, packet.getBottomLeft());
+        helper.writeVector4f(buffer, packet.getBottomRight());
+        helper.writeVector4f(buffer, packet.getTopLeft());
+        helper.writeVector4f(buffer, packet.getTopRight());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaShareAnchorPacket packet) {
-        packet.setF1(buffer.readFloatLE());
-        packet.setF2(buffer.readFloatLE());
-        packet.setF3(buffer.readFloatLE());
-        packet.setF4(buffer.readFloatLE());
-        packet.setF5(buffer.readFloatLE());
-        packet.setF6(buffer.readFloatLE());
-        packet.setF7(buffer.readFloatLE());
-        packet.setF8(buffer.readFloatLE());
-        packet.setF9(buffer.readFloatLE());
-        packet.setF10(buffer.readFloatLE());
-        packet.setF11(buffer.readFloatLE());
-        packet.setF12(buffer.readFloatLE());
-        packet.setF13(buffer.readFloatLE());
-        packet.setF14(buffer.readFloatLE());
-        packet.setF15(buffer.readFloatLE());
-        packet.setF16(buffer.readFloatLE());
+        packet.setBottomLeft(helper.readVector4f(buffer));
+        packet.setBottomRight(helper.readVector4f(buffer));
+        packet.setTopLeft(helper.readVector4f(buffer));
+        packet.setTopRight(helper.readVector4f(buffer));
     }
 }
 

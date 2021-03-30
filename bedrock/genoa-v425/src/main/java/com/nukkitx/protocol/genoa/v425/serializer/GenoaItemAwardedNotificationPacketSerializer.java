@@ -18,9 +18,9 @@ public class GenoaItemAwardedNotificationPacketSerializer implements BedrockPack
         helper.writeString(buffer,packet.getString2());
         helper.writeString(buffer,packet.getString3());
         helper.writeArray(buffer, packet.getArr(), (buf,help,pac) -> {
-            buffer.writeIntLE(pac.getUnsignedInt());
-            buffer.writeIntLE(pac.getSignedInt());
-            helper.writeUuid(buffer,pac.getUuid());
+            buffer.writeIntLE(pac.getRuntimeEntityId());
+            buffer.writeIntLE(pac.getAmount());
+            helper.writeUuid(buffer,pac.getCatalogItemUuid());
         });
     }
 

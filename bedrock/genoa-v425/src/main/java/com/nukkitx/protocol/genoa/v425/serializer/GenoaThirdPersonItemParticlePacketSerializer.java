@@ -11,8 +11,8 @@ public class GenoaThirdPersonItemParticlePacketSerializer implements BedrockPack
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaThirdPersonItemParticlePacket packet) {
-        VarInts.writeInt(buffer, packet.getInt1());
-        VarInts.writeInt(buffer, packet.getInt2());
+        VarInts.writeInt(buffer, packet.getParticleId());
+        VarInts.writeInt(buffer, packet.getDimensionId());
         helper.writeVector3f(buffer, packet.getPosition());
         helper.writeVector3f(buffer, packet.getViewDirection());
         VarInts.writeUnsignedLong(buffer, packet.getUnsignedVarLong1());
@@ -20,8 +20,8 @@ public class GenoaThirdPersonItemParticlePacketSerializer implements BedrockPack
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaThirdPersonItemParticlePacket packet) {
-        packet.setInt1(VarInts.readInt(buffer));
-        packet.setInt2(VarInts.readInt(buffer));
+        packet.setParticleId(VarInts.readInt(buffer));
+        packet.setDimensionId(VarInts.readInt(buffer));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setViewDirection(helper.readVector3f(buffer));
         packet.setUnsignedVarLong1((VarInts.readUnsignedLong(buffer)));

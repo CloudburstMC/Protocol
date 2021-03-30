@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaWorldManipulationPacket extends BedrockPacket {
 
-    public byte byte1;
+    public byte isWorldTicking;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

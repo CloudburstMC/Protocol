@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.genoa.packet;
 
+import com.nukkitx.math.vector.Vector4f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -12,7 +13,7 @@ public class GenoaShareAnchorPacket extends BedrockPacket {
 
     //No clue what any of these are yet
 
-    public float f1;
+    /*public float f1;
     public float f2;
     public float f3;
     public float f4;
@@ -27,7 +28,11 @@ public class GenoaShareAnchorPacket extends BedrockPacket {
     public float f13;
     public float f14;
     public float f15;
-    public float f16;
+    public float f16;*/
+    Vector4f bottomLeft;
+    Vector4f bottomRight;
+    Vector4f topLeft;
+    Vector4f topRight;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
