@@ -11,17 +11,17 @@ public class GenoaGameplaySettingsSerializer implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaGameplaySettings packet) {
-        buffer.writeBoolean(packet.isBool1());
-        if(packet.isBool1()) {
-            buffer.writeLong(packet.getUnsignedLong());
+        buffer.writeBoolean(packet.isMultiplePlayersOnline());
+        if(packet.isMultiplePlayersOnline()) {
+            buffer.writeLong(packet.getOwnerRuntimeId());
         }
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, GenoaGameplaySettings packet) {
-        packet.setBool1(buffer.readBoolean());
-        if (packet.isBool1()) {
-            packet.setUnsignedLong(buffer.readLong());
+        packet.setMultiplePlayersOnline(buffer.readBoolean());
+        if (packet.isMultiplePlayersOnline()) {
+            packet.setOwnerRuntimeId(buffer.readLong());
         }
     }
 }

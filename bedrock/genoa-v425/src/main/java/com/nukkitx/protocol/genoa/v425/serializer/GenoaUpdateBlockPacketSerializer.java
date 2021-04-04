@@ -52,16 +52,13 @@ public class GenoaUpdateBlockPacketSerializer implements BedrockPacketSerializer
 
         packet.setDataLayer(VarInts.readUnsignedInt(buffer));
 
-        try {
+        if (buffer.readableBytes() != 0) {
             float ftemp = buffer.readFloatLE();
             boolean temp = buffer.readBoolean();
-            if (!temp) {
-            } else {
-                packet.setFloat1(ftemp);
-                packet.setCheckForFloat(true);
-            }
-        } catch (Exception e) {
-            throw new PacketSerializeException(e);
+            packet.setFloat1(ftemp);
+            packet.setCheckForFloat(temp);
+        } else {
+            packet.setCheckForFloat(false);
         }
     }
 }

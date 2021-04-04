@@ -10,8 +10,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class GenoaGameplaySettings extends BedrockPacket {
 
-    public boolean Bool1;
-    public long unsignedLong;
+    public boolean multiplePlayersOnline;
+    public long ownerRuntimeId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

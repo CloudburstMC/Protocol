@@ -23,9 +23,6 @@ public class GenoaInventoryTransactionSerializer extends InventoryTransactionSer
         TransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
-        //buffer.writeBoolean(packet.isHasNetworkIds());
-        //helper.writeArray(buffer, packet.getActions(), (buf, action) -> helper.writeInventoryAction(buf, action, session, packet.isHasNetworkIds()));
-
         helper.writeArray(buffer, packet.getActions(), (buf, action) -> helper.writeInventoryAction(buf, action, session, false));
 
         switch (transactionType) {

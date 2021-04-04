@@ -7,10 +7,7 @@ import com.nukkitx.protocol.bedrock.v313.serializer.*;
 import com.nukkitx.protocol.bedrock.v332.serializer.*;
 import com.nukkitx.protocol.bedrock.v340.serializer.AvailableCommandsSerializer_v340;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
-import com.nukkitx.protocol.bedrock.v361.BedrockPacketHelper_v361;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
-import com.nukkitx.protocol.bedrock.v388.serializer.PlayerListSerializer_v388;
-import com.nukkitx.protocol.bedrock.v407.serializer.InventoryTransactionSerializer_v407;
 import com.nukkitx.protocol.genoa.packet.*;
 import com.nukkitx.protocol.genoa.v425.serializer.*;
 import lombok.experimental.UtilityClass;
@@ -49,7 +46,7 @@ public class Genoa_v425 {
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v291.INSTANCE, 27)
             .registerPacket(MobEffectPacket.class, MobEffectSerializer_v291.INSTANCE, 28)
             .registerPacket(UpdateAttributesPacket.class, UpdateAttributesSerializer_v291.INSTANCE, 29)
-            .registerPacket(InventoryTransactionPacket.class, GenoaInventoryTransactionSerializer.INSTANCE, 30) // Not working properly atm, but not sent from server?
+            .registerPacket(InventoryTransactionPacket.class, GenoaInventoryTransactionSerializer.INSTANCE, 30)
             .registerPacket(MobEquipmentPacket.class, MobEquipmentSerializer_v291.INSTANCE, 31)
             .registerPacket(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v291.INSTANCE, 32)
             .registerPacket(InteractPacket.class, InteractSerializer_v291.INSTANCE, 33)
@@ -154,24 +151,23 @@ public class Genoa_v425 {
             //.registerPacket(GenoaDisconnectId.class, GenoaDisconnectIdSerializer.INSTANCE, 134) TODO:
             .registerPacket(GenoaItemParticlePacket.class, GenoaItemParticlePacketSerializer.INSTANCE, 135)
             .registerPacket(GenoaThirdPersonItemParticlePacket.class, GenoaThirdPersonItemParticlePacketSerializer.INSTANCE, 136)
-            .registerPacket(GenoaNetworkTransformPacket.class,GenoaNetworkTransformSerializer.INSTANCE,137)
-            .registerPacket(GenoaUpdateBlockPacket.class,GenoaUpdateBlockPacketSerializer.INSTANCE,138)
+            .registerPacket(GenoaNetworkTransformPacket.class, GenoaNetworkTransformSerializer.INSTANCE,137)
+            .registerPacket(GenoaUpdateBlockPacket.class, GenoaUpdateBlockPacketSerializer.INSTANCE,138)
             .registerPacket(PersonaMobRequestPacket.class, PersonaMobRequestSeralizer.INSTANCE, 139)
             //.registerPacket(GenoaBannerMessagePacket.class, GenoaBannerMessagePacketSeralizer.INSTANCE, 140) TODO:
             .registerPacket(GenoaBlockDestroyPacket.class, GenoaBlockDestroyPacketSeralizer.INSTANCE, 141)
             .registerPacket(GenoaNetworkOwnershipRequestPacket.class, GenoaNetworkOwnershipRequestSerializer.INSTANCE, 142)
             .registerPacket(GenoaNetworkOwnershipStatusPacket.class, GenoaNetworkOwnershipStatusPacketSerializer.INSTANCE, 143)
             .registerPacket(GenoaPlayerHurtPacket.class, GenoaPlayerHurtPacketSerializer.INSTANCE, 144)
-            .registerPacket(GenoaSetActorMolangVariablesPacket.class,GenoaSetActorMolangVariablesSerializer.INSTANCE,145)
-            .registerPacket(GenoaDisconnectRequest.class,GenoaDisconnectRequestSerializer.INSTANCE,146)
-            .registerPacket(GenoaDisconnectStart.class,GenoaDisconnectStartSerializer.INSTANCE,147)
-            .registerPacket(GenoaGameplaySettings.class,GenoaGameplaySettingsSerializer.INSTANCE,148)
-            .registerPacket(GenoaBlockHitNoDamagePacket.class,GenoaBlockHitNoDamagePacketSerializer.INSTANCE,149)
-            .registerPacket(GenoaItemBrokeNotificationPacket.class,GenoaItemBrokeNotificationPacketSerializer.INSTANCE,150)
+            .registerPacket(GenoaSetActorMolangVariablesPacket.class, GenoaSetActorMolangVariablesSerializer.INSTANCE,145)
+            .registerPacket(GenoaDisconnectRequest.class, GenoaDisconnectRequestSerializer.INSTANCE,146)
+            .registerPacket(GenoaDisconnectStart.class, GenoaDisconnectStartSerializer.INSTANCE,147)
+            .registerPacket(GenoaGameplaySettings.class, GenoaGameplaySettingsSerializer.INSTANCE,148)
+            .registerPacket(GenoaBlockHitNoDamagePacket.class, GenoaBlockHitNoDamagePacketSerializer.INSTANCE,149)
+            .registerPacket(GenoaItemBrokeNotificationPacket.class, GenoaItemBrokeNotificationPacketSerializer.INSTANCE,150)
             .registerPacket(GenoaGuestPlayerJoinRequestPacket.class, GenoaGuestPlayerJoinRequestSerializer.INSTANCE, 151)
             .registerPacket(GenoaGuestPlayerJoinResponsePacket.class, GenoaGuestPlayerJoinResponseSerializer.INSTANCE, 152)
-            .registerPacket(GenoaItemAwardedNotificationPacket.class,GenoaItemAwardedNotificationPacketSerializer.INSTANCE,153)
-            .registerPacket(GenoaEventFlatbufferPacket.class,GenoaEventFlatbufferPacketSerializer.INSTANCE,154)
+            .registerPacket(GenoaItemAwardedNotificationPacket.class, GenoaItemAwardedNotificationPacketSerializer.INSTANCE,153)
+            .registerPacket(GenoaEventFlatbufferPacket.class, GenoaEventFlatbufferPacketSerializer.INSTANCE,154)
             .build();
-    //.registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133)
 }

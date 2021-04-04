@@ -15,7 +15,7 @@ public class GenoaThirdPersonItemParticlePacket extends BedrockPacket {
     public int dimensionId;
     public Vector3f position; // Could also be flipped
     public Vector3f viewDirection;
-    public long unsignedVarLong1;
+    public long uniqueEntityId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
