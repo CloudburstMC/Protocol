@@ -13,7 +13,10 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.command.*;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
+import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
+import com.nukkitx.protocol.bedrock.data.command.CommandOriginType;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.entity.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
@@ -720,7 +723,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
             return ItemData.AIR;
         }
         int aux = VarInts.readInt(buffer);
-        short damage = (short) (aux >> 8);
+        int damage = (short) (aux >> 8);
         if (damage == Short.MAX_VALUE) damage = -1;
         int count = aux & 0xff;
         short nbtSize = buffer.readShortLE();
@@ -740,7 +743,14 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         String[] canPlace = readArray(buffer, new String[0], this::readString);
         String[] canBreak = readArray(buffer, new String[0], this::readString);
 
-        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak);
+        return ItemData.builder()
+                .id(id)
+                .damage(damage)
+                .count(count)
+                .tag(compoundTag)
+                .canPlace(canPlace)
+                .canBreak(canBreak)
+                .build();
     }
 
     @Override
@@ -758,7 +768,7 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
         VarInts.writeInt(buffer, id);
 
         // Write damage and count
-        short damage = item.getDamage();
+        int damage = item.getDamage();
         if (damage == -1) damage = Short.MAX_VALUE;
         VarInts.writeInt(buffer, (damage << 8) | (item.getCount() & 0xff));
 
@@ -780,6 +790,16 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
 
         writeArray(buffer, item.getCanPlace(), this::writeString);
         writeArray(buffer, item.getCanBreak(), this::writeString);
+    }
+
+    @Override
+    public ItemData readItemInstance(ByteBuf buffer, BedrockSession session) {
+        return readItem(buffer, session);
+    }
+
+    @Override
+    public void writeItemInstance(ByteBuf buffer, ItemData item, BedrockSession session) {
+        writeItem(buffer, item, session);
     }
 
     @Override
@@ -943,7 +963,12 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
                 case NBT:
                     ItemData item;
                     if (object instanceof NbtMap) {
-                        item = ItemData.of(1, (short) 0, 1, (NbtMap) object);
+                        item = ItemData.builder()
+                                .id(1)
+                                .damage(0)
+                                .count(1)
+                                .tag((NbtMap) object)
+                                .build();
                     } else {
                         item = (ItemData) object;
                     }

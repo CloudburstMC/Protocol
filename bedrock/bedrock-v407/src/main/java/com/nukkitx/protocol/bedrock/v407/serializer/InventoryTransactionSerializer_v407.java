@@ -30,8 +30,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
         TransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
-        buffer.writeBoolean(packet.isHasNetworkIds());
-        helper.writeArray(buffer, packet.getActions(), (buf, action) -> helper.writeInventoryAction(buf, action, session, packet.isHasNetworkIds()));
+        helper.writeInventoryActions(buffer, session, packet.getActions(), packet.isUsingNetIds());
 
         switch (transactionType) {
             case ITEM_USE:
@@ -61,9 +60,8 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
 
         TransactionType transactionType = TransactionType.values()[VarInts.readUnsignedInt(buffer)];
         packet.setTransactionType(transactionType);
-        boolean hasNetworkIds = buffer.readBoolean();
-        packet.setHasNetworkIds(hasNetworkIds);
-        helper.readArray(buffer, packet.getActions(), buf -> helper.readInventoryAction(buf, session, hasNetworkIds));
+
+        packet.setUsingNetIds(helper.readInventoryActions(buffer, session, packet.getActions()));
 
         switch (transactionType) {
             case ITEM_USE:

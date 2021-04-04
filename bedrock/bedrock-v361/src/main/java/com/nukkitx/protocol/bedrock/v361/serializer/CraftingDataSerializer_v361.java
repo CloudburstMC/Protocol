@@ -93,7 +93,11 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
             stackSize = VarInts.readInt(buffer);
         }
 
-        return ItemData.of(id, (short) auxValue, stackSize);
+        return ItemData.builder()
+                .id(id)
+                .damage(auxValue)
+                .count(stackSize)
+                .build();
     }
 
     protected void writeIngredient(ByteBuf buffer, ItemData itemData) {

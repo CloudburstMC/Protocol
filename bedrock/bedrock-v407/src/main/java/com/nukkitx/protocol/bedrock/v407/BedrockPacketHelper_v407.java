@@ -148,24 +148,35 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
     }
 
     @Override
-    public InventoryActionData readInventoryAction(ByteBuf buffer, BedrockSession session, boolean hasNetworkIds) {
-        InventorySource source = this.readSource(buffer);
-        int slot = VarInts.readUnsignedInt(buffer);
-        ItemData fromItem = this.readItem(buffer, session);
-        ItemData toItem = this.readItem(buffer, session);
-        int networkStackId = 0;
-        if (hasNetworkIds) {
-            networkStackId = VarInts.readInt(buffer);
-        }
-        return new InventoryActionData(source, slot, fromItem, toItem, networkStackId);
+    public boolean readInventoryActions(ByteBuf buffer, BedrockSession session, List<InventoryActionData> actions) {
+        boolean hasNetworkIds = buffer.readBoolean();
+        this.readArray(buffer, actions, session, (buf, helper, aSession) -> {
+            InventorySource source = helper.readSource(buf);
+            int slot = VarInts.readUnsignedInt(buf);
+            ItemData fromItem = helper.readItem(buf, aSession);
+            ItemData toItem = helper.readItem(buf, aSession);
+            int networkStackId = 0;
+            if (hasNetworkIds) {
+                networkStackId = VarInts.readInt(buf);
+            }
+
+            return new InventoryActionData(source, slot, fromItem, toItem, networkStackId);
+        });
+        return hasNetworkIds;
     }
 
     @Override
-    public void writeInventoryAction(ByteBuf buffer, InventoryActionData action, BedrockSession session, boolean hasNetworkIds) {
-        super.writeInventoryAction(buffer, action, session, hasNetworkIds);
-        if (hasNetworkIds) {
-            VarInts.writeInt(buffer, action.getStackNetworkId());
-        }
+    public void writeInventoryActions(ByteBuf buffer, BedrockSession session, List<InventoryActionData> actions, boolean hasNetworkIds) {
+        buffer.writeBoolean(hasNetworkIds);
+        this.writeArray(buffer, actions, session, (buf, helper, aSession, action) -> {
+            helper.writeSource(buffer, action.getSource());
+            VarInts.writeUnsignedInt(buffer, action.getSlot());
+            helper.writeItem(buffer, action.getFromItem(), aSession);
+            helper.writeItem(buffer, action.getToItem(), aSession);
+            if (hasNetworkIds) {
+                VarInts.writeInt(buffer, action.getStackNetworkId());
+            }
+        });
     }
 
     @Override

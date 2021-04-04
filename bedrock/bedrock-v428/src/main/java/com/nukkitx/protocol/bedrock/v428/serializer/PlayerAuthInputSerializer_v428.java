@@ -6,7 +6,6 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.PlayerActionType;
 import com.nukkitx.protocol.bedrock.data.PlayerAuthInputData;
 import com.nukkitx.protocol.bedrock.data.PlayerBlockActionData;
-import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemUseTransaction;
 import com.nukkitx.protocol.bedrock.data.inventory.LegacySetItemSlotData;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
@@ -26,28 +25,25 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
             //TODO use inventory transaction packet serialization?
-            int legacyRequestId = packet.getItemUseTransaction().getLegacyRequestId();
+            ItemUseTransaction transaction = packet.getItemUseTransaction();
+            int legacyRequestId = transaction.getLegacyRequestId();
             VarInts.writeInt(buffer, legacyRequestId);
 
             if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-                helper.writeArray(buffer, packet.getItemUseTransaction().getLegacySlots(), (buf, packetHelper, data) -> {
+                helper.writeArray(buffer, transaction.getLegacySlots(), (buf, packetHelper, data) -> {
                     buf.writeByte(data.getContainerId());
                     packetHelper.writeByteArray(buf, data.getSlots());
                 });
             }
 
-            buffer.writeBoolean(packet.getItemUseTransaction().isHasNetworkIds());
-            VarInts.writeUnsignedInt(buffer, packet.getItemUseTransaction().getActions().size());
-            for (InventoryActionData actionData : packet.getItemUseTransaction().getActions()) {
-                helper.writeInventoryAction(buffer, actionData, session, packet.getItemUseTransaction().isHasNetworkIds());
-            }
-            VarInts.writeUnsignedInt(buffer, packet.getItemUseTransaction().getActionType());
-            helper.writeBlockPosition(buffer, packet.getItemUseTransaction().getBlockPosition());
-            VarInts.writeInt(buffer, packet.getItemUseTransaction().getBlockFace());
-            VarInts.writeInt(buffer, packet.getItemUseTransaction().getHotbarSlot());
-            helper.writeItem(buffer, packet.getItemUseTransaction().getItemInHand(), session);
-            helper.writeVector3f(buffer, packet.getItemUseTransaction().getPlayerPosition());
-            helper.writeVector3f(buffer, packet.getItemUseTransaction().getClickPosition());
+            helper.writeInventoryActions(buffer, session, transaction.getActions(), transaction.isUsingNetIds());
+            VarInts.writeUnsignedInt(buffer, transaction.getActionType());
+            helper.writeBlockPosition(buffer, transaction.getBlockPosition());
+            VarInts.writeInt(buffer, transaction.getBlockFace());
+            VarInts.writeInt(buffer, transaction.getHotbarSlot());
+            helper.writeItem(buffer, transaction.getItemInHand(), session);
+            helper.writeVector3f(buffer, transaction.getPlayerPosition());
+            helper.writeVector3f(buffer, transaction.getClickPosition());
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -80,11 +76,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
                 });
             }
 
-            itemTransaction.setHasNetworkIds(buffer.readBoolean());
-            int actionLength = VarInts.readUnsignedInt(buffer);
-            for (int i = 0; i < actionLength; i++) {
-                itemTransaction.getActions().add(helper.readInventoryAction(buffer, session, itemTransaction.isHasNetworkIds()));
-            }
+            boolean hasNetIds = helper.readInventoryActions(buffer, session, itemTransaction.getActions());
             itemTransaction.setActionType(VarInts.readUnsignedInt(buffer));
             itemTransaction.setBlockPosition(helper.readBlockPosition(buffer));
             itemTransaction.setBlockFace(VarInts.readInt(buffer));

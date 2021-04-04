@@ -33,8 +33,9 @@ public class InventoryTransactionPacket extends BedrockPacket {
     private Vector3f headPosition;
     /**
      * @since v407
+     * @deprecated v431
      */
-    private boolean hasNetworkIds;
+    private boolean usingNetIds;
     /**
      * Runtime ID of block being picked.
      * ItemUseInventoryTransaction only

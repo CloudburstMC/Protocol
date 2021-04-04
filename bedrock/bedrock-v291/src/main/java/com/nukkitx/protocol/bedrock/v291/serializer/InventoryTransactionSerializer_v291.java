@@ -20,7 +20,7 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
         TransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
-        helper.writeArray(buffer, packet.getActions(), (buf, action) -> helper.writeInventoryAction(buf, action, session, false));
+        helper.writeInventoryActions(buffer, session, packet.getActions(), false);
 
         switch (transactionType) {
             case ITEM_USE:
@@ -40,7 +40,7 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
         TransactionType transactionType = TransactionType.values()[VarInts.readUnsignedInt(buffer)];
         packet.setTransactionType(transactionType);
 
-        helper.readArray(buffer, packet.getActions(), buf -> helper.readInventoryAction(buf, session, false));
+        helper.readInventoryActions(buffer, session, packet.getActions());
 
         switch (transactionType) {
             case ITEM_USE:

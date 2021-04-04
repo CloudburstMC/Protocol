@@ -72,7 +72,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
             return ItemData.AIR;
         }
         int aux = VarInts.readInt(buffer);
-        short damage = (short) (aux >> 8);
+        int damage = (short) (aux >> 8);
         if (damage == Short.MAX_VALUE) damage = -1;
         int count = aux & 0xff;
         int nbtSize = buffer.readShortLE();
@@ -104,7 +104,14 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         }
 
 
-        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak);
+        return ItemData.builder()
+                .id(id)
+                .damage(damage)
+                .count(count)
+                .tag(compoundTag)
+                .canPlace(canPlace)
+                .canBreak(canBreak)
+                .build();
     }
 
     @Override
@@ -120,7 +127,7 @@ public class BedrockPacketHelper_v332 extends BedrockPacketHelper_v313 {
         }
         VarInts.writeInt(buffer, id);
         // Write damage and count
-        short damage = item.getDamage();
+        int damage = item.getDamage();
         if (damage == -1) damage = Short.MAX_VALUE;
         VarInts.writeInt(buffer, (damage << 8) | (item.getCount() & 0xff));
         if (item.getTag() != null) {
