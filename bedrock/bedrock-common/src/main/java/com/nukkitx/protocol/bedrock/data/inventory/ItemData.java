@@ -53,13 +53,14 @@ public final class ItemData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, damage, count, tag, Arrays.hashCode(canPlace), Arrays.hashCode(canBreak), blockingTicks);
+        return Objects.hash(id, damage, count, tag, Arrays.hashCode(canPlace), Arrays.hashCode(canBreak), blockingTicks,
+                blockRuntimeId);
     }
 
     public boolean equals(ItemData other, boolean checkAmount, boolean checkMetadata, boolean checkUserdata) {
         return id == other.id &&
                 (!checkAmount || count == other.count) &&
-                (!checkMetadata || damage == other.damage) &&
+                (!checkMetadata || (damage == other.damage && blockRuntimeId == other.blockRuntimeId)) &&
                 (!checkUserdata || (Objects.equals(tag, other.tag) && Arrays.equals(canPlace, other.canPlace) && Arrays.equals(canBreak, other.canBreak)));
     }
 
