@@ -10,6 +10,7 @@ import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.*;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import com.nukkitx.protocol.bedrock.util.LittleEndianByteBufOutputStream;
 import com.nukkitx.protocol.bedrock.v428.BedrockPacketHelper_v428;
@@ -330,5 +331,76 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
             helper.writeItem(buf, action.getFromItem(), aSession);
             helper.writeItem(buf, action.getToItem(), aSession);
         });
+    }
+
+    @Override
+    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockSession session) {
+        switch (type) {
+            case TAKE:
+                return new TakeStackRequestActionData(
+                        byteBuf.readByte(),
+                        readStackRequestSlotInfo(byteBuf),
+                        readStackRequestSlotInfo(byteBuf)
+                );
+            case PLACE:
+                return new PlaceStackRequestActionData(
+                        byteBuf.readByte(),
+                        readStackRequestSlotInfo(byteBuf),
+                        readStackRequestSlotInfo(byteBuf)
+                );
+            case SWAP:
+                return new SwapStackRequestActionData(
+                        readStackRequestSlotInfo(byteBuf),
+                        readStackRequestSlotInfo(byteBuf)
+                );
+            case DROP:
+                return new DropStackRequestActionData(
+                        byteBuf.readByte(),
+                        readStackRequestSlotInfo(byteBuf),
+                        byteBuf.readBoolean()
+                );
+            case DESTROY:
+                return new DestroyStackRequestActionData(
+                        byteBuf.readByte(),
+                        readStackRequestSlotInfo(byteBuf)
+                );
+            case CONSUME:
+                return new ConsumeStackRequestActionData(
+                        byteBuf.readByte(),
+                        readStackRequestSlotInfo(byteBuf)
+                );
+            case CREATE:
+                return new CreateStackRequestActionData(
+                        byteBuf.readByte()
+                );
+            case LAB_TABLE_COMBINE:
+                return new LabTableCombineRequestActionData();
+            case BEACON_PAYMENT:
+                return new BeaconPaymentStackRequestActionData(
+                        VarInts.readInt(byteBuf),
+                        VarInts.readInt(byteBuf)
+                );
+            case CRAFT_RECIPE:
+                return new CraftRecipeStackRequestActionData(
+                        VarInts.readUnsignedInt(byteBuf)
+                );
+            case CRAFT_RECIPE_AUTO:
+                return new AutoCraftRecipeStackRequestActionData(
+                        VarInts.readUnsignedInt(byteBuf)
+                );
+            case CRAFT_CREATIVE:
+                return new CraftCreativeStackRequestActionData(
+                        VarInts.readUnsignedInt(byteBuf)
+                );
+            case CRAFT_NON_IMPLEMENTED_DEPRECATED:
+                return new CraftNonImplementedStackRequestActionData();
+            case CRAFT_RESULTS_DEPRECATED:
+                return new CraftResultsDeprecatedStackRequestActionData(
+                        this.readArray(byteBuf, new ItemData[0], buf -> this.readItemInstance(buf, session)),
+                        byteBuf.readByte()
+                );
+            default:
+                throw new UnsupportedOperationException("Unhandled stack request action type: " + type);
+        }
     }
 }
