@@ -71,7 +71,13 @@ public enum ParticleType {
 
     private final boolean data;
 
+    private static final ParticleType[] VALUES = values();
+
     ParticleType() {
         this(false);
+    }
+
+    public static ParticleType getById(int id) {
+        return VALUES.length > id ? VALUES[id] : null;
     }
 }

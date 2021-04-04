@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.java.v754;
 
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
+import org.cloudburstmc.protocol.java.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 
 import static org.cloudburstmc.protocol.java.data.entity.EntityType.*;
@@ -165,5 +166,28 @@ public class JavaPacketHelper_v754 extends JavaPacketHelper {
         this.containerTypes.put(21, SMOKER);
         this.containerTypes.put(22, CARTOGRAPHY_TABLE);
         this.containerTypes.put(23, STONECUTTER);
+    }
+
+    @Override
+    protected void registerEntityDataTypes() {
+        this.entityDataTypes.put(0, EntityDataType.BYTE);
+        this.entityDataTypes.put(1, EntityDataType.INT);
+        this.entityDataTypes.put(2, EntityDataType.FLOAT);
+        this.entityDataTypes.put(3, EntityDataType.STRING);
+        this.entityDataTypes.put(4, EntityDataType.COMPONENT);
+        this.entityDataTypes.put(5, EntityDataType.OPTIONAL_COMPONENT);
+        this.entityDataTypes.put(6, EntityDataType.ITEM_STACK);
+        this.entityDataTypes.put(7, EntityDataType.BOOLEAN);
+        this.entityDataTypes.put(8, EntityDataType.ROTATION);
+        this.entityDataTypes.put(9, EntityDataType.BLOCK_POS);
+        this.entityDataTypes.put(10, EntityDataType.OPTIONAL_BLOCK_POS);
+        this.entityDataTypes.put(11, EntityDataType.DIRECTION);
+        this.entityDataTypes.put(12, EntityDataType.OPTIONAL_UUID);
+        this.entityDataTypes.put(13, EntityDataType.OPTIONAL_BLOCK_STATE);
+        this.entityDataTypes.put(14, EntityDataType.NBT);
+        this.entityDataTypes.put(15, EntityDataType.PARTICLE);
+        this.entityDataTypes.put(16, EntityDataType.VILLAGER_DATA);
+        this.entityDataTypes.put(17, EntityDataType.OPTIONAL_INT);
+        this.entityDataTypes.put(18, EntityDataType.POSE);
     }
 }

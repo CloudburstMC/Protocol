@@ -261,6 +261,82 @@ public interface JavaPlayPacketHandler extends JavaPacketHandler {
         return false;
     }
 
+    default boolean handle(SetEntityDataPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetEntityLinkPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetEntityMotionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetEquipmentPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetExperiencePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetHealthPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetObjectivePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetPassengersPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetPlayerTeamPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetScorePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetTimePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SetTitlesPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SoundEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SoundPacket packet) {
+        return false;
+    }
+
+    default boolean handle(StopSoundPacket packet) {
+        return false;
+    }
+
+    default boolean handle(TabListPacket packet) {
+        return false;
+    }
+
+    default boolean handle(TagQueryPacket packet) {
+        return false;
+    }
+
+    default boolean handle(TakeItemEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(TeleportEntityPacket packet) {
+        return false;
+    }
+
     // Serverbound packets
     default boolean handle(AcceptTeleportationPacket packet) {
         return false;

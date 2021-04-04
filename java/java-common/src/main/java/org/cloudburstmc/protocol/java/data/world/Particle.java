@@ -1,11 +1,11 @@
 package org.cloudburstmc.protocol.java.data.world;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class Particle {
-    private ParticleType type;
-    private Object data;
+    ParticleType type;
+    Object data;
 
     @SuppressWarnings("unchecked")
     public <T extends Particle> T as() {

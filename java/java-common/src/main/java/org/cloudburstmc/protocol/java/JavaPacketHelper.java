@@ -18,13 +18,22 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.cloudburstmc.protocol.java.data.Direction;
+import org.cloudburstmc.protocol.java.data.entity.EntityData;
+import org.cloudburstmc.protocol.java.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.java.data.entity.EntityType;
+import org.cloudburstmc.protocol.java.data.entity.Pose;
+import org.cloudburstmc.protocol.java.data.entity.VillagerData;
 import org.cloudburstmc.protocol.java.data.inventory.ItemStack;
 import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 import org.cloudburstmc.protocol.java.data.profile.property.Property;
 import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
 import org.cloudburstmc.protocol.java.data.world.BlockEntityAction;
+import org.cloudburstmc.protocol.java.data.world.Particle;
+import org.cloudburstmc.protocol.java.data.world.ParticleType;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +49,7 @@ public abstract class JavaPacketHelper {
     protected final Int2ObjectBiMap<EntityType> entityTypes = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<BlockEntityAction> blockEntityActions = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ContainerType> containerTypes = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<EntityDataType<?>> entityDataTypes = new Int2ObjectBiMap<>();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
@@ -204,6 +214,55 @@ public abstract class JavaPacketHelper {
         buffer.writeByte((int) (vector3f.getZ() * 256F / 360));
     }
 
+    public Vector3f readRotation(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return Vector3f.from(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+    }
+
+    public void writeRotation(ByteBuf buffer, Vector3f vector3f) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector3f, "vector3f");
+        buffer.writeFloat(vector3f.getX());
+        buffer.writeFloat(vector3f.getY());
+        buffer.writeFloat(vector3f.getZ());
+    }
+
+    public Direction readDirection(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return Direction.getById(this.readVarInt(buffer));
+    }
+
+    public void writeDirection(ByteBuf buffer, Direction direction) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(direction, "direction");
+        this.writeVarInt(buffer, direction.ordinal());
+    }
+
+    public VillagerData readVillagerData(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return new VillagerData(this.readVarInt(buffer), this.readVarInt(buffer), this.readVarInt(buffer));
+    }
+
+    public void writeVillagerData(ByteBuf buffer, VillagerData villagerData) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(villagerData, "villagerData");
+        this.writeVarInt(buffer, villagerData.getLevel());
+        this.writeVarInt(buffer, villagerData.getProfession());
+        this.writeVarInt(buffer, villagerData.getType());
+    }
+
+    public Particle readParticle(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return new Particle(ParticleType.getById(this.readVarInt(buffer)), null); // TODO
+    }
+
+    public void writeParticle(ByteBuf buffer, Particle particle) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(particle, "particle");
+        this.writeVarInt(buffer, particle.getType().ordinal());
+        // TODO: Write object data
+    }
+
     // TODO: Move these to version helpers as they have changed between versions
     public ItemStack readItemStack(ByteBuf buffer) {
         boolean present = buffer.readBoolean();
@@ -343,6 +402,34 @@ public abstract class JavaPacketHelper {
         }
     }
 
+    public Component readComponent(ByteBuf buffer) {
+        return GsonComponentSerializer.gson().deserialize(this.readString(buffer));
+    }
+
+    public void writeComponent(ByteBuf buffer, Component component) {
+        this.writeString(buffer, GsonComponentSerializer.gson().serialize(component));
+    }
+
+    public Pose readPose(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return Pose.getById(this.readVarInt(buffer));
+    }
+
+    public void writePose(ByteBuf buffer, Pose pose) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(pose, "pose");
+        this.writeVarInt(buffer, pose.ordinal());
+    }
+
+    public <T> EntityData<T> readEntityData(int dataId, int id, ByteBuf buffer) {
+        EntityDataType<T> type = this.getEntityDataType(id);
+        return new EntityData<>(dataId, type, type.read(this, buffer));
+    }
+
+    public <T> void writeEntityData(EntityData<T> data, ByteBuf buffer) {
+        data.getType().write(this, buffer, data.getValue());
+    }
+
     public final int getEntityId(EntityType entityType) {
         return this.entityTypes.get(entityType);
     }
@@ -367,9 +454,20 @@ public abstract class JavaPacketHelper {
         return this.containerTypes.get(containerId);
     }
 
+    @SuppressWarnings("unchecked")
+    public final <T> EntityDataType<T> getEntityDataType(int id) {
+        return (EntityDataType<T>) this.entityDataTypes.get(id);
+    }
+
+    public final int getEntityDataTypeId(EntityDataType<?> type) {
+        return this.entityDataTypes.get(type);
+    }
+
     protected abstract void registerEntityTypes();
 
     protected abstract void registerBlockEntityActions();
 
     protected abstract void registerContainerTypes();
+
+    protected abstract void registerEntityDataTypes();
 }
