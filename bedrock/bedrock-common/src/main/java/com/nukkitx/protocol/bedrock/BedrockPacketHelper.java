@@ -424,10 +424,10 @@ public abstract class BedrockPacketHelper {
         }
     }
 
-    public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> biConsumer) {
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
         VarInts.writeUnsignedInt(buffer, array.size());
         for (T val : array) {
-            biConsumer.accept(buffer, this, val);
+            consumer.accept(buffer, this, val);
         }
     }
 
@@ -440,10 +440,10 @@ public abstract class BedrockPacketHelper {
     }
 
     public <T> void writeArray(ByteBuf buffer, Collection<T> array, BedrockSession session,
-                               QuadConsumer<ByteBuf, BedrockPacketHelper, BedrockSession, T> biConsumer) {
+                               QuadConsumer<ByteBuf, BedrockPacketHelper, BedrockSession, T> consumer) {
         VarInts.writeUnsignedInt(buffer, array.size());
         for (T val : array) {
-            biConsumer.accept(buffer, this, session, val);
+            consumer.accept(buffer, this, session, val);
         }
     }
 
@@ -453,10 +453,10 @@ public abstract class BedrockPacketHelper {
         return list.toArray(array);
     }
 
-    public <T> void writeArray(ByteBuf buffer, T[] array, TriConsumer<ByteBuf, BedrockPacketHelper, T> biConsumer) {
+    public <T> void writeArray(ByteBuf buffer, T[] array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
         VarInts.writeUnsignedInt(buffer, array.length);
         for (T val : array) {
-            biConsumer.accept(buffer, this, val);
+            consumer.accept(buffer, this, val);
         }
     }
 
@@ -468,10 +468,10 @@ public abstract class BedrockPacketHelper {
     }
 
     public <T> void writeArray(ByteBuf buffer, T[] array, BedrockSession session,
-                               QuadConsumer<ByteBuf, BedrockPacketHelper, BedrockSession, T> biConsumer) {
+                               QuadConsumer<ByteBuf, BedrockPacketHelper, BedrockSession, T> consumer) {
         VarInts.writeUnsignedInt(buffer, array.length);
         for (T val : array) {
-            biConsumer.accept(buffer, this, session, val);
+            consumer.accept(buffer, this, session, val);
         }
     }
 
@@ -482,10 +482,10 @@ public abstract class BedrockPacketHelper {
         }
     }
 
-    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> biConsumer) {
+    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
         buffer.writeShortLE(array.size());
         for (T val : array) {
-            biConsumer.accept(buffer, this, val);
+            consumer.accept(buffer, this, val);
         }
     }
 
