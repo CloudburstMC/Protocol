@@ -206,8 +206,8 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
         VarInts.writeInt(buffer, id);
 
         // Write damage and count
-        buffer.writeShort(item.getCount());
-        VarInts.writeInt(buffer, item.getDamage());
+        buffer.writeShortLE(item.getCount());
+        VarInts.writeUnsignedInt(buffer, item.getDamage());
         VarInts.writeInt(buffer, item.getBlockRuntimeId());
 
         ByteBuf userDataBuf = ByteBufAllocator.DEFAULT.ioBuffer();
@@ -259,12 +259,14 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
         }
         VarInts.writeInt(buffer, id);
 
-        buffer.writeShort(item.getCount());
         // Write damage and count
-        VarInts.writeInt(buffer, item.getDamage());
+        buffer.writeShortLE(item.getCount());
+        VarInts.writeUnsignedInt(buffer, item.getDamage());
 
         buffer.writeBoolean(item.isUsingNetId());
-        VarInts.writeInt(buffer, item.getNetId());
+        if (item.isUsingNetId()) {
+            VarInts.writeInt(buffer, item.getNetId());
+        }
 
         VarInts.writeInt(buffer, item.getBlockRuntimeId());
 
