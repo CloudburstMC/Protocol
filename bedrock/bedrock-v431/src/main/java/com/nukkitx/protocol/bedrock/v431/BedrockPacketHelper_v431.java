@@ -96,7 +96,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 canBreak[i] = stream.readUTF();
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 blockingTicks = stream.readLong();
             }
         } catch (IOException e) {
@@ -164,7 +164,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 canBreak[i] = stream.readUTF();
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 blockingTicks = stream.readLong();
             }
         } catch (IOException e) {
@@ -235,7 +235,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 stream.writeUTF(aCanBreak);
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 stream.writeLong(item.getBlockingTicks());
             }
 
@@ -295,7 +295,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 stream.writeUTF(aCanBreak);
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 stream.writeLong(item.getBlockingTicks());
             }
 

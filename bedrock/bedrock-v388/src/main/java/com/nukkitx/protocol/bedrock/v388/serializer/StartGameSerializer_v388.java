@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.v388.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.AuthoritativeMovementMode;
 import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
@@ -46,7 +47,7 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet, BedrockSession session) {
         packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setPlayerGameType(GameType.from(VarInts.readInt(buffer)));
@@ -65,9 +66,12 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
 
         packet.setBlockPalette(helper.readTag(buffer));
 
-        helper.readArray(buffer, packet.getItemEntries(), (buf, h) -> {
-            String identifier = h.readString(buf);
+        helper.readArray(buffer, packet.getItemEntries(), session, (buf, packetHelper, aSession) -> {
+            String identifier = packetHelper.readString(buf);
             short id = buf.readShortLE();
+            if (identifier.equals(packetHelper.getBlockingItemIdentifier())) {
+                aSession.getHardcodedBlockingId().set(id);
+            }
             return new StartGamePacket.ItemEntry(identifier, id);
         });
 
