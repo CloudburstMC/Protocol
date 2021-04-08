@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerAuthInputSerializer_v431 extends PlayerAuthInputSerializer_v428 {
 
+    public static final PlayerAuthInputSerializer_v431 INSTANCE = new PlayerAuthInputSerializer_v431();
+
     @Override
     protected void writePlayerBlockActionData(ByteBuf buffer, BedrockPacketHelper helper, PlayerBlockActionData actionData) {
         super.writePlayerBlockActionData(buffer, helper, actionData);
