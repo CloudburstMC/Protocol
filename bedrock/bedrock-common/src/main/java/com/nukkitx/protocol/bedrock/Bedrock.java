@@ -7,14 +7,16 @@ import io.netty.channel.EventLoopGroup;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Bedrock implements MinecraftInterface {
     final EventLoopGroup eventLoopGroup;
+    final ScheduledFuture<?> tickFuture;
 
     Bedrock(EventLoopGroup eventLoopGroup) {
         this.eventLoopGroup = eventLoopGroup;
-        eventLoopGroup.scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
+        this.tickFuture = eventLoopGroup.scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
     }
 
     protected abstract void onTick();
@@ -33,5 +35,9 @@ public abstract class Bedrock implements MinecraftInterface {
         return this.getRakNet().bind();
     }
 
-    public abstract void close();
+    public void close() {
+        this.close(false);
+    }
+
+    public abstract void close(boolean force);
 }

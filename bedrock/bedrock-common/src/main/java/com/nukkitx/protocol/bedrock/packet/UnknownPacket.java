@@ -23,12 +23,12 @@ public final class UnknownPacket extends BedrockPacket implements BedrockPacketS
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, UnknownPacket packet) {
-        packet.payload = buffer.readBytes(buffer.readableBytes());
+        packet.payload = buffer.readRetainedSlice(buffer.readableBytes());
     }
 
     @Override
     public String toString() {
-        return "UNKNOWN - " + getPacketId() + " - Hex: " + (payload == null ? "null" : ByteBufUtil.hexDump(payload));
+        return "UNKNOWN - " + getPacketId() + " - Hex: " + (payload == null || payload.refCnt() == 0 ? "null" : ByteBufUtil.hexDump(payload));
     }
 
     @Override

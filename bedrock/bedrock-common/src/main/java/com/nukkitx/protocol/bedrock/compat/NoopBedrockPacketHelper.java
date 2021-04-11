@@ -96,6 +96,16 @@ public class NoopBedrockPacketHelper extends BedrockPacketHelper {
     }
 
     @Override
+    public ItemData readItemInstance(ByteBuf buffer, BedrockSession session) {
+        return null;
+    }
+
+    @Override
+    public void writeItemInstance(ByteBuf buffer, ItemData item, BedrockSession session) {
+
+    }
+
+    @Override
     public CommandOriginData readCommandOrigin(ByteBuf buffer) {
         return null;
     }

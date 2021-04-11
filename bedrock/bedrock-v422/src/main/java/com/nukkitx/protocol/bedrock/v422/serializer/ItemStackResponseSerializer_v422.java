@@ -17,7 +17,8 @@ public class ItemStackResponseSerializer_v422 extends ItemStackResponseSerialize
                 buffer.readByte(),
                 buffer.readByte(),
                 VarInts.readInt(buffer),
-                helper.readString(buffer));
+                helper.readString(buffer),
+                0);
     }
 
     @Override

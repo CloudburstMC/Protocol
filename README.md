@@ -113,7 +113,7 @@ server.bind().join();
 ##### Protocol Versions:
 
 | Dependency | Minecraft Version |
-|:-:|:-:|
+| :---: | :---: |
 | bedrock-v291 | 1.7.0 |
 | bedrock-v313 | 1.8.0 |
 | bedrock-v332 | 1.9.0 |
@@ -127,6 +127,8 @@ server.bind().join();
 | bedrock-v408 | 1.16.20 |
 | bedrock-v419 | 1.16.100 |
 | bedrock-v422 | 1.16.200 - 1.16.201 |
+| bedrock-v428 | 1.16.210 |
+| bedrock-v431 | 1.16.220 |
 
 ##### Repository:
 
@@ -150,7 +152,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.6.1-SNAPSHOT</version>
+            <version>2.7.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -7,10 +7,11 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
+import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
 import com.nukkitx.protocol.bedrock.v332.BedrockPacketHelper_v332;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -19,8 +20,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
-import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
 
@@ -28,21 +27,21 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
 
     @Override
     protected void registerCommandParams() {
-        this.addCommandParam(1, INT);
-        this.addCommandParam(2, FLOAT);
-        this.addCommandParam(3, VALUE);
-        this.addCommandParam(4, WILDCARD_INT);
-        this.addCommandParam(5, OPERATOR);
-        this.addCommandParam(6, TARGET);
-        this.addCommandParam(7, WILDCARD_TARGET);
-        this.addCommandParam(14, FILE_PATH);
-        this.addCommandParam(18, INT_RANGE);
-        this.addCommandParam(27, STRING);
-        this.addCommandParam(29, POSITION);
-        this.addCommandParam(32, MESSAGE);
-        this.addCommandParam(34, TEXT);
-        this.addCommandParam(37, JSON);
-        this.addCommandParam(44, COMMAND);
+        this.addCommandParam(1, CommandParam.INT);
+        this.addCommandParam(2, CommandParam.FLOAT);
+        this.addCommandParam(3, CommandParam.VALUE);
+        this.addCommandParam(4, CommandParam.WILDCARD_INT);
+        this.addCommandParam(5, CommandParam.OPERATOR);
+        this.addCommandParam(6, CommandParam.TARGET);
+        this.addCommandParam(7, CommandParam.WILDCARD_TARGET);
+        this.addCommandParam(14, CommandParam.FILE_PATH);
+        this.addCommandParam(18, CommandParam.INT_RANGE);
+        this.addCommandParam(27, CommandParam.STRING);
+        this.addCommandParam(29, CommandParam.POSITION);
+        this.addCommandParam(32, CommandParam.MESSAGE);
+        this.addCommandParam(34, CommandParam.TEXT);
+        this.addCommandParam(37, CommandParam.JSON);
+        this.addCommandParam(44, CommandParam.COMMAND);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
             return ItemData.AIR;
         }
         int aux = VarInts.readInt(buffer);
-        short damage = (short) (aux >> 8);
+        int damage = (short) (aux >> 8);
         if (damage == Short.MAX_VALUE) damage = -1;
         int count = aux & 0xff;
         int nbtSize = buffer.readShortLE();
@@ -123,7 +122,15 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
             blockingTicks = VarInts.readLong(buffer);
         }
-        return ItemData.of(id, damage, count, compoundTag, canPlace, canBreak, blockingTicks);
+        return ItemData.builder()
+                .id(id)
+                .damage(damage)
+                .count(count)
+                .tag(compoundTag)
+                .canPlace(canPlace)
+                .canBreak(canBreak)
+                .blockingTicks(blockingTicks)
+                .build();
     }
 
     @Override
@@ -136,7 +143,16 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
     }
 
     @Override
-    public StructureSettings readStructureSettings(ByteBuf buffer) {
-        return super.readStructureSettings(buffer);
+    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+        super.readItemUse(buffer, packet, session);
+
+        packet.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
+    }
+
+    @Override
+    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+        super.writeItemUse(buffer, packet, session);
+
+        VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
     }
 }

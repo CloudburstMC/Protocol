@@ -28,7 +28,8 @@ public abstract class BedrockRakNetSessionListener implements RakNetSessionListe
         ByteBuf buffer = packet.getBuffer();
 
         int packetId = buffer.readUnsignedByte();
-        if (packetId == 0xfe /* Wrapper packet */) {
+        if (packetId == 0xfe && buffer.isReadable()) {
+            // Wrapper packet
             session.onWrappedPacket(buffer);
         }
     }

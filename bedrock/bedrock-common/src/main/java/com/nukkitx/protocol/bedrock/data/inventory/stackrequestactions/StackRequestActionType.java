@@ -10,18 +10,11 @@ public enum StackRequestActionType {
     CREATE,
     LAB_TABLE_COMBINE,
     BEACON_PAYMENT,
+    MINE_BLOCK,
     CRAFT_RECIPE,
     CRAFT_RECIPE_AUTO,
     CRAFT_CREATIVE,
+    CRAFT_RECIPE_OPTIONAL,
     CRAFT_NON_IMPLEMENTED_DEPRECATED,
     CRAFT_RESULTS_DEPRECATED;
-
-    private static final StackRequestActionType[] VALUES = values();
-
-    public static StackRequestActionType byId(int id) {
-        if (id >= 0 && id < VALUES.length) {
-            return VALUES[id];
-        }
-        throw new UnsupportedOperationException("Unknown StackRequestActionType ID: " + id);
-    }
 }

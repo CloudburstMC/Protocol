@@ -31,7 +31,11 @@ public class InventoryTransactionPacket extends BedrockPacket {
     private Vector3f playerPosition;
     private Vector3f clickPosition;
     private Vector3f headPosition;
-    private boolean hasNetworkIds;
+    /**
+     * @since v407
+     * @deprecated v431
+     */
+    private boolean usingNetIds;
     /**
      * Runtime ID of block being picked.
      * ItemUseInventoryTransaction only

@@ -75,13 +75,23 @@ public class StartGamePacket extends BedrockPacket {
     private String levelName;
     private String premiumWorldTemplateId;
     private boolean trial;
+    /**
+     * @deprecated as of v428
+     */
     private AuthoritativeMovementMode authoritativeMovementMode;
+    /**
+     * @since v428
+     */
+    private SyncedPlayerMovementSettings playerMovementSettings;
     private long currentTick;
     private int enchantmentSeed;
     private NbtList<NbtMap> blockPalette;
     private final List<BlockPropertyData> blockProperties = new ObjectArrayList<>();
     private List<ItemEntry> itemEntries = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
+    /**
+     * @since v407
+     */
     private boolean inventoriesServerAuthoritative;
 
     @Override

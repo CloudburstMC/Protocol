@@ -5,7 +5,6 @@ import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v291.serializer.*;
 import com.nukkitx.protocol.bedrock.v313.serializer.*;
 import com.nukkitx.protocol.bedrock.v332.serializer.*;
-import com.nukkitx.protocol.bedrock.v340.serializer.InventoryTransactionSerializer_v340;
 import com.nukkitx.protocol.bedrock.v354.serializer.*;
 import com.nukkitx.protocol.bedrock.v361.serializer.*;
 import com.nukkitx.protocol.bedrock.v388.serializer.*;
@@ -45,7 +44,7 @@ public class Bedrock_v388 {
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v291.INSTANCE, 27)
             .registerPacket(MobEffectPacket.class, MobEffectSerializer_v291.INSTANCE, 28)
             .registerPacket(UpdateAttributesPacket.class, UpdateAttributesSerializer_v291.INSTANCE, 29)
-            .registerPacket(InventoryTransactionPacket.class, InventoryTransactionSerializer_v340.INSTANCE, 30)
+            .registerPacket(InventoryTransactionPacket.class, InventoryTransactionSerializer_v291.INSTANCE, 30)
             .registerPacket(MobEquipmentPacket.class, MobEquipmentSerializer_v291.INSTANCE, 31)
             .registerPacket(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v291.INSTANCE, 32)
             .registerPacket(InteractPacket.class, InteractSerializer_v388.INSTANCE, 33)
