@@ -12,6 +12,8 @@ import com.nimbusds.jwt.SignedJWT;
 import com.nukkitx.natives.aes.AesFactory;
 import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.Preconditions;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -39,6 +41,8 @@ import java.util.Base64;
 
 @UtilityClass
 public class EncryptionUtils {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(EncryptionUtils.class);
+
     private static final AesFactory AES_FACTORY;
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
@@ -284,7 +288,8 @@ public class EncryptionUtils {
             aesInit.setAccessible(true);
             aesEncryptBlock = aesCryptClass.getDeclaredMethod("encryptBlock", byte[].class, int.class, byte[].class, int.class);
             aesEncryptBlock.setAccessible(true);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            log.debug("Encryption was unable to initialize: " + e.getMessage());
         }
 
         GCM_GET_J0 = gcmGetJ0;
