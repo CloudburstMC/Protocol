@@ -12,6 +12,8 @@ import com.nimbusds.jwt.SignedJWT;
 import com.nukkitx.natives.aes.AesFactory;
 import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.Preconditions;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -39,6 +41,8 @@ import java.util.Base64;
 
 @UtilityClass
 public class EncryptionUtils {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(EncryptionUtils.class);
+
     private static final AesFactory AES_FACTORY;
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
@@ -225,7 +229,7 @@ public class EncryptionUtils {
      * @return can use encryption
      */
     public static boolean canUseEncryption() {
-        return AES_FACTORY != null;
+        return AES_FACTORY != null && AES_ENCRYPT_BLOCK != null;
     }
 
     /**
@@ -265,22 +269,34 @@ public class EncryptionUtils {
     private static final Method AES_ENCRYPT_BLOCK;
 
     static {
+        Method gcmGetJ0 = null;
+        Method gcmIncrement32 = null;
+        Constructor<?> aesConstructor = null;
+        Method aesInit = null;
+        Method aesEncryptBlock = null;
+
         try {
             Class<?> clazz = Class.forName("com.sun.crypto.provider.GaloisCounterMode");
-            GCM_GET_J0 = clazz.getDeclaredMethod("getJ0", byte[].class, byte[].class);
-            GCM_GET_J0.setAccessible(true);
-            GCM_INCREMENT_32 = clazz.getDeclaredMethod("increment32", byte[].class);
-            GCM_INCREMENT_32.setAccessible(true);
+            gcmGetJ0 = clazz.getDeclaredMethod("getJ0", byte[].class, byte[].class);
+            gcmGetJ0.setAccessible(true);
+            gcmIncrement32 = clazz.getDeclaredMethod("increment32", byte[].class);
+            gcmIncrement32.setAccessible(true);
             Class<?> aesCryptClass = Class.forName("com.sun.crypto.provider.AESCrypt");
-            AES_CONSTRUCTOR = aesCryptClass.getDeclaredConstructor();
-            AES_CONSTRUCTOR.setAccessible(true);
-            AES_INIT = aesCryptClass.getDeclaredMethod("init", boolean.class, String.class, byte[].class);
-            AES_INIT.setAccessible(true);
-            AES_ENCRYPT_BLOCK = aesCryptClass.getDeclaredMethod("encryptBlock", byte[].class, int.class, byte[].class, int.class);
-            AES_ENCRYPT_BLOCK.setAccessible(true);
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
-            throw new AssertionError(e);
+            aesConstructor = aesCryptClass.getDeclaredConstructor();
+            aesConstructor.setAccessible(true);
+            aesInit = aesCryptClass.getDeclaredMethod("init", boolean.class, String.class, byte[].class);
+            aesInit.setAccessible(true);
+            aesEncryptBlock = aesCryptClass.getDeclaredMethod("encryptBlock", byte[].class, int.class, byte[].class, int.class);
+            aesEncryptBlock.setAccessible(true);
+        } catch (Exception e) {
+            log.debug("Encryption was unable to initialize: " + e.getMessage());
         }
+
+        GCM_GET_J0 = gcmGetJ0;
+        GCM_INCREMENT_32 = gcmIncrement32;
+        AES_CONSTRUCTOR = aesConstructor;
+        AES_INIT = aesInit;
+        AES_ENCRYPT_BLOCK = aesEncryptBlock;
     }
 
     private static byte[] getSubKey(byte[] key) {
