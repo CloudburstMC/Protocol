@@ -85,6 +85,9 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
         this.addLevelEvent(67 + legacy, LevelEventType.PARTICLE_TALL_CAMPFIRE_SMOKE);
         this.addLevelEvent(68 + legacy, LevelEventType.PARTICLE_RISING_DRAGONS_BREATH);
         this.addLevelEvent(69 + legacy, LevelEventType.PARTICLE_DRAGONS_BREATH);
+        this.addLevelEvent(70 + legacy, LevelEventType.PARTICLE_BLUE_FLAME);
+        this.addLevelEvent(71 + legacy, LevelEventType.PARTICLE_SOUL);
+        this.addLevelEvent(72 + legacy, LevelEventType.PARTICLE_OBSIDIAN_TEAR);
     }
 
     @Override
