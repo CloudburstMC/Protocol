@@ -32,6 +32,7 @@ public final class BedrockPacketCodec {
     private final String minecraftVersion;
     private final BedrockPacketSerializer<BedrockPacket>[] serializers;
     private final Int2ObjectBiMap<Class<? extends BedrockPacket>> idBiMap;
+    @Getter
     private final BedrockPacketHelper helper;
     @Getter
     private final int raknetProtocolVersion;
