@@ -119,7 +119,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
         }
 
         long blockingTicks = 0;
-        if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+        if (this.isBlockingItem(id, session)) {
             blockingTicks = VarInts.readLong(buffer);
         }
         return ItemData.builder()
@@ -137,7 +137,7 @@ public class BedrockPacketHelper_v340 extends BedrockPacketHelper_v332 {
     public void writeItem(ByteBuf buffer, ItemData item, BedrockSession session) {
         super.writeItem(buffer, item, session);
 
-        if (this.isBlockingItem(item.getId(), session.getHardcodedBlockingId().get())) {
+        if (this.isBlockingItem(item.getId(), session)) {
             VarInts.writeLong(buffer, item.getBlockingTicks());
         }
     }

@@ -732,16 +732,25 @@ public abstract class BedrockPacketHelper {
     }
 
     /**
-     * Return true if the item id has a blockingticks attached.
-     *
+     * Return true if the item id has a blockingTicks attached.
      * Only a shield should return true
      *
      * @param id ID of item
-     * @param lookFor ID to match
-     * @return true if reading/writing blockingticks
+     * @param session BedrockSession which holds correct blockingId
+     * @return true if reading/writing blockingTicks
      */
-    public boolean isBlockingItem(int id, int lookFor) {
-        return id == lookFor;
+    public boolean isBlockingItem(int id, BedrockSession session) {
+        int blockingId = session.getHardcodedBlockingId().get();
+        return id == blockingId;
+    }
+
+    /**
+     * In case of identifier being different in any version,
+     * helper can be used to return correct identifier.
+     * @return item identifier of shield.
+     */
+    public String getBlockingItemIdentifier() {
+        return "minecraft:shield";
     }
 
     public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {

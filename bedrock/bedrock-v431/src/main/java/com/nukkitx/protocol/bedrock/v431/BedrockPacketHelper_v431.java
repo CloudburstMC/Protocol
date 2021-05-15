@@ -42,6 +42,52 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
         this.addLevelEvent(2031, LevelEventType.PARTICLE_WAX_OFF);
         this.addLevelEvent(2032, LevelEventType.PARTICLE_SCRAPE);
         this.addLevelEvent(2033, LevelEventType.PARTICLE_ELECTRIC_SPARK);
+
+        int legacy = 0x4000;
+        this.addLevelEvent(29 + legacy, LevelEventType.PARTICLE_STALACTITE_DRIP_WATER);
+        this.addLevelEvent(30 + legacy, LevelEventType.PARTICLE_STALACTITE_DRIP_LAVA);
+        this.addLevelEvent(31 + legacy, LevelEventType.PARTICLE_FALLING_DUST);
+        this.addLevelEvent(32 + legacy, LevelEventType.PARTICLE_MOB_SPELL);
+        this.addLevelEvent(33 + legacy, LevelEventType.PARTICLE_MOB_SPELL_AMBIENT);
+        this.addLevelEvent(34 + legacy, LevelEventType.PARTICLE_MOB_SPELL_INSTANTANEOUS);
+        this.addLevelEvent(35 + legacy, LevelEventType.PARTICLE_INK);
+        this.addLevelEvent(36 + legacy, LevelEventType.PARTICLE_SLIME);
+        this.addLevelEvent(37 + legacy, LevelEventType.PARTICLE_RAIN_SPLASH);
+        this.addLevelEvent(38 + legacy, LevelEventType.PARTICLE_VILLAGER_ANGRY);
+        this.addLevelEvent(39 + legacy, LevelEventType.PARTICLE_VILLAGER_HAPPY);
+        this.addLevelEvent(40 + legacy, LevelEventType.PARTICLE_ENCHANTMENT_TABLE);
+        this.addLevelEvent(41 + legacy, LevelEventType.PARTICLE_TRACKING_EMITTER);
+        this.addLevelEvent(42 + legacy, LevelEventType.PARTICLE_NOTE);
+        this.addLevelEvent(43 + legacy, LevelEventType.PARTICLE_WITCH_SPELL);
+        this.addLevelEvent(44 + legacy, LevelEventType.PARTICLE_CARROT);
+        this.addLevelEvent(45 + legacy, LevelEventType.PARTICLE_MOB_APPEARANCE);
+        this.addLevelEvent(46 + legacy, LevelEventType.PARTICLE_END_ROD);
+        this.addLevelEvent(47 + legacy, LevelEventType.PARTICLE_DRAGONS_BREATH);
+        this.addLevelEvent(48 + legacy, LevelEventType.PARTICLE_SPIT);
+        this.addLevelEvent(49 + legacy, LevelEventType.PARTICLE_TOTEM);
+        this.addLevelEvent(50 + legacy, LevelEventType.PARTICLE_FOOD);
+        this.addLevelEvent(51 + legacy, LevelEventType.PARTICLE_FIREWORKS_STARTER);
+        this.addLevelEvent(52 + legacy, LevelEventType.PARTICLE_FIREWORKS_SPARK);
+        this.addLevelEvent(53 + legacy, LevelEventType.PARTICLE_FIREWORKS_OVERLAY);
+        this.addLevelEvent(54 + legacy, LevelEventType.PARTICLE_BALLOON_GAS);
+        this.addLevelEvent(55 + legacy, LevelEventType.PARTICLE_COLORED_FLAME);
+        this.addLevelEvent(56 + legacy, LevelEventType.PARTICLE_SPARKLER);
+        this.addLevelEvent(57 + legacy, LevelEventType.PARTICLE_CONDUIT);
+        this.addLevelEvent(58 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_UP);
+        this.addLevelEvent(59 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_DOWN);
+        this.addLevelEvent(60 + legacy, LevelEventType.PARTICLE_SNEEZE);
+        this.addLevelEvent(61 + legacy, LevelEventType.PARTICLE_SHULKER_BULLET);
+        this.addLevelEvent(62 + legacy, LevelEventType.PARTICLE_BLEACH);
+        this.addLevelEvent(63 + legacy, LevelEventType.PARTICLE_DRAGON_DESTROY_BLOCK);
+        this.addLevelEvent(64 + legacy, LevelEventType.PARTICLE_MYCELIUM_DUST);
+        this.addLevelEvent(65 + legacy, LevelEventType.PARTICLE_FALLING_RED_DUST);
+        this.addLevelEvent(66 + legacy, LevelEventType.PARTICLE_CAMPFIRE_SMOKE);
+        this.addLevelEvent(67 + legacy, LevelEventType.PARTICLE_TALL_CAMPFIRE_SMOKE);
+        this.addLevelEvent(68 + legacy, LevelEventType.PARTICLE_RISING_DRAGONS_BREATH);
+        this.addLevelEvent(69 + legacy, LevelEventType.PARTICLE_DRAGONS_BREATH);
+        this.addLevelEvent(70 + legacy, LevelEventType.PARTICLE_BLUE_FLAME);
+        this.addLevelEvent(71 + legacy, LevelEventType.PARTICLE_SOUL);
+        this.addLevelEvent(72 + legacy, LevelEventType.PARTICLE_OBSIDIAN_TEAR);
     }
 
     @Override
@@ -96,7 +142,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 canBreak[i] = stream.readUTF();
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 blockingTicks = stream.readLong();
             }
         } catch (IOException e) {
@@ -164,7 +210,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 canBreak[i] = stream.readUTF();
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 blockingTicks = stream.readLong();
             }
         } catch (IOException e) {
@@ -235,7 +281,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 stream.writeUTF(aCanBreak);
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 stream.writeLong(item.getBlockingTicks());
             }
 
@@ -295,7 +341,7 @@ public class BedrockPacketHelper_v431 extends BedrockPacketHelper_v428 {
                 stream.writeUTF(aCanBreak);
             }
 
-            if (this.isBlockingItem(id, session.getHardcodedBlockingId().get())) {
+            if (this.isBlockingItem(id, session)) {
                 stream.writeLong(item.getBlockingTicks());
             }
 
