@@ -19,23 +19,23 @@ public class CreativeContentSerializer_v407 implements BedrockPacketSerializer<C
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CreativeContentPacket packet, BedrockSession session) {
-        helper.writeArray(buffer, packet.getContents(), (buf, item) -> this.writeCreativeItem(buffer, helper, item, session));
+        helper.writeArray(buffer, packet.getContents(), session, this::writeCreativeItem);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, CreativeContentPacket packet, BedrockSession session) {
-        packet.setContents(helper.readArray(buffer, EMPTY, buf -> this.readCreativeItem(buffer, helper, session)));
+        packet.setContents(helper.readArray(buffer, EMPTY, session, this::readCreativeItem));
     }
 
     protected ItemData readCreativeItem(ByteBuf buffer, BedrockPacketHelper helper, BedrockSession session) {
         int netId = VarInts.readUnsignedInt(buffer);
-        ItemData item = helper.readItem(buffer, session);
+        ItemData item = helper.readItemInstance(buffer, session);
         item.setNetId(netId);
         return item;
     }
 
-    protected void writeCreativeItem(ByteBuf buffer, BedrockPacketHelper helper, ItemData item, BedrockSession session) {
+    protected void writeCreativeItem(ByteBuf buffer, BedrockPacketHelper helper, BedrockSession session, ItemData item) {
         VarInts.writeUnsignedInt(buffer, item.getNetId());
-        helper.writeItem(buffer, item, session);
+        helper.writeItemInstance(buffer, item, session);
     }
 }

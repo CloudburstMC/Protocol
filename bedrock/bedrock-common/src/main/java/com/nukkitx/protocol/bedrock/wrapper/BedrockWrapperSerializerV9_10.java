@@ -78,7 +78,9 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
                     packets.add(packet);
                 } catch (PacketSerializeException e) {
                     log.debug("Error occurred whilst decoding packet", e);
-                    log.trace("Packet contents\n{}", ByteBufUtil.prettyHexDump(packetBuffer.readerIndex(0)));
+                    if (log.isTraceEnabled()) {
+                        log.trace("Packet contents\n{}", ByteBufUtil.prettyHexDump(packetBuffer.readerIndex(0)));
+                    }
                 }
             }
         } catch (DataFormatException e) {

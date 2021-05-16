@@ -12,14 +12,22 @@ import com.nimbusds.jwt.SignedJWT;
 import com.nukkitx.natives.aes.AesFactory;
 import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.Preconditions;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 
+import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.security.*;
 import java.security.interfaces.ECPrivateKey;
@@ -28,10 +36,13 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Base64;
 
 @UtilityClass
 public class EncryptionUtils {
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(EncryptionUtils.class);
+
     private static final AesFactory AES_FACTORY;
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
@@ -218,7 +229,7 @@ public class EncryptionUtils {
      * @return can use encryption
      */
     public static boolean canUseEncryption() {
-        return AES_FACTORY != null;
+        return AES_FACTORY != null && AES_ENCRYPT_BLOCK != null;
     }
 
     /**
@@ -228,5 +239,86 @@ public class EncryptionUtils {
      */
     public static ECPublicKey getMojangPublicKey() {
         return MOJANG_PUBLIC_KEY;
+    }
+
+    public static Cipher createCipher(boolean gcm, boolean encrypt, SecretKey key) {
+        try {
+            byte[] iv;
+            String transformation;
+            if (gcm) {
+                byte[] subKey = getSubKey(key.getEncoded());
+                iv = getGcmIv(subKey, Arrays.copyOf(key.getEncoded(), 12));
+                transformation = "AES/CTR/NoPadding";
+            } else {
+                iv = Arrays.copyOf(key.getEncoded(), 16);
+                transformation = "AES/CFB8/NoPadding";
+            }
+            Cipher cipher = Cipher.getInstance(transformation);
+            cipher.init(encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+            return cipher;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new AssertionError("Unable to initialize required encryption", e);
+        }
+    }
+
+    private static final int AES_BLOCK_SIZE = 16;
+    private static final Method GCM_GET_J0;
+    private static final Method GCM_INCREMENT_32;
+    private static final Constructor<?> AES_CONSTRUCTOR;
+    private static final Method AES_INIT;
+    private static final Method AES_ENCRYPT_BLOCK;
+
+    static {
+        Method gcmGetJ0 = null;
+        Method gcmIncrement32 = null;
+        Constructor<?> aesConstructor = null;
+        Method aesInit = null;
+        Method aesEncryptBlock = null;
+
+        try {
+            Class<?> clazz = Class.forName("com.sun.crypto.provider.GaloisCounterMode");
+            gcmGetJ0 = clazz.getDeclaredMethod("getJ0", byte[].class, byte[].class);
+            gcmGetJ0.setAccessible(true);
+            gcmIncrement32 = clazz.getDeclaredMethod("increment32", byte[].class);
+            gcmIncrement32.setAccessible(true);
+            Class<?> aesCryptClass = Class.forName("com.sun.crypto.provider.AESCrypt");
+            aesConstructor = aesCryptClass.getDeclaredConstructor();
+            aesConstructor.setAccessible(true);
+            aesInit = aesCryptClass.getDeclaredMethod("init", boolean.class, String.class, byte[].class);
+            aesInit.setAccessible(true);
+            aesEncryptBlock = aesCryptClass.getDeclaredMethod("encryptBlock", byte[].class, int.class, byte[].class, int.class);
+            aesEncryptBlock.setAccessible(true);
+        } catch (Exception e) {
+            log.debug("Encryption was unable to initialize: " + e.getMessage());
+        }
+
+        GCM_GET_J0 = gcmGetJ0;
+        GCM_INCREMENT_32 = gcmIncrement32;
+        AES_CONSTRUCTOR = aesConstructor;
+        AES_INIT = aesInit;
+        AES_ENCRYPT_BLOCK = aesEncryptBlock;
+    }
+
+    private static byte[] getSubKey(byte[] key) {
+        try {
+            Object aesCrypt = AES_CONSTRUCTOR.newInstance();
+            AES_INIT.invoke(aesCrypt, false, "AES", key);
+            byte[] subKey = new byte[AES_BLOCK_SIZE];
+            AES_ENCRYPT_BLOCK.invoke(aesCrypt, new byte[AES_BLOCK_SIZE], 0, subKey, 0);
+
+            return subKey;
+        } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static byte[] getGcmIv(byte[] subKey, byte[] iv) {
+        try {
+            byte[] counter = (byte[]) GCM_GET_J0.invoke(null, iv, subKey);
+            GCM_INCREMENT_32.invoke(null, (Object) counter);
+            return counter;
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new AssertionError(e);
+        }
     }
 }

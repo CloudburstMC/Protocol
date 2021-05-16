@@ -11,16 +11,17 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
+import com.nukkitx.protocol.bedrock.data.inventory.*;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
-import com.nukkitx.protocol.bedrock.packet.ItemStackResponsePacket;
+import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
 import com.nukkitx.protocol.util.TriConsumer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
+import com.nukkitx.protocol.util.QuadConsumer;
+import com.nukkitx.protocol.util.TriFunction;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -52,7 +53,7 @@ public abstract class BedrockPacketHelper {
     protected final Object2IntMap<Class<?>> gameRuleTypes = new Object2IntOpenHashMap<>(3, 0.5f);
     protected final Int2ObjectBiMap<SoundEvent> soundEvents = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<LevelEventType> levelEvents = new Int2ObjectBiMap<>();
-    protected final Int2ObjectBiMap<CommandParamType> commandParams = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<CommandParam> commandParams = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ResourcePackType> resourcePackTypes = new Int2ObjectBiMap<>();
 
     protected BedrockPacketHelper() {
@@ -151,16 +152,29 @@ public abstract class BedrockPacketHelper {
 
     }
 
-    public final void addCommandParam(int index, CommandParamType commandParam) {
+    public final void addCommandParam(int index, CommandParam commandParam) {
         this.commandParams.put(index, commandParam);
     }
 
-    public final CommandParamType getCommandParam(int index) {
-        return this.commandParams.get(index);
+    public final CommandParam getCommandParam(int index) {
+        CommandParam commandParam = this.commandParams.get(index);
+        if (commandParam == null) {
+            log.debug("Requested undefined CommandParam {}", index);
+            return new CommandParam(index);
+        }
+        return commandParam;
     }
 
-    public final int getCommandParamId(CommandParamType commandParam) {
+    public final int getCommandParamId(CommandParam commandParam) {
         return this.commandParams.get(commandParam);
+    }
+
+    public final void removeCommandParam(int index) {
+        this.commandParams.remove(index);
+    }
+
+    public final void removeCommandParam(CommandParam type) {
+        this.commandParams.remove(type);
     }
 
     public final void addResourcePackType(int index, ResourcePackType resourcePackType) {
@@ -204,6 +218,10 @@ public abstract class BedrockPacketHelper {
     public abstract ItemData readItem(ByteBuf buffer, BedrockSession session);
 
     public abstract void writeItem(ByteBuf buffer, ItemData item, BedrockSession session);
+
+    public abstract ItemData readItemInstance(ByteBuf buffer, BedrockSession session);
+
+    public abstract void writeItemInstance(ByteBuf buffer, ItemData item, BedrockSession session);
 
     public abstract CommandOriginData readCommandOrigin(ByteBuf buffer);
 
@@ -289,22 +307,6 @@ public abstract class BedrockPacketHelper {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(string, "string");
         buffer.writeIntLE(string.length());
-        buffer.writeBytes(string.toByteArray());
-    }
-
-    public AsciiString readVarIntAsciiString(ByteBuf buffer) {
-        Preconditions.checkNotNull(buffer, "buffer");
-
-        int length = VarInts.readUnsignedInt(buffer);
-        byte[] bytes = new byte[length];
-        buffer.readBytes(bytes);
-        return new AsciiString(bytes);
-    }
-
-    public void writeVarIntAsciiString(ByteBuf buffer, AsciiString string) {
-        Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(string, "string");
-        VarInts.writeUnsignedInt(buffer, string.length());
         buffer.writeBytes(string.toByteArray());
     }
 
@@ -422,10 +424,26 @@ public abstract class BedrockPacketHelper {
         }
     }
 
-    public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> biConsumer) {
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
         VarInts.writeUnsignedInt(buffer, array.size());
         for (T val : array) {
-            biConsumer.accept(buffer, this, val);
+            consumer.accept(buffer, this, val);
+        }
+    }
+
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, BedrockSession session,
+                              TriFunction<ByteBuf, BedrockPacketHelper, BedrockSession, T> function) {
+        int length = VarInts.readUnsignedInt(buffer);
+        for (int i = 0; i < length; i++) {
+            array.add(function.apply(buffer, this, session));
+        }
+    }
+
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, BedrockSession session,
+                               QuadConsumer<ByteBuf, BedrockPacketHelper, BedrockSession, T> consumer) {
+        VarInts.writeUnsignedInt(buffer, array.size());
+        for (T val : array) {
+            consumer.accept(buffer, this, session, val);
         }
     }
 
@@ -435,10 +453,25 @@ public abstract class BedrockPacketHelper {
         return list.toArray(array);
     }
 
-    public <T> void writeArray(ByteBuf buffer, T[] array, TriConsumer<ByteBuf, BedrockPacketHelper, T> biConsumer) {
+    public <T> void writeArray(ByteBuf buffer, T[] array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
         VarInts.writeUnsignedInt(buffer, array.length);
         for (T val : array) {
-            biConsumer.accept(buffer, this, val);
+            consumer.accept(buffer, this, val);
+        }
+    }
+
+    public <T> T[] readArray(ByteBuf buffer, T[] array, BedrockSession session,
+                             TriFunction<ByteBuf, BedrockPacketHelper, BedrockSession, T> function) {
+        ObjectArrayList<T> list = new ObjectArrayList<>();
+        readArray(buffer, list, session, function);
+        return list.toArray(array);
+    }
+
+    public <T> void writeArray(ByteBuf buffer, T[] array, BedrockSession session,
+                               QuadConsumer<ByteBuf, BedrockPacketHelper, BedrockSession, T> consumer) {
+        VarInts.writeUnsignedInt(buffer, array.length);
+        for (T val : array) {
+            consumer.accept(buffer, this, session, val);
         }
     }
 
@@ -449,10 +482,10 @@ public abstract class BedrockPacketHelper {
         }
     }
 
-    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> biConsumer) {
+    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
         buffer.writeShortLE(array.size());
         for (T val : array) {
-            biConsumer.accept(buffer, this, val);
+            consumer.accept(buffer, this, val);
         }
     }
 
@@ -518,6 +551,87 @@ public abstract class BedrockPacketHelper {
         }
     }
 
+    public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+        packet.setActionType(VarInts.readUnsignedInt(buffer));
+        packet.setBlockPosition(this.readBlockPosition(buffer));
+        packet.setBlockFace(VarInts.readInt(buffer));
+        packet.setHotbarSlot(VarInts.readInt(buffer));
+        packet.setItemInHand(this.readItem(buffer, session));
+        packet.setPlayerPosition(this.readVector3f(buffer));
+        packet.setClickPosition(this.readVector3f(buffer));
+    }
+
+    public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet, BedrockSession session) {
+        VarInts.writeUnsignedInt(buffer, packet.getActionType());
+        this.writeBlockPosition(buffer, packet.getBlockPosition());
+        VarInts.writeInt(buffer, packet.getBlockFace());
+        VarInts.writeInt(buffer, packet.getHotbarSlot());
+        this.writeItem(buffer, packet.getItemInHand(), session);
+        this.writeVector3f(buffer, packet.getPlayerPosition());
+        this.writeVector3f(buffer, packet.getClickPosition());
+    }
+
+    public boolean readInventoryActions(ByteBuf buffer, BedrockSession session, List<InventoryActionData> actions) {
+        this.readArray(buffer, actions, session, (buf, helper, aSession) -> {
+            InventorySource source = helper.readSource(buf);
+            int slot = VarInts.readUnsignedInt(buf);
+            ItemData fromItem = helper.readItem(buf, aSession);
+            ItemData toItem = helper.readItem(buf, aSession);
+
+            return new InventoryActionData(source, slot, fromItem, toItem);
+        });
+        return false;
+    }
+
+    public void writeInventoryActions(ByteBuf buffer, BedrockSession session, List<InventoryActionData> actions,
+                                      boolean hasNetworkIds) {
+        this.writeArray(buffer, actions, session, (buf, helper, aSession, action) -> {
+            helper.writeSource(buf, action.getSource());
+            VarInts.writeUnsignedInt(buf, action.getSlot());
+            helper.writeItem(buf, action.getFromItem(), aSession);
+            helper.writeItem(buf, action.getToItem(), aSession);
+        });
+    }
+
+    public InventorySource readSource(ByteBuf buffer) {
+        InventorySource.Type type = InventorySource.Type.byId(VarInts.readUnsignedInt(buffer));
+
+        switch (type) {
+            case CONTAINER:
+                int containerId = VarInts.readInt(buffer);
+                return InventorySource.fromContainerWindowId(containerId);
+            case GLOBAL:
+                return InventorySource.fromGlobalInventory();
+            case WORLD_INTERACTION:
+                InventorySource.Flag flag = InventorySource.Flag.values()[VarInts.readUnsignedInt(buffer)];
+                return InventorySource.fromWorldInteraction(flag);
+            case CREATIVE:
+                return InventorySource.fromCreativeInventory();
+            case NON_IMPLEMENTED_TODO:
+                containerId = VarInts.readInt(buffer);
+                return InventorySource.fromNonImplementedTodo(containerId);
+            default:
+                return InventorySource.fromInvalid();
+        }
+    }
+
+    public void writeSource(ByteBuf buffer, InventorySource inventorySource) {
+        requireNonNull(inventorySource, "InventorySource was null");
+
+        VarInts.writeUnsignedInt(buffer, inventorySource.getType().id());
+
+        switch (inventorySource.getType()) {
+            case CONTAINER:
+            case UNTRACKED_INTERACTION_UI:
+            case NON_IMPLEMENTED_TODO:
+                VarInts.writeInt(buffer, inventorySource.getContainerId());
+                break;
+            case WORLD_INTERACTION:
+                VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
+                break;
+        }
+    }
+
     public ItemData readRecipeIngredient(ByteBuf buffer) {
         requireNonNull(buffer, "buffer is null");
 
@@ -531,7 +645,11 @@ public abstract class BedrockPacketHelper {
         int meta = VarInts.readInt(buffer);
         int count = VarInts.readInt(buffer);
 
-        return ItemData.of(id, (short) meta, count);
+        return ItemData.builder()
+                .id(id)
+                .damage(meta)
+                .count(count)
+                .build();
     }
 
     public void writeRecipeIngredient(ByteBuf buffer, ItemData item) {
@@ -614,16 +732,25 @@ public abstract class BedrockPacketHelper {
     }
 
     /**
-     * Return true if the item id has a blockingticks attached.
-     *
+     * Return true if the item id has a blockingTicks attached.
      * Only a shield should return true
      *
      * @param id ID of item
-     * @param lookFor ID to match
-     * @return true if reading/writing blockingticks
+     * @param session BedrockSession which holds correct blockingId
+     * @return true if reading/writing blockingTicks
      */
-    public boolean isBlockingItem(int id, int lookFor) {
-        return id == lookFor;
+    public boolean isBlockingItem(int id, BedrockSession session) {
+        int blockingId = session.getHardcodedBlockingId().get();
+        return id == blockingId;
+    }
+
+    /**
+     * In case of identifier being different in any version,
+     * helper can be used to return correct identifier.
+     * @return item identifier of shield.
+     */
+    public String getBlockingItemIdentifier() {
+        return "minecraft:shield";
     }
 
     public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
@@ -631,6 +758,26 @@ public abstract class BedrockPacketHelper {
     }
 
     public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected void registerStackActionRequestTypes() {
+        throw new UnsupportedOperationException();
+    }
+
+    public StackRequestActionType getStackRequestActionTypeFromId(int id) {
+        throw new UnsupportedOperationException();
+    }
+
+    public int getIdFromStackRequestActionType(StackRequestActionType type) {
+        throw new UnsupportedOperationException();
+    }
+
+    public ItemStackRequest readItemStackRequest(ByteBuf buffer, BedrockSession session) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void writeItemStackRequest(ByteBuf buffer, BedrockSession session, ItemStackRequest request) {
         throw new UnsupportedOperationException();
     }
 }

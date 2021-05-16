@@ -40,6 +40,6 @@ public class PlayerSkinSerializer_v291 implements BedrockPacketSerializer<Player
         String geometryName = helper.readString(buffer);
         String geometryData = helper.readString(buffer);
         boolean premium = buffer.readBoolean();
-        packet.setSkin(SerializedSkin.of(skinId, skinData, capeData, geometryName, geometryData, premium));
+        packet.setSkin(SerializedSkin.of(skinId, "", skinData, capeData, geometryName, geometryData, premium));
     }
 }

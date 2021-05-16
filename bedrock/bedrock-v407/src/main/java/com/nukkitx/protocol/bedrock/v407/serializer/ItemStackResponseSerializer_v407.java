@@ -63,7 +63,8 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
                 buffer.readByte(),
                 buffer.readByte(),
                 VarInts.readInt(buffer),
-                "");
+                "",
+                0);
     }
 
     protected void writeItemEntry(ByteBuf buffer, BedrockPacketHelper helper, ItemStackResponsePacket.ItemEntry itemEntry) {

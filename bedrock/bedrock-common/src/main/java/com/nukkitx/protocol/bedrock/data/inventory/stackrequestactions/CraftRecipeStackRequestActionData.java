@@ -1,6 +1,8 @@
 package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * CraftRecipeStackRequestActionData is sent by the client the moment it begins crafting an item. This is the
@@ -8,7 +10,9 @@ import lombok.Value;
  * This action is also sent when an item is enchanted. Enchanting should be treated mostly the same way as
  * crafting, where the old item is consumed.
  */
-@Value
+@AllArgsConstructor
+@Getter
+@Setter
 public class CraftRecipeStackRequestActionData implements RecipeStackRequestActionData {
     int recipeNetworkId;
 

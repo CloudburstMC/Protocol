@@ -1,8 +1,12 @@
 package com.nukkitx.protocol.bedrock.v388;
 
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.ResourcePackType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
@@ -10,6 +14,9 @@ import com.nukkitx.protocol.bedrock.data.skin.AnimatedTextureType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
+import com.nukkitx.protocol.bedrock.data.structure.StructureMirror;
+import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
+import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.v361.BedrockPacketHelper_v361;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -18,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.nukkitx.protocol.bedrock.data.command.CommandParamType.*;
 import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,21 +57,21 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
 
     @Override
     protected void registerCommandParams() {
-        this.addCommandParam(1, INT);
-        this.addCommandParam(2, FLOAT);
-        this.addCommandParam(3, VALUE);
-        this.addCommandParam(4, WILDCARD_INT);
-        this.addCommandParam(5, OPERATOR);
-        this.addCommandParam(6, TARGET);
-        this.addCommandParam(7, WILDCARD_TARGET);
-        this.addCommandParam(14, FILE_PATH);
-        this.addCommandParam(29, STRING);
-        this.addCommandParam(37, BLOCK_POSITION);
-        this.addCommandParam(38, POSITION);
-        this.addCommandParam(41, MESSAGE);
-        this.addCommandParam(43, TEXT);
-        this.addCommandParam(47, JSON);
-        this.addCommandParam(54, COMMAND);
+        this.addCommandParam(1, CommandParam.INT);
+        this.addCommandParam(2, CommandParam.FLOAT);
+        this.addCommandParam(3, CommandParam.VALUE);
+        this.addCommandParam(4, CommandParam.WILDCARD_INT);
+        this.addCommandParam(5, CommandParam.OPERATOR);
+        this.addCommandParam(6, CommandParam.TARGET);
+        this.addCommandParam(7, CommandParam.WILDCARD_TARGET);
+        this.addCommandParam(14, CommandParam.FILE_PATH);
+        this.addCommandParam(29, CommandParam.STRING);
+        this.addCommandParam(37, CommandParam.BLOCK_POSITION);
+        this.addCommandParam(38, CommandParam.POSITION);
+        this.addCommandParam(41, CommandParam.MESSAGE);
+        this.addCommandParam(43, CommandParam.TEXT);
+        this.addCommandParam(47, CommandParam.JSON);
+        this.addCommandParam(54, CommandParam.COMMAND);
     }
 
     @Override
@@ -138,7 +144,7 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         String capeId = this.readString(buffer);
         String fullSkinId = this.readString(buffer);
 
-        return SerializedSkin.of(skinId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
+        return SerializedSkin.of(skinId, "", skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
                 premium, persona, capeOnClassic, capeId, fullSkinId);
     }
 
@@ -198,5 +204,29 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         buffer.writeIntLE(image.getWidth());
         buffer.writeIntLE(image.getHeight());
         writeByteArray(buffer, image.getImage());
+    }
+
+    @Override
+    public StructureSettings readStructureSettings(ByteBuf buffer) {
+        String paletteName = this.readString(buffer);
+        boolean ignoringEntities = buffer.readBoolean();
+        boolean ignoringBlocks = buffer.readBoolean();
+        Vector3i size = this.readBlockPosition(buffer);
+        Vector3i offset = this.readBlockPosition(buffer);
+        long lastEditedByEntityId = VarInts.readLong(buffer);
+        StructureRotation rotation = StructureRotation.from(buffer.readByte());
+        StructureMirror mirror = StructureMirror.from(buffer.readByte());
+        float integrityValue = buffer.readFloatLE();
+        int integritySeed = buffer.readIntLE();
+        Vector3f pivot = this.readVector3f(buffer);
+
+        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
+                rotation, mirror, integrityValue, integritySeed, pivot);
+    }
+
+    @Override
+    public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
+        super.writeStructureSettings(buffer, settings);
+        this.writeVector3f(buffer, settings.getPivot());
     }
 }
