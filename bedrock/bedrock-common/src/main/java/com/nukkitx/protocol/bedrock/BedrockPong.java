@@ -100,7 +100,7 @@ public class BedrockPong {
                 .add(toString(this.version))
                 .add(Integer.toString(this.playerCount))
                 .add(Integer.toString(this.maximumPlayerCount))
-                .add(Long.toString(this.serverId))
+                .add(Long.toUnsignedString(this.serverId))
                 .add(toString(this.subMotd))
                 .add(toString(this.gameType))
                 .add(this.nintendoLimited ? "0" : "1")
