@@ -41,6 +41,7 @@ public final class ItemData {
         this.blockingTicks = blockingTicks;
         this.blockRuntimeId = blockRuntimeId;
         this.netId = netId;
+        this.usingNetId = hasNetId;
     }
 
     public boolean isValid() {
