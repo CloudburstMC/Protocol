@@ -8,10 +8,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.Epoll;
-import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.Getter;
 import lombok.Setter;
@@ -87,13 +83,8 @@ public class JavaClient extends Java {
     @Override
     public CompletableFuture<Void> bind() {
         Preconditions.checkNotNull(this.eventLoopGroup, "Event loop group was null");
-
-        Class<? extends SocketChannel> channel = NioSocketChannel.class;
-        if (Epoll.isAvailable()) {
-            channel = EpollSocketChannel.class;
-        }
         this.bootstrap = new Bootstrap()
-                .channel(channel)
+                .channel(EventLoops.getChannelType().getSocketChannel())
                 .group(this.eventLoopGroup)
                 .localAddress(this.bindAddress)
                 .option(ChannelOption.TCP_NODELAY, true)

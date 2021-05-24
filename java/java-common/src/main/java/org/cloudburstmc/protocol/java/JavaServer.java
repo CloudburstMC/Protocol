@@ -51,13 +51,8 @@ public class JavaServer extends Java {
     @Override
     public CompletableFuture<Void> bind() {
         Preconditions.checkNotNull(this.eventLoopGroup, "Event loop group was null");
-
-        Class<? extends ServerChannel> channel = NioServerSocketChannel.class;
-        if (Epoll.isAvailable()) {
-            channel = EpollServerSocketChannel.class;
-        }
         ChannelFuture future = new ServerBootstrap()
-                .channel(channel)
+                .channel(EventLoops.getChannelType().getServerSocketChannel())
                 .group(this.eventLoopGroup)
                 .localAddress(this.getBindAddress())
                 .childOption(ChannelOption.TCP_NODELAY, true)
