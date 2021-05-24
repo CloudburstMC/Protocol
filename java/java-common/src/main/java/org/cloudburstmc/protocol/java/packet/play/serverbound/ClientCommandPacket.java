@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.java.packet.play.serverbound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.cloudburstmc.protocol.java.CommandAction;
+import org.cloudburstmc.protocol.java.data.command.CommandAction;
 import org.cloudburstmc.protocol.java.JavaPacket;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;

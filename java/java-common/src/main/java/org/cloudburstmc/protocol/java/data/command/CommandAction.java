@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.java;
+package org.cloudburstmc.protocol.java.data.command;
 
 public enum CommandAction {
     PERFORM_RESPAWN,
