@@ -38,10 +38,13 @@ import org.cloudburstmc.protocol.java.data.world.ParticleType;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class JavaPacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(JavaPacketHelper.class);
@@ -428,6 +431,20 @@ public abstract class JavaPacketHelper {
 
     public <T> void writeEntityData(EntityData<T> data, ByteBuf buffer) {
         data.getType().write(this, buffer, data.getValue());
+    }
+
+    public <T> T readOptional(ByteBuf buffer, Function<ByteBuf, T> readFunction) {
+        if (buffer.readBoolean()) {
+            return readFunction.apply(buffer);
+        }
+        return null;
+    }
+
+    public <T> void writeOptional(ByteBuf buffer, T value, BiConsumer<ByteBuf, T> writeFunction) {
+        buffer.writeBoolean(value != null);
+        if (value != null) {
+            writeFunction.accept(buffer, value);
+        }
     }
 
     public final int getEntityId(EntityType entityType) {

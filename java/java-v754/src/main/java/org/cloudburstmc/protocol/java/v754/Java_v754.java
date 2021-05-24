@@ -81,6 +81,8 @@ public class Java_v754 {
                     .registerClientbound(LevelChunkPacket.class, LevelChunkSerializer_v754.INSTANCE, 32)
                     .registerClientbound(LevelEventPacket.class, LevelEventSerializer_v754.INSTANCE, 33)
                     .registerClientbound(LoginPacket.class, LoginSerializer_v754.INSTANCE, 36)
+                    .registerClientbound(MapItemDataPacket.class, MapItemDataSerializer_v754.INSTANCE, 37)
+                    .registerClientbound(MerchantOffersPacket.class, MerchantOffersSerializer_v754.INSTANCE, 38)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
                     .registerClientbound(SetCarriedItemPacket.class, SetCarriedItemSerializer_v754.INSTANCE, 63)
 

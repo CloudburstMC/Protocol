@@ -8,9 +8,9 @@ public class MerchantOffer {
     ItemStack buyA;
     ItemStack buyB;
     ItemStack sell;
+    boolean outOfStock;
     int uses;
     int maxUses;
-    boolean rewardExp;
     int specialPriceDiff;
     int demand;
     float priceMultiplier;
