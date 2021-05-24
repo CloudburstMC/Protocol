@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.java.v754;
 
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.data.entity.EntityDataType;
+import org.cloudburstmc.protocol.java.data.entity.Pose;
 import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 
 import static org.cloudburstmc.protocol.java.data.entity.EntityType.*;
@@ -189,5 +190,16 @@ public class JavaPacketHelper_v754 extends JavaPacketHelper {
         this.entityDataTypes.put(16, EntityDataType.VILLAGER_DATA);
         this.entityDataTypes.put(17, EntityDataType.OPTIONAL_INT);
         this.entityDataTypes.put(18, EntityDataType.POSE);
+    }
+
+    @Override
+    public void registerPoses() {
+        this.poses.put(0, Pose.STANDING);
+        this.poses.put(1, Pose.FALL_FLYING);
+        this.poses.put(2, Pose.SLEEPING);
+        this.poses.put(3, Pose.SWIMMING);
+        this.poses.put(4, Pose.SPIN_ATTACK);
+        this.poses.put(5, Pose.CROUCHING);
+        this.poses.put(6, Pose.DYING);
     }
 }

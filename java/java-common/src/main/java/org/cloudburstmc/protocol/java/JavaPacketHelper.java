@@ -53,6 +53,7 @@ public abstract class JavaPacketHelper {
     protected final Int2ObjectBiMap<BlockEntityAction> blockEntityActions = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ContainerType> containerTypes = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<EntityDataType<?>> entityDataTypes = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<Pose> poses = new Int2ObjectBiMap<>();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
@@ -415,13 +416,13 @@ public abstract class JavaPacketHelper {
 
     public Pose readPose(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return Pose.getById(this.readVarInt(buffer));
+        return this.getPose(this.readVarInt(buffer));
     }
 
     public void writePose(ByteBuf buffer, Pose pose) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(pose, "pose");
-        this.writeVarInt(buffer, pose.ordinal());
+        this.writeVarInt(buffer, this.getPoseId(pose));
     }
 
     public <T> EntityData<T> readEntityData(int dataId, int id, ByteBuf buffer) {
@@ -471,6 +472,14 @@ public abstract class JavaPacketHelper {
         return this.containerTypes.get(containerId);
     }
 
+    public final Pose getPose(int id) {
+        return this.poses.get(id);
+    }
+
+    public final int getPoseId(Pose pose) {
+        return this.poses.get(pose);
+    }
+
     @SuppressWarnings("unchecked")
     public final <T> EntityDataType<T> getEntityDataType(int id) {
         return (EntityDataType<T>) this.entityDataTypes.get(id);
@@ -487,4 +496,6 @@ public abstract class JavaPacketHelper {
     protected abstract void registerContainerTypes();
 
     protected abstract void registerEntityDataTypes();
+
+    public abstract void registerPoses();
 }
