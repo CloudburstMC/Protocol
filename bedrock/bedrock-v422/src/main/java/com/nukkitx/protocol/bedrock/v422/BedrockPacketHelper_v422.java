@@ -4,6 +4,7 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequest;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.CraftRecipeOptionalStackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.CraftRecipeStackRequestActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.v419.BedrockPacketHelper_v419;
@@ -67,6 +68,9 @@ public class BedrockPacketHelper_v422 extends BedrockPacketHelper_v419 {
         StackRequestActionData action;
         if (type == StackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
             action = new CraftRecipeOptionalStackRequestActionData(VarInts.readUnsignedInt(byteBuf), byteBuf.readIntLE());
+        } else if (type == CRAFT_RECIPE) {
+            action = new CraftRecipeStackRequestActionData(VarInts.readUnsignedInt(byteBuf),
+                    byteBuf.readIntLE());
         } else {
             action = super.readRequestActionData(byteBuf, type, session);
         }
