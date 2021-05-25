@@ -82,6 +82,9 @@ public class BedrockPacketHelper_v422 extends BedrockPacketHelper_v419 {
         if (action.getType() == StackRequestActionType.CRAFT_RECIPE_OPTIONAL) {
             VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeOptionalStackRequestActionData) action).getRecipeNetworkId());
             byteBuf.writeIntLE(((CraftRecipeOptionalStackRequestActionData) action).getFilteredStringIndex());
+        } else if (action.getType() == CRAFT_RECIPE) {
+            VarInts.writeUnsignedInt(byteBuf, ((CraftRecipeStackRequestActionData) action).getRecipeNetworkId());
+            byteBuf.writeIntLE(((CraftRecipeStackRequestActionData) action).getTextInputIndex());
         } else {
             super.writeRequestActionData(byteBuf, action, session);
         }
