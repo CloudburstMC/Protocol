@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.nukkitx.protocol</groupId>
+    <groupId>org.cloudburstmc.protocol</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>3.0.0-SNAPSHOT</version>
     <name>Protocol Parent</name>
     <description>A protocol library for Minecraft</description>
-    <url>https://github.com/NukkitX/Protocol</url>
+    <url>https://github.com/CloudburstMC/Protocol</url>
     <inceptionYear>2018</inceptionYear>
 
     <modules>
@@ -27,7 +27,7 @@
     </licenses>
 
     <organization>
-        <name>NukkitX</name>
+        <name>CloudburstMC</name>
         <url>https://github.com/CloudburstMC</url>
     </organization>
 

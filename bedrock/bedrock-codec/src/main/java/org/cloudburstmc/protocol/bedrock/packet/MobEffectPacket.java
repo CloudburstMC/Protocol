@@ -1,0 +1,34 @@
+package org.cloudburstmc.protocol.bedrock.packet;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.cloudburstmc.protocol.common.PacketSignal;
+
+@Data
+@EqualsAndHashCode(doNotUseGetters = true)
+@ToString(doNotUseGetters = true)
+public class MobEffectPacket implements BedrockPacket {
+    private long runtimeEntityId;
+    private Event event;
+    private int effectId;
+    private int amplifier;
+    private boolean particles;
+    private int duration;
+
+    @Override
+    public final PacketSignal handle(BedrockPacketHandler handler) {
+        return handler.handle(this);
+    }
+
+    public BedrockPacketType getPacketType() {
+        return BedrockPacketType.MOB_EFFECT;
+    }
+
+    public enum Event {
+        NONE,
+        ADD,
+        MODIFY,
+        REMOVE,
+    }
+}
