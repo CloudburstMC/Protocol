@@ -2,9 +2,11 @@ package com.nukkitx.protocol.bedrock.data.structure;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 
 @Value
+@AllArgsConstructor
 public class StructureSettings {
     private final String paletteName;
     private final boolean ignoringEntities;
@@ -14,6 +16,8 @@ public class StructureSettings {
     private final long lastEditedByEntityId;
     private final StructureRotation rotation;
     private final StructureMirror mirror;
+    private final StructureAnimationMode animationMode;
+    private final float animationSeconds;
     private final float integrityValue;
     private final int integritySeed;
     private final Vector3f pivot;

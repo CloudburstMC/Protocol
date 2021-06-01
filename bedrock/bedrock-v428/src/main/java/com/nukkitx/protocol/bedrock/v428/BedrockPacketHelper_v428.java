@@ -82,6 +82,9 @@ public class BedrockPacketHelper_v428 extends BedrockPacketHelper_v422 {
         this.addEntityData(120, EntityData.FREEZING_EFFECT_STRENGTH);
         this.addEntityData(121, EntityData.BUOYANCY_DATA);
         this.addEntityData(122, EntityData.GOAT_HORN_COUNT);
+        this.addEntityData(123, EntityData.BASE_RUNTIME_ID);
+        this.addEntityData(124, EntityData.DEFINE_PROPERTIES);
+        this.addEntityData(125, EntityData.UPDATE_PROPERTIES);
     }
 
     @Override

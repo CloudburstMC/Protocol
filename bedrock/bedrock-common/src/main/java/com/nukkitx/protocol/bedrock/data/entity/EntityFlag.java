@@ -97,5 +97,6 @@ public enum EntityFlag {
     ADMIRING,
     CELEBRATING_SPECIAL,
     OUT_OF_CONTROL,
-    RAM_ATTACK
+    RAM_ATTACK,
+    PLAYING_DEAD
 }
