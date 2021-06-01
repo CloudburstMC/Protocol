@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.v440.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
 import com.nukkitx.protocol.bedrock.v428.serializer.StartGameSerializer_v428;
 import io.netty.buffer.ByteBuf;
@@ -19,8 +20,8 @@ public class StartGameSerializer_v440 extends StartGameSerializer_v428 {
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        super.deserialize(buffer, helper, packet);
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet, BedrockSession session) {
+        super.deserialize(buffer, helper, packet, session);
         packet.setServerEngine(helper.readString(buffer));
     }
 }
