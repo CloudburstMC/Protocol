@@ -20,6 +20,8 @@ public class BedrockPacketHelper_v440 extends BedrockPacketHelper_v431 {
 
     @Override
     protected void registerEntityData() {
+        super.registerEntityData();
+
         this.addEntityData(120, EntityData.BASE_RUNTIME_ID);
         this.addEntityData(121, EntityData.FREEZING_EFFECT_STRENGTH);
         this.addEntityData(122, EntityData.BUOYANCY_DATA);
@@ -29,6 +31,8 @@ public class BedrockPacketHelper_v440 extends BedrockPacketHelper_v431 {
 
     @Override
     protected void registerEntityFlags() {
+        super.registerEntityFlags();
+
         addEntityFlag(97, EntityFlag.PLAYING_DEAD);
     }
 
