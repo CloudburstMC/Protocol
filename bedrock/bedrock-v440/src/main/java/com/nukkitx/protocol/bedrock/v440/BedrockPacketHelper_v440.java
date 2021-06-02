@@ -5,6 +5,7 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.GameRuleData;
+import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
@@ -34,6 +35,21 @@ public class BedrockPacketHelper_v440 extends BedrockPacketHelper_v431 {
         super.registerEntityFlags();
 
         addEntityFlag(97, EntityFlag.PLAYING_DEAD);
+    }
+
+    @Override
+    protected void registerLevelEvents() {
+        super.registerLevelEvents();
+
+        int legacy = 0x4000;
+        this.addLevelEvent(73 + legacy, LevelEventType.PARTICLE_PORTAL_REVERSE);
+        this.addLevelEvent(74 + legacy, LevelEventType.PARTICLE_SNOWFLAKE);
+        this.addLevelEvent(75 + legacy, LevelEventType.PARTICLE_VIBRATION_SIGNAL);
+        this.addLevelEvent(76 + legacy, LevelEventType.PARTICLE_SCULK_SENSOR_REDSTONE);
+        this.addLevelEvent(77 + legacy, LevelEventType.PARTICLE_SPORE_BLOSSOM_SHOWER);
+        this.addLevelEvent(78 + legacy, LevelEventType.PARTICLE_SPORE_BLOSSOM_AMBIENT);
+        this.addLevelEvent(79 + legacy, LevelEventType.PARTICLE_WAX);
+        this.addLevelEvent(80 + legacy, LevelEventType.PARTICLE_ELECTRIC_SPARK);
     }
 
     @Override
