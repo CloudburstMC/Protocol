@@ -40,5 +40,11 @@ public class RecipePacket extends JavaPacket<JavaPlayPacketHandler> {
         INIT,
         ADD,
         REMOVE;
+
+        private static final State[] VALUES = values();
+
+        public static State getById(int id) {
+            return id > VALUES.length ? null : VALUES[id];
+        }
     }
 }

@@ -30,5 +30,11 @@ public class PlayerLookAtPacket extends JavaPacket<JavaPlayPacketHandler> {
     public enum Anchor {
         FEET,
         EYES;
+
+        private static final Anchor[] VALUES = values();
+
+        public static Anchor getById(int id) {
+            return VALUES.length > id ? VALUES[id] : null;
+        }
     }
 }

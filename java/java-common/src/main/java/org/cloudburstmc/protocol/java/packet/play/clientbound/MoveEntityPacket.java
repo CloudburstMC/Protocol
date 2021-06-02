@@ -13,13 +13,14 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public abstract class MoveEntityPacket extends JavaPacket<JavaPlayPacketHandler> {
     private int entityId;
-    private Vector3d delta = Vector3d.ZERO;
-    private Vector2f rotation = Vector2f.ZERO;
     private boolean onGround;
 
     public abstract Type getType();
 
+    @Data
+    @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
     public static class Pos extends MoveEntityPacket {
+        private Vector3d delta = Vector3d.ZERO;
 
         @Override
         public boolean handle(JavaPlayPacketHandler handler) {
@@ -37,7 +38,11 @@ public abstract class MoveEntityPacket extends JavaPacket<JavaPlayPacketHandler>
         }
     }
 
+    @Data
+    @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
     public static class PosRot extends MoveEntityPacket {
+        private Vector3d delta = Vector3d.ZERO;
+        private Vector2f rotation = Vector2f.ZERO;
 
         @Override
         public boolean handle(JavaPlayPacketHandler handler) {
@@ -55,7 +60,10 @@ public abstract class MoveEntityPacket extends JavaPacket<JavaPlayPacketHandler>
         }
     }
 
+    @Data
+    @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
     public static class Rot extends MoveEntityPacket {
+        private Vector2f rotation = Vector2f.ZERO;
 
         @Override
         public boolean handle(JavaPlayPacketHandler handler) {

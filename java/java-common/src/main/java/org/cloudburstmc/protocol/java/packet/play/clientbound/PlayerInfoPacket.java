@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.java.packet.play.clientbound;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Value;
 import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.java.JavaPacket;
 import org.cloudburstmc.protocol.java.data.GameType;
@@ -11,6 +12,7 @@ import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Data
@@ -35,12 +37,19 @@ public class PlayerInfoPacket extends JavaPacket<JavaPlayPacketHandler> {
         UPDATE_LATENCY,
         UPDATE_DISPLAY_NAME,
         REMOVE_PLAYER;
+
+        private static final Action[] VALUES = values();
+
+        public static Action getById(int id) {
+            return VALUES.length > id ? VALUES[id] : null;
+        }
     }
 
-    public class Entry {
-        private int latency;
-        private GameType gameType;
-        private GameProfile profile;
-        private Component displayName;
+    @Value
+    public static class Entry {
+        int latency;
+        @Nullable GameType gameType;
+        GameProfile profile;
+        @Nullable Component displayName;
     }
 }

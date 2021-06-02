@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.java.data.profile;
 import lombok.Data;
 import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 import java.util.UUID;
 
@@ -10,8 +11,8 @@ import java.util.UUID;
 @ParametersAreNullableByDefault
 public class GameProfile {
     private UUID id;
-    private String name;
-    private PropertyMap properties;
+    @Nullable private String name;
+    @Nullable private PropertyMap properties;
     private boolean legacy;
 
     public GameProfile(UUID id) {

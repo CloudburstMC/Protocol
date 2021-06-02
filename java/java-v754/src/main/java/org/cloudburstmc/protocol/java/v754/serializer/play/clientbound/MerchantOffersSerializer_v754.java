@@ -41,9 +41,8 @@ public class MerchantOffersSerializer_v754 implements JavaPacketSerializer<Merch
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, MerchantOffersPacket packet) throws PacketSerializeException {
         packet.setContainerId(helper.readVarInt(buffer));
-        List<MerchantOffer> offers = new ObjectArrayList<>();
         for (int i = 0; i < buffer.readByte(); i++) {
-            offers.add(new MerchantOffer(
+            packet.getOffers().add(new MerchantOffer(
                helper.readItemStack(buffer),
                helper.readItemStack(buffer),
                helper.readOptional(buffer, helper::readItemStack),
@@ -56,7 +55,6 @@ public class MerchantOffersSerializer_v754 implements JavaPacketSerializer<Merch
                buffer.readInt()
             ));
         }
-        packet.setOffers(offers);
         packet.setVillagerLevel(helper.readVarInt(buffer));
         packet.setVillagerXp(helper.readVarInt(buffer));
         packet.setShowProgress(buffer.readBoolean());

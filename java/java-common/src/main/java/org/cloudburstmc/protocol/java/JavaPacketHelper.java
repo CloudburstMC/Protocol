@@ -1,9 +1,6 @@
 package org.cloudburstmc.protocol.java;
 
-import com.nukkitx.math.vector.Vector2f;
-import com.nukkitx.math.vector.Vector3d;
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
+import com.nukkitx.math.vector.*;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtUtils;
@@ -34,17 +31,15 @@ import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
 import org.cloudburstmc.protocol.java.data.world.BlockEntityAction;
 import org.cloudburstmc.protocol.java.data.world.Particle;
 import org.cloudburstmc.protocol.java.data.world.ParticleType;
+import org.cloudburstmc.protocol.java.packet.play.clientbound.LevelParticlesPacket;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public abstract class JavaPacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(JavaPacketHelper.class);
@@ -54,19 +49,24 @@ public abstract class JavaPacketHelper {
     protected final Int2ObjectBiMap<ContainerType> containerTypes = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<EntityDataType<?>> entityDataTypes = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<Pose> poses = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<ParticleType> particles = new Int2ObjectBiMap<>();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
         this.registerBlockEntityActions();
+        this.registerContainerTypes();
+        this.registerEntityDataTypes();
+        this.registerPoses();
+        this.registerParticles();
     }
 
     public int readVarInt(ByteBuf buffer) {
-        // don't use the signed version! Only Bedrock knows that concept
+        // Don't use the signed version! Only Bedrock knows that concept
         return VarInts.readUnsignedInt(buffer);
     }
 
     public void writeVarInt(ByteBuf buffer, int varint) {
-        // don't use the signed version! Only Bedrock knows that concept
+        // Don't use the signed version! Only Bedrock knows that concept
         VarInts.writeUnsignedInt(buffer, varint);
     }
 
@@ -257,14 +257,47 @@ public abstract class JavaPacketHelper {
 
     public Particle readParticle(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return new Particle(ParticleType.getById(this.readVarInt(buffer)), null); // TODO
+        ParticleType type = ParticleType.getById(this.readVarInt(buffer));
+        return new Particle(type, this.readParticleData(buffer, type));
     }
 
     public void writeParticle(ByteBuf buffer, Particle particle) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(particle, "particle");
         this.writeVarInt(buffer, particle.getType().ordinal());
-        // TODO: Write object data
+        this.writeParticleData(buffer, particle);
+    }
+
+    @Nullable
+    public Particle readParticleData(ByteBuf buffer, ParticleType type) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(type, "particleType");
+        if (type.getTypeClass() == int.class) {
+            return new Particle(type, this.readVarInt(buffer));
+        } else if (type.getTypeClass() == Vector4f.class) {
+            return new Particle(type, Vector4f.from(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
+        } else if (type.getTypeClass() == ItemStack.class) {
+            return new Particle(type, this.readItemStack(buffer));
+        }
+        return null;
+    }
+
+    public void writeParticleData(ByteBuf buffer, Particle particle) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(particle, "particle");
+        ParticleType type = particle.getType();
+        Object data = particle.getData();
+        if (type.getTypeClass() == int.class) {
+            this.writeVarInt(buffer, (int) data);
+        } else if (type.getTypeClass() == Vector4f.class) {
+            Vector4f color = (Vector4f) data;
+            buffer.writeFloat(color.getX());
+            buffer.writeFloat(color.getY());
+            buffer.writeFloat(color.getZ());
+            buffer.writeFloat(color.getW());
+        } else if (type.getTypeClass() == ItemStack.class) {
+            this.writeItemStack(buffer, (ItemStack) data);
+        }
     }
 
     // TODO: Move these to version helpers as they have changed between versions
@@ -330,20 +363,6 @@ public abstract class JavaPacketHelper {
         }
     }
 
-    public <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, JavaPacketHelper, T> function) {
-        int length = buffer.readUnsignedShortLE();
-        for (int i = 0; i < length; i++) {
-            array.add(function.apply(buffer, this));
-        }
-    }
-
-    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, JavaPacketHelper, T> biConsumer) {
-        buffer.writeShortLE(array.size());
-        for (T val : array) {
-            biConsumer.accept(buffer, this, val);
-        }
-    }
-
     /*
         Non-helper array serialization
      */
@@ -370,20 +389,6 @@ public abstract class JavaPacketHelper {
 
     public <T> void writeArray(ByteBuf buffer, T[] array, BiConsumer<ByteBuf, T> biConsumer) {
         VarInts.writeUnsignedInt(buffer, array.length);
-        for (T val : array) {
-            biConsumer.accept(buffer, val);
-        }
-    }
-
-    public <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
-        int length = buffer.readUnsignedShortLE();
-        for (int i = 0; i < length; i++) {
-            array.add(function.apply(buffer));
-        }
-    }
-
-    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, BiConsumer<ByteBuf, T> biConsumer) {
-        buffer.writeShortLE(array.size());
         for (T val : array) {
             biConsumer.accept(buffer, val);
         }
@@ -489,6 +494,14 @@ public abstract class JavaPacketHelper {
         return this.entityDataTypes.get(type);
     }
 
+    public final ParticleType getParticle(int id) {
+        return this.particles.get(id);
+    }
+
+    public final int getParticleId(ParticleType particle) {
+        return this.particles.get(particle);
+    }
+
     protected abstract void registerEntityTypes();
 
     protected abstract void registerBlockEntityActions();
@@ -498,4 +511,6 @@ public abstract class JavaPacketHelper {
     protected abstract void registerEntityDataTypes();
 
     public abstract void registerPoses();
+
+    public abstract void registerParticles();
 }

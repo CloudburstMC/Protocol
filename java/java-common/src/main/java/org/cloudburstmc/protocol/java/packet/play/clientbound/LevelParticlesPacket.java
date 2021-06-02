@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class LevelParticlesPacket extends JavaPacket<JavaPlayPacketHandler> {
     private Particle particle;
-    private Vector3d location;
+    private Vector3d position;
     private Vector3f distance;
     private float maxSpeed;
     private int count;

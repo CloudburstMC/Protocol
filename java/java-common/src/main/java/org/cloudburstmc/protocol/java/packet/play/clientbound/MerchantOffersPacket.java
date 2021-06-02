@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.java.packet.play.clientbound;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
@@ -14,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MerchantOffersPacket extends JavaPacket<JavaPlayPacketHandler> {
     private int containerId;
-    private List<MerchantOffer> offers;
+    private final List<MerchantOffer> offers = new ObjectArrayList<>();
     private int villagerLevel;
     private int villagerXp;
     private boolean showProgress;

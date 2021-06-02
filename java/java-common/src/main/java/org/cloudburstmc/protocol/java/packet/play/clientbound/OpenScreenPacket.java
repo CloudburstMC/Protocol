@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class OpenScreenPacket extends JavaPacket<JavaPlayPacketHandler> {
     private int containerId;
-    private ContainerType type;
+    private ContainerType containerType;
     private Component title;
 
     @Override
