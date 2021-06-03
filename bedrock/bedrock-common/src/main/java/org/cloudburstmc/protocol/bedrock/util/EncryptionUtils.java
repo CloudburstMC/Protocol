@@ -118,7 +118,7 @@ public class EncryptionUtils {
     }
 
     /**
-     * Verify the validity of the login chain data from the {@link com.nukkitx.protocol.bedrock.packet.LoginPacket}
+     * Verify the validity of the login chain data from the {@link org.cloudburstmc.protocol.bedrock.packet.LoginPacket}
      *
      * @param chain array of JWS objects
      * @return chain validity
@@ -193,7 +193,7 @@ public class EncryptionUtils {
     }
 
     /**
-     * Create handshake JWS used in the {@link com.nukkitx.protocol.bedrock.packet.ServerToClientHandshakePacket}
+     * Create handshake JWS used in the {@link org.cloudburstmc.protocol.bedrock.packet.ServerToClientHandshakePacket}
      * which completes the encryption handshake.
      *
      * @param serverKeyPair used to sign the JWT

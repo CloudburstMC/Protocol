@@ -1,11 +1,11 @@
 package org.cloudburstmc.protocol.common;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 public interface MinecraftInterface {
 
-    CompletableFuture<Void> bind();
+    Future<Void> bind(InetSocketAddress address);
 
     void close();
 

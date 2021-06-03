@@ -4,8 +4,8 @@ import lombok.Value;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 
 /**
- * Request represents a single request present in an {@link com.nukkitx.protocol.bedrock.packet.ItemStackRequestPacket} or
- * {@link com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket} sent by the client to
+ * Request represents a single request present in an {@link org.cloudburstmc.protocol.bedrock.packet.ItemStackRequestPacket} or
+ * {@link org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket} sent by the client to
  * change an item in an inventory.
  * Item stack requests are either approved or rejected by the server using the ItemStackResponse packet.
  */

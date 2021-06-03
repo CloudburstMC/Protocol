@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.wrapper;
 
 import com.nukkitx.network.VarInts;
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.PacketSerializeException;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
-import org.cloudburstmc.protocol.bedrock.exception.PacketSerializeException;
 import org.cloudburstmc.protocol.common.util.Zlib;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
     }
 
     @Override
-    public void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session) {
+    public void serialize(ByteBuf buffer, BedrockCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session) {
         ByteBuf uncompressed = ByteBufAllocator.DEFAULT.ioBuffer(packets.size() << 3);
         try {
             for (BedrockPacket packet : packets) {
@@ -55,7 +55,7 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
     }
 
     @Override
-    public void deserialize(ByteBuf compressed, BedrockPacketCodec codec, Collection<BedrockPacket> packets, BedrockSession session) {
+    public void deserialize(ByteBuf compressed, BedrockCodec codec, Collection<BedrockPacket> packets, BedrockSession session) {
         ByteBuf decompressed = null;
         try {
             decompressed = zlib.inflate(compressed, 12 * 1024 * 1024); // 12MBs

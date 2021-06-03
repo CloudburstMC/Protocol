@@ -34,7 +34,7 @@ public class ContainerId {
     public static final int ARMOR = 120;
     /**
      * @deprecated From 1.16 (407) and onwards, the creative menu is handled from
-     * {@link com.nukkitx.protocol.bedrock.packet.CreativeContentPacket}
+     * {@link org.cloudburstmc.protocol.bedrock.packet.CreativeContentPacket}
      */
     public static final int CREATIVE = 121;
     public static final int HOTBAR = 122;

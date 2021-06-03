@@ -2,10 +2,8 @@ package org.cloudburstmc.protocol.bedrock;
 
 import com.nukkitx.natives.sha256.Sha256;
 import com.nukkitx.natives.util.Natives;
-import com.nukkitx.network.SessionConnection;
-import com.nukkitx.network.util.DisconnectReason;
-import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
-import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
+import org.cloudburstmc.protocol.bedrock.annotation.NoEncryption;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoop;
@@ -13,10 +11,13 @@ import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.compat.BedrockCompat;
-import org.cloudburstmc.protocol.bedrock.exception.PacketSerializeException;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
 import org.cloudburstmc.protocol.bedrock.handler.BatchHandler;
 import org.cloudburstmc.protocol.bedrock.handler.DefaultBatchHandler;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
+import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import org.cloudburstmc.protocol.common.MinecraftSession;
@@ -39,23 +40,26 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
     private static final ThreadLocal<Sha256> HASH_LOCAL;
 
-    private final Set<Consumer<DisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private final Queue<BedrockPacket> queuedPackets = PlatformDependent.newMpscQueue();
-    private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
+    protected BedrockPeer<?> peer;
+
+    private BedrockCodec packetCodec = BedrockCompat.COMPAT_CODEC;
+
+    // TODO: refactor
     private final BedrockWrapperSerializer wrapperSerializer;
-    private final EventLoop eventLoop;
-    final SessionConnection<ByteBuf> connection;
-    private BedrockPacketCodec packetCodec = BedrockCompat.COMPAT_CODEC;
     private BedrockPacketHandler packetHandler;
     private BatchHandler batchHandler = DefaultBatchHandler.INSTANCE;
+
+    private final Queue<BedrockPacket> queuedPackets = PlatformDependent.newMpscQueue();
+    private final Set<Consumer<RakDisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
     private Cipher encryptionCipher = null;
     private Cipher decryptionCipher = null;
     private SecretKey agreedKey;
     private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
+
     private volatile boolean closed = false;
     private volatile boolean logging = true;
-
-    private AtomicInteger hardcodedBlockingId = new AtomicInteger(-1);
 
     static {
         // Required for Android API versions prior to 26.
@@ -67,9 +71,8 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         };
     }
 
-    BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
-        this.connection = connection;
-        this.eventLoop = eventLoop;
+    public BedrockSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
+        this.peer = peer;
         this.wrapperSerializer = serializer;
     }
 
@@ -227,7 +230,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     public abstract void disconnect();
 
-    void close(DisconnectReason reason) {
+    public void close(RakDisconnectReason reason) {
         checkForClosed();
         this.closed = true;
         // Free native resources if required

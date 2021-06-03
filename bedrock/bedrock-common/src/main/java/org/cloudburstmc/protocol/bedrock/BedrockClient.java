@@ -1,96 +1,158 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNetClient;
-import com.nukkitx.network.raknet.RakNetClientSession;
-import com.nukkitx.network.util.EventLoops;
-import io.netty.channel.EventLoopGroup;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.*;
+import io.netty.util.concurrent.DefaultPromise;
+import io.netty.util.concurrent.ImmediateEventExecutor;
+import io.netty.util.concurrent.Promise;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.cloudburstmc.netty.channel.raknet.RakChannelFactory;
+import org.cloudburstmc.netty.channel.raknet.RakConstants;
+import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
+import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
+import org.cloudburstmc.protocol.bedrock.raknet.ChannelImplementation;
+import org.cloudburstmc.protocol.bedrock.raknet.Channels;
+import org.cloudburstmc.protocol.bedrock.raknet.pipeline.ClientChannelInitializer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializers;
 
-import java.net.Inet4Address;
-import java.net.Inet6Address;
 import java.net.InetSocketAddress;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class BedrockClient extends Bedrock {
-    private final RakNetClient rakNetClient;
-    BedrockClientSession session;
+public class BedrockClient extends Bedrock<Bootstrap> {
 
-    public BedrockClient(InetSocketAddress bindAddress) {
-        this(bindAddress, EventLoops.commonGroup());
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockClient.class);
+
+    private final EventLoopGroup eventLoopGroup;
+    private final EventLoopGroup networkGroup;
+
+    private int rakNetProtocol = RakConstants.RAKNET_PROTOCOL_VERSION;
+    private volatile boolean closed;
+
+    private Channel channel;
+    private BedrockPeer<BedrockClientSession> bedrockPeer;
+
+    public BedrockClient() {
+        this(Channels.commonGroup(), null);
     }
 
-    public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup eventLoopGroup) {
-        super(eventLoopGroup);
-        this.rakNetClient = new RakNetClient(bindAddress, eventLoopGroup);
+    public BedrockClient(EventLoopGroup bedrockGroup, EventLoopGroup networkGroup) {
+        this.eventLoopGroup = bedrockGroup;
+        this.networkGroup = networkGroup;
     }
 
     @Override
-    protected void onTick() {
-        if (this.session != null) {
-            this.session.tick();
+    protected Future<Void> doBind(InetSocketAddress address, ChannelFutureListener listener) {
+        Bootstrap bootstrap = this.createBootstrap();
+        ChannelFuture channelFuture = bootstrap.bind();
+        channelFuture.addListener(listener);
+
+        Promise<Void> promise = new DefaultPromise<>(ImmediateEventExecutor.INSTANCE);
+        channelFuture.addListener((ChannelFuture f) -> {
+            if (f.cause() == null) {
+                this.channel = f.channel();
+                promise.setSuccess(null);
+            } else {
+                promise.setFailure(f.cause());
+            }
+        });
+        return promise;
+    }
+
+    public ChannelFuture connect(InetSocketAddress address) {
+        return this.connect(address, 10, TimeUnit.SECONDS);
+    }
+
+    public ChannelFuture connect(InetSocketAddress address, long timeout, TimeUnit unit) {
+        if (this.bindAddress != null) {
+            throw new IllegalStateException("Already bind");
         }
+        this.bindAddress = address;
+
+        Bootstrap bootstrap = this.createBootstrap();
+        bootstrap.option(RakChannelOption.RAK_CONNECT_TIMEOUT, unit.toMillis(timeout));
+        bootstrap.remoteAddress(address);
+
+        ChannelFuture channelFuture = bootstrap.connect();
+        channelFuture.addListener((ChannelFuture f) -> {
+            if (f.cause() == null) {
+                this.channel = f.channel();
+            }
+        });
+        return channelFuture;
+    }
+
+    private Bootstrap createBootstrap() {
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.handler(new ClientChannelInitializer(this));
+
+        ChannelImplementation channelImpl = Channels.defaultImplementation();
+        bootstrap.channelFactory(RakChannelFactory.client(channelImpl.datagramChannel()));
+
+        EventLoopGroup eventLoopGroup = this.networkGroup;
+        if (eventLoopGroup == null) {
+            eventLoopGroup = Channels.newEventLoopGroup(1, true);
+        }
+        bootstrap.group(eventLoopGroup);
+        bootstrap.option(RakChannelOption.RAK_PROTOCOL_VERSION, this.rakNetProtocol);
+        this.adjustBootstrap(bootstrap);
+        return bootstrap;
     }
 
     @Override
-    public RakNetClient getRakNet() {
-        return this.rakNetClient;
+    public BedrockPeer<?> constructBedrockPeer(Channel channel) {
+        if (this.bedrockPeer != null) {
+            throw new IllegalStateException("Client was already connected!");
+        }
+        EventLoop eventLoop = this.eventLoopGroup.next();
+        return this.bedrockPeer = new BedrockPeer<>(channel, eventLoop, this::constructBedrockSession);
     }
 
-    public void setRakNetVersion(int version) {
-        this.rakNetClient.setProtocolVersion(version);
+    @Override
+    protected BedrockClientSession constructBedrockSession(BedrockPeer<?> peer) {
+        int rakVersion = peer.getOption(RakChannelOption.RAK_PROTOCOL_VERSION);
+        BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(rakVersion);
+        return new BedrockClientSession(peer, serializer);
     }
 
     @Override
     public void close(boolean force) {
-        if (this.session != null && !this.session.isClosed()) {
-            this.session.disconnect();
+        if (this.closed || this.channel == null) {
+            return;
         }
-        this.rakNetClient.close(force);
-        this.tickFuture.cancel(false);
+        this.closed = true;
+
+        if (this.bedrockPeer != null) {
+            this.bedrockPeer.getSession().disconnect();
+            return;
+        }
+
+        ChannelFuture future = this.channel.close();
+        if (force) {
+            future.syncUninterruptibly();
+        }
     }
 
-    public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        return this.connect(address, 10, TimeUnit.SECONDS);
+    @Override
+    public boolean isClosed() {
+        return this.closed;
     }
 
-    public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address, long timeout, TimeUnit unit) {
-        return this.ping(address, timeout, unit).thenApply(pong -> {
-            int port;
-            if (address.getAddress() instanceof Inet4Address && pong.getIpv4Port() != -1) {
-                port = pong.getIpv4Port();
-            } else if (address.getAddress() instanceof Inet6Address && pong.getIpv6Port() != -1) {
-                port = pong.getIpv6Port();
-            } else {
-                port = address.getPort();
-            }
-
-            return new InetSocketAddress(address.getAddress(), port);
-        }).thenCompose(this::directConnect);
+    public void setRakNetProtocol(int rakNetProtocol) {
+        this.rakNetProtocol = rakNetProtocol;
     }
 
-    public CompletableFuture<BedrockClientSession> directConnect(InetSocketAddress address) {
-        CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
-
-        RakNetClientSession connection = this.rakNetClient.connect(address);
-        BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
-        this.session = new BedrockClientSession(connection, this.eventLoopGroup.next(), serializer);
-        BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
-                connection, this, future);
-        connection.setListener(listener);
-        return future;
+    public int getRakNetProtocol() {
+        return this.rakNetProtocol;
     }
 
-    public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
-        return this.ping(address, 10, TimeUnit.SECONDS);
+    public Channel getChannel() {
+        return this.channel;
     }
 
-    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
-        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
-    }
-
-    public BedrockClientSession getSession() {
-        return session;
+    public BedrockPeer<BedrockClientSession> getBedrockPeer() {
+        return this.bedrockPeer;
     }
 }

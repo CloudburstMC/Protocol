@@ -8,7 +8,7 @@
 
     <parent>
         <artifactId>parent</artifactId>
-        <groupId>com.nukkitx.protocol</groupId>
+        <groupId>org.cloudburstmc.protocol</groupId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
 

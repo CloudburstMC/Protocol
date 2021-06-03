@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNetSession;
-import com.nukkitx.protocol.bedrock.packet.DisconnectPacket;
-import io.netty.channel.EventLoop;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
+import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import org.cloudburstmc.protocol.common.MinecraftServerSession;
 
@@ -10,8 +10,8 @@ import javax.annotation.Nullable;
 
 public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
 
-    public BedrockServerSession(RakNetSession connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
-        super(connection, eventLoop, serializer);
+    public BedrockServerSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
+        super(peer, serializer);
     }
 
     @Override

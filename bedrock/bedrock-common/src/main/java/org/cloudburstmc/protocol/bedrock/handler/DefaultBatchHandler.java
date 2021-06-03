@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.handler;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
@@ -8,6 +7,8 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
 
 import java.util.Collection;
 

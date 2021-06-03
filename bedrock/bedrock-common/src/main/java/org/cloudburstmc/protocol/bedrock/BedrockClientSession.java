@@ -1,18 +1,18 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNetSession;
-import io.netty.channel.EventLoop;
+import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
+import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 
 public class BedrockClientSession extends BedrockSession {
 
-    BedrockClientSession(RakNetSession connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {
-        super(connection, eventLoop, serializer);
+    BedrockClientSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
+        super(peer, serializer);
     }
 
     @Override
     public void disconnect() {
         this.checkForClosed();
-        this.connection.disconnect();
+        this.peer.getRakSessionCodec().disconnect(RakDisconnectReason.DISCONNECTED);
     }
 }

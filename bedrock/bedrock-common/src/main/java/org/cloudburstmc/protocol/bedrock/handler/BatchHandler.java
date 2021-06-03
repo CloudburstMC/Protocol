@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.handler;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 
 import java.util.Collection;
 

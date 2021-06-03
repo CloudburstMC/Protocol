@@ -1,11 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.wrapper;
 
-import com.nukkitx.protocol.bedrock.BedrockPacket;
-import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 
 import java.util.Collection;
 
@@ -19,7 +19,7 @@ public abstract class BedrockWrapperSerializer {
      * @param codec  packet codec
      * @param level  compression level
      */
-    public abstract void serialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session);
+    public abstract void serialize(ByteBuf buffer, BedrockCodec codec, Collection<BedrockPacket> packets, int level, BedrockSession session);
 
     /**
      * Decompress packets to handle
@@ -28,5 +28,5 @@ public abstract class BedrockWrapperSerializer {
      * @param codec   packet codec
      * @param packets received packets
      */
-    public abstract void deserialize(ByteBuf buffer, BedrockPacketCodec codec, Collection<BedrockPacket> packets, BedrockSession session);
+    public abstract void deserialize(ByteBuf buffer, BedrockCodec codec, Collection<BedrockPacket> packets, BedrockSession session);
 }
