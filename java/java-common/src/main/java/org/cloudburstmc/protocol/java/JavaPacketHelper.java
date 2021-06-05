@@ -107,13 +107,17 @@ public abstract class JavaPacketHelper {
     }
 
     public GameProfile readGameProfile(ByteBuf buffer) {
+        return this.readGameProfile(buffer, false);
+    }
+
+    public GameProfile readGameProfile(ByteBuf buffer, boolean readProperties) {
         UUID id = readUUID(buffer);
         String name = null;
-        if (buffer.readableBytes() > 0) {
+        if (readProperties && buffer.readableBytes() > 0) {
             name = readString(buffer);
         }
         GameProfile profile = new GameProfile(id, name);
-        if (buffer.readableBytes() <= 0) {
+        if (!readProperties || buffer.readableBytes() <= 0) {
             return profile;
         }
         // Read properties

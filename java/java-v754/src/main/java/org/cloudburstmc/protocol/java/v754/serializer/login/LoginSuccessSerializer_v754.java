@@ -18,6 +18,6 @@ public class LoginSuccessSerializer_v754 implements JavaPacketSerializer<LoginSu
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, LoginSuccessPacket packet) {
-        packet.setProfile(helper.readGameProfile(buffer));
+        packet.setProfile(helper.readGameProfile(buffer, false));
     }
 }

@@ -53,7 +53,7 @@ public class PlayerInfoSerializer_v754 implements JavaPacketSerializer<PlayerInf
         PlayerInfoPacket.Entry[] entries = helper.readArray(buffer, new PlayerInfoPacket.Entry[0], buf -> {
             switch (packet.getAction()) {
                 case ADD_PLAYER:
-                    GameProfile profile = helper.readGameProfile(buffer);
+                    GameProfile profile = helper.readGameProfile(buffer, true);
                     GameType gameType = GameType.getById(helper.readVarInt(buffer));
                     int latency = helper.readVarInt(buffer);
                     Component displayName = helper.readOptional(buffer, helper::readComponent);

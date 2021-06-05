@@ -100,8 +100,8 @@ public class Java_v754 {
                     .registerClientbound(PlayerLookAtPacket.class, PlayerLookAtSerializer_v754.INSTANCE, 51)
                     .registerClientbound(PlayerPositionPacket.class, PlayerPositionSerializer_v754.INSTANCE, 52)
                     .registerClientbound(RecipePacket.class, RecipeSerializer_v754.INSTANCE, 53)
+                    .registerClientbound(RemoveEntitiesPacket.class, RemoveEntitiesSerializer_v754.INSTANCE, 54)
                     .registerClientbound(SetCarriedItemPacket.class, SetCarriedItemSerializer_v754.INSTANCE, 63)
-                    .registerClientbound(RemoveEntitiesPacket.class, RemoveEntitiesSerializer_v754.INSTANCE, 64)
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
