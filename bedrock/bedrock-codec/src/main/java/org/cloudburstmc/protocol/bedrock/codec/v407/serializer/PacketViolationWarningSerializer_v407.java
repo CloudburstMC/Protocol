@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.PacketViolationSeverity;
 import org.cloudburstmc.protocol.bedrock.data.PacketViolationType;
 import org.cloudburstmc.protocol.bedrock.packet.PacketViolationWarningPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PacketViolationWarningSerializer_v407 implements BedrockPacketSerializer<PacketViolationWarningPacket> {

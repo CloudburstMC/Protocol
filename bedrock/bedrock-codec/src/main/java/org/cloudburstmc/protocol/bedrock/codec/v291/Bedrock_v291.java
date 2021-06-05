@@ -269,7 +269,7 @@ public class Bedrock_v291 {
             .insert(LEVEL_EVENT_BLOCK + 8, LevelEvent.CAULDRON_ADD_DYE)
             .insert(LEVEL_EVENT_BLOCK + 9, LevelEvent.CAULDRON_CLEAN_BANNER)
             .insert(LEVEL_EVENT_BLOCK + 10, LevelEvent.CAULDRON_FLUSH)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 1, ParticleType.UNDEFINED)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE + 0, ParticleType.UNDEFINED)
             .insert(LEVEL_EVENT_PARTICLE_TYPE + 1, ParticleType.BUBBLE)
             .insert(LEVEL_EVENT_PARTICLE_TYPE + 2, ParticleType.CRIT)
             .insert(LEVEL_EVENT_PARTICLE_TYPE + 3, ParticleType.BLOCK_FORCE_FIELD)

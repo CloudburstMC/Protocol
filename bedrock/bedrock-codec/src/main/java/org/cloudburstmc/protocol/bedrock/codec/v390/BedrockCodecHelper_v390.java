@@ -2,18 +2,21 @@ package org.cloudburstmc.protocol.bedrock.codec.v390;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import org.cloudburstmc.protocol.bedrock.codec.v389.BedrockCodecHelper_v389;
+import org.cloudburstmc.protocol.bedrock.codec.v388.BedrockCodecHelper_v388;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v389 {
-    public static final BedrockCodecHelper_v390 INSTANCE = new BedrockCodecHelper_v390();
+public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
+
+    public BedrockCodecHelper_v390(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
+        super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
+    }
 
     @Override
     public SerializedSkin readSkin(ByteBuf buffer) {

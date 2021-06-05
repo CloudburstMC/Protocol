@@ -2,18 +2,10 @@ package org.cloudburstmc.protocol.bedrock.codec.v388;
 
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.v361.BedrockCodecHelper_v361;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
@@ -22,105 +14,19 @@ import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
-    public static final BedrockCodecHelper_v388 INSTANCE = new BedrockCodecHelper_v388();
 
     protected static final AnimatedTextureType[] TEXTURE_TYPES = AnimatedTextureType.values();
 
-    @Override
-    protected void registerEntityData() {
-        super.registerEntityData();
-
-        this.addEntityData(107, EntityData.AMBIENT_SOUND_INTERVAL);
-        this.addEntityData(108, EntityData.AMBIENT_SOUND_INTERVAL_RANGE);
-        this.addEntityData(109, EntityData.AMBIENT_SOUND_EVENT_NAME);
-        this.addEntityData(110, EntityData.FALL_DAMAGE_MULTIPLIER);
-        this.addEntityData(111, EntityData.NAME_RAW_TEXT);
-        this.addEntityData(112, EntityData.CAN_RIDE_TARGET);
-    }
-
-    @Override
-    protected void registerEntityFlags() {
-        super.registerEntityFlags();
-
-        this.addEntityFlag(88, EntityFlag.IS_IN_UI);
-        this.addEntityFlag(89, EntityFlag.STALKING);
-        this.addEntityFlag(90, EntityFlag.EMOTING);
-        this.addEntityFlag(91, EntityFlag.CELEBRATING);
-    }
-
-    @Override
-    protected void registerCommandParams() {
-        this.addCommandParam(1, CommandParam.INT);
-        this.addCommandParam(2, CommandParam.FLOAT);
-        this.addCommandParam(3, CommandParam.VALUE);
-        this.addCommandParam(4, CommandParam.WILDCARD_INT);
-        this.addCommandParam(5, CommandParam.OPERATOR);
-        this.addCommandParam(6, CommandParam.TARGET);
-        this.addCommandParam(7, CommandParam.WILDCARD_TARGET);
-        this.addCommandParam(14, CommandParam.FILE_PATH);
-        this.addCommandParam(29, CommandParam.STRING);
-        this.addCommandParam(37, CommandParam.BLOCK_POSITION);
-        this.addCommandParam(38, CommandParam.POSITION);
-        this.addCommandParam(41, CommandParam.MESSAGE);
-        this.addCommandParam(43, CommandParam.TEXT);
-        this.addCommandParam(47, CommandParam.JSON);
-        this.addCommandParam(54, CommandParam.COMMAND);
-    }
-
-    @Override
-    protected void registerEntityEvents() {
-        super.registerEntityEvents();
-
-        this.addEntityEvent(74, EntityEventType.FINISHED_CHARGING_CROSSBOW);
-    }
-
-    @Override
-    protected void registerLevelEvents() {
-        super.registerLevelEvents();
-
-        int particle = 2000;
-        this.addLevelEvent(24 + particle, LevelEvent.PARTICLE_POINT_CLOUD);
-        this.addLevelEvent(25 + particle, LevelEvent.PARTICLE_EXPLOSION);
-        this.addLevelEvent(26 + particle, LevelEvent.PARTICLE_BLOCK_EXPLOSION);
-    }
-
-    @Override
-    protected void registerSoundEvents() {
-        super.registerSoundEvents();
-
-        this.addSoundEvent(274, SoundEvent.AMBIENT_IN_RAID);
-        this.addSoundEvent(275, SoundEvent.UI_CARTOGRAPHY_TABLE_USE);
-        this.addSoundEvent(276, SoundEvent.UI_STONECUTTER_USE);
-        this.addSoundEvent(277, SoundEvent.UI_LOOM_USE);
-        this.addSoundEvent(278, SoundEvent.SMOKER_USE);
-        this.addSoundEvent(279, SoundEvent.BLAST_FURNACE_USE);
-        this.addSoundEvent(280, SoundEvent.SMITHING_TABLE_USE);
-        this.addSoundEvent(281, SoundEvent.SCREECH);
-        this.addSoundEvent(282, SoundEvent.SLEEP);
-        this.addSoundEvent(283, SoundEvent.FURNACE_USE);
-        this.addSoundEvent(284, SoundEvent.MOOSHROOM_CONVERT);
-        this.addSoundEvent(285, SoundEvent.MILK_SUSPICIOUSLY);
-        this.addSoundEvent(286, SoundEvent.CELEBRATE);
-    }
-
-    @Override
-    protected void registerResourcePackTypes() {
-        addResourcePackType(0, ResourcePackType.INVALID);
-        addResourcePackType(1, ResourcePackType.ADDON);
-        addResourcePackType(2, ResourcePackType.CACHED);
-        addResourcePackType(3, ResourcePackType.COPY_PROTECTED);
-        addResourcePackType(4, ResourcePackType.BEHAVIOR);
-        addResourcePackType(5, ResourcePackType.PERSONA_PIECE);
-        addResourcePackType(6, ResourcePackType.RESOURCE);
-        addResourcePackType(7, ResourcePackType.SKINS);
-        addResourcePackType(8, ResourcePackType.WORLD_TEMPLATE);
+    public BedrockCodecHelper_v388(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
+        super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
     }
 
     @Override

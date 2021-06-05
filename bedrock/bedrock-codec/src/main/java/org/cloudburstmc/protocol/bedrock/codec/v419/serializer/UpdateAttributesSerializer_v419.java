@@ -1,12 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v419.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.UpdateAttributesSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAttributesPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAttributesSerializer_v419 extends UpdateAttributesSerializer_v291 {

@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import static org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket.Action;
 import static org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket.Entry;

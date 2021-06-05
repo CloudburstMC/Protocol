@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAttributesPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAttributesSerializer_v291 implements BedrockPacketSerializer<UpdateAttributesPacket> {

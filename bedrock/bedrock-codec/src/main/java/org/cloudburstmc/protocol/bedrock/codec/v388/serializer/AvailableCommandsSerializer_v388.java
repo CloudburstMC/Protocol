@@ -3,11 +3,11 @@ package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.AvailableCommandsSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.data.command.*;
 import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,10 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerializer_v340 {
-    public static final AvailableCommandsSerializer_v388 INSTANCE = new AvailableCommandsSerializer_v388();
 
+    public AvailableCommandsSerializer_v388(TypeMap<CommandParam> paramTypeMap) {
+        super(paramTypeMap);
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {

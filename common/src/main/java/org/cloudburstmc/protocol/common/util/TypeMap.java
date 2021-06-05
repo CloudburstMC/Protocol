@@ -2,15 +2,14 @@ package org.cloudburstmc.protocol.common.util;
 
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
-
-import static com.nukkitx.network.util.Preconditions.checkArgument;
-import static com.nukkitx.network.util.Preconditions.checkNotNull;
+import static io.netty.util.internal.ObjectUtil.checkNotNull;
 
 public final class TypeMap<T> {
 
@@ -18,9 +17,9 @@ public final class TypeMap<T> {
 
     private final String type;
     private final Object2IntMap<T> toId;
-    private final Object[] toObject;
+    private final Int2ObjectMap<T> toObject;
 
-    private TypeMap(String type, Object2IntMap<T> toId, Object[] toObject) {
+    private TypeMap(String type, Object2IntMap<T> toId, Int2ObjectMap<T> toObject) {
         this.type = type;
         this.toId = toId;
         this.toObject = toObject;
@@ -31,17 +30,14 @@ public final class TypeMap<T> {
         return toId.getInt(value);
     }
 
-    @SuppressWarnings("unchecked")
     public T getType(int id) {
-        if (id < 0 || id >= toObject.length) {
-            log.debug("Unable to find {} for {}", type, id);
-            return null;
-        }
-        return (T) toObject[id];
+        return toObject.get(id);
     }
 
     public Builder<T> toBuilder() {
-        return new Builder<>(type);
+        Builder<T> builder = new Builder<>(type);
+        this.toObject.forEach(builder::insert);
+        return builder;
     }
 
     public static <T> Builder<T> builder(Class<T> typeClass) {
@@ -97,8 +93,21 @@ public final class TypeMap<T> {
          * @return
          */
         public Builder<T> shift(int startIndex, int amount) {
+            return shift(startIndex, amount, this.types.length - startIndex);
+        }
+
+        /**
+         * Shifts values from a specific start index
+         *
+         * @param startIndex
+         * @param amount
+         * @param length
+         * @return
+         */
+        public Builder<T> shift(int startIndex, int amount, int length) {
             checkArgument(startIndex < this.types.length, "Start index is out of bounds");
-            int length = this.types.length - startIndex;
+            int endIndex = startIndex + length;
+            checkArgument(endIndex < this.types.length, "Length exceeds array bounds");
             this.ensureCapacity(this.types.length + amount);
             System.arraycopy(this.types, startIndex, this.types, startIndex + amount, length);
             return this;
@@ -136,14 +145,15 @@ public final class TypeMap<T> {
 
         @SuppressWarnings("unchecked")
         public TypeMap<T> build() {
-            Object2IntMap<T> map = new Object2IntOpenHashMap<>();
+            Object2IntMap<T> toId = new Object2IntOpenHashMap<>();
+            Int2ObjectMap<T> toObject = new Int2ObjectOpenHashMap<>();
             for (int i = 0; i < this.types.length; i++) {
                 Object type = this.types[i];
                 if (type != null) {
-                    map.put((T) type, i);
+                    toId.put((T) type, i);
                 }
             }
-            return new TypeMap<>(this.type, map, Arrays.copyOf(this.types, this.types.length));
+            return new TypeMap<>(this.type, toId, toObject);
         }
     }
 }

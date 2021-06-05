@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v428.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemUseTransaction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetItemSlotData;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v419 {

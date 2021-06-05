@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v354.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.EventSerializer_v340;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.event.BellUsedEventData;
 import org.cloudburstmc.protocol.bedrock.data.event.CauldronInteractEventData;
 import org.cloudburstmc.protocol.bedrock.data.event.ComposterInteractEventData;
 import org.cloudburstmc.protocol.bedrock.data.event.EventData;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class EventSerializer_v354 extends EventSerializer_v340 {
     public static final EventSerializer_v354 INSTANCE = new EventSerializer_v354();

@@ -6,7 +6,6 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -35,6 +34,7 @@ import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

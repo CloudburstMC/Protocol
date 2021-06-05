@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerMixData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.PotionMixData;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {

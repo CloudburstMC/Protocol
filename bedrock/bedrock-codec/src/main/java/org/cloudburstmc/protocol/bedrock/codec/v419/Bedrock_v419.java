@@ -1,13 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.codec.v419;
 
-import lombok.experimental.UtilityClass;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v408.Bedrock_v408;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.*;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 
-@UtilityClass
-public class Bedrock_v419 {
+public class Bedrock_v419 extends Bedrock_v408 {
     public static BedrockCodec CODEC = Bedrock_v408.CODEC.toBuilder()
             .protocolVersion(419)
             .minecraftVersion("1.16.100")

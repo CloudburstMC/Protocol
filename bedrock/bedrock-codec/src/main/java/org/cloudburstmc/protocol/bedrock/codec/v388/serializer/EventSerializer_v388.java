@@ -1,9 +1,9 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.EventSerializer_v354;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class EventSerializer_v388 extends EventSerializer_v354 {
     public static final EventSerializer_v388 INSTANCE = new EventSerializer_v388();

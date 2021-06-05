@@ -6,7 +6,6 @@ import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -19,6 +18,7 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
 import java.io.IOException;

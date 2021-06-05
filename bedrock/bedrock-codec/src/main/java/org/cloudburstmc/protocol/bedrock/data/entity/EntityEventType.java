@@ -52,7 +52,7 @@ public enum EntityEventType {
      */
     CARAVAN,
     CONSUME_TOTEM,
-    /*
+    /**
      * Microjang hack to check if achievement is successful sent every 4 seconds on a vanilla server.
      */
     CHECK_TREASURE_HUNTER_ACHIEVEMENT,

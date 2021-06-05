@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.MoveEntityDeltaSe
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityDeltaPacket;
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityDeltaPacket.Flag;
 import org.cloudburstmc.protocol.bedrock.util.TriConsumer;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Set;
 

@@ -1,10 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.codec.v422.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.ItemStackResponseSerializer_v419;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class ItemStackResponseSerializer_v422 extends ItemStackResponseSerializer_v419 {
 

@@ -1,18 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePackDataInfoPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.UUID;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSerializer<ResourcePackDataInfoPacket> {
-    public static final ResourcePackDataInfoSerializer_v361 INSTANCE = new ResourcePackDataInfoSerializer_v361();
+    private final TypeMap<ResourcePackType> typeMap;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackDataInfoPacket packet) {
@@ -25,7 +26,7 @@ public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSeriali
         VarInts.writeUnsignedInt(buffer, hash.length);
         buffer.writeBytes(hash);
         buffer.writeBoolean(packet.isPremium());
-        buffer.writeByte(helper.getResourcePackTypeId(packet.getType()));
+        buffer.writeByte(typeMap.getId(packet.getType()));
     }
 
     @Override
@@ -42,6 +43,6 @@ public class ResourcePackDataInfoSerializer_v361 implements BedrockPacketSeriali
         buffer.readBytes(hash);
         packet.setHash(hash);
         packet.setPremium(buffer.readBoolean());
-        packet.setType(helper.getResourcePackType(buffer.readUnsignedByte()));
+        packet.setType(typeMap.getType(buffer.readUnsignedByte()));
     }
 }

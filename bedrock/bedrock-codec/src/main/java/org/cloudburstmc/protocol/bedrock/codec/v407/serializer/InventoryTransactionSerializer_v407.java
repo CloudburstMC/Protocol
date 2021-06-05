@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.InventoryTransact
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetItemSlotData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.TransactionType;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class InventoryTransactionSerializer_v407 extends InventoryTransactionSerializer_v291 {

@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.structure.StructureBlockType;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureEditorData;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureRedstoneSaveMode;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StructureBlockUpdateSerializer_v388 extends StructureBlockUpdateSerializer_v361 {

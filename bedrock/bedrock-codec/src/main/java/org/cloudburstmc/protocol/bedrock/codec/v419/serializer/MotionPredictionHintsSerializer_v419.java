@@ -1,12 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v419.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.MotionPredictionHintsPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class MotionPredictionHintsSerializer_v419 implements BedrockPacketSerializer<MotionPredictionHintsPacket> {

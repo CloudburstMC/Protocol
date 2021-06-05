@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v431;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
@@ -18,6 +17,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.Stac
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.util.LittleEndianByteBufInputStream;
 import org.cloudburstmc.protocol.bedrock.util.LittleEndianByteBufOutputStream;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.io.IOException;
 import java.util.List;

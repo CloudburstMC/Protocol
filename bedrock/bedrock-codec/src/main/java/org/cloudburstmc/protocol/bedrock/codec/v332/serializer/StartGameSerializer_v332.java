@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v332.serializer;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.StartGameSerializ
 import org.cloudburstmc.protocol.bedrock.data.GamePublishSetting;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StartGameSerializer_v332 extends StartGameSerializer_v291 { // No need to extend last version

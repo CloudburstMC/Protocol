@@ -1,12 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v313;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.v291.BedrockCodecHelper_v291;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v313 extends BedrockCodecHelper_v291 {
 

@@ -1,12 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.codec.v422;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.v419.BedrockCodecHelper_v419;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.CraftRecipeOptionalStackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.ArrayList;
 import java.util.List;
