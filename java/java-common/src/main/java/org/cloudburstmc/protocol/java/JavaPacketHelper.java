@@ -261,7 +261,7 @@ public abstract class JavaPacketHelper {
 
     public Particle readParticle(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        ParticleType type = ParticleType.getById(this.readVarInt(buffer));
+        ParticleType type = this.getParticle(this.readVarInt(buffer));
         return new Particle(type, this.readParticleData(buffer, type));
     }
 
