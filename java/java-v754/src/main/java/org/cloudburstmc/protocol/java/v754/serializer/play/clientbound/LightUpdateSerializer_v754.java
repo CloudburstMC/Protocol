@@ -50,7 +50,7 @@ public class LightUpdateSerializer_v754 implements JavaPacketSerializer<LightUpd
         packet.setSkyUpdates(skyUpdates);
         List<byte[]> blockUpdates = new ArrayList<>();
         for (int i = 0; i < 18; i++) {
-            if ((packet.getSkyYMask() & 0x01 << i) != 0) {
+            if ((packet.getBlockYMask() & 0x01 << i) != 0) {
                 blockUpdates.add(helper.readByteArray(buffer));
             }
         }

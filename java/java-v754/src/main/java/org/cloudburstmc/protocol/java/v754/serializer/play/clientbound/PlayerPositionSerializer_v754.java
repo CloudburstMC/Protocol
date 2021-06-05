@@ -24,7 +24,7 @@ public class PlayerPositionSerializer_v754 implements JavaPacketSerializer<Playe
             flags |= flag.getBitMask();
         }
         buffer.writeByte(flags);
-        VarInts.writeUnsignedInt(buffer, packet.getTeleportId());
+        helper.writeVarInt(buffer, packet.getTeleportId());
     }
 
     @Override
@@ -37,6 +37,6 @@ public class PlayerPositionSerializer_v754 implements JavaPacketSerializer<Playe
                 packet.getFlags().add(flag);
             }
         }
-        packet.setTeleportId(VarInts.readUnsignedInt(buffer));
+        packet.setTeleportId(helper.readVarInt(buffer));
     }
 }
