@@ -37,5 +37,11 @@ public class SetBorderPacket extends JavaPacket<JavaPlayPacketHandler> {
         INITIALIZE,
         SET_WARNING_TIME,
         SET_WARNING_BLOCKS;
+
+        private static final Type[] VALUES = values();
+
+        public static Type getById(int id) {
+            return VALUES.length > id ? VALUES[id] : null;
+        }
     }
 }

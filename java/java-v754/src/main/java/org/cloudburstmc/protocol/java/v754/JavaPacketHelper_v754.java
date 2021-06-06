@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.java.v754;
 
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.data.entity.EntityDataType;
+import org.cloudburstmc.protocol.java.data.entity.MobEffectType;
 import org.cloudburstmc.protocol.java.data.entity.Pose;
 import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.java.data.world.ParticleType;
@@ -278,5 +279,41 @@ public class JavaPacketHelper_v754 extends JavaPacketHelper {
         this.particles.put(69, ParticleType.LANDING_OBSIDIAN_TEAR);
         this.particles.put(70, ParticleType.REVERSE_PORTAL);
         this.particles.put(71, ParticleType.WHITE_ASH);
+    }
+
+    @Override
+    public void registerMobEffects() {
+        this.mobEffects.put(1, MobEffectType.SPEED);
+        this.mobEffects.put(2, MobEffectType.SLOWNESS);
+        this.mobEffects.put(3, MobEffectType.HASTE);
+        this.mobEffects.put(4, MobEffectType.MINING_FATIGUE);
+        this.mobEffects.put(5, MobEffectType.STRENGTH);
+        this.mobEffects.put(6, MobEffectType.INSTANT_HEALTH);
+        this.mobEffects.put(7, MobEffectType.INSTANT_DAMAGE);
+        this.mobEffects.put(8, MobEffectType.JUMP_BOOST);
+        this.mobEffects.put(9, MobEffectType.NAUSEA);
+        this.mobEffects.put(10, MobEffectType.REGENERATION);
+        this.mobEffects.put(11, MobEffectType.DAMAGE_RESISTANCE);
+        this.mobEffects.put(12, MobEffectType.FIRE_RESISTANCE);
+        this.mobEffects.put(13, MobEffectType.WATER_BREATHING);
+        this.mobEffects.put(14, MobEffectType.INVISIBILITY);
+        this.mobEffects.put(15, MobEffectType.BLINDNESS);
+        this.mobEffects.put(16, MobEffectType.NIGHT_VISION);
+        this.mobEffects.put(17, MobEffectType.HUNGER);
+        this.mobEffects.put(18, MobEffectType.WEAKNESS);
+        this.mobEffects.put(19, MobEffectType.POISON);
+        this.mobEffects.put(20, MobEffectType.WITHER);
+        this.mobEffects.put(21, MobEffectType.HEALTH_BOOST);
+        this.mobEffects.put(22, MobEffectType.ABSORPTION);
+        this.mobEffects.put(23, MobEffectType.SATURATION);
+        this.mobEffects.put(24, MobEffectType.GLOWING);
+        this.mobEffects.put(25, MobEffectType.LEVITATION);
+        this.mobEffects.put(26, MobEffectType.LUCK);
+        this.mobEffects.put(27, MobEffectType.UNLUCK);
+        this.mobEffects.put(28, MobEffectType.SLOW_FALLING);
+        this.mobEffects.put(29, MobEffectType.CONDUIT_POWER);
+        this.mobEffects.put(30, MobEffectType.DOLPHINS_GRACE);
+        this.mobEffects.put(31, MobEffectType.BAD_OMEN);
+        this.mobEffects.put(32, MobEffectType.HERO_OF_THE_VILLAGE);
     }
 }

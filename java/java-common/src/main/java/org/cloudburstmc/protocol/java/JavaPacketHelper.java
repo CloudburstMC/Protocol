@@ -18,11 +18,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.cloudburstmc.protocol.java.data.Direction;
-import org.cloudburstmc.protocol.java.data.entity.EntityData;
-import org.cloudburstmc.protocol.java.data.entity.EntityDataType;
-import org.cloudburstmc.protocol.java.data.entity.EntityType;
-import org.cloudburstmc.protocol.java.data.entity.Pose;
-import org.cloudburstmc.protocol.java.data.entity.VillagerData;
+import org.cloudburstmc.protocol.java.data.entity.*;
 import org.cloudburstmc.protocol.java.data.inventory.ItemStack;
 import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
@@ -50,6 +46,7 @@ public abstract class JavaPacketHelper {
     protected final Int2ObjectBiMap<EntityDataType<?>> entityDataTypes = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<Pose> poses = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ParticleType> particles = new Int2ObjectBiMap<>();
+    protected final Int2ObjectBiMap<MobEffectType> mobEffects = new Int2ObjectBiMap<>();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
@@ -58,6 +55,7 @@ public abstract class JavaPacketHelper {
         this.registerEntityDataTypes();
         this.registerPoses();
         this.registerParticles();
+        this.registerMobEffects();
     }
 
     public int readVarInt(ByteBuf buffer) {
@@ -68,6 +66,14 @@ public abstract class JavaPacketHelper {
     public void writeVarInt(ByteBuf buffer, int varint) {
         // Don't use the signed version! Only Bedrock knows that concept
         VarInts.writeUnsignedInt(buffer, varint);
+    }
+
+    public long readVarLong(ByteBuf buffer) {
+        return VarInts.readUnsignedLong(buffer);
+    }
+
+    public void writeVarLong(ByteBuf buffer, long varlong) {
+        VarInts.writeUnsignedLong(buffer, varlong);
     }
 
     public byte[] readByteArray(ByteBuf buffer) {
@@ -335,7 +341,7 @@ public abstract class JavaPacketHelper {
         Preconditions.checkNotNull(vector3i, "vector3i");
         buffer.writeLong((long) (vector3i.getX() & 0x3FFFFFF) << 38 | (long) (vector3i.getZ() & 0x3FFFFFF) << 12 | (long) (vector3i.getY() & 0xFFF));
     }
-    
+
     /*
         Helper array serialization
      */
@@ -506,6 +512,14 @@ public abstract class JavaPacketHelper {
         return this.particles.get(particle);
     }
 
+    public final MobEffectType getMobEffect(int id) {
+        return this.mobEffects.get(id);
+    }
+
+    public final int getMobEffectId(MobEffectType mobEffect) {
+        return this.mobEffects.get(mobEffect);
+    }
+
     protected abstract void registerEntityTypes();
 
     protected abstract void registerBlockEntityActions();
@@ -517,4 +531,6 @@ public abstract class JavaPacketHelper {
     public abstract void registerPoses();
 
     public abstract void registerParticles();
+
+    public abstract void registerMobEffects();
 }

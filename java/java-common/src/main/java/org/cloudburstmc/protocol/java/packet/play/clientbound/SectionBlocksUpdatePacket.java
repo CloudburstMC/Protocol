@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.java.packet.play.clientbound;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.java.JavaPacket;
+import org.cloudburstmc.protocol.java.data.world.BlockUpdateEntry;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
@@ -13,8 +14,7 @@ public class SectionBlocksUpdatePacket extends JavaPacket<JavaPlayPacketHandler>
     private int sectionX;
     private int sectionY;
     private int sectionZ;
-    private short[] positions;
-    private int[] states;
+    private BlockUpdateEntry[] entries;
     private boolean suppressLightUpdates;
 
     @Override
