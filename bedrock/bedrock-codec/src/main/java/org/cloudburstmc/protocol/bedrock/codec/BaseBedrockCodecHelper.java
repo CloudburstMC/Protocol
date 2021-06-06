@@ -95,12 +95,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public String readString(ByteBuf buffer) {
-        return new String(readByteArray(buffer), StandardCharsets.UTF_8);
+        int length = VarInts.readUnsignedInt(buffer);
+        return (String) buffer.readCharSequence(length, StandardCharsets.UTF_8);
     }
 
     public void writeString(ByteBuf buffer, String string) {
-        Preconditions.checkNotNull(string, "string");
-        writeByteArray(buffer, string.getBytes(StandardCharsets.UTF_8));
+        checkNotNull(string, "string");
+        VarInts.writeUnsignedInt(buffer, string.length());
+        buffer.writeCharSequence(string, StandardCharsets.UTF_8);
     }
 
     public UUID readUuid(ByteBuf buffer) {
