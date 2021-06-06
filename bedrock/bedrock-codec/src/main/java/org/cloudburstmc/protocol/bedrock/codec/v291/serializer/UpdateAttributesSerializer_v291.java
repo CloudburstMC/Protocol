@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAttributesPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAttributesSerializer_v291 implements BedrockPacketSerializer<UpdateAttributesPacket> {
@@ -38,7 +39,7 @@ public class UpdateAttributesSerializer_v291 implements BedrockPacketSerializer<
     }
 
     public void writeAttribute(ByteBuf buffer, BedrockCodecHelper helper, AttributeData attribute) {
-        Preconditions.checkNotNull(attribute, "attribute");
+        checkNotNull(attribute, "attribute");
 
         buffer.writeFloatLE(attribute.getMinimum());
         buffer.writeFloatLE(attribute.getMaximum());

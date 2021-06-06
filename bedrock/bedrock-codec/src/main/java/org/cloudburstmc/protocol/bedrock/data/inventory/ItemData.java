@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory;
 
 import com.nukkitx.nbt.NbtMap;
-import com.nukkitx.network.util.Preconditions;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.NonFinal;
@@ -31,7 +30,6 @@ public final class ItemData {
     private int netId;
 
     private ItemData(ItemDefinition definition, int damage, int count, NbtMap tag, String[] canPlace, String[] canBreak, long blockingTicks, int blockRuntimeId, boolean hasNetId, int netId) {
-        Preconditions.checkArgument(count < 256, "count exceeds maximum of 255");
         this.definition = definition;
         this.damage = damage;
         this.count = count;

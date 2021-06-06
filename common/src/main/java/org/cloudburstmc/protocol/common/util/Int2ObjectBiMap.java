@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.common.util;
 
 
-import com.nukkitx.network.util.Preconditions;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -10,6 +9,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 import java.util.Objects;
 import java.util.function.ObjIntConsumer;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class Int2ObjectBiMap<T> {
     private final Int2ObjectMap<T> forwards;
@@ -55,7 +56,7 @@ public class Int2ObjectBiMap<T> {
     }
 
     public void put(int key, T value) {
-        Preconditions.checkNotNull(value, "value");
+        checkNotNull(value, "value");
         this.forwards.put(key, value);
         this.backwards.put(value, key);
     }

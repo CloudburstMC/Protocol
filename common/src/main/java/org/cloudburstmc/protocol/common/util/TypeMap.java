@@ -9,7 +9,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-import static io.netty.util.internal.ObjectUtil.checkNotNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public final class TypeMap<T> {
 

@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.nukkitx.network.util.Preconditions.checkArgument;
-import static com.nukkitx.network.util.Preconditions.checkNotNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public final class DefinitionRegistry<D extends Definition> {
     private final Int2ObjectMap<D> runtimeMap;

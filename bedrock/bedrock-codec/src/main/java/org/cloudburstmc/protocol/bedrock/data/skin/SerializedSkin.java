@@ -8,7 +8,7 @@ import net.minidev.json.JSONValue;
 import java.util.Collections;
 import java.util.List;
 
-import static com.nukkitx.network.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 @Getter
 @ToString(exclude = {"geometryData"})

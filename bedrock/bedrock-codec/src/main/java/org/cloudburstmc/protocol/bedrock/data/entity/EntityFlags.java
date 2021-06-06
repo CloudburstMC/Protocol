@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
-import com.nukkitx.network.util.Preconditions;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.ToString;
@@ -9,6 +8,8 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.Set;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @ToString
 public class EntityFlags {
@@ -24,7 +25,7 @@ public class EntityFlags {
      * @return whether there was a change
      */
     public boolean setFlag(@Nonnull EntityFlag flag, boolean value) {
-        Preconditions.checkNotNull(flag, "flag");
+        checkNotNull(flag, "flag");
         boolean oldValue = flags.contains(flag);
 
         if (oldValue != value) {
@@ -45,7 +46,7 @@ public class EntityFlags {
      * @return value of flag
      */
     public boolean getFlag(@Nonnull EntityFlag flag) {
-        Preconditions.checkNotNull(flag, "flag");
+        checkNotNull(flag, "flag");
         return flags.contains(flag);
     }
 

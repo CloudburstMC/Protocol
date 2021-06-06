@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerializer<MoveEntityAbsolutePacket> {
@@ -52,7 +53,7 @@ public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerialize
     }
 
     protected void writeByteRotation(ByteBuf buffer, Vector3f rotation) {
-        Preconditions.checkNotNull(rotation, "rotation");
+        checkNotNull(rotation, "rotation");
         writeByteAngle(buffer, rotation.getX());
         writeByteAngle(buffer, rotation.getY());
         writeByteAngle(buffer, rotation.getZ());

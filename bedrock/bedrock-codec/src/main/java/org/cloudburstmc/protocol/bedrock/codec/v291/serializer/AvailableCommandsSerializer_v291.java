@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 @RequiredArgsConstructor
 public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer<AvailableCommandsPacket> {
@@ -173,7 +174,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             VarInts.writeUnsignedInt(buffer, commandEnum.getValues().length);
             for (String value : commandEnum.getValues()) {
                 int index = values.indexOf(value);
-                Preconditions.checkArgument(index > -1, "Invalid enum value detected: " + value);
+                checkArgument(index > -1, "Invalid enum value detected: " + value);
                 indexWriter.accept(buf, index);
             }
         });

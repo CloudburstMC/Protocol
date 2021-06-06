@@ -6,7 +6,6 @@ import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -45,8 +44,9 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.nukkitx.network.util.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
@@ -76,7 +76,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeByteArray(ByteBuf buffer, byte[] bytes) {
-        Preconditions.checkNotNull(bytes, "bytes");
+        checkNotNull(bytes, "bytes");
         VarInts.writeUnsignedInt(buffer, bytes.length);
         buffer.writeBytes(bytes);
     }
@@ -89,7 +89,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public void writeByteBuf(ByteBuf buffer, ByteBuf toWrite) {
-        Preconditions.checkNotNull(toWrite, "toWrite");
+        checkNotNull(toWrite, "toWrite");
         VarInts.writeUnsignedInt(buffer, toWrite.readableBytes());
         buffer.writeBytes(toWrite, toWrite.readerIndex(), toWrite.writerIndex());
     }
@@ -110,7 +110,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeUuid(ByteBuf buffer, UUID uuid) {
-        Preconditions.checkNotNull(uuid, "uuid");
+        checkNotNull(uuid, "uuid");
         buffer.writeLongLE(uuid.getMostSignificantBits());
         buffer.writeLongLE(uuid.getLeastSignificantBits());
     }
@@ -123,7 +123,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeVector3f(ByteBuf buffer, Vector3f vector3f) {
-        Preconditions.checkNotNull(vector3f, "vector3f");
+        checkNotNull(vector3f, "vector3f");
         buffer.writeFloatLE(vector3f.getX());
         buffer.writeFloatLE(vector3f.getY());
         buffer.writeFloatLE(vector3f.getZ());
@@ -136,7 +136,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeVector2f(ByteBuf buffer, Vector2f vector2f) {
-        Preconditions.checkNotNull(vector2f, "vector2f");
+        checkNotNull(vector2f, "vector2f");
         buffer.writeFloatLE(vector2f.getX());
         buffer.writeFloatLE(vector2f.getY());
     }
@@ -151,7 +151,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeVector3i(ByteBuf buffer, Vector3i vector3i) {
-        Preconditions.checkNotNull(vector3i, "vector3i");
+        checkNotNull(vector3i, "vector3i");
         VarInts.writeInt(buffer, vector3i.getX());
         VarInts.writeInt(buffer, vector3i.getY());
         VarInts.writeInt(buffer, vector3i.getZ());
@@ -166,7 +166,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeBlockPosition(ByteBuf buffer, Vector3i blockPosition) {
-        Preconditions.checkNotNull(blockPosition, "blockPosition");
+        checkNotNull(blockPosition, "blockPosition");
         VarInts.writeInt(buffer, blockPosition.getX());
         VarInts.writeUnsignedInt(buffer, blockPosition.getY());
         VarInts.writeInt(buffer, blockPosition.getZ());

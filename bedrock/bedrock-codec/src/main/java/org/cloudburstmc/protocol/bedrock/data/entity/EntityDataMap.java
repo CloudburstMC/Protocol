@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static com.nukkitx.network.util.Preconditions.checkNotNull;
+import static com.nukkitx.network.util.checkNotNull;
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.FLAGS;
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.FLAGS_2;
 

@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory;
 
-import com.nukkitx.network.util.Preconditions;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.AccessLevel;
@@ -8,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import javax.annotation.Nonnull;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,7 +21,7 @@ public final class InventorySource {
     private final Flag flag;
 
     public static InventorySource fromContainerWindowId(int containerId) {
-        Preconditions.checkNotNull(containerId, "containerId");
+        checkNotNull(containerId, "containerId");
         return new InventorySource(Type.CONTAINER, containerId, Flag.NONE);
     }
 
@@ -37,17 +38,17 @@ public final class InventorySource {
     }
 
     public static InventorySource fromNonImplementedTodo(int containerId) {
-        Preconditions.checkNotNull(containerId, "containerId");
+        checkNotNull(containerId, "containerId");
         return new InventorySource(Type.NON_IMPLEMENTED_TODO, containerId, Flag.NONE);
     }
 
     public static InventorySource fromUntrackedInteractionUI(int containerId) {
-        Preconditions.checkNotNull(containerId, "containerId");
+        checkNotNull(containerId, "containerId");
         return new InventorySource(Type.UNTRACKED_INTERACTION_UI, containerId, Flag.NONE);
     }
 
     public static InventorySource fromWorldInteraction(@Nonnull Flag flag) {
-        Preconditions.checkNotNull(flag, "flag");
+        checkNotNull(flag, "flag");
         return new InventorySource(Type.WORLD_INTERACTION, ContainerId.NONE, flag);
     }
 

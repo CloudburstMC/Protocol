@@ -11,7 +11,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.nukkitx.natives.aes.AesFactory;
 import com.nukkitx.natives.util.Natives;
-import com.nukkitx.network.util.Preconditions;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
@@ -38,6 +37,8 @@ import java.security.spec.X509EncodedKeySpec;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Base64;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 @UtilityClass
 public class EncryptionUtils {
@@ -131,7 +132,7 @@ public class EncryptionUtils {
         ECPublicKey lastKey = null;
         boolean validChain = false;
         for (Object node : chain) {
-            Preconditions.checkArgument(node instanceof String, "Chain node is not a string");
+            checkArgument(node instanceof String, "Chain node is not a string");
             JWSObject jwt = JWSObject.parse((String) node);
 
             if (lastKey == null) {
@@ -145,10 +146,10 @@ public class EncryptionUtils {
             }
 
             Object payload = JSONValue.parse(jwt.getPayload().toString());
-            Preconditions.checkArgument(payload instanceof JSONObject, "Payload is not a object");
+            checkArgument(payload instanceof JSONObject, "Payload is not a object");
 
             Object identityPublicKey = ((JSONObject) payload).get("identityPublicKey");
-            Preconditions.checkArgument(identityPublicKey instanceof String, "identityPublicKey node is missing in chain");
+            checkArgument(identityPublicKey instanceof String, "identityPublicKey node is missing in chain");
             lastKey = generateKey((String) identityPublicKey);
         }
         return validChain;

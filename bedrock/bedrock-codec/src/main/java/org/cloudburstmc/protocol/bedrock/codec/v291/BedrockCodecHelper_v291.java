@@ -6,7 +6,6 @@ import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
-import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
@@ -26,6 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.Type;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
@@ -47,7 +47,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void writeEntityLink(ByteBuf buffer, EntityLinkData entityLink) {
-        Preconditions.checkNotNull(entityLink, "entityLink");
+        checkNotNull(entityLink, "entityLink");
 
         VarInts.writeLong(buffer, entityLink.getFrom());
         VarInts.writeLong(buffer, entityLink.getTo());
@@ -106,7 +106,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void writeItem(ByteBuf buffer, ItemData item) {
-        Preconditions.checkNotNull(item, "item");
+        checkNotNull(item, "item");
 
         // Write id
         ItemDefinition definition = item.getDefinition();
@@ -166,7 +166,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void writeCommandOrigin(ByteBuf buffer, CommandOriginData originData) {
-        Preconditions.checkNotNull(originData, "commandOriginData");
+        checkNotNull(originData, "commandOriginData");
         VarInts.writeUnsignedInt(buffer, originData.getOrigin().ordinal());
         writeUuid(buffer, originData.getUuid());
         writeString(buffer, originData.getRequestId());
@@ -194,7 +194,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule) {
-        Preconditions.checkNotNull(gameRule, "gameRule");
+        checkNotNull(gameRule, "gameRule");
 
         Object value = gameRule.getValue();
         int type = this.gameRuleType.getId(value.getClass());
@@ -216,7 +216,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        Preconditions.checkNotNull(entityDataMap, "entityDataDictionary");
+        checkNotNull(entityDataMap, "entityDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
 
@@ -277,7 +277,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        Preconditions.checkNotNull(entityDataMap, "entityDataDictionary");
+        checkNotNull(entityDataMap, "entityDataDictionary");
 
         VarInts.writeUnsignedInt(buffer, entityDataMap.size());
 
@@ -351,7 +351,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
     @Override
     public void writeCommandEnum(ByteBuf buffer, CommandEnumData enumData) {
-        Preconditions.checkNotNull(enumData, "enumData");
+        checkNotNull(enumData, "enumData");
 
         writeString(buffer, enumData.getName());
 

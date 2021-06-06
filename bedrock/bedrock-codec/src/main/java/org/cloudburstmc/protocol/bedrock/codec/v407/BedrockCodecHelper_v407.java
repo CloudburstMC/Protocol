@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.netty.util.internal.ObjectUtil.checkNotNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 

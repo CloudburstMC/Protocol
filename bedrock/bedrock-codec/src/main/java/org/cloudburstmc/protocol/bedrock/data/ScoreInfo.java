@@ -1,9 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import com.nukkitx.network.util.Preconditions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 @Getter
 @EqualsAndHashCode
@@ -35,7 +36,7 @@ public class ScoreInfo {
     }
 
     public ScoreInfo(long scoreboardId, String objectiveId, int score, ScorerType type, long entityId) {
-        Preconditions.checkArgument(type == ScorerType.ENTITY || type == ScorerType.PLAYER, "Must be player or entity");
+        checkArgument(type == ScorerType.ENTITY || type == ScorerType.PLAYER, "Must be player or entity");
         this.scoreboardId = scoreboardId;
         this.objectiveId = objectiveId;
         this.score = score;
