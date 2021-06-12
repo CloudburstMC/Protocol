@@ -2,35 +2,24 @@ package org.cloudburstmc.protocol.bedrock.codec.v422;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.v419.BedrockCodecHelper_v419;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.CraftRecipeOptionalStackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
-    public static final BedrockCodecHelper_v422 INSTANCE = new BedrockCodecHelper_v422();
 
-    @Override
-    protected void registerStackActionRequestTypes() {
-        this.stackRequestActionTypes.put(0, StackRequestActionType.TAKE);
-        this.stackRequestActionTypes.put(1, StackRequestActionType.PLACE);
-        this.stackRequestActionTypes.put(2, StackRequestActionType.SWAP);
-        this.stackRequestActionTypes.put(3, StackRequestActionType.DROP);
-        this.stackRequestActionTypes.put(4, StackRequestActionType.DESTROY);
-        this.stackRequestActionTypes.put(5, StackRequestActionType.CONSUME);
-        this.stackRequestActionTypes.put(6, StackRequestActionType.CREATE);
-        this.stackRequestActionTypes.put(7, StackRequestActionType.LAB_TABLE_COMBINE);
-        this.stackRequestActionTypes.put(8, StackRequestActionType.BEACON_PAYMENT);
-        this.stackRequestActionTypes.put(9, StackRequestActionType.CRAFT_RECIPE);
-        this.stackRequestActionTypes.put(10, StackRequestActionType.CRAFT_RECIPE_AUTO);
-        this.stackRequestActionTypes.put(11, StackRequestActionType.CRAFT_CREATIVE);
-        this.stackRequestActionTypes.put(12, StackRequestActionType.CRAFT_RECIPE_OPTIONAL); // new for v422
-        this.stackRequestActionTypes.put(13, StackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED);
-        this.stackRequestActionTypes.put(14, StackRequestActionType.CRAFT_RESULTS_DEPRECATED);
+    public BedrockCodecHelper_v422(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
+                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
+        super(entityData, entityDataTypes, entityFlags, gameRulesTypes, stackRequestActionTypes);
     }
 
     @Override

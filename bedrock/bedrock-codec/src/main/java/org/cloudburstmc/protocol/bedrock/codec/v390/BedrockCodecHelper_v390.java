@@ -14,7 +14,8 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
 
-    public BedrockCodecHelper_v390(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v390(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
+                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
     }
 

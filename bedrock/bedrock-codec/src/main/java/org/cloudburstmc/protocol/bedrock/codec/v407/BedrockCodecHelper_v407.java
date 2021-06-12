@@ -19,7 +19,9 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
     protected final TypeMap<StackRequestActionType> stackRequestActionTypes;
 
-    public BedrockCodecHelper_v407(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes) {
+    public BedrockCodecHelper_v407(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
+                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
         super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
         this.stackRequestActionTypes = stackRequestActionTypes;
     }

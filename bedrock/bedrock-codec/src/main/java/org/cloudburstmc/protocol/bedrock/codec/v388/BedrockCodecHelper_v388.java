@@ -25,7 +25,8 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     protected static final AnimatedTextureType[] TEXTURE_TYPES = AnimatedTextureType.values();
 
-    public BedrockCodecHelper_v388(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v388(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
+                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
     }
 

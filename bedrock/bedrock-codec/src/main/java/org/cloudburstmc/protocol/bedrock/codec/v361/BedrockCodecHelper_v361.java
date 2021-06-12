@@ -22,7 +22,8 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
 
-    public BedrockCodecHelper_v361(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
+    public BedrockCodecHelper_v361(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
+                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
         super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
     }
 
