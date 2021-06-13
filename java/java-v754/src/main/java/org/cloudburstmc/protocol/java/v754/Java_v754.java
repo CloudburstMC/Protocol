@@ -116,6 +116,11 @@ public class Java_v754 {
                     .registerClientbound(SetDisplayObjectivePacket.class, SetDisplayObjectiveSerializer_v754.INSTANCE, 67)
                     .registerClientbound(SetEntityDataPacket.class, SetEntityDataSerializer_v754.INSTANCE, 68)
                     .registerClientbound(SetEntityLinkPacket.class, SetEntityLinkSerializer_v754.INSTANCE, 69)
+                    .registerClientbound(SetEntityMotionPacket.class, SetEntityMotionSerializer_v754.INSTANCE, 70)
+                    .registerClientbound(SetEquipmentPacket.class, SetEquipmentSerializer_v754.INSTANCE, 71)
+                    .registerClientbound(SetExperiencePacket.class, SetExperienceSerializer_v754.INSTANCE, 72)
+                    .registerClientbound(SetHealthPacket.class, SetHealthSerializer_v754.INSTANCE, 73)
+                    .registerClientbound(SetObjectivePacket.class, SetObjectiveSerializer_v754.INSTANCE, 74)
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
