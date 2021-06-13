@@ -664,4 +664,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(RemoveVolumeEntityPacket packet) {
         return false;
     }
+
+    default boolean handle(NpcDialoguePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SimulationTypePacket packet) {
+        return false;
+    }
 }
