@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.beta;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.beta.serializer.NpcDialogueSerializerBeta;
+import com.nukkitx.protocol.bedrock.beta.serializer.ResourcePacksInfoSerializerBeta;
 import com.nukkitx.protocol.bedrock.beta.serializer.SimulationTypeSerializerBeta;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v291.serializer.*;
@@ -20,7 +21,6 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
 import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
-import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
 import com.nukkitx.protocol.bedrock.v428.serializer.CameraShakeSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_v428;
@@ -42,7 +42,7 @@ public class BedrockBeta {
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
             .registerPacket(ClientToServerHandshakePacket.class, ClientToServerHandshakeSerializer_v291.INSTANCE, 4)
             .registerPacket(DisconnectPacket.class, DisconnectSerializer_v291.INSTANCE, 5)
-            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v422.INSTANCE, 6)
+            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializerBeta.INSTANCE, 6)
             .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v419.INSTANCE, 7)
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
