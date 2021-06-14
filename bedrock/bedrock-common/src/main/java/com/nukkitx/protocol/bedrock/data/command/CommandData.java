@@ -11,7 +11,7 @@ public class CommandData {
     private final String name;
     private final String description;
     private final List<Flag> flags;
-    private final byte permission;
+    private final int permission;
     private final CommandEnumData aliases;
     private final CommandParamData[][] overloads;
 
@@ -42,8 +42,8 @@ public class CommandData {
     public static class Builder {
         private final String name;
         private final String description;
-        private final byte flags;
-        private final byte permission;
+        private final int flags;
+        private final int permission;
         private final int aliases;
         private CommandParamData.Builder[][] overloads;
     }
