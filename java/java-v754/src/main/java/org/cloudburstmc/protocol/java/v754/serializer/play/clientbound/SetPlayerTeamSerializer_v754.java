@@ -34,7 +34,7 @@ public class SetPlayerTeamSerializer_v754 implements JavaPacketSerializer<SetPla
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, JavaPacketHelper helper, SetPlayerTeamPacket packet) {
+    public void deserialize(ByteBuf buffer, JavaPacketHelper helper, SetPlayerTeamPacket packet) throws PacketSerializeException {
         packet.setName(helper.readString(buffer));
         packet.setAction(Action.getById(buffer.readByte()));
         if (packet.getAction() == Action.CREATE || packet.getAction() == Action.UPDATE) {
