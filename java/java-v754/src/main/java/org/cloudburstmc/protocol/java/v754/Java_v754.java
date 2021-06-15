@@ -121,6 +121,8 @@ public class Java_v754 {
                     .registerClientbound(SetExperiencePacket.class, SetExperienceSerializer_v754.INSTANCE, 72)
                     .registerClientbound(SetHealthPacket.class, SetHealthSerializer_v754.INSTANCE, 73)
                     .registerClientbound(SetObjectivePacket.class, SetObjectiveSerializer_v754.INSTANCE, 74)
+                    .registerClientbound(SetPassengersPacket.class, SetPassengersSerializer_v754.INSTANCE, 75)
+                    .registerClientbound(SetPlayerTeamPacket.class, SetPlayerTeamSerializer_v754.INSTANCE, 76)
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
