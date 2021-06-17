@@ -19,9 +19,9 @@ public class SoundSerializer_v754 implements JavaPacketSerializer<SoundPacket> {
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, SoundPacket packet) throws PacketSerializeException {
         helper.writeVarInt(buffer, packet.getSound().ordinal());
         helper.writeVarInt(buffer, packet.getSource().ordinal());
-        buffer.writeInt(packet.getPosition().getX());
-        buffer.writeInt(packet.getPosition().getY());
-        buffer.writeInt(packet.getPosition().getZ());
+        buffer.writeInt(packet.getPosition().getX() * 8);
+        buffer.writeInt(packet.getPosition().getY() * 8);
+        buffer.writeInt(packet.getPosition().getZ() * 8);
         buffer.writeFloat(packet.getVolume());
         buffer.writeFloat(packet.getPitch());
     }
@@ -30,9 +30,9 @@ public class SoundSerializer_v754 implements JavaPacketSerializer<SoundPacket> {
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, SoundPacket packet) throws PacketSerializeException {
         packet.setSound(SoundEvent.getById(helper.readVarInt(buffer)));
         packet.setSource(SoundSource.getById(helper.readVarInt(buffer)));
-        int x = buffer.readInt();
-        int y = buffer.readInt();
-        int z = buffer.readInt();
+        int x = buffer.readInt() / 8;
+        int y = buffer.readInt() / 8;
+        int z = buffer.readInt() / 8;
         packet.setPosition(Vector3i.from(x, y, z));
         packet.setVolume(buffer.readFloat());
         packet.setPitch(buffer.readFloat());
