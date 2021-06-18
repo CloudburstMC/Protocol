@@ -130,6 +130,9 @@ public class Java_v754 {
                     .registerClientbound(SoundPacket.class, SoundSerializer_v754.INSTANCE, 81)
                     .registerClientbound(StopSoundPacket.class, StopSoundSerializer_v754.INSTANCE, 82)
                     .registerClientbound(TabListPacket.class, TabListSerializer_v754.INSTANCE, 83)
+                    .registerClientbound(TagQueryPacket.class, TagQuerySerializer_v754.INSTANCE, 84)
+                    .registerClientbound(TakeItemEntityPacket.class, TakeItemEntitySerializer_v754.INSTANCE, 85)
+                    .registerClientbound(TeleportEntityPacket.class, TeleportEntitySerializer_v754.INSTANCE, 86)
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
                     .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)

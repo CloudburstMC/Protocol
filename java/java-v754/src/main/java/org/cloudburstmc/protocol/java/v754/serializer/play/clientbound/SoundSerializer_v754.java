@@ -30,10 +30,11 @@ public class SoundSerializer_v754 implements JavaPacketSerializer<SoundPacket> {
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, SoundPacket packet) throws PacketSerializeException {
         packet.setSound(SoundEvent.getById(helper.readVarInt(buffer)));
         packet.setSource(SoundSource.getById(helper.readVarInt(buffer)));
-        int x = buffer.readInt() / 8;
-        int y = buffer.readInt() / 8;
-        int z = buffer.readInt() / 8;
-        packet.setPosition(Vector3i.from(x, y, z));
+        packet.setPosition(Vector3i.from(
+                buffer.readInt() / 8,
+                buffer.readInt() / 8,
+                buffer.readInt() / 8
+        ));
         packet.setVolume(buffer.readFloat());
         packet.setPitch(buffer.readFloat());
     }
