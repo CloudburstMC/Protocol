@@ -8,6 +8,8 @@ import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.SetObjectivePacket;
 
+import static org.cloudburstmc.protocol.java.packet.play.clientbound.SetObjectivePacket.Action;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SetObjectiveSerializer_v754 implements JavaPacketSerializer<SetObjectivePacket> {
     public static final SetObjectiveSerializer_v754 INSTANCE = new SetObjectiveSerializer_v754();
@@ -16,7 +18,7 @@ public class SetObjectiveSerializer_v754 implements JavaPacketSerializer<SetObje
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, SetObjectivePacket packet) throws PacketSerializeException {
         helper.writeString(buffer, packet.getObjectiveName());
         buffer.writeByte(packet.getAction().ordinal());
-        if (packet.getAction().ordinal() == 0 || packet.getAction().ordinal() == 2) {
+        if (packet.getAction() == Action.ADD || packet.getAction() == Action.UPDATE) {
             helper.writeComponent(buffer, packet.getDisplayName());
             helper.writeVarInt(buffer, packet.getRenderType().ordinal());
         }
@@ -25,9 +27,8 @@ public class SetObjectiveSerializer_v754 implements JavaPacketSerializer<SetObje
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, SetObjectivePacket packet) throws PacketSerializeException {
         packet.setObjectiveName(helper.readString(buffer));
-        byte action = buffer.readByte();
-        packet.setAction(SetObjectivePacket.Action.getById(action));
-        if (action == 0 || action == 2) {
+        packet.setAction(SetObjectivePacket.Action.getById(buffer.readByte()));
+        if (packet.getAction() == Action.ADD || packet.getAction() == Action.UPDATE) {
             packet.setDisplayName(helper.readComponent(buffer));
             packet.setRenderType(SetObjectivePacket.RenderType.getById(helper.readVarInt(buffer)));
         }

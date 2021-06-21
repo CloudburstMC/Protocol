@@ -17,26 +17,16 @@ public class TeleportEntitySerializer_v754 implements JavaPacketSerializer<Telep
     @Override
     public void serialize(ByteBuf buffer, JavaPacketHelper helper, TeleportEntityPacket packet) throws PacketSerializeException {
         helper.writeVarInt(buffer, packet.getEntityId());
-        buffer.writeDouble(packet.getPosition().getX());
-        buffer.writeDouble(packet.getPosition().getY());
-        buffer.writeDouble(packet.getPosition().getZ());
-        buffer.writeByte((byte) (packet.getRotation().getX() * 256 / 300));
-        buffer.writeByte((byte) (packet.getRotation().getY() * 256 / 300));
+        helper.writePosition(buffer, packet.getPosition());
+        helper.writeRotation2f(buffer, packet.getRotation());
         buffer.writeBoolean(packet.isOnGround());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, JavaPacketHelper helper, TeleportEntityPacket packet) throws PacketSerializeException {
         packet.setEntityId(helper.readVarInt(buffer));
-        packet.setPosition(Vector3d.from(
-                buffer.readDouble(),
-                buffer.readDouble(),
-                buffer.readDouble()
-        ));
-        packet.setRotation(Vector2f.from(
-                buffer.readByte() * 360 / 256F,
-                buffer.readByte() * 360 / 256F
-        ));
+        packet.setPosition(helper.readPosition(buffer));
+        packet.setRotation(helper.readRotation2f(buffer));
         packet.setOnGround(buffer.readBoolean());
     }
 }
