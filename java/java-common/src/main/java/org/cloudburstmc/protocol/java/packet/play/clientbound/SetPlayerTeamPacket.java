@@ -19,8 +19,7 @@ public class SetPlayerTeamPacket extends JavaPacket<JavaPlayPacketHandler> {
     private Component displayName;
     private Component prefix;
     private Component suffix;
-    private String nametagVisibility;
-    private NamedTextColor color;
+    private TeamColor color;
     private List<String> players;
     private boolean friendlyFire;
     private boolean seeFriendlyInvisibles;
@@ -73,6 +72,37 @@ public class SetPlayerTeamPacket extends JavaPacket<JavaPlayPacketHandler> {
         private static final NameTagVisibility[] VALUES = values();
 
         public static NameTagVisibility getById(int id) {
+            return VALUES.length > id ? VALUES[id] : null;
+        }
+    }
+
+    public enum TeamColor {
+        BLACK,
+        DARK_BLUE,
+        DARK_GREEN,
+        DARK_AQUA,
+        DARK_RED,
+        DARK_PURPLE,
+        GOLD,
+        GRAY,
+        DARK_GRAY,
+        BLUE,
+        GREEN,
+        AQUA,
+        RED,
+        LIGHT_PURPLE,
+        YELLOW,
+        WHITE,
+        OBFUSCATED,
+        BOLD,
+        STRIKETHROUGH,
+        UNDERLINE,
+        ITALIC,
+        RESET;
+
+        private static final TeamColor[] VALUES = values();
+
+        public static TeamColor getById(int id) {
             return VALUES.length > id ? VALUES[id] : null;
         }
     }
