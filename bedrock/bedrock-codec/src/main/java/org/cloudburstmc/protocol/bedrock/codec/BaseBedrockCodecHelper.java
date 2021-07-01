@@ -9,6 +9,7 @@ import com.nukkitx.nbt.NbtUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -101,7 +102,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     public void writeString(ByteBuf buffer, String string) {
         checkNotNull(string, "string");
-        VarInts.writeUnsignedInt(buffer, string.length());
+        VarInts.writeUnsignedInt(buffer, ByteBufUtil.utf8Bytes(string));
         buffer.writeCharSequence(string, StandardCharsets.UTF_8);
     }
 
