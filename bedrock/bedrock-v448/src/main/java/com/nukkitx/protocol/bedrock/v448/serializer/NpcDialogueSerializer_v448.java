@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v448.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,8 +9,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class NpcDialogueSerializerBeta implements BedrockPacketSerializer<NpcDialoguePacket> {
-    public static final NpcDialogueSerializerBeta INSTANCE = new NpcDialogueSerializerBeta();
+public class NpcDialogueSerializer_v448 implements BedrockPacketSerializer<NpcDialoguePacket> {
+    public static final NpcDialogueSerializer_v448 INSTANCE = new NpcDialogueSerializer_v448();
 
     private static final NpcDialoguePacket.Action[] VALUES = NpcDialoguePacket.Action.values();
 

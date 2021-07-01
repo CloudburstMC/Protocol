@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v448.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -9,8 +9,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class SimulationTypeSerializerBeta implements BedrockPacketSerializer<SimulationTypePacket> {
-    public static final SimulationTypeSerializerBeta INSTANCE = new SimulationTypeSerializerBeta();
+public class SimulationTypeSerializer_v448 implements BedrockPacketSerializer<SimulationTypePacket> {
+    public static final SimulationTypeSerializer_v448 INSTANCE = new SimulationTypeSerializer_v448();
 
     private static final SimulationType[] VALUES = SimulationType.values();
 

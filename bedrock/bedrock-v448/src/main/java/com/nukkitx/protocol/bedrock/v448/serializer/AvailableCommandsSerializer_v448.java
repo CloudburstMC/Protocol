@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v448.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -10,7 +10,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-public class AvailableCommandsSerializerBeta extends AvailableCommandsSerializer_v388 {
+public class AvailableCommandsSerializer_v448 extends AvailableCommandsSerializer_v388 {
 
     @Override
     protected void writeCommand(ByteBuf buffer, BedrockPacketHelper helper, CommandData commandData,

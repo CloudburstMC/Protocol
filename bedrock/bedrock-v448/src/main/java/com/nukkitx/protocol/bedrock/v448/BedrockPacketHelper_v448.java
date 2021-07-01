@@ -1,10 +1,10 @@
-package com.nukkitx.protocol.bedrock.beta;
+package com.nukkitx.protocol.bedrock.v448;
 
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.v440.BedrockPacketHelper_v440;
 
-public class BedrockPacketHelperBeta extends BedrockPacketHelper_v440 {
-    public static final BedrockPacketHelperBeta INSTANCE = new BedrockPacketHelperBeta();
+public class BedrockPacketHelper_v448 extends BedrockPacketHelper_v440 {
+    public static final BedrockPacketHelper_v448 INSTANCE = new BedrockPacketHelper_v448();
 
     @Override
     protected void registerLevelEvents() {
@@ -60,4 +60,6 @@ public class BedrockPacketHelperBeta extends BedrockPacketHelper_v440 {
         this.addLevelEvent(57 + legacy, LevelEventType.PARTICLE_BUBBLE_COLUMN_DOWN);
         this.addLevelEvent(58 + legacy, LevelEventType.PARTICLE_SNEEZE);
     }
+
+    
 }

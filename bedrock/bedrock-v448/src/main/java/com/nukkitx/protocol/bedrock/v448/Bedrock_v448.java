@@ -1,9 +1,6 @@
-package com.nukkitx.protocol.bedrock.beta;
+package com.nukkitx.protocol.bedrock.v448;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
-import com.nukkitx.protocol.bedrock.beta.serializer.NpcDialogueSerializerBeta;
-import com.nukkitx.protocol.bedrock.beta.serializer.ResourcePacksInfoSerializerBeta;
-import com.nukkitx.protocol.bedrock.beta.serializer.SimulationTypeSerializerBeta;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v291.serializer.*;
 import com.nukkitx.protocol.bedrock.v313.serializer.AddEntitySerializer_v313;
@@ -29,20 +26,23 @@ import com.nukkitx.protocol.bedrock.v440.serializer.AddVolumeEntitySerializer_v4
 import com.nukkitx.protocol.bedrock.v440.serializer.RemoveVolumeEntitySerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.StartGameSerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
+import com.nukkitx.protocol.bedrock.v448.serializer.NpcDialogueSerializer_v448;
+import com.nukkitx.protocol.bedrock.v448.serializer.ResourcePacksInfoSerializer_v448;
+import com.nukkitx.protocol.bedrock.v448.serializer.SimulationTypeSerializer_v448;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class BedrockBeta {
+public class Bedrock_v448 {
     public static BedrockPacketCodec BETA_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(448)
             .minecraftVersion("1.17.10")
-            .helper(BedrockPacketHelperBeta.INSTANCE)
+            .helper(BedrockPacketHelper_v448.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
             .registerPacket(ClientToServerHandshakePacket.class, ClientToServerHandshakeSerializer_v291.INSTANCE, 4)
             .registerPacket(DisconnectPacket.class, DisconnectSerializer_v291.INSTANCE, 5)
-            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializerBeta.INSTANCE, 6)
+            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v448.INSTANCE, 6)
             .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v419.INSTANCE, 7)
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
@@ -201,7 +201,7 @@ public class BedrockBeta {
             .registerPacket(SyncEntityPropertyPacket.class, SyncEntityPropertySerializer_v440.INSTANCE, 165)
             .registerPacket(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v440.INSTANCE, 166)
             .registerPacket(RemoveVolumeEntityPacket.class, RemoveVolumeEntitySerializer_v440.INSTANCE, 167)
-            .registerPacket(SimulationTypePacket.class, SimulationTypeSerializerBeta.INSTANCE, 168)
-            .registerPacket(NpcDialoguePacket.class, NpcDialogueSerializerBeta.INSTANCE, 169)
+            .registerPacket(SimulationTypePacket.class, SimulationTypeSerializer_v448.INSTANCE, 168)
+            .registerPacket(NpcDialoguePacket.class, NpcDialogueSerializer_v448.INSTANCE, 169)
             .build();
 }

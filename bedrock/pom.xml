@@ -30,6 +30,6 @@
         <module>bedrock-v428</module>
         <module>bedrock-v431</module>
         <module>bedrock-v440</module>
-        <module>bedrock-beta</module>
+        <module>bedrock-v448</module>
     </modules>
 </project>
