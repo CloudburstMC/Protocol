@@ -7,10 +7,15 @@ import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
 import com.nukkitx.protocol.bedrock.data.command.CommandParamData;
 import com.nukkitx.protocol.bedrock.v388.serializer.AvailableCommandsSerializer_v388;
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AvailableCommandsSerializer_v448 extends AvailableCommandsSerializer_v388 {
+
+    public static final AvailableCommandsSerializer_v448 INSTANCE = new AvailableCommandsSerializer_v448();
 
     @Override
     protected void writeCommand(ByteBuf buffer, BedrockPacketHelper helper, CommandData commandData,

@@ -4,8 +4,13 @@ import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.SetTitlePacket;
 import com.nukkitx.protocol.bedrock.v291.serializer.SetTitleSerializer_v291;
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SetTitleSerializer_v448 extends SetTitleSerializer_v291 {
+
+    public static final SetTitleSerializer_v448 INSTANCE = new SetTitleSerializer_v448();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, SetTitlePacket packet) {
