@@ -8,6 +8,8 @@ public class BedrockPacketHelper_v448 extends BedrockPacketHelper_v440 {
 
     @Override
     protected void registerLevelEvents() {
+        super.registerLevelEvents();
+
         int legacy = 0x4000;
         this.addLevelEvent(9 + legacy, LevelEventType.PARTICLE_CANDLE_FLAME);
         this.addLevelEvent(10 + legacy, LevelEventType.PARTICLE_LAVA);
