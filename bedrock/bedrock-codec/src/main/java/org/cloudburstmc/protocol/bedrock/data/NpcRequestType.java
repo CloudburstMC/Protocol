@@ -7,4 +7,5 @@ public enum NpcRequestType {
     SET_NAME,
     SET_SKIN,
     SET_INTERACTION_TEXT,
+    EXECUTE_OPENING_COMMANDS
 }

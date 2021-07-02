@@ -143,7 +143,9 @@ public enum EntityData {
     /**
      * @since v428
      */
-    GOAT_HORN_COUNT(null);
+    GOAT_HORN_COUNT(null),
+    BASE_RUNTIME_ID(null),
+    UPDATE_PROPERTIES(null);
 
     private final Type type;
     private final boolean flags;

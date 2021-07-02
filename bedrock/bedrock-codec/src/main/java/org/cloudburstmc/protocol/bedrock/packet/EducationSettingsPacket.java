@@ -10,6 +10,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class EducationSettingsPacket implements BedrockPacket {
     private String codeBuilderUri;
+    private String codeBuilderTitle;
+    private boolean canResizeCodeBuilder;
+    private boolean optionalOverrideUri;
     private boolean quizAttached;
 
     @Override

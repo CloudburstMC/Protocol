@@ -41,7 +41,7 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .insert(67, EntityFlag.SCARED)
             .insert(68, EntityFlag.IN_SCAFFOLDING)
             .insert(69, EntityFlag.OVER_SCAFFOLDING)
-            .insert(70, EntityFlag.FALL_THROUGH_SCAFFOLDING)
+            .insert(70, EntityFlag.DESCEND_THROUGH_BLOCK)
             .build();
 
     protected static final TypeMap<SoundEvent> LEVEL_SOUND_EVENTS = Bedrock_v291.SOUND_EVENTS.toBuilder()

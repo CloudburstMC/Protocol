@@ -81,5 +81,6 @@ public enum ParticleType implements LevelEventType {
     SPORE_BLOSSOM_SHOWER,
     SPORE_BLOSSOM_AMBIENT,
     WAX,
-    ELECTRIC_SPARK
+    ELECTRIC_SPARK,
+    CANDLE_FLAME
 }

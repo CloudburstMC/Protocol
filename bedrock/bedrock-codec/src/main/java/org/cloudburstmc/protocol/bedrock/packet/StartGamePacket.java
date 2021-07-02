@@ -94,6 +94,13 @@ public class StartGamePacket implements BedrockPacket {
      * @since v407
      */
     private boolean inventoriesServerAuthoritative;
+    /**
+     * The name of the server software.
+     * Used for telemetry within the Bedrock client.
+     *
+     * @since v440
+     */
+    private String serverEngine;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

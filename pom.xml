@@ -53,6 +53,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>HHmm-ddMMyyyy</maven.build.timestamp.format>
         <netty.version>4.1.51.Final</netty.version>
+        <network.version>1.6.27-SNAPSHOT</network.version>
     </properties>
 
     <repositories>

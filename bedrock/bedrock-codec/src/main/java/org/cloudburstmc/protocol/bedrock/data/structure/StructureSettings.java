@@ -14,6 +14,8 @@ public class StructureSettings {
     private final long lastEditedByEntityId;
     private final StructureRotation rotation;
     private final StructureMirror mirror;
+    private final StructureAnimationMode animationMode;
+    private final float animationSeconds;
     private final float integrityValue;
     private final int integritySeed;
     private final Vector3f pivot;

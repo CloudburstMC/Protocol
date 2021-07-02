@@ -14,6 +14,10 @@ public class NpcRequestPacket implements BedrockPacket {
     private NpcRequestType requestType;
     private String command;
     private int actionType;
+    /**
+     * @since v448
+     */
+    private String sceneName;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

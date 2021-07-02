@@ -17,6 +17,10 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
     private final List<Entry> resourcePackInfos = new ObjectArrayList<>();
     private boolean forcedToAccept;
     private boolean scriptingEnabled;
+    /**
+     * @since v448
+     */
+    private boolean forcingServerPacksEnabled;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

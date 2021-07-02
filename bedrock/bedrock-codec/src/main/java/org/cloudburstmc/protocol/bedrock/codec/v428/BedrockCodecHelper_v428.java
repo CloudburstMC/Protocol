@@ -3,162 +3,20 @@ package org.cloudburstmc.protocol.bedrock.codec.v428;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.v422.BedrockCodecHelper_v422;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.skin.*;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
-    public static final BedrockCodecHelper_v428 INSTANCE = new BedrockCodecHelper_v428();
 
-    @Override
-    protected void registerEntityData() {
-        super.registerEntityData();
-
-        this.addEntityData(60, EntityData.RIDER_ROTATION_OFFSET); // goodness why
-        this.addEntityData(61, EntityData.AREA_EFFECT_CLOUD_RADIUS);
-        this.addEntityData(62, EntityData.AREA_EFFECT_CLOUD_WAITING);
-        this.addEntityData(63, EntityData.AREA_EFFECT_CLOUD_PARTICLE_ID);
-        this.addEntityData(64, EntityData.SHULKER_PEEK_ID);
-        this.addEntityData(65, EntityData.SHULKER_ATTACH_FACE);
-        this.addEntityData(67, EntityData.SHULKER_ATTACH_POS);
-        this.addEntityData(68, EntityData.TRADE_TARGET_EID);
-        this.addEntityData(70, EntityData.COMMAND_BLOCK_ENABLED);
-        this.addEntityData(71, EntityData.COMMAND_BLOCK_COMMAND);
-        this.addEntityData(72, EntityData.COMMAND_BLOCK_LAST_OUTPUT);
-        this.addEntityData(73, EntityData.COMMAND_BLOCK_TRACK_OUTPUT);
-        this.addEntityData(74, EntityData.CONTROLLING_RIDER_SEAT_INDEX);
-        this.addEntityData(75, EntityData.STRENGTH);
-        this.addEntityData(76, EntityData.MAX_STRENGTH);
-        this.addEntityData(77, EntityData.EVOKER_SPELL_COLOR);
-        this.addEntityData(78, EntityData.LIMITED_LIFE);
-        this.addEntityData(79, EntityData.ARMOR_STAND_POSE_INDEX);
-        this.addEntityData(80, EntityData.ENDER_CRYSTAL_TIME_OFFSET);
-        this.addEntityData(81, EntityData.NAMETAG_ALWAYS_SHOW);
-        this.addEntityData(82, EntityData.COLOR_2);
-        this.addEntityData(84, EntityData.SCORE_TAG);
-        this.addEntityData(85, EntityData.BALLOON_ATTACHED_ENTITY);
-        this.addEntityData(86, EntityData.PUFFERFISH_SIZE);
-        this.addEntityData(87, EntityData.BOAT_BUBBLE_TIME);
-        this.addEntityData(88, EntityData.AGENT_ID);
-        this.addEntityData(89, EntityData.SITTING_AMOUNT);
-        this.addEntityData(90, EntityData.SITTING_AMOUNT_PREVIOUS);
-        this.addEntityData(91, EntityData.EATING_COUNTER);
-        this.addEntityData(92, EntityData.FLAGS_2);
-        this.addEntityData(93, EntityData.LAYING_AMOUNT);
-        this.addEntityData(94, EntityData.LAYING_AMOUNT_PREVIOUS);
-        this.addEntityData(95, EntityData.AREA_EFFECT_CLOUD_DURATION);
-        this.addEntityData(96, EntityData.AREA_EFFECT_CLOUD_SPAWN_TIME);
-        this.addEntityData(97, EntityData.AREA_EFFECT_CLOUD_CHANGE_RATE);
-        this.addEntityData(98, EntityData.AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP);
-        this.addEntityData(99, EntityData.AREA_EFFECT_CLOUD_COUNT);
-        this.addEntityData(100, EntityData.INTERACTIVE_TAG);
-        this.addEntityData(101, EntityData.TRADE_TIER);
-        this.addEntityData(102, EntityData.MAX_TRADE_TIER);
-        this.addEntityData(103, EntityData.TRADE_XP);
-        this.addEntityData(104, EntityData.SKIN_ID);
-        this.addEntityData(105, EntityData.SPAWNING_FRAMES);
-        this.addEntityData(106, EntityData.COMMAND_BLOCK_TICK_DELAY);
-        this.addEntityData(107, EntityData.COMMAND_BLOCK_EXECUTE_ON_FIRST_TICK);
-        this.addEntityData(108, EntityData.AMBIENT_SOUND_INTERVAL);
-        this.addEntityData(109, EntityData.AMBIENT_SOUND_INTERVAL_RANGE);
-        this.addEntityData(110, EntityData.AMBIENT_SOUND_EVENT_NAME);
-        this.addEntityData(111, EntityData.FALL_DAMAGE_MULTIPLIER);
-        this.addEntityData(112, EntityData.NAME_RAW_TEXT);
-        this.addEntityData(113, EntityData.CAN_RIDE_TARGET);
-        this.addEntityData(114, EntityData.LOW_TIER_CURED_TRADE_DISCOUNT);
-        this.addEntityData(115, EntityData.HIGH_TIER_CURED_TRADE_DISCOUNT);
-        this.addEntityData(116, EntityData.NEARBY_CURED_TRADE_DISCOUNT);
-        this.addEntityData(117, EntityData.NEARBY_CURED_DISCOUNT_TIME_STAMP);
-        this.addEntityData(118, EntityData.HITBOX);
-        this.addEntityData(119, EntityData.IS_BUOYANT);
-        this.addEntityData(120, EntityData.FREEZING_EFFECT_STRENGTH);
-        this.addEntityData(121, EntityData.BUOYANCY_DATA);
-        this.addEntityData(122, EntityData.GOAT_HORN_COUNT);
-    }
-
-    @Override
-    protected void registerEntityFlags() {
-        super.registerEntityFlags();
-
-        this.addEntityFlag(96, EntityFlag.RAM_ATTACK);
-    }
-
-    @Override
-    protected void registerLevelEvents() {
-        super.registerLevelEvents();
-
-        this.addLevelEvent(2027, LevelEvent.PARTICLE_VIBRATION_SIGNAL);
-
-        this.addLevelEvent(3514, LevelEvent.CAULDRON_FILL_POWDER_SNOW);
-        this.addLevelEvent(3515, LevelEvent.CAULDRON_TAKE_POWDER_SNOW);
-    }
-
-    @Override
-    protected void registerCommandParams() {
-        this.addCommandParam(1, CommandParam.INT);
-        this.addCommandParam(3, CommandParam.FLOAT);
-        this.addCommandParam(4, CommandParam.VALUE);
-        this.addCommandParam(5, CommandParam.WILDCARD_INT);
-        this.addCommandParam(6, CommandParam.OPERATOR);
-        this.addCommandParam(7, CommandParam.TARGET);
-        this.addCommandParam(8, CommandParam.WILDCARD_TARGET);
-
-        this.addCommandParam(16, CommandParam.FILE_PATH);
-
-        this.addCommandParam(32, CommandParam.STRING);
-        this.addCommandParam(40, CommandParam.BLOCK_POSITION);
-        this.addCommandParam(41, CommandParam.POSITION);
-        this.addCommandParam(44, CommandParam.MESSAGE);
-        this.addCommandParam(46, CommandParam.TEXT);
-        this.addCommandParam(50, CommandParam.JSON);
-        this.addCommandParam(63, CommandParam.COMMAND);
-    }
-
-    @Override
-    protected void registerSoundEvents() {
-        super.registerSoundEvents();
-
-        this.addSoundEvent(318, SoundEvent.AMBIENT_LOOP_WARPED_FOREST);
-        this.addSoundEvent(319, SoundEvent.AMBIENT_LOOP_SOULSAND_VALLEY);
-        this.addSoundEvent(320, SoundEvent.AMBIENT_LOOP_NETHER_WASTES);
-        this.addSoundEvent(321, SoundEvent.AMBIENT_LOOP_BASALT_DELTAS);
-        this.addSoundEvent(322, SoundEvent.AMBIENT_LOOP_CRIMSON_FOREST);
-        this.addSoundEvent(323, SoundEvent.AMBIENT_ADDITION_WARPED_FOREST);
-        this.addSoundEvent(324, SoundEvent.AMBIENT_ADDITION_SOULSAND_VALLEY);
-        this.addSoundEvent(325, SoundEvent.AMBIENT_ADDITION_NETHER_WASTES);
-        this.addSoundEvent(326, SoundEvent.AMBIENT_ADDITION_BASALT_DELTAS);
-        this.addSoundEvent(327, SoundEvent.AMBIENT_ADDITION_CRIMSON_FOREST);
-        this.addSoundEvent(328, SoundEvent.SCULK_SENSOR_POWER_ON);
-        this.addSoundEvent(329, SoundEvent.SCULK_SENSOR_POWER_OFF);
-        this.addSoundEvent(330, SoundEvent.BUCKET_FILL_POWDER_SNOW); // to check
-        this.addSoundEvent(331, SoundEvent.BUCKET_EMPTY_POWDER_SNOW);
-        this.addSoundEvent(332, SoundEvent.UNDEFINED);
-    }
-
-    @Override
-    protected void registerStackActionRequestTypes() {
-        this.stackRequestActionTypes.put(0, StackRequestActionType.TAKE);
-        this.stackRequestActionTypes.put(1, StackRequestActionType.PLACE);
-        this.stackRequestActionTypes.put(2, StackRequestActionType.SWAP);
-        this.stackRequestActionTypes.put(3, StackRequestActionType.DROP);
-        this.stackRequestActionTypes.put(4, StackRequestActionType.DESTROY);
-        this.stackRequestActionTypes.put(5, StackRequestActionType.CONSUME);
-        this.stackRequestActionTypes.put(6, StackRequestActionType.CREATE);
-        this.stackRequestActionTypes.put(7, StackRequestActionType.LAB_TABLE_COMBINE);
-        this.stackRequestActionTypes.put(8, StackRequestActionType.BEACON_PAYMENT);
-        this.stackRequestActionTypes.put(9, StackRequestActionType.MINE_BLOCK); // new for v428
-        this.stackRequestActionTypes.put(10, StackRequestActionType.CRAFT_RECIPE);
-        this.stackRequestActionTypes.put(11, StackRequestActionType.CRAFT_RECIPE_AUTO);
-        this.stackRequestActionTypes.put(12, StackRequestActionType.CRAFT_CREATIVE);
-        this.stackRequestActionTypes.put(13, StackRequestActionType.CRAFT_RECIPE_OPTIONAL);
-        this.stackRequestActionTypes.put(14, StackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED);
-        this.stackRequestActionTypes.put(15, StackRequestActionType.CRAFT_RESULTS_DEPRECATED);
+    public BedrockCodecHelper_v428(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes) {
+        super(entityData, entityDataTypes, entityFlags, gameRulesTypes, stackRequestActionTypes);
     }
 
     @SuppressWarnings("DuplicatedCode")

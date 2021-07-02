@@ -652,4 +652,24 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ClientboundDebugRendererPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(SyncEntityPropertyPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(AddVolumeEntityPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(RemoveVolumeEntityPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(NpcDialoguePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(SimulationTypePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

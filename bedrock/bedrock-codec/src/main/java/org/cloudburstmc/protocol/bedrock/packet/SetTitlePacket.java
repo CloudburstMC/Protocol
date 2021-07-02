@@ -14,6 +14,14 @@ public class SetTitlePacket implements BedrockPacket {
     private int fadeInTime;
     private int stayTime;
     private int fadeOutTime;
+    /**
+     * @since v448
+     */
+    private String xuid;
+    /**
+     * @since v448
+     */
+    private String platformOnlineId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
