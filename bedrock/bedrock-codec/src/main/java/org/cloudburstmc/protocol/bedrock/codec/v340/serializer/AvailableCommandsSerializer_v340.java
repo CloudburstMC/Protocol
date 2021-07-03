@@ -3,10 +3,14 @@ package org.cloudburstmc.protocol.bedrock.codec.v340.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.AvailableCommandsSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.command.*;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParamOption;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
+import java.util.Set;
 
 public class AvailableCommandsSerializer_v340 extends AvailableCommandsSerializer_v291 {
 
@@ -19,22 +23,24 @@ public class AvailableCommandsSerializer_v340 extends AvailableCommandsSerialize
         super.writeParameter(buffer, helper, param, enums, softEnums, postFixes);
 
         byte options = 0;
-
-        if (param.getOptions() != null) {
-            for (CommandParamOption option : param.getOptions()) {
-                options |= 1 << option.ordinal();
-            }
+        for (CommandParamOption option : param.getOptions()) {
+            options |= 1 << option.ordinal();
         }
         buffer.writeByte(options);
     }
 
     @Override
-    protected CommandParamData.Builder readParameter(ByteBuf buffer, BedrockCodecHelper helper) {
-        String parameterName = helper.readString(buffer);
-        CommandSymbolData type = CommandSymbolData.deserialize(buffer.readIntLE());
-        boolean optional = buffer.readBoolean();
-        byte options = buffer.readByte();
+    protected CommandParamData readParameter(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postfixes, Set<Runnable> delayedTasks) {
+        CommandParamData param = super.readParameter(buffer, helper, enums, softEnums, postfixes, delayedTasks);
 
-        return new CommandParamData.Builder(parameterName, type, optional, options);
+        Set<CommandParamOption> options = param.getOptions();
+        int optionsBits = buffer.readUnsignedByte();
+
+        for (CommandParamOption option : OPTIONS) {
+            if ((optionsBits & 1 << option.ordinal()) != 0) {
+                options.add(option);
+            }
+        }
+        return param;
     }
 }

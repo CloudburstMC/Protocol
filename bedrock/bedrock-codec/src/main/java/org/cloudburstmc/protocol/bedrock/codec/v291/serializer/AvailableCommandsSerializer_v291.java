@@ -1,19 +1,16 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.command.*;
 import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
+import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
 
@@ -22,12 +19,17 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 @RequiredArgsConstructor
 public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer<AvailableCommandsPacket> {
 
-    protected static final ObjIntConsumer<ByteBuf> WRITE_BYTE = ByteBuf::writeByte;
-    protected static final ObjIntConsumer<ByteBuf> WRITE_SHORT = ByteBuf::writeShortLE;
-    protected static final ObjIntConsumer<ByteBuf> WRITE_INT = ByteBuf::writeIntLE;
+    protected static final int ARG_FLAG_VALID = 0x100000;
+    protected static final int ARG_FLAG_ENUM = 0x200000;
+    protected static final int ARG_FLAG_POSTFIX = 0x1000000;
+    protected static final int ARG_FLAG_SOFT_ENUM = 0x4000000;
+
     protected static final ToIntFunction<ByteBuf> READ_BYTE = ByteBuf::readUnsignedByte;
     protected static final ToIntFunction<ByteBuf> READ_SHORT = ByteBuf::readUnsignedShortLE;
     protected static final ToIntFunction<ByteBuf> READ_INT = ByteBuf::readIntLE;
+    protected static final ObjIntConsumer<ByteBuf> WRITE_BYTE = ByteBuf::writeByte;
+    protected static final ObjIntConsumer<ByteBuf> WRITE_SHORT = ByteBuf::writeShortLE;
+    protected static final ObjIntConsumer<ByteBuf> WRITE_INT = ByteBuf::writeIntLE;
 
     protected static final CommandData.Flag[] FLAGS = CommandData.Flag.values();
     protected static final CommandParamOption[] OPTIONS = CommandParamOption.values();
@@ -36,16 +38,16 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {
-        Set<String> enumValuesSet = new ObjectOpenHashSet<>();
-        Set<String> postfixSet = new ObjectOpenHashSet<>();
-        Set<CommandEnumData> enumsSet = new ObjectOpenHashSet<>();
-        Set<CommandEnumData> softEnumsSet = new ObjectOpenHashSet<>();
+        SequencedHashSet<String> enumValues = new SequencedHashSet<>();
+        SequencedHashSet<String> postFixes = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
 
         // Get all enum values
         for (CommandData data : packet.getCommands()) {
             if (data.getAliases() != null) {
-                Collections.addAll(enumValuesSet, data.getAliases().getValues());
-                enumsSet.add(data.getAliases());
+                enumValues.addAll(data.getAliases().getValues().keySet());
+                enums.add(data.getAliases());
             }
 
             for (CommandParamData[] overload : data.getOverloads()) {
@@ -53,25 +55,20 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                     CommandEnumData commandEnumData = parameter.getEnumData();
                     if (commandEnumData != null) {
                         if (commandEnumData.isSoft()) {
-                            softEnumsSet.add(commandEnumData);
+                            softEnums.add(commandEnumData);
                         } else {
-                            Collections.addAll(enumValuesSet, commandEnumData.getValues());
-                            enumsSet.add(commandEnumData);
+                            enumValues.addAll(commandEnumData.getValues().keySet());
+                            enums.add(commandEnumData);
                         }
                     }
 
                     String postfix = parameter.getPostfix();
                     if (postfix != null) {
-                        postfixSet.add(postfix);
+                        postFixes.add(postfix);
                     }
                 }
             }
         }
-
-        List<String> enumValues = new ObjectArrayList<>(enumValuesSet);
-        List<String> postFixes = new ObjectArrayList<>(postfixSet);
-        List<CommandEnumData> enums = new ObjectArrayList<>(enumsSet);
-        List<CommandEnumData> softEnums = new ObjectArrayList<>(softEnumsSet);
 
         helper.writeArray(buffer, enumValues, helper::writeString);
         helper.writeArray(buffer, postFixes, helper::writeString);
@@ -87,72 +84,23 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {
-        List<String> enumValues = new ObjectArrayList<>();
-        List<String> postFixes = new ObjectArrayList<>();
-        List<CommandEnumData> enums = new ObjectArrayList<>();
-        List<CommandData.Builder> commands = new ObjectArrayList<>();
-        List<CommandEnumData> softEnums = new ObjectArrayList<>();
+        SequencedHashSet<String> enumValues = new SequencedHashSet<>();
+        SequencedHashSet<String> postFixes = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
+        Set<Runnable> delayedTasks = new HashSet<>();
 
         helper.readArray(buffer, enumValues, helper::readString);
         helper.readArray(buffer, postFixes, helper::readString);
 
         this.readEnums(buffer, helper, enumValues, enums);
 
-        helper.readArray(buffer, commands, this::readCommand);
+        helper.readArray(buffer, packet.getCommands(), (buf, aHelper) ->
+                this.readCommand(buf, aHelper, enums, softEnums, postFixes, delayedTasks));
 
         helper.readArray(buffer, softEnums, buf -> helper.readCommandEnum(buffer, true));
 
-        // Generate command data
-
-        for (CommandData.Builder command : commands) {
-            byte flags = command.getFlags();
-            List<CommandData.Flag> flagList = new ObjectArrayList<>();
-            for (int i = 0; i < 6; i++) {
-                if ((flags & (1 << i)) != 0) {
-                    flagList.add(FLAGS[i]);
-                }
-            }
-            int aliasesIndex = command.getAliases();
-            CommandEnumData aliases = aliasesIndex == -1 ? null : enums.get(aliasesIndex);
-
-            CommandParamData.Builder[][] overloadBuilders = command.getOverloads();
-            CommandParamData[][] overloads = new CommandParamData[overloadBuilders.length][];
-            for (int i = 0; i < overloadBuilders.length; i++) {
-                overloads[i] = new CommandParamData[overloadBuilders[i].length];
-                for (int i2 = 0; i2 < overloadBuilders[i].length; i2++) {
-                    CommandParamData.Builder param = overloadBuilders[i][i2];
-                    String name = param.getName();
-                    CommandSymbolData type = param.getType();
-                    boolean optional = param.isOptional();
-                    byte optionsByte = param.getOptions();
-
-                    String postfix = null;
-                    CommandEnumData enumData = null;
-                    CommandParam commandParam = null;
-                    if (type.isPostfix()) {
-                        postfix = postFixes.get(type.getValue());
-                    } else if (type.isCommandEnum()) {
-                        enumData = enums.get(type.getValue());
-                    } else if (type.isSoftEnum()) {
-                        enumData = softEnums.get(type.getValue());
-                    } else {
-                        commandParam = paramTypeMap.getType(type.getValue());
-                    }
-
-                    List<CommandParamOption> options = new ObjectArrayList<>();
-                    for (int idx = 0; idx < 8; idx++) {
-                        if ((optionsByte & (1 << idx)) != 0) {
-                            options.add(OPTIONS[idx]);
-                        }
-                    }
-
-                    overloads[i][i2] = new CommandParamData(name, optional, enumData, commandParam, postfix, options);
-                }
-            }
-
-            packet.getCommands().add(new CommandData(command.getName(), command.getDescription(),
-                    flagList, command.getPermission(), aliases, overloads));
-        }
+        delayedTasks.forEach(Runnable::run);
     }
 
     protected void writeEnums(ByteBuf buffer, BedrockCodecHelper helper, List<String> values, List<CommandEnumData> enums) {
@@ -171,8 +119,8 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         helper.writeArray(buffer, enums, (buf, commandEnum) -> {
             helper.writeString(buf, commandEnum.getName());
 
-            VarInts.writeUnsignedInt(buffer, commandEnum.getValues().length);
-            for (String value : commandEnum.getValues()) {
+            VarInts.writeUnsignedInt(buffer, commandEnum.getValues().size());
+            for (String value : commandEnum.getValues().keySet()) {
                 int index = values.indexOf(value);
                 checkArgument(index > -1, "Invalid enum value detected: " + value);
                 indexWriter.accept(buf, index);
@@ -197,9 +145,9 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             String name = helper.readString(buf);
 
             int length = VarInts.readUnsignedInt(buffer);
-            String[] enumValues = new String[length];
+            LinkedHashMap<String, EnumSet<CommandEnumConstraint>> enumValues = new LinkedHashMap<>();
             for (int i = 0; i < length; i++) {
-                enumValues[i] = values.get(indexReader.applyAsInt(buf));
+                enumValues.put(values.get(indexReader.applyAsInt(buf)), EnumSet.noneOf(CommandEnumConstraint.class));
             }
             return new CommandEnumData(name, enumValues, false);
         });
@@ -209,11 +157,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                                 List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postFixes) {
         helper.writeString(buffer, commandData.getName());
         helper.writeString(buffer, commandData.getDescription());
-        byte flags = 0;
-        for (CommandData.Flag flag : commandData.getFlags()) {
-            flags |= 1 << flag.ordinal();
-        }
-        buffer.writeByte(flags);
+        this.writeFlags(buffer, commandData.getFlags());
         buffer.writeByte(commandData.getPermission());
 
         CommandEnumData aliases = commandData.getAliases();
@@ -229,60 +173,93 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         }
     }
 
-    protected CommandData.Builder readCommand(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected CommandData readCommand(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums,
+                                      List<CommandEnumData> softEnums, List<String> postfixes, Set<Runnable> delayedTasks) {
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
-        byte flags = buffer.readByte();
+        Set<CommandData.Flag> flags = this.readFlags(buffer);
         byte permissions = buffer.readByte();
-        int aliasesIndex = buffer.readIntLE();
+        CommandEnumData aliases = enums.get(buffer.readIntLE());
 
-        CommandParamData.Builder[][] overloads = new CommandParamData.Builder[VarInts.readUnsignedInt(buffer)][];
+        CommandParamData[][] overloads = new CommandParamData[VarInts.readUnsignedInt(buffer)][];
         for (int i = 0; i < overloads.length; i++) {
-            overloads[i] = new CommandParamData.Builder[VarInts.readUnsignedInt(buffer)];
+            overloads[i] = new CommandParamData[VarInts.readUnsignedInt(buffer)];
             for (int i2 = 0; i2 < overloads[i].length; i2++) {
-                overloads[i][i2] = readParameter(buffer, helper);
+                overloads[i][i2] = readParameter(buffer, helper, enums, softEnums, postfixes, delayedTasks);
             }
         }
-        return new CommandData.Builder(name, description, flags, permissions, aliasesIndex, overloads);
+        return new CommandData(name, description, flags, permissions, aliases, overloads);
+    }
+
+    protected void writeFlags(ByteBuf buffer, Set<CommandData.Flag> flags) {
+        int flagBits = 0;
+        for (CommandData.Flag flag : flags) {
+            flagBits |= 1 << flag.ordinal();
+        }
+        buffer.writeByte(flagBits);
+    }
+
+    protected Set<CommandData.Flag> readFlags(ByteBuf buffer) {
+        int flagBits = buffer.readUnsignedByte();
+        EnumSet<CommandData.Flag> flags = EnumSet.noneOf(CommandData.Flag.class);
+        for (CommandData.Flag flag : CommandData.Flag.values()) {
+            if ((flagBits & (1 << flag.ordinal())) != 0) {
+                flags.add(flag);
+            }
+            flagBits |= 1 << flag.ordinal();
+        }
+        return flags;
     }
 
     protected void writeParameter(ByteBuf buffer, BedrockCodecHelper helper, CommandParamData param,
-                                  List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postFixes) {
+                                  List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postfixes) {
         helper.writeString(buffer, param.getName());
 
-        int index;
-        boolean postfix = false;
-        boolean enumData = false;
-        boolean softEnum = false;
+        helper.writeString(buffer, param.getName());
+
+        int symbol;
         if (param.getPostfix() != null) {
-            postfix = true;
-            index = postFixes.indexOf(param.getPostfix());
+            symbol = postfixes.indexOf(param.getPostfix()) | ARG_FLAG_POSTFIX;
         } else if (param.getEnumData() != null) {
             if (param.getEnumData().isSoft()) {
-                softEnum = true;
-                index = softEnums.indexOf(param.getEnumData());
+                symbol = softEnums.indexOf(param.getEnumData()) | ARG_FLAG_SOFT_ENUM | ARG_FLAG_VALID;
             } else {
-                enumData = true;
-                index = enums.indexOf(param.getEnumData());
+                symbol = enums.indexOf(param.getEnumData()) | ARG_FLAG_ENUM | ARG_FLAG_VALID;
             }
         } else if (param.getType() != null) {
-            index = param.getType().getValue(paramTypeMap);
+            symbol = this.paramTypeMap.getId(param.getType()) | ARG_FLAG_VALID;
         } else {
             throw new IllegalStateException("No param type specified: " + param);
         }
 
-        CommandSymbolData type = new CommandSymbolData(index, enumData, softEnum, postfix);
-
-        buffer.writeIntLE(type.serialize());
+        buffer.writeIntLE(symbol);
         buffer.writeBoolean(param.isOptional());
     }
 
-    protected CommandParamData.Builder readParameter(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new CommandParamData.Builder(
-                helper.readString(buffer),
-                CommandSymbolData.deserialize(buffer.readIntLE()),
-                buffer.readBoolean(),
-                (byte) 0
-        );
+    protected CommandParamData readParameter(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums,
+                                             List<CommandEnumData> softEnums, List<String> postfixes,
+                                             Set<Runnable> delayedTasks) {
+        CommandParamData param = new CommandParamData();
+
+        param.setName(helper.readString(buffer));
+
+        int symbol = buffer.readIntLE();
+        if ((symbol & ARG_FLAG_POSTFIX) != 0) {
+            param.setPostfix(postfixes.get(symbol & ~ARG_FLAG_POSTFIX));
+        } else if ((symbol & ARG_FLAG_VALID) != 0) {
+            if ((symbol & ARG_FLAG_SOFT_ENUM) != 0) {
+                delayedTasks.add(() -> param.setEnumData(softEnums.get(symbol & ~(ARG_FLAG_SOFT_ENUM | ARG_FLAG_VALID))));
+            } else if ((symbol & ARG_FLAG_ENUM) != 0) {
+                param.setEnumData(enums.get(symbol & ~(ARG_FLAG_ENUM | ARG_FLAG_VALID)));
+            } else {
+                param.setType(paramTypeMap.getType(symbol & ~ARG_FLAG_VALID));
+            }
+        } else {
+            throw new IllegalStateException("No param type specified: " + param.getName());
+        }
+
+        param.setOptional(buffer.readBoolean());
+
+        return param;
     }
 }

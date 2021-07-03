@@ -1,16 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.codec.v448.serializer;
 
 import io.netty.buffer.ByteBuf;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.AvailableCommandsSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandParamData;
 import org.cloudburstmc.protocol.common.util.TypeMap;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class AvailableCommandsSerializer_v448 extends AvailableCommandsSerializer_v388 {
 
@@ -19,45 +16,24 @@ public class AvailableCommandsSerializer_v448 extends AvailableCommandsSerialize
     }
 
     @Override
-    protected void writeCommand(ByteBuf buffer, BedrockCodecHelper helper, CommandData commandData,
-                                List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postFixes) {
-        helper.writeString(buffer, commandData.getName());
-        helper.writeString(buffer, commandData.getDescription());
-        int flags = 0;
-        for (CommandData.Flag flag : commandData.getFlags()) {
-            flags |= 1 << flag.ordinal();
+    protected void writeFlags(ByteBuf buffer, Set<CommandData.Flag> flags) {
+        int flagBits = 0;
+        for (CommandData.Flag flag : flags) {
+            flagBits |= 1 << flag.ordinal();
         }
-        buffer.writeShortLE(flags);
-        buffer.writeByte(commandData.getPermission());
-
-        CommandEnumData aliases = commandData.getAliases();
-        buffer.writeIntLE(enums.indexOf(aliases));
-
-        CommandParamData[][] overloads = commandData.getOverloads();
-        VarInts.writeUnsignedInt(buffer, overloads.length);
-        for (CommandParamData[] overload : overloads) {
-            VarInts.writeUnsignedInt(buffer, overload.length);
-            for (CommandParamData param : overload) {
-                this.writeParameter(buffer, helper, param, enums, softEnums, postFixes);
-            }
-        }
+        buffer.writeShortLE(flagBits);
     }
 
     @Override
-    protected CommandData.Builder readCommand(ByteBuf buffer, BedrockCodecHelper helper) {
-        String name = helper.readString(buffer);
-        String description = helper.readString(buffer);
-        int flags = buffer.readUnsignedShortLE();
-        byte permissions = buffer.readByte();
-        int aliasesIndex = buffer.readIntLE();
-
-        CommandParamData.Builder[][] overloads = new CommandParamData.Builder[VarInts.readUnsignedInt(buffer)][];
-        for (int i = 0; i < overloads.length; i++) {
-            overloads[i] = new CommandParamData.Builder[VarInts.readUnsignedInt(buffer)];
-            for (int i2 = 0; i2 < overloads[i].length; i2++) {
-                overloads[i][i2] = readParameter(buffer, helper);
+    protected Set<CommandData.Flag> readFlags(ByteBuf buffer) {
+        int flagBits = buffer.readUnsignedShortLE();
+        EnumSet<CommandData.Flag> flags = EnumSet.noneOf(CommandData.Flag.class);
+        for (CommandData.Flag flag : CommandData.Flag.values()) {
+            if ((flagBits & (1 << flag.ordinal())) != 0) {
+                flags.add(flag);
             }
+            flagBits |= 1 << flag.ordinal();
         }
-        return new CommandData.Builder(name, description, flags, permissions, aliasesIndex, overloads);
+        return flags;
     }
 }

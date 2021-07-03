@@ -17,9 +17,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraintData;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraintType;
-import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
@@ -438,27 +435,6 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         VarInts.writeInt(buffer, data.getInputId());
         VarInts.writeInt(buffer, data.getReagentId());
         VarInts.writeInt(buffer, data.getOutputId());
-    }
-
-    public CommandEnumConstraintData readCommandEnumConstraints(ByteBuf buffer, List<CommandEnumData> enums, List<String> enumValues) {
-        int valueIndex = buffer.readIntLE();
-        int enumIndex = buffer.readIntLE();
-        CommandEnumConstraintType[] constraints = readArray(buffer, new CommandEnumConstraintType[0],
-                buf -> CommandEnumConstraintType.byId(buffer.readByte()));
-
-        return new CommandEnumConstraintData(
-                enumValues.get(valueIndex),
-                enums.get(enumIndex),
-                constraints
-        );
-    }
-
-    public void writeCommandEnumConstraints(ByteBuf buffer, CommandEnumConstraintData data, List<CommandEnumData> enums, List<String> enumValues) {
-        buffer.writeIntLE(enumValues.indexOf(data.getOption()));
-        buffer.writeIntLE(enums.indexOf(data.getEnumData()));
-        writeArray(buffer, data.getConstraints(), (buf, constraint) -> {
-            buf.writeByte(constraint.ordinal());
-        });
     }
 
     public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {

@@ -1,13 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data.command;
 
-import lombok.NonNull;
 import lombok.Value;
+
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
 
 @Value
 public class CommandEnumData {
-    @NonNull
-    private final String name;
-    @NonNull
-    private final String[] values;
-    private final boolean isSoft;
+    String name;
+    LinkedHashMap<String, EnumSet<CommandEnumConstraint>> values;
+    boolean isSoft;
 }

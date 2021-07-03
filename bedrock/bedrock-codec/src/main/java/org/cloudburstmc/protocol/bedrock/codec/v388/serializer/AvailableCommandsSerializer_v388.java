@@ -1,38 +1,53 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongObjectPair;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.AvailableCommandsSerializer_v340;
 import org.cloudburstmc.protocol.bedrock.data.command.*;
 import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
+import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 import org.cloudburstmc.protocol.common.util.TypeMap;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerializer_v340 {
+
+    private static final CommandEnumConstraint[] CONSTRAINTS = CommandEnumConstraint.values();
 
     public AvailableCommandsSerializer_v388(TypeMap<CommandParam> paramTypeMap) {
         super(paramTypeMap);
     }
 
+    protected static long key(int enumIndex, int valueIndex) {
+        return (((long) enumIndex) << 32) | (valueIndex & 0xffffffffL);
+    }
+
+    protected static int getEnumIndex(long key) {
+        return (int) (key >> 32);
+    }
+
+    protected static int getValueIndex(long key) {
+        return (int) key;
+    }
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {
-        Set<String> enumValuesSet = new ObjectOpenHashSet<>();
-        Set<String> postfixSet = new ObjectOpenHashSet<>();
-        Set<CommandEnumData> enumsSet = new ObjectOpenHashSet<>();
-        Set<CommandEnumData> softEnumsSet = new ObjectOpenHashSet<>();
+        SequencedHashSet<String> enumValues = new SequencedHashSet<>();
+        SequencedHashSet<String> postFixes = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
+        SequencedHashSet<LongObjectPair<Set<CommandEnumConstraint>>> enumConstraints = new SequencedHashSet<>();
 
         // Get all enum values
         for (CommandData data : packet.getCommands()) {
             if (data.getAliases() != null) {
-                Collections.addAll(enumValuesSet, data.getAliases().getValues());
-                enumsSet.add(data.getAliases());
+                enumValues.addAll(data.getAliases().getValues().keySet());
+                enums.add(data.getAliases());
             }
 
             for (CommandParamData[] overload : data.getOverloads()) {
@@ -40,35 +55,27 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                     CommandEnumData commandEnumData = parameter.getEnumData();
                     if (commandEnumData != null) {
                         if (commandEnumData.isSoft()) {
-                            softEnumsSet.add(commandEnumData);
+                            softEnums.add(commandEnumData);
                         } else {
-                            Collections.addAll(enumValuesSet, commandEnumData.getValues());
-                            enumsSet.add(commandEnumData);
+                            enums.add(commandEnumData);
+                            int enumIndex = enums.indexOf(commandEnumData);
+                            commandEnumData.getValues().forEach((key, constraints) -> {
+                                enumValues.add(key);
+                                if (!constraints.isEmpty()) {
+                                    int valueIndex = enumValues.indexOf(key);
+                                    enumConstraints.add(LongObjectPair.of(key(enumIndex, valueIndex), constraints));
+                                }
+                            });
                         }
                     }
 
                     String postfix = parameter.getPostfix();
                     if (postfix != null) {
-                        postfixSet.add(postfix);
+                        postFixes.add(postfix);
                     }
                 }
             }
         }
-
-        // Add Constraint Enums
-        for(CommandEnumData enumData : packet.getConstraints().stream().map(CommandEnumConstraintData::getEnumData).collect(Collectors.toList())) {
-            if (enumData.isSoft()) {
-                softEnumsSet.add(enumData);
-            } else {
-                enumsSet.add(enumData);
-            }
-            enumValuesSet.addAll(Arrays.asList(enumData.getValues()));
-        }
-
-        List<String> enumValues = new ObjectArrayList<>(enumValuesSet);
-        List<String> postFixes = new ObjectArrayList<>(postfixSet);
-        List<CommandEnumData> enums = new ObjectArrayList<>(enumsSet);
-        List<CommandEnumData> softEnums = new ObjectArrayList<>(softEnumsSet);
 
         helper.writeArray(buffer, enumValues, helper::writeString);
         helper.writeArray(buffer, postFixes, helper::writeString);
@@ -81,84 +88,46 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
 
         helper.writeArray(buffer, softEnums, helper::writeCommandEnum);
 
-        // Constraints
-        helper.writeArray(buffer, packet.getConstraints(), (buf, constraint) -> {
-            helper.writeCommandEnumConstraints(buf, constraint, enums, enumValues);
-        });
+        helper.writeArray(buffer, enumConstraints, this::writeEnumConstraint);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {
-        List<String> enumValues = new ObjectArrayList<>();
-        List<String> postFixes = new ObjectArrayList<>();
-        List<CommandEnumData> enums = new ObjectArrayList<>();
-        List<CommandData.Builder> commands = new ObjectArrayList<>();
-        List<CommandEnumData> softEnums = new ObjectArrayList<>();
+        SequencedHashSet<String> enumValues = new SequencedHashSet<>();
+        SequencedHashSet<String> postFixes = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
+        SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
+        Set<Runnable> delayedTasks = new HashSet<>();
 
         helper.readArray(buffer, enumValues, helper::readString);
         helper.readArray(buffer, postFixes, helper::readString);
 
         this.readEnums(buffer, helper, enumValues, enums);
 
-        helper.readArray(buffer, commands, this::readCommand);
+        helper.readArray(buffer, packet.getCommands(), (buf, aHelper) ->
+                this.readCommand(buf, aHelper, enums, softEnums, postFixes, delayedTasks));
 
         helper.readArray(buffer, softEnums, buf -> helper.readCommandEnum(buffer, true));
 
+        this.readConstraints(buffer, helper, enums, enumValues);
 
-        // Generate command data
-        for (CommandData.Builder command : commands) {
-            byte flags = command.getFlags();
-            List<CommandData.Flag> flagList = new ObjectArrayList<>();
-            for (int i = 0; i < 6; i++) {
-                if ((flags & (1 << i)) != 0) {
-                    flagList.add(FLAGS[i]);
-                }
-            }
-            int aliasesIndex = command.getAliases();
-            CommandEnumData aliases = aliasesIndex == -1 ? null : enums.get(aliasesIndex);
+        delayedTasks.forEach(Runnable::run);
+    }
 
-            CommandParamData.Builder[][] overloadBuilders = command.getOverloads();
-            CommandParamData[][] overloads = new CommandParamData[overloadBuilders.length][];
-            for (int i = 0; i < overloadBuilders.length; i++) {
-                overloads[i] = new CommandParamData[overloadBuilders[i].length];
-                for (int i2 = 0; i2 < overloadBuilders[i].length; i2++) {
-                    CommandParamData.Builder param = overloadBuilders[i][i2];
-                    String name = param.getName();
-                    CommandSymbolData type = param.getType();
-                    boolean optional = param.isOptional();
-                    byte optionsByte = param.getOptions();
+    protected void writeEnumConstraint(ByteBuf buffer, BedrockCodecHelper helper, LongObjectPair<Set<CommandEnumConstraint>> pair) {
+        buffer.writeIntLE(getEnumIndex(pair.keyLong()));
+        buffer.writeIntLE(getValueIndex(pair.keyLong()));
+        helper.writeArray(buffer, pair.value(), (buf, constraint) -> buf.writeByte(constraint.ordinal()));
+    }
 
-                    String postfix = null;
-                    CommandEnumData enumData = null;
-                    CommandParam commandParam = null;
-                    if (type.isPostfix()) {
-                        postfix = postFixes.get(type.getValue());
-                    } else {
-                        if (type.isCommandEnum()) {
-                            enumData = enums.get(type.getValue());
-                        } else if (type.isSoftEnum()) {
-                            enumData = softEnums.get(type.getValue());
-                        } else {
-                            commandParam = helper.getCommandParam(type.getValue());
-                        }
-                    }
-
-                    List<CommandParamOption> options = new ObjectArrayList<>();
-                    for (int idx = 0; idx < 8; idx++) {
-                        if ((optionsByte & (1 << idx)) != 0) {
-                            options.add(OPTIONS[idx]);
-                        }
-                    }
-
-                    overloads[i][i2] = new CommandParamData(name, optional, enumData, commandParam, postfix, options);
-                }
-            }
-
-            packet.getCommands().add(new CommandData(command.getName(), command.getDescription(),
-                    flagList, command.getPermission(), aliases, overloads));
+    protected void readConstraints(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums,
+                                   List<String> enumValues) {
+        int count = VarInts.readUnsignedInt(buffer);
+        for (int i = 0; i < count; i++) {
+            CommandEnumData enumData = enums.get(buffer.readIntLE());
+            String key = enumValues.get(buffer.readIntLE());
+            EnumSet<CommandEnumConstraint> constraints = enumData.getValues().get(key);
+            helper.readArray(buffer, constraints, buf -> CONSTRAINTS[buf.readUnsignedByte()]);
         }
-
-        // Constraints
-        helper.readArray(buffer, packet.getConstraints(), buf -> helper.readCommandEnumConstraints(buf, enums, enumValues));
     }
 }

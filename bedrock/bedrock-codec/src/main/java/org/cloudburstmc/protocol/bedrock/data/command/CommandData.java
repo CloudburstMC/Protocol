@@ -5,12 +5,13 @@ import lombok.Value;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Value
 public class CommandData {
     private final String name;
     private final String description;
-    private final List<Flag> flags;
+    private final Set<Flag> flags;
     private final byte permission;
     private final CommandEnumData aliases;
     private final CommandParamData[][] overloads;
@@ -36,16 +37,6 @@ public class CommandData {
             builder.append("    ").append(Objects.toString(object).replaceAll("\r\n", "\r\n    ")).append("\r\n");
         }
         return builder.append(")").toString();
-    }
-
-    @Value
-    public static class Builder {
-        private final String name;
-        private final String description;
-        private final int flags;
-        private final int permission;
-        private final int aliases;
-        private CommandParamData.Builder[][] overloads;
     }
 
     // Bit flags
