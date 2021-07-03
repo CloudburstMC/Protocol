@@ -21,6 +21,6 @@ public class LevelEventGenericSerializer_v361 implements BedrockPacketSerializer
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LevelEventGenericPacket packet) {
         packet.setEventId(VarInts.readInt(buffer));
-        packet.setTag(helper.readTag(buffer));
+        packet.setTag(helper.readTag(buffer, Object.class));
     }
 }

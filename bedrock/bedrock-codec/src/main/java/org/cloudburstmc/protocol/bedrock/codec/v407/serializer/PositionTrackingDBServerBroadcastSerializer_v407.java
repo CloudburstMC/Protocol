@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407.serializer;
 
+import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,6 @@ public class PositionTrackingDBServerBroadcastSerializer_v407 implements Bedrock
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PositionTrackingDBServerBroadcastPacket packet) {
         packet.setAction(ACTIONS[buffer.readByte()]);
         packet.setTrackingId(VarInts.readInt(buffer));
-        packet.setTag(helper.readTag(buffer));
+        packet.setTag(helper.readTag(buffer, NbtMap.class));
     }
 }

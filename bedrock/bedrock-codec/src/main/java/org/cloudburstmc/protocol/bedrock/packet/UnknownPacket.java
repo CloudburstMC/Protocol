@@ -5,13 +5,12 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.util.ReferenceCounted;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
 public final class UnknownPacket implements BedrockPacket, BedrockPacketSerializer<UnknownPacket>, ReferenceCounted {
     private int packetId;
     private ByteBuf payload;
@@ -33,7 +32,7 @@ public final class UnknownPacket implements BedrockPacket, BedrockPacketSerializ
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
-        return false;
+        return PacketSignal.UNHANDLED;
     }
 
     public BedrockPacketType getPacketType() {

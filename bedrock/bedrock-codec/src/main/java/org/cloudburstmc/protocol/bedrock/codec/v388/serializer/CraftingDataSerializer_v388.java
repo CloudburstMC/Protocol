@@ -20,20 +20,20 @@ public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
         helper.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
             VarInts.writeInt(buf, craftingData.getType().ordinal());
             switch (craftingData.getType()) {
-                case CraftingDataType.SHAPELESS:
-                case CraftingDataType.SHAPELESS_CHEMISTRY:
-                case CraftingDataType.SHULKER_BOX:
+                case SHAPELESS:
+                case SHAPELESS_CHEMISTRY:
+                case SHULKER_BOX:
                     this.writeShapelessRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.SHAPED:
-                case CraftingDataType.SHAPED_CHEMISTRY:
+                case SHAPED:
+                case SHAPED_CHEMISTRY:
                     this.writeShapedRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.FURNACE:
-                case CraftingDataType.FURNACE_DATA:
+                case FURNACE:
+                case FURNACE_DATA:
                     this.writeFurnaceRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.MULTI:
+                case MULTI:
                     this.writeMultiRecipe(buf, helper, craftingData);
                     break;
             }
@@ -60,17 +60,17 @@ public class CraftingDataSerializer_v388 extends CraftingDataSerializer_v361 {
             CraftingDataType type = CraftingDataType.byId(typeInt);
 
             switch (type) {
-                case CraftingDataType.SHAPELESS:
-                case CraftingDataType.SHAPELESS_CHEMISTRY:
-                case CraftingDataType.SHULKER_BOX:
+                case SHAPELESS:
+                case SHAPELESS_CHEMISTRY:
+                case SHULKER_BOX:
                     return this.readShapelessRecipe(buf, helper, type);
-                case CraftingDataType.SHAPED:
-                case CraftingDataType.SHAPED_CHEMISTRY:
+                case SHAPED:
+                case SHAPED_CHEMISTRY:
                     return this.readShapedRecipe(buf, helper, type);
-                case CraftingDataType.FURNACE:
-                case CraftingDataType.FURNACE_DATA:
+                case FURNACE:
+                case FURNACE_DATA:
                     return this.readFurnaceRecipe(buf, helper, type);
-                case CraftingDataType.MULTI:
+                case MULTI:
                     return this.readMultiRecipe(buf, helper, type);
                 default:
                     throw new IllegalArgumentException("Unhandled crafting data type: " + type);

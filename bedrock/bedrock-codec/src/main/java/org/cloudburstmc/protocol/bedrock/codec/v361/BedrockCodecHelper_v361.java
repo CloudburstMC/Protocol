@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlags;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
@@ -163,7 +164,8 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         int integritySeed = buffer.readIntLE();
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
-                rotation, mirror, integrityValue, integritySeed, Vector3f.ZERO);
+                rotation, mirror, StructureAnimationMode.NONE, 0f, integrityValue, integritySeed,
+                Vector3f.ZERO);
     }
 
     @Override

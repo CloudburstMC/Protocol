@@ -28,11 +28,11 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
             if (action == Action.SET) {
                 buf.writeByte(scoreInfo.getType().ordinal());
                 switch (scoreInfo.getType()) {
-                    case ScorerType.ENTITY:
-                    case ScorerType.PLAYER:
+                    case ENTITY:
+                    case PLAYER:
                         VarInts.writeLong(buf, scoreInfo.getEntityId());
                         break;
-                    case ScorerType.FAKE:
+                    case FAKE:
                         helper.writeString(buf, scoreInfo.getName());
                         break;
                     default:
@@ -54,11 +54,11 @@ public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScore
             if (action == Action.SET) {
                 ScoreInfo.ScorerType type = ScoreInfo.ScorerType.values()[buf.readUnsignedByte()];
                 switch (type) {
-                    case ScorerType.ENTITY:
-                    case ScorerType.PLAYER:
+                    case ENTITY:
+                    case PLAYER:
                         long entityId = VarInts.readLong(buf);
                         return new ScoreInfo(scoreboardId, objectiveId, score, type, entityId);
-                    case ScorerType.FAKE:
+                    case FAKE:
                         String name = helper.readString(buf);
                         return new ScoreInfo(scoreboardId, objectiveId, score, name);
                     default:

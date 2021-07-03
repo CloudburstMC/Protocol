@@ -12,9 +12,8 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 import java.util.List;
 
 @Data
-@ToString
-@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
+@EqualsAndHashCode(doNotUseGetters = true)
 public class CraftingDataPacket implements BedrockPacket {
     private final List<CraftingData> craftingData = new ObjectArrayList<>();
     private final List<PotionMixData> potionMixData = new ObjectArrayList<>();

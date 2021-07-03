@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v389.serializer;
 
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.EventSerializer_v388;
+import org.cloudburstmc.protocol.bedrock.data.event.EventDataType;
 import org.cloudburstmc.protocol.bedrock.data.event.ExtractHoneyEventData;
 
 public class EventSerializer_v389 extends EventSerializer_v388 {

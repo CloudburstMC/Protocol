@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361.serializer;
 
+import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,6 @@ public class UpdateBlockPropertiesSerializer_v361 implements BedrockPacketSerial
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateBlockPropertiesPacket packet) {
-        packet.setProperties(helper.readTag(buffer));
+        packet.setProperties(helper.readTag(buffer, NbtMap.class));
     }
 }

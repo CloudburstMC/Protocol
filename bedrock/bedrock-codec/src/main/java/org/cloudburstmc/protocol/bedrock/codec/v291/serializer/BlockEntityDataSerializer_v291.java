@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
+import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,6 @@ public class BlockEntityDataSerializer_v291 implements BedrockPacketSerializer<B
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BlockEntityDataPacket packet) {
         packet.setBlockPosition(helper.readBlockPosition(buffer));
-        packet.setData(helper.readTag(buffer));
+        packet.setData(helper.readTag(buffer, NbtMap.class));
     }
 }

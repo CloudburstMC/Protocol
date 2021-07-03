@@ -9,8 +9,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
-@ToString(exclude = {"data"})
+@ToString(doNotUseGetters = true, exclude = {"data"})
 public class ResourcePackChunkDataPacket implements BedrockPacket {
     private UUID packId;
     private String packVersion;

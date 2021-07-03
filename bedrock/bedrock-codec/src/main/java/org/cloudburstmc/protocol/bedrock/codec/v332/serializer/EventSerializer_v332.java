@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.event.EventData;
+import org.cloudburstmc.protocol.bedrock.data.event.EventDataType;
 import org.cloudburstmc.protocol.bedrock.data.event.MobBornEventData;
 import org.cloudburstmc.protocol.bedrock.data.event.PetDiedEventData;
 import org.cloudburstmc.protocol.common.util.VarInts;

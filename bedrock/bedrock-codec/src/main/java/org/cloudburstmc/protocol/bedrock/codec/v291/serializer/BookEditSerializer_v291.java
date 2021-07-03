@@ -28,20 +28,20 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
         buffer.writeByte(packet.getAction().ordinal());
         buffer.writeByte(packet.getInventorySlot());
         switch (packet.getAction()) {
-            case Action.REPLACE_PAGE:
-            case Action.ADD_PAGE:
+            case REPLACE_PAGE:
+            case ADD_PAGE:
                 buffer.writeByte(packet.getPageNumber());
                 helper.writeString(buffer, packet.getText());
                 helper.writeString(buffer, packet.getPhotoName());
                 break;
-            case Action.DELETE_PAGE:
+            case DELETE_PAGE:
                 buffer.writeByte(packet.getPageNumber());
                 break;
-            case Action.SWAP_PAGES:
+            case SWAP_PAGES:
                 buffer.writeByte(packet.getPageNumber());
                 buffer.writeByte(packet.getSecondaryPageNumber());
                 break;
-            case Action.SIGN_BOOK:
+            case SIGN_BOOK:
                 helper.writeString(buffer, packet.getTitle());
                 helper.writeString(buffer, packet.getAuthor());
                 helper.writeString(buffer, packet.getXuid());
@@ -54,20 +54,20 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
         packet.setAction(types.get(buffer.readUnsignedByte()));
         packet.setInventorySlot(buffer.readUnsignedByte());
         switch (packet.getAction()) {
-            case Action.REPLACE_PAGE:
-            case Action.ADD_PAGE:
+            case REPLACE_PAGE:
+            case ADD_PAGE:
                 packet.setPageNumber(buffer.readUnsignedByte());
                 packet.setText(helper.readString(buffer));
                 packet.setPhotoName(helper.readString(buffer));
                 break;
-            case Action.DELETE_PAGE:
+            case DELETE_PAGE:
                 packet.setPageNumber(buffer.readUnsignedByte());
                 break;
-            case Action.SWAP_PAGES:
+            case SWAP_PAGES:
                 packet.setPageNumber(buffer.readUnsignedByte());
                 packet.setSecondaryPageNumber(buffer.readUnsignedByte());
                 break;
-            case Action.SIGN_BOOK:
+            case SIGN_BOOK:
                 packet.setTitle(helper.readString(buffer));
                 packet.setAuthor(helper.readString(buffer));
                 packet.setXuid(helper.readString(buffer));

@@ -31,10 +31,10 @@ public class PlayerListPacket implements BedrockPacket {
         REMOVE
     }
 
-    @ToString
+
     @Data
-    @EqualsAndHashCode(doNotUseGetters = true)
     @ToString(doNotUseGetters = true)
+    @EqualsAndHashCode(doNotUseGetters = true)
     public final static class Entry {
         private final UUID uuid;
         private long entityId;

@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
@@ -126,7 +127,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
         Vector3f pivot = this.readVector3f(buffer);
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
-                rotation, mirror, integrityValue, integritySeed, pivot);
+                rotation, mirror, StructureAnimationMode.NONE, 0f, integrityValue, integritySeed, pivot);
     }
 
     @Override

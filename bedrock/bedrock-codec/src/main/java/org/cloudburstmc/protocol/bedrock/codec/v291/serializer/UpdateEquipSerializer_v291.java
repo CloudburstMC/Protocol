@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
+import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,6 @@ public class UpdateEquipSerializer_v291 implements BedrockPacketSerializer<Updat
         packet.setWindowType(buffer.readUnsignedByte());
         packet.setSize(VarInts.readInt(buffer));
         packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setTag(helper.readTag(buffer));
+        packet.setTag(helper.readTag(buffer, NbtMap.class));
     }
 }

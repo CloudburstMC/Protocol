@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 
+import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class StructureTemplateDataResponseSerializer_v388 implements BedrockPack
         packet.setSave(save);
 
         if (save) {
-            packet.setTag(helper.readTag(buffer));
+            packet.setTag(helper.readTag(buffer, NbtMap.class));
         }
         packet.setType(StructureTemplateResponseType.from(buffer.readByte()));
     }

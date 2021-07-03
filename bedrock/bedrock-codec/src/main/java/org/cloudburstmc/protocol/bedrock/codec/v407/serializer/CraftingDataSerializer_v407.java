@@ -6,15 +6,15 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.*;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<CraftingDataPacket> {
@@ -25,32 +25,32 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         helper.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
             VarInts.writeInt(buf, craftingData.getType().ordinal());
             switch (craftingData.getType()) {
-                case CraftingDataType.SHAPELESS:
-                case CraftingDataType.SHAPELESS_CHEMISTRY:
-                case CraftingDataType.SHULKER_BOX:
+                case SHAPELESS:
+                case SHAPELESS_CHEMISTRY:
+                case SHULKER_BOX:
                     this.writeShapelessRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.SHAPED:
-                case CraftingDataType.SHAPED_CHEMISTRY:
+                case SHAPED:
+                case SHAPED_CHEMISTRY:
                     this.writeShapedRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.FURNACE:
+                case FURNACE:
                     this.writeFurnaceRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.FURNACE_DATA:
+                case FURNACE_DATA:
                     this.writeFurnaceDataRecipe(buf, helper, craftingData);
                     break;
-                case CraftingDataType.MULTI:
+                case MULTI:
                     this.writeMultiRecipe(buf, helper, craftingData);
                     break;
             }
         });
 
         // Potions
-        helper.writeArray(buffer, packet.getPotionMixData(), (buf, data) -> helper.writePotionRecipe(buf, data));
+        helper.writeArray(buffer, packet.getPotionMixData(), this::writePotionRecipe);
 
         // Potion Container Change
-        helper.writeArray(buffer, packet.getContainerMixData(), (buf, data) -> helper.writeContainerChangeRecipe(buf, data));
+        helper.writeArray(buffer, packet.getContainerMixData(), this::writeContainerMixRecipe);
 
         buffer.writeBoolean(packet.isCleanRecipes());
     }
@@ -62,18 +62,18 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
             CraftingDataType type = CraftingDataType.byId(typeInt);
 
             switch (type) {
-                case CraftingDataType.SHAPELESS:
-                case CraftingDataType.SHAPELESS_CHEMISTRY:
-                case CraftingDataType.SHULKER_BOX:
+                case SHAPELESS:
+                case SHAPELESS_CHEMISTRY:
+                case SHULKER_BOX:
                     return this.readShapelessRecipe(buf, helper, type);
-                case CraftingDataType.SHAPED:
-                case CraftingDataType.SHAPED_CHEMISTRY:
+                case SHAPED:
+                case SHAPED_CHEMISTRY:
                     return this.readShapedRecipe(buf, helper, type);
-                case CraftingDataType.FURNACE:
+                case FURNACE:
                     return this.readFurnaceRecipe(buf, helper, type);
-                case CraftingDataType.FURNACE_DATA:
+                case FURNACE_DATA:
                     return this.readFurnaceDataRecipe(buf, helper, type);
-                case CraftingDataType.MULTI:
+                case MULTI:
                     return this.readMultiRecipe(buf, helper, type);
                 default:
                     throw new IllegalArgumentException("Unhandled crafting data type: " + type);
@@ -81,10 +81,10 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         });
 
         // Potions
-        helper.readArray(buffer, packet.getPotionMixData(), helper::readPotionRecipe);
+        helper.readArray(buffer, packet.getPotionMixData(), this::readPotionRecipe);
 
         // Potion Container Change
-        helper.readArray(buffer, packet.getContainerMixData(), helper::readContainerChangeRecipe);
+        helper.readArray(buffer, packet.getContainerMixData(), this::readContainerMixRecipe);
 
         packet.setCleanRecipes(buffer.readBoolean());
     }
@@ -95,7 +95,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         helper.readArray(buffer, inputs, helper::readRecipeIngredient);
 
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItemInstance(buf));
+        helper.readArray(buffer, outputs, helper::readItemInstance);
 
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
@@ -188,5 +188,43 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
     protected void writeMultiRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingData data) {
         helper.writeUuid(buffer, data.getUuid());
         VarInts.writeUnsignedInt(buffer, data.getNetworkId());
+    }
+
+    protected PotionMixData readPotionRecipe(ByteBuf buffer) {
+        return new PotionMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writePotionRecipe(ByteBuf buffer, PotionMixData data) {
+        checkNotNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getInputMeta());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getReagentMeta());
+        VarInts.writeInt(buffer, data.getOutputId());
+        VarInts.writeInt(buffer, data.getOutputMeta());
+    }
+
+    public ContainerMixData readContainerMixRecipe(ByteBuf buffer) {
+        return new ContainerMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writeContainerMixRecipe(ByteBuf buffer, ContainerMixData data) {
+        checkNotNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getOutputId());
     }
 }

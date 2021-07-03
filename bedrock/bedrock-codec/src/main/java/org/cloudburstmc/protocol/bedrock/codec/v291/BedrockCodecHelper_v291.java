@@ -10,6 +10,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraint;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
@@ -21,8 +22,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.Type;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
@@ -342,9 +342,10 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
         String name = readString(buffer);
 
-        String[] values = new String[VarInts.readUnsignedInt(buffer)];
-        for (int i = 0; i < values.length; i++) {
-            values[i] = readString(buffer);
+        int count = VarInts.readUnsignedInt(buffer);
+        LinkedHashMap<String, Set<CommandEnumConstraint>> values = new LinkedHashMap<>();
+        for (int i = 0; i < count; i++) {
+            values.put(readString(buffer), Collections.emptySet());
         }
         return new CommandEnumData(name, values, soft);
     }
@@ -355,8 +356,8 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
         writeString(buffer, enumData.getName());
 
-        String[] values = enumData.getValues();
-        VarInts.writeUnsignedInt(buffer, values.length);
+        Set<String> values = enumData.getValues().keySet();
+        VarInts.writeUnsignedInt(buffer, values.size());
         for (String value : values) {
             writeString(buffer, value);
         }

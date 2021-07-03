@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.StartGameSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -47,7 +48,7 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
 
         helper.writeArray(buffer, packet.getItemDefinitions(), (buf, entry) -> {
             helper.writeString(buf, entry.getIdentifier());
-            buf.writeShortLE(entry.getId());
+            buf.writeShortLE(entry.getRuntimeId());
         });
 
         helper.writeString(buffer, packet.getMultiplayerCorrelationId());
@@ -87,10 +88,7 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
         helper.readArray(buffer, packet.getItemDefinitions(), (buf, packetHelper) -> {
             String identifier = packetHelper.readString(buf);
             short id = buf.readShortLE();
-            if (identifier.equals(packetHelper.getBlockingItemIdentifier())) {
-                aSession.getHardcodedBlockingId().set(id);
-            }
-            return new StartGamePacket.ItemEntry(identifier, id);
+            return new ItemDefinition(identifier, id, false);
         });
 
         packet.setMultiplayerCorrelationId(helper.readString(buffer));

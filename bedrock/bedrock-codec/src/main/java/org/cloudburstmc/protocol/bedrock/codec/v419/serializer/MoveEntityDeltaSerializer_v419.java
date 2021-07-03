@@ -5,7 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.MoveEntityDeltaSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityDeltaPacket;
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityDeltaPacket.Flag;
-import org.cloudburstmc.protocol.bedrock.util.TriConsumer;
+import org.cloudburstmc.protocol.common.util.TriConsumer;
 
 public class MoveEntityDeltaSerializer_v419 extends MoveEntityDeltaSerializer_v388 {
 

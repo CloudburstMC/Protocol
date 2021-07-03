@@ -11,7 +11,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @ToString(doNotUseGetters = true, exclude = {"data"})
 @EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
 public class LevelChunkPacket implements BedrockPacket {
     private int chunkX;
     private int chunkZ;

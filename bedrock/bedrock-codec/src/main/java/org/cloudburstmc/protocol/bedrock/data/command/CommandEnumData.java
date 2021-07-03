@@ -2,12 +2,12 @@ package org.cloudburstmc.protocol.bedrock.data.command;
 
 import lombok.Value;
 
-import java.util.EnumSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 @Value
 public class CommandEnumData {
     String name;
-    LinkedHashMap<String, EnumSet<CommandEnumConstraint>> values;
+    LinkedHashMap<String, Set<CommandEnumConstraint>> values;
     boolean isSoft;
 }

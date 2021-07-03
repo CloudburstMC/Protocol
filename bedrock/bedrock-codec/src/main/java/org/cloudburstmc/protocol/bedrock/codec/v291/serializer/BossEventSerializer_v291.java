@@ -18,28 +18,28 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
         VarInts.writeUnsignedInt(buffer, packet.getAction().ordinal());
 
         switch (packet.getAction()) {
-            case Action.REGISTER_PLAYER:
-            case Action.UNREGISTER_PLAYER:
+            case REGISTER_PLAYER:
+            case UNREGISTER_PLAYER:
                 VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
                 break;
-            case Action.CREATE:
+            case CREATE:
                 helper.writeString(buffer, packet.getTitle());
                 buffer.writeFloatLE(packet.getHealthPercentage());
                 // fall through
-            case Action.UPDATE_PROPERTIES:
+            case UPDATE_PROPERTIES:
                 buffer.writeShortLE(packet.getDarkenSky());
                 // fall through
-            case Action.UPDATE_STYLE:
+            case UPDATE_STYLE:
                 VarInts.writeUnsignedInt(buffer, packet.getColor());
                 VarInts.writeUnsignedInt(buffer, packet.getOverlay());
                 break;
-            case Action.UPDATE_PERCENTAGE:
+            case UPDATE_PERCENTAGE:
                 buffer.writeFloatLE(packet.getHealthPercentage());
                 break;
-            case Action.UPDATE_NAME:
+            case UPDATE_NAME:
                 helper.writeString(buffer, packet.getTitle());
                 break;
-            case Action.REMOVE:
+            case REMOVE:
                 break;
             default:
                 throw new RuntimeException("BossEvent transactionType was unknown!");
@@ -53,25 +53,25 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
         packet.setAction(action);
 
         switch (action) {
-            case Action.REGISTER_PLAYER:
-            case Action.UNREGISTER_PLAYER:
+            case REGISTER_PLAYER:
+            case UNREGISTER_PLAYER:
                 packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
                 break;
-            case Action.CREATE:
+            case CREATE:
                 packet.setTitle(helper.readString(buffer));
                 packet.setHealthPercentage(buffer.readFloatLE());
                 // fall through
-            case Action.UPDATE_PROPERTIES:
+            case UPDATE_PROPERTIES:
                 packet.setDarkenSky(buffer.readUnsignedShortLE());
                 // fall through
-            case Action.UPDATE_STYLE:
+            case UPDATE_STYLE:
                 packet.setColor(VarInts.readUnsignedInt(buffer));
                 packet.setOverlay(VarInts.readUnsignedInt(buffer));
                 break;
-            case Action.UPDATE_PERCENTAGE:
+            case UPDATE_PERCENTAGE:
                 packet.setHealthPercentage(buffer.readFloatLE());
                 break;
-            case Action.UPDATE_NAME:
+            case UPDATE_NAME:
                 packet.setTitle(helper.readString(buffer));
                 break;
         }

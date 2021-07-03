@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.CraftingDataSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -27,7 +28,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         helper.readArray(buffer, inputs, this::readIngredient);
 
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItem(buf));
+        helper.readArray(buffer, outputs, helper::readItem);
 
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
@@ -40,7 +41,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingData data) {
         helper.writeString(buffer, data.getRecipeId());
         helper.writeArray(buffer, data.getInputs(), this::writeIngredient);
-        helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item));
+        helper.writeArray(buffer, data.getOutputs(), helper::writeItem);
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getCraftingTag());
         VarInts.writeInt(buffer, data.getPriority());
@@ -54,10 +55,10 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         int inputCount = width * height;
         List<ItemData> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs.add(this.readIngredient(buffer));
+            inputs.add(this.readIngredient(buffer, helper));
         }
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItem(buf));
+        helper.readArray(buffer, outputs, helper::readItem);
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
@@ -75,14 +76,15 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         for (int i = 0; i < count; i++) {
             this.writeIngredient(buffer, inputs.get(i));
         }
-        helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item));
+        helper.writeArray(buffer, data.getOutputs(), helper::writeItem);
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getCraftingTag());
         VarInts.writeInt(buffer, data.getPriority());
     }
 
-    protected ItemData readIngredient(ByteBuf buffer) {
+    protected ItemData readIngredient(ByteBuf buffer, BedrockCodecHelper helper) {
         int id = VarInts.readInt(buffer);
+        ItemDefinition definition = helper.getItemDefinitions().getDefinition(id);
         int auxValue = 0;
         int stackSize = 0;
 
@@ -93,7 +95,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         }
 
         return ItemData.builder()
-                .id(id)
+                .definition(definition)
                 .damage(auxValue)
                 .count(stackSize)
                 .build();
@@ -102,7 +104,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     protected void writeIngredient(ByteBuf buffer, ItemData itemData) {
         requireNonNull(itemData, "ItemData is null");
 
-        int id = itemData.getId();
+        int id = itemData.getDefinition().getRuntimeId();
         VarInts.writeInt(buffer, id);
 
         if (id != 0) {

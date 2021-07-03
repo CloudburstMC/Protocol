@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import com.nukkitx.nbt.NbtMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -11,7 +10,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class LevelEventGenericPacket implements BedrockPacket {
     private int eventId;
-    private NbtMap tag;
+    private Object tag;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

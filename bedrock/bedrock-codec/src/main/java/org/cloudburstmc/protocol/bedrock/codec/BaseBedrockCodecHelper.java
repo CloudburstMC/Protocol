@@ -14,6 +14,7 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
@@ -55,8 +56,10 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected final TypeMap<EntityFlag> entityFlags;
     protected final TypeMap<Class<?>> gameRuleType;
 
+    @Getter
     @Setter
     protected DefinitionRegistry<ItemDefinition> itemDefinitions;
+    @Getter
     @Setter
     protected DefinitionRegistry<BlockDefinition> blockDefinitions;
 
@@ -153,6 +156,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         VarInts.writeInt(buffer, vector3i.getX());
         VarInts.writeInt(buffer, vector3i.getY());
         VarInts.writeInt(buffer, vector3i.getZ());
+    }
+
+    @Override
+    public float readByteAngle(ByteBuf buffer) {
+        return buffer.readByte() * (360f / 256f);
+    }
+
+    @Override
+    public void writeByteAngle(ByteBuf buffer, float angle) {
+        buffer.writeByte((byte) (angle / (360f / 256f)));
     }
 
     public Vector3i readBlockPosition(ByteBuf buffer) {

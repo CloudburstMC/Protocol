@@ -26,7 +26,7 @@ public class ItemComponentSerializer_v419 implements BedrockPacketSerializer<Ite
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ItemComponentPacket packet) {
         helper.readArray(buffer, packet.getItems(), (buf, packetHelper) -> {
             String name = packetHelper.readString(buf);
-            NbtMap data = packetHelper.readTag(buf);
+            NbtMap data = packetHelper.readTag(buf, NbtMap.class);
 
             return new ComponentItemData(name, data);
         });

@@ -18,18 +18,18 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
         buffer.writeBoolean(packet.isNeedsTranslation());
 
         switch (type) {
-            case Type.CHAT:
-            case Type.WHISPER:
-            case Type.ANNOUNCEMENT:
+            case CHAT:
+            case WHISPER:
+            case ANNOUNCEMENT:
                 helper.writeString(buffer, packet.getSourceName());
-            case Type.RAW:
-            case Type.TIP:
-            case Type.SYSTEM:
+            case RAW:
+            case TIP:
+            case SYSTEM:
                 helper.writeString(buffer, packet.getMessage());
                 break;
-            case Type.TRANSLATION:
-            case Type.POPUP:
-            case Type.JUKEBOX_POPUP:
+            case TRANSLATION:
+            case POPUP:
+            case JUKEBOX_POPUP:
                 helper.writeString(buffer, packet.getMessage());
                 helper.writeArray(buffer, packet.getParameters(), helper::writeString);
                 break;
@@ -48,18 +48,18 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
         packet.setNeedsTranslation(buffer.readBoolean());
 
         switch (type) {
-            case Type.CHAT:
-            case Type.WHISPER:
-            case Type.ANNOUNCEMENT:
+            case CHAT:
+            case WHISPER:
+            case ANNOUNCEMENT:
                 packet.setSourceName(helper.readString(buffer));
-            case Type.RAW:
-            case Type.TIP:
-            case Type.SYSTEM:
+            case RAW:
+            case TIP:
+            case SYSTEM:
                 packet.setMessage(helper.readString(buffer));
                 break;
-            case Type.TRANSLATION:
-            case Type.POPUP:
-            case Type.JUKEBOX_POPUP:
+            case TRANSLATION:
+            case POPUP:
+            case JUKEBOX_POPUP:
                 packet.setMessage(helper.readString(buffer));
                 helper.readArray(buffer, packet.getParameters(), helper::readString);
                 break;

@@ -34,6 +34,10 @@ public interface BedrockCodecHelper {
 
     void setBlockDefinitions(DefinitionRegistry<BlockDefinition> registry);
 
+    DefinitionRegistry<ItemDefinition> getItemDefinitions();
+
+    DefinitionRegistry<BlockDefinition> getBlockDefinitions();
+
     // Array serialization (with helper)
 
     <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function);
@@ -123,6 +127,10 @@ public interface BedrockCodecHelper {
     Vector3i readVector3i(ByteBuf buffer);
 
     void writeVector3i(ByteBuf buffer, Vector3i vector3i);
+
+    float readByteAngle(ByteBuf buffer);
+
+    void writeByteAngle(ByteBuf buffer, float angle);
 
     Vector3i readBlockPosition(ByteBuf buffer);
 

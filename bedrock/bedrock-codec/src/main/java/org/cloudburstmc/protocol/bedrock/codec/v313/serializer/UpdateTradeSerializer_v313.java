@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v313.serializer;
 
+import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,6 @@ public class UpdateTradeSerializer_v313 implements BedrockPacketSerializer<Updat
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
         packet.setDisplayName(helper.readString(buffer));
-        packet.setOffers(helper.readTag(buffer));
+        packet.setOffers(helper.readTag(buffer, NbtMap.class));
     }
 }

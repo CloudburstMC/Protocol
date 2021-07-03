@@ -145,7 +145,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             String name = helper.readString(buf);
 
             int length = VarInts.readUnsignedInt(buffer);
-            LinkedHashMap<String, EnumSet<CommandEnumConstraint>> enumValues = new LinkedHashMap<>();
+            LinkedHashMap<String, Set<CommandEnumConstraint>> enumValues = new LinkedHashMap<>();
             for (int i = 0; i < length; i++) {
                 enumValues.put(values.get(indexReader.applyAsInt(buf)), EnumSet.noneOf(CommandEnumConstraint.class));
             }

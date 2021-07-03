@@ -22,13 +22,13 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
         helper.writeInventoryActions(buffer, packet.getActions(), false);
 
         switch (transactionType) {
-            case TransactionType.ITEM_USE:
+            case ITEM_USE:
                 helper.writeItemUse(buffer, packet);
                 break;
-            case TransactionType.ITEM_USE_ON_ENTITY:
+            case ITEM_USE_ON_ENTITY:
                 this.writeItemUseOnEntity(buffer, helper, packet);
                 break;
-            case TransactionType.ITEM_RELEASE:
+            case ITEM_RELEASE:
                 this.writeItemRelease(buffer, helper, packet);
                 break;
         }
@@ -42,13 +42,13 @@ public class InventoryTransactionSerializer_v291 implements BedrockPacketSeriali
         helper.readInventoryActions(buffer, packet.getActions());
 
         switch (transactionType) {
-            case TransactionType.ITEM_USE:
+            case ITEM_USE:
                 helper.readItemUse(buffer, packet);
                 break;
-            case TransactionType.ITEM_USE_ON_ENTITY:
+            case ITEM_USE_ON_ENTITY:
                 this.readItemUseOnEntity(buffer, helper, packet);
                 break;
-            case TransactionType.ITEM_RELEASE:
+            case ITEM_RELEASE:
                 this.readItemRelease(buffer, helper, packet);
                 break;
         }

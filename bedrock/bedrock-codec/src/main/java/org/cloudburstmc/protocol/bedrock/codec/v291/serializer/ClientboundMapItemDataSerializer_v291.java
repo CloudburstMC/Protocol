@@ -54,11 +54,11 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
             VarInts.writeUnsignedInt(buffer, trackedObjects.size());
             for (MapTrackedObject object : trackedObjects) {
                 switch (object.getType()) {
-                    case Type.BLOCK:
+                    case BLOCK:
                         buffer.writeIntLE(object.getType().ordinal());
                         helper.writeBlockPosition(buffer, object.getPosition());
                         break;
-                    case Type.ENTITY:
+                    case ENTITY:
                         buffer.writeIntLE(object.getType().ordinal());
                         VarInts.writeLong(buffer, object.getEntityId());
                         break;
@@ -113,10 +113,10 @@ public class ClientboundMapItemDataSerializer_v291 implements BedrockPacketSeria
             for (int i = 0; i < length; i++) {
                 MapTrackedObject.Type objectType = MapTrackedObject.Type.values()[buffer.readIntLE()];
                 switch (objectType) {
-                    case Type.BLOCK:
+                    case BLOCK:
                         trackedObjects.add(new MapTrackedObject(helper.readBlockPosition(buffer)));
                         break;
-                    case Type.ENTITY:
+                    case ENTITY:
                         trackedObjects.add(new MapTrackedObject(VarInts.readLong(buffer)));
                         break;
                 }

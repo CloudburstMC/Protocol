@@ -3,8 +3,10 @@ package org.cloudburstmc.protocol.common.util;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,14 @@ public final class TypeMap<T> {
 
     public static <T> Builder<T> builder(String type) {
         return new Builder<>(type);
+    }
+
+    public static <T> TypeMap<T> empty(Class<T> typeClass) {
+        return empty(typeClass.getSimpleName());
+    }
+
+    public static <T> TypeMap<T> empty(String type) {
+        return new TypeMap<T>(type, Object2IntMaps.emptyMap(), Int2ObjectMaps.emptyMap());
     }
 
     private static int powerOfTwoCeiling(int value) {

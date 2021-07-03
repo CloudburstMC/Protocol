@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.structure.*;
 import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -74,7 +75,8 @@ public class StructureBlockUpdateSerializer_v340 implements BedrockPacketSeriali
         boolean boundingBoxVisible = buffer.readBoolean();
 
         StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, size, offset,
-                -1, rotation, mirror, structureIntegrity, integritySeed, Vector3f.ZERO);
+                -1, rotation, mirror, StructureAnimationMode.NONE, 0f,
+                structureIntegrity, integritySeed, Vector3f.ZERO);
         StructureEditorData editorData = new StructureEditorData(name, dataField, includePlayers, boundingBoxVisible,
                 structureType, settings, StructureRedstoneSaveMode.SAVES_TO_DISK);
 

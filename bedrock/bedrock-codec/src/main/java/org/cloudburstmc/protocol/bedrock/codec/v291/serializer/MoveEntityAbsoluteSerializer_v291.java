@@ -30,7 +30,7 @@ public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerialize
         }
         buffer.writeByte(flags);
         helper.writeVector3f(buffer, packet.getPosition());
-        this.writeByteRotation(buffer, packet.getRotation());
+        this.writeByteRotation(buffer, helper, packet.getRotation());
     }
 
     @Override
@@ -40,30 +40,22 @@ public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerialize
         packet.setOnGround((flags & FLAG_ON_GROUND) != 0);
         packet.setTeleported((flags & FLAG_TELEPORTED) != 0);
         packet.setPosition(helper.readVector3f(buffer));
-        packet.setRotation(this.readByteRotation(buffer));
+        packet.setRotation(this.readByteRotation(buffer, helper));
     }
 
     // Helpers
 
-    protected Vector3f readByteRotation(ByteBuf buffer) {
-        float pitch = readByteAngle(buffer);
-        float yaw = readByteAngle(buffer);
-        float roll = readByteAngle(buffer);
+    protected Vector3f readByteRotation(ByteBuf buffer, BedrockCodecHelper helper) {
+        float pitch = helper.readByteAngle(buffer);
+        float yaw = helper.readByteAngle(buffer);
+        float roll = helper.readByteAngle(buffer);
         return Vector3f.from(pitch, yaw, roll);
     }
 
-    protected void writeByteRotation(ByteBuf buffer, Vector3f rotation) {
+    protected void writeByteRotation(ByteBuf buffer, BedrockCodecHelper helper, Vector3f rotation) {
         checkNotNull(rotation, "rotation");
-        writeByteAngle(buffer, rotation.getX());
-        writeByteAngle(buffer, rotation.getY());
-        writeByteAngle(buffer, rotation.getZ());
-    }
-
-    protected float readByteAngle(ByteBuf buffer) {
-        return buffer.readByte() * (360f / 256f);
-    }
-
-    protected void writeByteAngle(ByteBuf buffer, float angle) {
-        buffer.writeByte((byte) (angle / (360f / 256f)));
+        helper.writeByteAngle(buffer, rotation.getX());
+        helper.writeByteAngle(buffer, rotation.getY());
+        helper.writeByteAngle(buffer, rotation.getZ());
     }
 }

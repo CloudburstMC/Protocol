@@ -8,9 +8,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static com.nukkitx.network.util.checkNotNull;
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.FLAGS;
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.FLAGS_2;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class EntityDataMap implements Map<EntityData, Object> {
 
