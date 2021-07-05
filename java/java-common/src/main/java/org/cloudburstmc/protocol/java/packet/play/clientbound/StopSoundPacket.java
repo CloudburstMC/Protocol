@@ -22,6 +22,6 @@ public class StopSoundPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.STOP_SOUND_S2C;
+        return JavaPlayPacketType.STOP_SOUND;
     }
 }

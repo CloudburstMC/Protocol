@@ -22,6 +22,6 @@ public class AddExperienceOrbPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ADD_EXPERIENCE_ORB_S2C;
+        return JavaPlayPacketType.ADD_EXPERIENCE_ORB;
     }
 }

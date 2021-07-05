@@ -10,6 +10,6 @@ public interface JavaPacketType {
     enum Direction {
         CLIENTBOUND,
         SERVERBOUND,
-        BI_DIRECTIONAL
+        BIDIRECTIONAL
     }
 }

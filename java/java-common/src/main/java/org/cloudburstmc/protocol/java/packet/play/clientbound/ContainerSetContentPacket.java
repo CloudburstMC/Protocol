@@ -21,6 +21,6 @@ public class ContainerSetContentPacket extends JavaPacket<JavaPlayPacketHandler>
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_SET_CONTENT_S2C;
+        return JavaPlayPacketType.CONTAINER_SET_CONTENT;
     }
 }

@@ -21,6 +21,6 @@ public class CommandsPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.COMMANDS_S2C;
+        return JavaPlayPacketType.COMMANDS;
     }
 }

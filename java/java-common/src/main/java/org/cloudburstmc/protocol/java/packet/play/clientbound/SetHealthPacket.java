@@ -21,6 +21,6 @@ public class SetHealthPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_HEALTH_S2C;
+        return JavaPlayPacketType.SET_HEALTH;
     }
 }

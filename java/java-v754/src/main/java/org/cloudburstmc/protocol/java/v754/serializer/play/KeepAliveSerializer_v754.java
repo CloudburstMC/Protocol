@@ -4,12 +4,12 @@ import com.nukkitx.protocol.exception.PacketSerializeException;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.java.BidirectionalJavaPacketSerializer;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
-import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class KeepAliveSerializer_v754 implements JavaPacketSerializer<KeepAlivePacket> {
+public class KeepAliveSerializer_v754 extends BidirectionalJavaPacketSerializer<KeepAlivePacket> {
     public static final KeepAliveSerializer_v754 INSTANCE = new KeepAliveSerializer_v754();
 
     @Override

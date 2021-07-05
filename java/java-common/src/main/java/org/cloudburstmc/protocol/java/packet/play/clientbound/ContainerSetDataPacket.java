@@ -20,6 +20,6 @@ public class ContainerSetDataPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPlayPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_SET_DATA_S2C;
+        return JavaPlayPacketType.CONTAINER_SET_DATA;
     }
 }

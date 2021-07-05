@@ -5,11 +5,8 @@ import org.cloudburstmc.protocol.java.JavaPacketCodec;
 import org.cloudburstmc.protocol.java.packet.State;
 import org.cloudburstmc.protocol.java.packet.handshake.*;
 import org.cloudburstmc.protocol.java.packet.login.*;
-import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
-import org.cloudburstmc.protocol.java.packet.play.KeepAlivePacket;
-import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
+import org.cloudburstmc.protocol.java.packet.play.*;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.*;
-import org.cloudburstmc.protocol.java.packet.play.ContainerClosePacket;
 import org.cloudburstmc.protocol.java.packet.play.serverbound.*;
 import org.cloudburstmc.protocol.java.packet.status.*;
 import org.cloudburstmc.protocol.java.v754.serializer.handshake.*;
@@ -23,7 +20,7 @@ import org.cloudburstmc.protocol.java.v754.serializer.status.*;
 public class Java_v754 {
     public static final JavaPacketCodec V754_CODEC = JavaPacketCodec.builder()
             .protocolVersion(754)
-            .minecraftVersion("1.16.4")
+            .minecraftVersion("1.16.4/5")
             .helper(JavaPacketHelper_v754.INSTANCE)
             .codec(State.HANDSHAKING, JavaPacketCodec.JavaStateCodec.builder()
                     .registerServerbound(HandshakingPacket.class, HandshakingSerializer_v754.INSTANCE, 0)
@@ -60,7 +57,7 @@ public class Java_v754 {
                     .registerClientbound(BlockUpdatePacket.class, BlockUpdateSerializer_v754.INSTANCE, 11)
                     .registerClientbound(BossEventPacket.class, BossEventSerializer_v754.INSTANCE, 12)
                     .registerClientbound(ChangeDifficultyPacket.class, ChangeDifficultySerializer_v754.INSTANCE, 13)
-                    .registerClientbound(ServerChatPacket.class, ServerChatSerializer_v754.INSTANCE, 14)
+                    .registerClientbound(ChatPacket.class, ChatSerializer_v754.INSTANCE, 14)
                     .registerClientbound(CommandSuggestionsPacket.class, CommandSuggestionsSerializer_v754.INSTANCE, 15)
                     .registerClientbound(CommandsPacket.class, CommandsSerializer_v754.INSTANCE, 16)
                     .registerClientbound(ContainerAckPacket.class, ContainerAckSerializer_v754.INSTANCE, 17)
@@ -133,22 +130,58 @@ public class Java_v754 {
                     .registerClientbound(TagQueryPacket.class, TagQuerySerializer_v754.INSTANCE, 84)
                     .registerClientbound(TakeItemEntityPacket.class, TakeItemEntitySerializer_v754.INSTANCE, 85)
                     .registerClientbound(TeleportEntityPacket.class, TeleportEntitySerializer_v754.INSTANCE, 86)
+                    .registerClientbound(UpdateAdvancementsPacket.class, UpdateAdvancementsSerializer_v754.INSTANCE, 87)
+                    .registerClientbound(UpdateAttributesPacket.class, UpdateAttributesSerializer_v754.INSTANCE, 88)
+                    .registerClientbound(UpdateMobEffectPacket.class, UpdateMobEffectSerializer_v754.INSTANCE, 89)
+                    .registerClientbound(UpdateRecipesPacket.class, UpdateRecipesSerializer_v754.INSTANCE, 90)
+                    .registerClientbound(UpdateTagsPacket.class, UpdateTagsSerializer_v754.INSTANCE, 91)
 
                     .registerServerbound(AcceptTeleportationPacket.class, AcceptTeleportationSerializer_v754.INSTANCE, 0)
-                    .registerServerbound(ClientChatPacket.class, ClientChatSerializer_v754.INSTANCE, 3)
+                    .registerServerbound(BlockEntityTagQueryPacket.class, BlockEntityTagQuerySerializer_v754.INSTANCE, 1)
+                    .registerServerbound(ChangeDifficultyPacket.class, ChangeDifficultySerializer_v754.INSTANCE, 2)
+                    .registerServerbound(ChatPacket.class, ChatSerializer_v754.INSTANCE, 3)
                     .registerServerbound(ClientCommandPacket.class, ClientCommandSerializer_v754.INSTANCE, 4)
                     .registerServerbound(ClientInformationPacket.class, ClientInformationSerializer_v754.INSTANCE, 5)
+                    .registerServerbound(CommandSuggestionPacket.class, CommandSuggestionSerializer_v754.INSTANCE, 6)
+                    .registerServerbound(ContainerAckPacket.class, ContainerAckSerializer_v754.INSTANCE, 7)
+                    .registerServerbound(ContainerButtonClickPacket.class, ContainerButtonClickSerializer_754.INSTANCE, 8)
                     .registerServerbound(ContainerClickPacket.class, ContainerClickSerializer_v754.INSTANCE, 9)
                     .registerServerbound(ContainerClosePacket.class, ContainerCloseSerializer_v754.INSTANCE, 10)
                     .registerServerbound(CustomPayloadPacket.class, CustomPayloadSerializer_v754.INSTANCE, 11)
+                    .registerServerbound(EditBookPacket.class, EditBookSerializer_v754.INSTANCE, 12)
+                    .registerServerbound(EntityTagQueryPacket.class, EntityTagQuerySerializer_v754.INSTANCE, 13)
+                    .registerServerbound(InteractPacket.class, InteractSerializer_v754.INSTANCE, 14)
+                    .registerServerbound(JigsawGeneratePacket.class, JigsawGenerateSerializer_v754.INSTANCE, 15)
                     .registerServerbound(KeepAlivePacket.class, KeepAliveSerializer_v754.INSTANCE, 16)
+                    .registerServerbound(LockDifficultyPacket.class, LockDifficultySerializer_v754.INSTANCE, 17)
                     .registerServerbound(MovePlayerPacket.Pos.class, MovePlayerSerializer_v754.Pos.INSTANCE, 18)
                     .registerServerbound(MovePlayerPacket.PosRot.class, MovePlayerSerializer_v754.PosRot.INSTANCE, 19)
                     .registerServerbound(MovePlayerPacket.Rot.class, MovePlayerSerializer_v754.Rot.INSTANCE, 20)
+                    .registerServerbound(MovePlayerPacket.class, MovePlayerSerializer_v754.OnGround.INSTANCE, 21)
+                    .registerServerbound(MoveVehiclePacket.class, MoveVehicleSerializer_v754.INSTANCE, 22)
+                    .registerServerbound(PaddleBoatPacket.class, PaddleBoatSerializer_v754.INSTANCE, 23)
+                    .registerServerbound(PickItemPacket.class, PickItemSerializer_v754.INSTANCE, 24)
+                    .registerServerbound(PlaceRecipePacket.class, PlaceRecipeSerializer_v754.INSTANCE, 25)
+                    .registerServerbound(PlayerAbilitiesPacket.class, PlayerAbilitiesSerializer_v754.INSTANCE, 26)
                     .registerServerbound(PlayerActionPacket.class, PlayerActionSerializer_v754.INSTANCE, 27)
+                    .registerServerbound(PlayerCommandPacket.class, PlayerCommandSerializer_v754.INSTANCE, 28)
+                    .registerServerbound(PlayerInputPacket.class, PlayerInputSerializer_v754.INSTANCE, 29)
                     .registerServerbound(RecipeBookChangeSettingsPacket.class, RecipeBookChangeSettingsSerializer_v754.INSTANCE, 30)
+                    .registerServerbound(RecipeBookSeenRecipePacket.class, RecipeBookSeenRecipeSerializer_v754.INSTANCE, 31)
+                    .registerServerbound(RenameItemPacket.class, RenameItemSerializer_v754.INSTANCE, 32)
+                    .registerServerbound(ResourcePackPacket.class, ResourcePackSerializer_v754.INSTANCE, 33)
                     .registerServerbound(SeenAdvancementsPacket.class, SeenAdvancementsSerializer_v754.INSTANCE, 34)
+                    .registerServerbound(SelectTradePacket.class, SelectTradeSerializer_v754.INSTANCE, 35)
+                    .registerServerbound(SetBeaconPacket.class, SetBeaconSerializer_v754.INSTANCE, 36)
                     .registerServerbound(SetCarriedItemPacket.class, SetCarriedItemSerializer_v754.INSTANCE, 37)
+                    .registerServerbound(SetCommandBlockPacket.class, SetCommandBlockSerializer_v754.INSTANCE, 38)
+                    .registerServerbound(SetCommandMinecartPacket.class, SetCommandMinecartSerializer_v754.INSTANCE, 39)
+                    .registerServerbound(SetCreativeModeSlotPacket.class, SetCreativeModeSlotSerializer_v754.INSTANCE, 40)
+                    .registerServerbound(SetJigsawBlockPacket.class, SetJigsawBlockSerializer_v754.INSTANCE, 41)
+                    .registerServerbound(SetStructureBlockPacket.class, SetStructureBlockSerializer_v754.INSTANCE, 42)
+                    .registerServerbound(SignUpdatePacket.class, SignUpdateSerializer_v754.INSTANCE, 43)
+                    .registerServerbound(SwingPacket.class, SwingPacketSerializer_v754.INSTANCE, 44)
+                    .registerServerbound(TeleportToEntityPacket.class, TeleportToEntitySerializer_v754.INSTANCE, 45)
                     .build()
             ).build();
 }

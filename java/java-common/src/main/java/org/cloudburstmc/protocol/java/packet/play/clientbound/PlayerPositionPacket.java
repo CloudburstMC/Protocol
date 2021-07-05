@@ -28,6 +28,6 @@ public class PlayerPositionPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.PLAYER_POSITION_S2C;
+        return JavaPlayPacketType.PLAYER_POSITION;
     }
 }

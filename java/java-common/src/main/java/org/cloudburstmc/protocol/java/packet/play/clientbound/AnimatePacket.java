@@ -21,6 +21,6 @@ public class AnimatePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ANIMATE_S2C;
+        return JavaPlayPacketType.ANIMATE;
     }
 }

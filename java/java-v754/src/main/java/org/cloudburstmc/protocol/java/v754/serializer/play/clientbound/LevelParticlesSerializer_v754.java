@@ -19,7 +19,7 @@ public class LevelParticlesSerializer_v754 implements JavaPacketSerializer<Level
         buffer.writeInt(helper.getParticleId(packet.getParticle().getType()));
         buffer.writeBoolean(packet.isOverrideLimiter());
         helper.writePosition(buffer, packet.getPosition());
-        helper.writeRotation(buffer, packet.getDistance()); // not technically a rotation but the writing is the same
+        helper.writeVector3f(buffer, packet.getDistance());
         buffer.writeFloat(packet.getMaxSpeed());
         buffer.writeInt(packet.getCount());
         helper.writeParticleData(buffer, packet.getParticle());
@@ -30,7 +30,7 @@ public class LevelParticlesSerializer_v754 implements JavaPacketSerializer<Level
         ParticleType type = helper.getParticle(buffer.readInt());
         packet.setOverrideLimiter(buffer.readBoolean());
         packet.setPosition(helper.readPosition(buffer));
-        packet.setDistance(helper.readRotation(buffer)); // not technically a rotation but the writing is the same
+        packet.setDistance(helper.readVector3f(buffer));
         packet.setMaxSpeed(buffer.readFloat());
         packet.setCount(buffer.readInt());
         packet.setParticle(new Particle(type, helper.readParticleData(buffer, type)));

@@ -26,6 +26,6 @@ public class SoundPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SOUND_S2C;
+        return JavaPlayPacketType.SOUND;
     }
 }

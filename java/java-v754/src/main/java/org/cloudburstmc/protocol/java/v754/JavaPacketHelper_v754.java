@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.java.v754;
 
+import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
+import org.cloudburstmc.protocol.java.data.crafting.RecipeType;
 import org.cloudburstmc.protocol.java.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.java.data.entity.MobEffectType;
 import org.cloudburstmc.protocol.java.data.entity.Pose;
@@ -315,5 +317,31 @@ public class JavaPacketHelper_v754 extends JavaPacketHelper {
         this.mobEffects.put(30, MobEffectType.DOLPHINS_GRACE);
         this.mobEffects.put(31, MobEffectType.BAD_OMEN);
         this.mobEffects.put(32, MobEffectType.HERO_OF_THE_VILLAGE);
+    }
+
+    @Override
+    public void registerRecipeTypes() {
+        this.recipeTypes.put(Key.key("crafting_shapeless"), RecipeType.SHAPELESS);
+        this.recipeTypes.put(Key.key("crafting_shaped"), RecipeType.SHAPED);
+        this.recipeTypes.put(Key.key("crafting_special_armordye"), RecipeType.SPECIAL_ARMORDYE);
+        this.recipeTypes.put(Key.key("crafting_special_bookcloning"), RecipeType.SPECIAL_BOOKCLONING);
+        this.recipeTypes.put(Key.key("crafting_special_mapcloning"), RecipeType.SPECIAL_MAPCLONING);
+        this.recipeTypes.put(Key.key("crafting_special_mapextending"), RecipeType.SPECIAL_MAPEXTENDING);
+        this.recipeTypes.put(Key.key("crafting_special_firework_rocket"), RecipeType.SPECIAL_FIREWORK_ROCKET);
+        this.recipeTypes.put(Key.key("crafting_special_firework_star"), RecipeType.SPECIAL_FIREWORK_STAR);
+        this.recipeTypes.put(Key.key("crafting_special_firework_star_fade"), RecipeType.SPECIAL_FIREWORK_STAR_FADE);
+        this.recipeTypes.put(Key.key("crafting_special_repairitem"), RecipeType.SPECIAL_REPAIRITEM);
+        this.recipeTypes.put(Key.key("crafting_special_tippedarrow"), RecipeType.SPECIAL_TIPPEDARROW);
+        this.recipeTypes.put(Key.key("crafting_special_bannerduplicate"), RecipeType.SPECIAL_BANNERDUPLICATE);
+        this.recipeTypes.put(Key.key("crafting_special_banneraddpattern"), RecipeType.SPECIAL_BANNERADDPATTERN);
+        this.recipeTypes.put(Key.key("crafting_special_shielddecoration"), RecipeType.SPECIAL_SHIELDDECORATION);
+        this.recipeTypes.put(Key.key("crafting_special_shulkerboxcolorning"), RecipeType.SPECIAL_SHULKERBOXCOLORING);
+        this.recipeTypes.put(Key.key("crafting_special_suspiciousstew"), RecipeType.SPECIAL_SUSPICIOUSSTEW);
+        this.recipeTypes.put(Key.key("smelting"), RecipeType.SMELTING);
+        this.recipeTypes.put(Key.key("blasting"), RecipeType.BLASTING);
+        this.recipeTypes.put(Key.key("smoking"), RecipeType.SMOKING);
+        this.recipeTypes.put(Key.key("campfire_cooking"), RecipeType.CAMPFIRE_COOKING);
+        this.recipeTypes.put(Key.key("stonecutting"), RecipeType.STONECUTTING);
+        this.recipeTypes.put(Key.key("smithing"), RecipeType.SMITHING);
     }
 }

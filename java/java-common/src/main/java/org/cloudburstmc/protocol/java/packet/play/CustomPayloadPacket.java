@@ -4,14 +4,14 @@ import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.key.Key;
-import org.cloudburstmc.protocol.java.JavaPacket;
+import org.cloudburstmc.protocol.java.BidirectionalJavaPacket;
 import org.cloudburstmc.protocol.java.handler.JavaPlayPacketHandler;
 import org.cloudburstmc.protocol.java.packet.type.JavaPacketType;
 import org.cloudburstmc.protocol.java.packet.type.JavaPlayPacketType;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class CustomPayloadPacket extends JavaPacket<JavaPlayPacketHandler> {
+public class CustomPayloadPacket extends BidirectionalJavaPacket<JavaPlayPacketHandler> {
     private Key channel;
     private ByteBuf buffer;
 

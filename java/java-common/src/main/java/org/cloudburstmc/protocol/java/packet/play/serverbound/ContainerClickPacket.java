@@ -26,6 +26,6 @@ public class ContainerClickPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_CLICK_C2S;
+        return JavaPlayPacketType.CONTAINER_CLICK;
     }
 }

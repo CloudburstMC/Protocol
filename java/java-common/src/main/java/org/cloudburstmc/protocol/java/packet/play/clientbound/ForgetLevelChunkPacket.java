@@ -20,6 +20,6 @@ public class ForgetLevelChunkPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.FORGET_LEVEL_CHUNK_S2C;
+        return JavaPlayPacketType.FORGET_LEVEL_CHUNK;
     }
 }

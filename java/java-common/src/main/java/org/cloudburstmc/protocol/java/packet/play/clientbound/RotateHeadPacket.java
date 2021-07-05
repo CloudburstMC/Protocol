@@ -20,6 +20,6 @@ public class RotateHeadPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ROTATE_HEAD_S2C;
+        return JavaPlayPacketType.ROTATE_HEAD;
     }
 }

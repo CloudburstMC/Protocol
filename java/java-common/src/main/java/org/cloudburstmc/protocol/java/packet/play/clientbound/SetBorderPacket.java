@@ -27,7 +27,7 @@ public class SetBorderPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_BORDER_S2C;
+        return JavaPlayPacketType.SET_BORDER;
     }
 
     public enum Type {

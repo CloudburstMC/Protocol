@@ -24,7 +24,7 @@ public class SetTitlesPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_TITLES_S2C;
+        return JavaPlayPacketType.SET_TITLES;
     }
 
     public enum Type {

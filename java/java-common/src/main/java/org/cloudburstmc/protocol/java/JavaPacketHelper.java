@@ -1,5 +1,7 @@
 package org.cloudburstmc.protocol.java;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.nukkitx.math.vector.*;
 import com.nukkitx.nbt.NBTInputStream;
 import com.nukkitx.nbt.NBTOutputStream;
@@ -18,6 +20,9 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.cloudburstmc.protocol.java.data.Direction;
+import org.cloudburstmc.protocol.java.data.crafting.Recipe;
+import org.cloudburstmc.protocol.java.data.crafting.RecipeIngredient;
+import org.cloudburstmc.protocol.java.data.crafting.RecipeType;
 import org.cloudburstmc.protocol.java.data.entity.*;
 import org.cloudburstmc.protocol.java.data.inventory.ItemStack;
 import org.cloudburstmc.protocol.java.data.inventory.ContainerType;
@@ -47,6 +52,7 @@ public abstract class JavaPacketHelper {
     protected final Int2ObjectBiMap<Pose> poses = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ParticleType> particles = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<MobEffectType> mobEffects = new Int2ObjectBiMap<>();
+    protected final BiMap<Key, RecipeType<? extends Recipe>> recipeTypes = HashBiMap.create();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
@@ -56,6 +62,7 @@ public abstract class JavaPacketHelper {
         this.registerPoses();
         this.registerParticles();
         this.registerMobEffects();
+        this.registerRecipeTypes();
     }
 
     public int readVarInt(ByteBuf buffer) {
@@ -228,17 +235,29 @@ public abstract class JavaPacketHelper {
         buffer.writeByte((int) (vector3f.getZ() * 256F / 360));
     }
 
-    public Vector3f readRotation(ByteBuf buffer) {
+    public Vector3f readVector3f(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
         return Vector3f.from(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
     }
 
-    public void writeRotation(ByteBuf buffer, Vector3f vector3f) {
+    public void writeVector3f(ByteBuf buffer, Vector3f vector3f) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(vector3f, "vector3f");
         buffer.writeFloat(vector3f.getX());
         buffer.writeFloat(vector3f.getY());
         buffer.writeFloat(vector3f.getZ());
+    }
+
+    public Vector2f readVector2f(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return Vector2f.from(buffer.readFloat(), buffer.readFloat());
+    }
+
+    public void writeVector2f(ByteBuf buffer, Vector2f vector2f) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(vector2f, "vector2f");
+        buffer.writeFloat(vector2f.getX());
+        buffer.writeFloat(vector2f.getY());
     }
 
     public Direction readDirection(ByteBuf buffer) {
@@ -330,6 +349,31 @@ public abstract class JavaPacketHelper {
         }
     }
 
+    public RecipeIngredient readRecipeIngredient(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        return new RecipeIngredient(this.readArray(buffer, new ItemStack[0], this::readItemStack));
+    }
+
+    public void writeRecipeIngredient(ByteBuf buffer, RecipeIngredient ingredient) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(ingredient, "ingredient");
+        this.writeArray(buffer, ingredient.getChoices(), this::writeItemStack);
+    }
+
+    public Recipe readRecipe(ByteBuf buffer) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Key key = this.readKey(buffer);
+        RecipeType<? extends Recipe> type = this.getRecipeType(key);
+        return type.read(this, buffer);
+    }
+
+    public void writeRecipe(ByteBuf buffer, Recipe recipe) {
+        Preconditions.checkNotNull(buffer, "buffer");
+        Preconditions.checkNotNull(recipe, "recipe");
+        this.writeKey(buffer, this.getRecipeTypeKey(recipe.getType()));
+        recipe.getType().write(this, buffer, recipe);
+    }
+
     public Vector3i readBlockPosition(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
         long position = buffer.readLong();
@@ -401,6 +445,21 @@ public abstract class JavaPacketHelper {
         VarInts.writeUnsignedInt(buffer, array.length);
         for (T val : array) {
             biConsumer.accept(buffer, val);
+        }
+    }
+
+    public int[] readIntArray(ByteBuf buffer, ToIntFunction<ByteBuf> function) {
+        int[] array = new int[VarInts.readUnsignedInt(buffer)];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = function.applyAsInt(buffer);
+        }
+        return array;
+    }
+
+    public void writeIntArray(ByteBuf buffer, int[] array, ObjIntConsumer<ByteBuf> consumer) {
+        VarInts.writeUnsignedInt(buffer, array.length);
+        for (int val : array) {
+            consumer.accept(buffer, val);
         }
     }
 
@@ -520,6 +579,14 @@ public abstract class JavaPacketHelper {
         return this.mobEffects.get(mobEffect);
     }
 
+    public final RecipeType<? extends Recipe> getRecipeType(Key key) {
+        return this.recipeTypes.get(key);
+    }
+
+    public final Key getRecipeTypeKey(RecipeType<?> recipeType) {
+        return this.recipeTypes.inverse().get(recipeType);
+    }
+
     protected abstract void registerEntityTypes();
 
     protected abstract void registerBlockEntityActions();
@@ -533,4 +600,6 @@ public abstract class JavaPacketHelper {
     public abstract void registerParticles();
 
     public abstract void registerMobEffects();
+
+    public abstract void registerRecipeTypes();
 }

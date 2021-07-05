@@ -1,7 +1,5 @@
 package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
 
-import com.nukkitx.math.vector.Vector2f;
-import com.nukkitx.math.vector.Vector3d;
 import com.nukkitx.protocol.exception.PacketSerializeException;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;

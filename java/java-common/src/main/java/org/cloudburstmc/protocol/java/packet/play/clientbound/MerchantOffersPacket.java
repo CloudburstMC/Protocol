@@ -28,6 +28,6 @@ public class MerchantOffersPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.MERCHANT_OFFERS_S2C;
+        return JavaPlayPacketType.MERCHANT_OFFERS;
     }
 }

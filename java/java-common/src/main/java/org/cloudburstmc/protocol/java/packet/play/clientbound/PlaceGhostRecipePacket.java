@@ -21,6 +21,6 @@ public class PlaceGhostRecipePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.PLACE_GHOST_RECIPE_S2C;
+        return JavaPlayPacketType.PLACE_GHOST_RECIPE;
     }
 }

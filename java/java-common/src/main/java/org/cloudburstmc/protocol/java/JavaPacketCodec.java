@@ -124,6 +124,9 @@ public final class JavaPacketCodec {
                     packet = this.serverboundIdBiMap.get(id).getDeclaredConstructor().newInstance();
                     serializer = this.serverboundSerializers[id];
                 }
+                if (packet instanceof BidirectionalJavaPacket) {
+                    ((BidirectionalJavaPacket<?>) packet).setSendingDirection(direction);
+                }
             } catch (ClassCastException | InstantiationException | IllegalAccessException | ArrayIndexOutOfBoundsException | NoSuchMethodException | InvocationTargetException e) {
                 throw new PacketSerializeException("Packet ID " + id + " does not exist", e);
             }
@@ -144,6 +147,9 @@ public final class JavaPacketCodec {
             try {
                 JavaPacketSerializer<JavaPacket<?>> serializer;
                 int packetId = getId(packet, clientbound);
+                if (packet instanceof BidirectionalJavaPacket) {
+                    ((BidirectionalJavaPacket<?>) packet).setSendingDirection(clientbound ? JavaPacketType.Direction.CLIENTBOUND : JavaPacketType.Direction.SERVERBOUND);
+                }
                 serializer = clientbound ? this.clientboundSerializers[packetId] : this.serverboundSerializers[packetId];
                 serializer.serialize(buf, this.helper, packet, session);
             } catch (Exception e) {

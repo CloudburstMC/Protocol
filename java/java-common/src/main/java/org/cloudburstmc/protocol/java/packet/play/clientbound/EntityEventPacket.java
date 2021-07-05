@@ -21,6 +21,6 @@ public class EntityEventPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ENTITY_EVENT_S2C;
+        return JavaPlayPacketType.ENTITY_EVENT;
     }
 }

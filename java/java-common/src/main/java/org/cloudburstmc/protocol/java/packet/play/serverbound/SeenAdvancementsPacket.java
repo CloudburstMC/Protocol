@@ -22,6 +22,6 @@ public class SeenAdvancementsPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SEEN_ADVANCEMENTS_C2S;
+        return JavaPlayPacketType.SEEN_ADVANCEMENTS;
     }
 }

@@ -21,6 +21,6 @@ public class TakeItemEntityPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.TAKE_ITEM_ENTITY_S2C;
+        return JavaPlayPacketType.TAKE_ITEM_ENTITY;
     }
 }

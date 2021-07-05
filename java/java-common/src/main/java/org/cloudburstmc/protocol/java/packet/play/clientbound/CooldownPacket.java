@@ -20,6 +20,6 @@ public class CooldownPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.COOLDOWN_S2C;
+        return JavaPlayPacketType.COOLDOWN;
     }
 }

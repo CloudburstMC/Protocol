@@ -33,6 +33,6 @@ public class BossEventPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.BOSS_EVENT_S2C;
+        return JavaPlayPacketType.BOSS_EVENT;
     }
 }

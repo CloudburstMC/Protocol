@@ -29,6 +29,6 @@ public class LightUpdatePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.LIGHT_UPDATE_S2C;
+        return JavaPlayPacketType.LIGHT_UPDATE;
     }
 }

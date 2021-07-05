@@ -24,6 +24,6 @@ public class BlockBreakAckPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.BLOCK_BREAK_ACK_S2C;
+        return JavaPlayPacketType.BLOCK_BREAK_ACK;
     }
 }

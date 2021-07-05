@@ -31,6 +31,6 @@ public class AddEntityPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ADD_ENTITY_S2C;
+        return JavaPlayPacketType.ADD_ENTITY;
     }
 }

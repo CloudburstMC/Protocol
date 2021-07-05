@@ -22,6 +22,6 @@ public class RecipeBookChangeSettingsPacket extends JavaPacket<JavaPlayPacketHan
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.RECIPE_BOOK_CHANGE_SETTINGS_C2S;
+        return JavaPlayPacketType.RECIPE_BOOK_CHANGE_SETTINGS;
     }
 }

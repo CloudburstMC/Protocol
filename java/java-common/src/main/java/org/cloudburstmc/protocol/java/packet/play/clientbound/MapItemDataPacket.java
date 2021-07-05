@@ -29,6 +29,6 @@ public class MapItemDataPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.MAP_ITEM_DATA_S2C;
+        return JavaPlayPacketType.MAP_ITEM_DATA;
     }
 }

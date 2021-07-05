@@ -20,6 +20,6 @@ public class OpenBookPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.OPEN_BOOK_S2C;
+        return JavaPlayPacketType.OPEN_BOOK;
     }
 }

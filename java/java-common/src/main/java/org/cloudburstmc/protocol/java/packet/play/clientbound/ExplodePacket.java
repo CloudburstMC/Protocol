@@ -31,6 +31,6 @@ public class ExplodePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.EXPLODE_S2C;
+        return JavaPlayPacketType.EXPLODE;
     }
 }

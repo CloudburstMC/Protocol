@@ -27,6 +27,6 @@ public class LevelParticlesPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.LEVEL_PARTICLES_S2C;
+        return JavaPlayPacketType.LEVEL_PARTICLES;
     }
 }

@@ -29,6 +29,6 @@ public class AddMobPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ADD_MOB_S2C;
+        return JavaPlayPacketType.ADD_MOB;
     }
 }

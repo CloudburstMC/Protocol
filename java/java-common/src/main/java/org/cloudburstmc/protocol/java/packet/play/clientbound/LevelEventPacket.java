@@ -24,6 +24,6 @@ public class LevelEventPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.LEVEL_EVENT_S2C;
+        return JavaPlayPacketType.LEVEL_EVENT;
     }
 }

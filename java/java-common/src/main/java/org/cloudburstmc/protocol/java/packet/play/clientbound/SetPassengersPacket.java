@@ -20,6 +20,6 @@ public class SetPassengersPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_PASSENGERS_S2C;
+        return JavaPlayPacketType.SET_PASSENGERS;
     }
 }

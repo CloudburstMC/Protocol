@@ -21,6 +21,6 @@ public class RemoveMobEffectPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.REMOVE_MOB_EFFECT_S2C;
+        return JavaPlayPacketType.REMOVE_MOB_EFFECT;
     }
 }

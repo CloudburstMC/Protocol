@@ -13,6 +13,21 @@ import org.cloudburstmc.protocol.java.packet.play.serverbound.MovePlayerPacket;
 public class MovePlayerSerializer_v754<T extends MovePlayerPacket> implements JavaPacketSerializer<T> {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class OnGround extends MovePlayerSerializer_v754<MovePlayerPacket> {
+        public static final OnGround INSTANCE = new OnGround();
+
+        @Override
+        public void serialize(ByteBuf buffer, JavaPacketHelper helper, MovePlayerPacket packet) throws PacketSerializeException {
+            buffer.writeBoolean(packet.isOnGround());
+        }
+
+        @Override
+        public void deserialize(ByteBuf buffer, JavaPacketHelper helper, MovePlayerPacket packet) throws PacketSerializeException {
+            packet.setOnGround(buffer.readBoolean());
+        }
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class Pos extends MovePlayerSerializer_v754<MovePlayerPacket.Pos> {
         public static final Pos INSTANCE = new Pos();
 

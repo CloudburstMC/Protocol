@@ -24,6 +24,6 @@ public class SectionBlocksUpdatePacket extends JavaPacket<JavaPlayPacketHandler>
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SECTION_BLOCKS_UPDATE_S2C;
+        return JavaPlayPacketType.SECTION_BLOCKS_UPDATE;
     }
 }

@@ -26,7 +26,7 @@ public abstract class MovePlayerPacket extends JavaPacket<JavaPlayPacketHandler>
 
         @Override
         public JavaPacketType getPacketType() {
-            return JavaPlayPacketType.MOVE_PLAYER_POS_C2S;
+            return JavaPlayPacketType.MOVE_PLAYER_POS;
         }
     }
 
@@ -43,7 +43,7 @@ public abstract class MovePlayerPacket extends JavaPacket<JavaPlayPacketHandler>
 
         @Override
         public JavaPacketType getPacketType() {
-            return JavaPlayPacketType.MOVE_PLAYER_POS_C2S;
+            return JavaPlayPacketType.MOVE_PLAYER_POS;
         }
     }
 
@@ -59,7 +59,7 @@ public abstract class MovePlayerPacket extends JavaPacket<JavaPlayPacketHandler>
 
         @Override
         public JavaPacketType getPacketType() {
-            return JavaPlayPacketType.MOVE_PLAYER_POS_C2S;
+            return JavaPlayPacketType.MOVE_PLAYER_POS;
         }
     }
 }

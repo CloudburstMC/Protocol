@@ -18,9 +18,19 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.nukkitx.fastutil</groupId>
+            <artifactId>fastutil-object-long-maps</artifactId>
+            <version>8.5.3</version>
+        </dependency>
+        <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
             <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-plain</artifactId>
+            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

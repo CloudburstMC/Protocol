@@ -4,12 +4,12 @@ import com.nukkitx.protocol.exception.PacketSerializeException;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.java.BidirectionalJavaPacketSerializer;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
-import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.CustomPayloadPacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomPayloadSerializer_v754 implements JavaPacketSerializer<CustomPayloadPacket> {
+public class CustomPayloadSerializer_v754 extends BidirectionalJavaPacketSerializer<CustomPayloadPacket> {
     public static final CustomPayloadSerializer_v754 INSTANCE = new CustomPayloadSerializer_v754();
 
     @Override

@@ -20,6 +20,6 @@ public class SelectAdvancementsTabPacket extends JavaPacket<JavaPlayPacketHandle
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SELECT_ADVANCEMENTS_TAB_S2C;
+        return JavaPlayPacketType.SELECT_ADVANCEMENTS_TAB;
     }
 }

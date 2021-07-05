@@ -23,6 +23,6 @@ public class AwardStatsPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.AWARD_STATS_S2C;
+        return JavaPlayPacketType.AWARD_STATS;
     }
 }

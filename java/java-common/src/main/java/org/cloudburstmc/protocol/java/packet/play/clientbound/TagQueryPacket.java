@@ -21,6 +21,6 @@ public class TagQueryPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.TAG_QUERY_S2C;
+        return JavaPlayPacketType.TAG_QUERY;
     }
 }

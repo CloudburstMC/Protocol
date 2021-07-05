@@ -21,6 +21,6 @@ public class TabListPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.TAB_LIST_S2C;
+        return JavaPlayPacketType.TAB_LIST;
     }
 }

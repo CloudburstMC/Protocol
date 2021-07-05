@@ -32,6 +32,6 @@ public class LevelChunkPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.LEVEL_CHUNK_S2C;
+        return JavaPlayPacketType.LEVEL_CHUNK;
     }
 }

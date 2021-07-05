@@ -24,6 +24,6 @@ public class CommandSuggestionsPacket extends JavaPacket<JavaPlayPacketHandler> 
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.COMMAND_SUGGESTIONS_S2C;
+        return JavaPlayPacketType.COMMAND_SUGGESTIONS;
     }
 }

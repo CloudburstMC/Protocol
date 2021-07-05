@@ -2,11 +2,14 @@ package org.cloudburstmc.protocol.java.v754.serializer.play.clientbound;
 
 import com.nukkitx.protocol.exception.PacketSerializeException;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.clientbound.SetPlayerTeamPacket;
+
+import java.util.List;
 
 import static org.cloudburstmc.protocol.java.packet.play.clientbound.SetPlayerTeamPacket.*;
 
@@ -50,7 +53,7 @@ public class SetPlayerTeamSerializer_v754 implements JavaPacketSerializer<SetPla
         }
 
         if (packet.getAction() == Action.CREATE || packet.getAction() == Action.ADD_PLAYER || packet.getAction() == Action.REMOVE_PLAYER) {
-            helper.readArray(buffer, packet.getPlayers(), helper::readString);
+            packet.setPlayers(new ObjectArrayList<>(helper.readArray(buffer, new String[0], helper::readString)));
         }
     }
 }

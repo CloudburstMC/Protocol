@@ -23,6 +23,6 @@ public class OpenScreenPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.OPEN_SCREEN_S2C;
+        return JavaPlayPacketType.OPEN_SCREEN;
     }
 }

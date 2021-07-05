@@ -22,6 +22,6 @@ public class BlockDestructionPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.BLOCK_DESTRUCTION_S2C;
+        return JavaPlayPacketType.BLOCK_DESTRUCTION;
     }
 }

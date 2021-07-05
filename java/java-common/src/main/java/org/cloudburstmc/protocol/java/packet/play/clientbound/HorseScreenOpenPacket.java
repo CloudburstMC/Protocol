@@ -21,6 +21,6 @@ public class HorseScreenOpenPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.HORSE_SCREEN_OPEN_S2C;
+        return JavaPlayPacketType.HORSE_SCREEN_OPEN;
     }
 }

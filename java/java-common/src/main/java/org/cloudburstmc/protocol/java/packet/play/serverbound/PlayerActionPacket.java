@@ -24,6 +24,6 @@ public class PlayerActionPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.PLAYER_ACTION_C2S;
+        return JavaPlayPacketType.PLAYER_ACTION;
     }
 }

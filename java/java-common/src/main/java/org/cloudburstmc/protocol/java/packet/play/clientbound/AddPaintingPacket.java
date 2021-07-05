@@ -28,6 +28,6 @@ public class AddPaintingPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ADD_PAINTING_S2C;
+        return JavaPlayPacketType.ADD_PAINTING;
     }
 }

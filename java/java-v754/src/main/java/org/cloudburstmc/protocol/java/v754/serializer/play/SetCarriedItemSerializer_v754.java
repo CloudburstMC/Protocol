@@ -4,12 +4,13 @@ import com.nukkitx.protocol.exception.PacketSerializeException;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.protocol.java.BidirectionalJavaPacketSerializer;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.JavaPacketSerializer;
 import org.cloudburstmc.protocol.java.packet.play.SetCarriedItemPacket;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SetCarriedItemSerializer_v754 implements JavaPacketSerializer<SetCarriedItemPacket> {
+public final class SetCarriedItemSerializer_v754 extends BidirectionalJavaPacketSerializer<SetCarriedItemPacket> {
     public static final SetCarriedItemSerializer_v754 INSTANCE = new SetCarriedItemSerializer_v754();
 
     @Override

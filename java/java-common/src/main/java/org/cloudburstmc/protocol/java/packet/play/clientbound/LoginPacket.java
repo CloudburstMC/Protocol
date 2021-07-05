@@ -37,6 +37,6 @@ public class LoginPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.LOGIN_S2C;
+        return JavaPlayPacketType.LOGIN;
     }
 }

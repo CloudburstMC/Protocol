@@ -26,6 +26,6 @@ public class AddPlayerPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ADD_PLAYER_S2C;
+        return JavaPlayPacketType.ADD_PLAYER;
     }
 }

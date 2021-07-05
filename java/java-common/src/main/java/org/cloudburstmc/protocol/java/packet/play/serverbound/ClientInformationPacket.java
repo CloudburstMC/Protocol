@@ -26,6 +26,6 @@ public class ClientInformationPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CLIENT_INFORMATION_C2S;
+        return JavaPlayPacketType.CLIENT_INFORMATION;
     }
 }

@@ -33,7 +33,7 @@ public class RecipePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.RECIPE_S2C;
+        return JavaPlayPacketType.RECIPE;
     }
 
     public enum State {

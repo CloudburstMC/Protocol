@@ -24,7 +24,7 @@ public class PlayerLookAtPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.PLAYER_LOOK_AT_S2C;
+        return JavaPlayPacketType.PLAYER_LOOK_AT;
     }
 
     public enum Anchor {

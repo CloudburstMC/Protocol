@@ -21,6 +21,6 @@ public class BlockUpdatePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.BLOCK_UPDATE_S2C;
+        return JavaPlayPacketType.BLOCK_UPDATE;
     }
 }

@@ -23,7 +23,7 @@ public class SetObjectivePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_OBJECTIVE_S2C;
+        return JavaPlayPacketType.SET_OBJECTIVE;
     }
 
     public enum RenderType {

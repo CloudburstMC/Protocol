@@ -19,6 +19,6 @@ public class AcceptTeleportationPacket extends JavaPacket<JavaPlayPacketHandler>
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.ACCEPT_TELEPORTATION_C2S;
+        return JavaPlayPacketType.ACCEPT_TELEPORTATION;
     }
 }

@@ -24,6 +24,6 @@ public class TeleportEntityPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.TELEPORT_ENTITY_S2C;
+        return JavaPlayPacketType.TELEPORT_ENTITY;
     }
 }

@@ -21,6 +21,6 @@ public class GameEventPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.GAME_EVENT_S2C;
+        return JavaPlayPacketType.GAME_EVENT;
     }
 }

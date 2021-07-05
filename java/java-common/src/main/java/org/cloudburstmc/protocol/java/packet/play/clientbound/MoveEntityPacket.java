@@ -34,7 +34,7 @@ public abstract class MoveEntityPacket extends JavaPacket<JavaPlayPacketHandler>
 
         @Override
         public JavaPacketType getPacketType() {
-            return JavaPlayPacketType.MOVE_ENTITY_POS_S2C;
+            return JavaPlayPacketType.MOVE_ENTITY_POS;
         }
     }
 
@@ -56,7 +56,7 @@ public abstract class MoveEntityPacket extends JavaPacket<JavaPlayPacketHandler>
 
         @Override
         public JavaPacketType getPacketType() {
-            return JavaPlayPacketType.MOVE_ENTITY_POS_ROT_S2C;
+            return JavaPlayPacketType.MOVE_ENTITY_POS_ROT;
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class MoveEntityPacket extends JavaPacket<JavaPlayPacketHandler>
 
         @Override
         public JavaPacketType getPacketType() {
-            return JavaPlayPacketType.MOVE_ENTITY_ROT_S2C;
+            return JavaPlayPacketType.MOVE_ENTITY_ROT;
         }
     }
 

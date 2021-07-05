@@ -20,6 +20,6 @@ public class SetEntityLinkPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_ENTITY_LINK_S2C;
+        return JavaPlayPacketType.SET_ENTITY_LINK;
     }
 }

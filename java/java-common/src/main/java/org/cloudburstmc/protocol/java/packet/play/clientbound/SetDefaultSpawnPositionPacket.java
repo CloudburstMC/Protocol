@@ -20,6 +20,6 @@ public class SetDefaultSpawnPositionPacket extends JavaPacket<JavaPlayPacketHand
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_DEFAULT_SPAWN_POSITION_S2C;
+        return JavaPlayPacketType.SET_DEFAULT_SPAWN_POSITION;
     }
 }

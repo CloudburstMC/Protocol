@@ -23,6 +23,6 @@ public class BlockEventPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.BLOCK_EVENT_S2C;
+        return JavaPlayPacketType.BLOCK_EVENT;
     }
 }

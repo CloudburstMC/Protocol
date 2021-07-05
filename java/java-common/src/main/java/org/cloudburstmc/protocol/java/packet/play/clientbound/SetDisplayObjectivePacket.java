@@ -21,6 +21,6 @@ public class SetDisplayObjectivePacket extends JavaPacket<JavaPlayPacketHandler>
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_DISPLAY_OBJECTIVE_S2C;
+        return JavaPlayPacketType.SET_DISPLAY_OBJECTIVE;
     }
 }

@@ -23,6 +23,6 @@ public class SetEntityDataPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_ENTITY_DATA_S2C;
+        return JavaPlayPacketType.SET_ENTITY_DATA;
     }
 }

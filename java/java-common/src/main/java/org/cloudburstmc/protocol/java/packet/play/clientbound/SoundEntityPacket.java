@@ -25,6 +25,6 @@ public class SoundEntityPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SOUND_ENTITY_S2C;
+        return JavaPlayPacketType.SOUND_ENTITY;
     }
 }

@@ -20,6 +20,6 @@ public class OpenSignEditorPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.OPEN_SIGN_EDITOR_S2C;
+        return JavaPlayPacketType.OPEN_SIGN_EDITOR;
     }
 }

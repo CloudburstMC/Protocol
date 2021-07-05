@@ -23,6 +23,6 @@ public class SetEquipmentPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_EQUIPMENT_S2C;
+        return JavaPlayPacketType.SET_EQUIPMENT;
     }
 }

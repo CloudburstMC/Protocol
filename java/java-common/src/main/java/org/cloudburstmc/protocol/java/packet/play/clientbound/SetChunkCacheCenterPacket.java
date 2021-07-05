@@ -20,6 +20,6 @@ public class SetChunkCacheCenterPacket extends JavaPacket<JavaPlayPacketHandler>
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_CHUNK_CACHE_CENTER_S2C;
+        return JavaPlayPacketType.SET_CHUNK_CACHE_CENTER;
     }
 }

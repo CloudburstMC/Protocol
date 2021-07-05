@@ -29,6 +29,6 @@ public class RespawnPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.RESPAWN_S2C;
+        return JavaPlayPacketType.RESPAWN;
     }
 }

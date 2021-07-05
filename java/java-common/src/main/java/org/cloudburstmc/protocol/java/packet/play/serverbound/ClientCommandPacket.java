@@ -20,6 +20,6 @@ public class ClientCommandPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CLIENT_COMMAND_C2S;
+        return JavaPlayPacketType.CLIENT_COMMAND;
     }
 }

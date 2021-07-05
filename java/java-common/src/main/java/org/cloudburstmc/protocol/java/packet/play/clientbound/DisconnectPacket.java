@@ -20,6 +20,6 @@ public class DisconnectPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.DISCONNECT_S2C;
+        return JavaPlayPacketType.DISCONNECT;
     }
 }

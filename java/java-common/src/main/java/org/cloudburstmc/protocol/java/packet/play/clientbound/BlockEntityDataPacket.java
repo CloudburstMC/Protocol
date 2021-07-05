@@ -24,6 +24,6 @@ public class BlockEntityDataPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.BLOCK_ENTITY_DATA_S2C;
+        return JavaPlayPacketType.BLOCK_ENTITY_DATA;
     }
 }

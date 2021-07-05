@@ -20,6 +20,6 @@ public class SetTimePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_TIME_S2C;
+        return JavaPlayPacketType.SET_TIME;
     }
 }

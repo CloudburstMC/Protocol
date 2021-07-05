@@ -33,7 +33,7 @@ public class SetPlayerTeamPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_PLAYER_TEAM_S2C;
+        return JavaPlayPacketType.SET_PLAYER_TEAM;
     }
 
     public enum Action {

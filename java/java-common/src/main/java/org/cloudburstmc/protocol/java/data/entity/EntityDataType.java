@@ -39,7 +39,7 @@ public class EntityDataType<T> {
 
     public static final EntityDataType<Particle> PARTICLE = new EntityDataType<>(JavaPacketHelper::readParticle, JavaPacketHelper::writeParticle);
 
-    public static final EntityDataType<Vector3f> ROTATION = new EntityDataType<>(JavaPacketHelper::readRotation, JavaPacketHelper::writeRotation);
+    public static final EntityDataType<Vector3f> ROTATION = new EntityDataType<>(JavaPacketHelper::readVector3f, JavaPacketHelper::writeVector3f);
 
     public static final EntityDataType<Vector3i> BLOCK_POS = new EntityDataType<>(JavaPacketHelper::readBlockPosition, JavaPacketHelper::writeBlockPosition);
 

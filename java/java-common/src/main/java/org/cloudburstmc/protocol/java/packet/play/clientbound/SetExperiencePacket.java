@@ -21,6 +21,6 @@ public class SetExperiencePacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.SET_EXPERIENCE_S2C;
+        return JavaPlayPacketType.SET_EXPERIENCE;
     }
 }

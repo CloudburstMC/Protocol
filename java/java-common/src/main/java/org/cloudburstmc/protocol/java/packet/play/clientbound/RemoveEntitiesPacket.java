@@ -19,6 +19,6 @@ public class RemoveEntitiesPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.REMOVE_ENTITIES_S2C;
+        return JavaPlayPacketType.REMOVE_ENTITIES;
     }
 }

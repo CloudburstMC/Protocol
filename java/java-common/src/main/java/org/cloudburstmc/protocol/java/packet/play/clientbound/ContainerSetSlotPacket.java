@@ -22,6 +22,6 @@ public class ContainerSetSlotPacket extends JavaPacket<JavaPlayPacketHandler> {
 
     @Override
     public JavaPacketType getPacketType() {
-        return JavaPlayPacketType.CONTAINER_SET_SLOT_S2C;
+        return JavaPlayPacketType.CONTAINER_SET_SLOT;
     }
 }
