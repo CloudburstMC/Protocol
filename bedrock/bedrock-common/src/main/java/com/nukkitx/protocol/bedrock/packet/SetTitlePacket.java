@@ -14,6 +14,8 @@ public class SetTitlePacket extends BedrockPacket {
     private int fadeInTime;
     private int stayTime;
     private int fadeOutTime;
+    private String xuid;
+    private String platformOnlineId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

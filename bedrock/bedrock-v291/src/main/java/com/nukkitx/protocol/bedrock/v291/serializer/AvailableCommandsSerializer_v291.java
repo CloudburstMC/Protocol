@@ -103,7 +103,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         // Generate command data
 
         for (CommandData.Builder command : commands) {
-            byte flags = command.getFlags();
+            int flags = command.getFlags();
             List<CommandData.Flag> flagList = new ObjectArrayList<>();
             for (int i = 0; i < 6; i++) {
                 if ((flags & (1 << i)) != 0) {

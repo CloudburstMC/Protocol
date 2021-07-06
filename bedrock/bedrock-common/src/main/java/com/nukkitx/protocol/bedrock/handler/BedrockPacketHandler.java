@@ -649,5 +649,27 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(ClientboundDebugRendererPacket packet) { return false; }
+    default boolean handle(ClientboundDebugRendererPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SyncEntityPropertyPacket packet) {
+        return false;
+    }
+
+    default boolean handle(AddVolumeEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RemoveVolumeEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(NpcDialoguePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SimulationTypePacket packet) {
+        return false;
+    }
 }
