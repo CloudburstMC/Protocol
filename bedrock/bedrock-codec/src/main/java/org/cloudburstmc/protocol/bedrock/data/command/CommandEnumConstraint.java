@@ -4,5 +4,5 @@ public enum CommandEnumConstraint {
     CHEATS_ENABLED,
     OPERATOR_PERMISSIONS,
     HOST_PERMISSIONS,
-    UNKNOWN_3
+    ALLOW_ALIASES
 }

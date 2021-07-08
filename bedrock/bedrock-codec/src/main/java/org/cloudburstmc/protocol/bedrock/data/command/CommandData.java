@@ -41,12 +41,14 @@ public class CommandData {
 
     // Bit flags
     public enum Flag {
-        USAGE,
-        VISIBILITY,
-        SYNC,
-        EXECUTE,
-        TYPE,
-        CHEAT,
-        UNKNOWN_6
+        TEST_USAGE, // 1
+        HIDDEN_FROM_COMMAND_BLOCK, // 2
+        HIDDEN_FROM_PLAYER, // 4
+        HIDDEN_FROM_AUTOMATION, // 8
+        LOCAL_SYNC, // 16
+        EXECUTE_DISALLOWED, // 32
+        MESSAGE_TYPE, // 64
+        NOT_CHEAT,// 128
+        ASYNC // 256
     }
 }
