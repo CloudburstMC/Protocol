@@ -14,6 +14,7 @@ public class NpcRequestPacket extends BedrockPacket {
     private NpcRequestType requestType;
     private String command;
     private int actionType;
+    private String sceneName;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

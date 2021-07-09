@@ -13,6 +13,7 @@ import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlags;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.structure.StructureAnimationMode;
 import com.nukkitx.protocol.bedrock.data.structure.StructureMirror;
 import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -263,7 +264,7 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
         int integritySeed = buffer.readIntLE();
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
-                rotation, mirror, integrityValue, integritySeed, Vector3f.ZERO);
+                rotation, mirror, StructureAnimationMode.NONE, 0, integrityValue, integritySeed, Vector3f.ZERO);
     }
 
     @Override

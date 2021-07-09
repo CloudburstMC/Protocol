@@ -14,6 +14,7 @@ import com.nukkitx.protocol.bedrock.data.skin.AnimatedTextureType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
 import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
+import com.nukkitx.protocol.bedrock.data.structure.StructureAnimationMode;
 import com.nukkitx.protocol.bedrock.data.structure.StructureMirror;
 import com.nukkitx.protocol.bedrock.data.structure.StructureRotation;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
@@ -221,7 +222,7 @@ public class BedrockPacketHelper_v388 extends BedrockPacketHelper_v361 {
         Vector3f pivot = this.readVector3f(buffer);
 
         return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
-                rotation, mirror, integrityValue, integritySeed, pivot);
+                rotation, mirror, StructureAnimationMode.NONE, 0, integrityValue, integritySeed, pivot);
     }
 
     @Override
