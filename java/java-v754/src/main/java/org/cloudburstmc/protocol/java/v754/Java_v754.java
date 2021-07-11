@@ -182,6 +182,8 @@ public class Java_v754 {
                     .registerServerbound(SignUpdatePacket.class, SignUpdateSerializer_v754.INSTANCE, 43)
                     .registerServerbound(SwingPacket.class, SwingPacketSerializer_v754.INSTANCE, 44)
                     .registerServerbound(TeleportToEntityPacket.class, TeleportToEntitySerializer_v754.INSTANCE, 45)
+                    .registerServerbound(UseItemOnPacket.class, UseItemOnSerializer_v754.INSTANCE, 46)
+                    .registerServerbound(UseItemPacket.class, UseItemSerializer_v754.INSTANCE, 47)
                     .build()
             ).build();
 }
