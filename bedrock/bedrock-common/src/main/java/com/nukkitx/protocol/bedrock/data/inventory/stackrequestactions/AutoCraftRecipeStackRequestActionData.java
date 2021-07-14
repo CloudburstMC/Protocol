@@ -9,6 +9,10 @@ import lombok.Value;
 @Value
 public class AutoCraftRecipeStackRequestActionData implements RecipeStackRequestActionData {
     int recipeNetworkId;
+    /**
+     * @since v448
+     */
+    byte timesCrafted;
 
     @Override
     public StackRequestActionType getType() {

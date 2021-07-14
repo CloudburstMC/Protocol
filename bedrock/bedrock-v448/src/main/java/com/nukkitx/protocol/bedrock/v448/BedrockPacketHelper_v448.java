@@ -1,10 +1,36 @@
 package com.nukkitx.protocol.bedrock.v448;
 
+import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
+import com.nukkitx.protocol.bedrock.data.SoundEvent;
+import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.AutoCraftRecipeStackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.v440.BedrockPacketHelper_v440;
+import io.netty.buffer.ByteBuf;
 
 public class BedrockPacketHelper_v448 extends BedrockPacketHelper_v440 {
     public static final BedrockPacketHelper_v448 INSTANCE = new BedrockPacketHelper_v448();
+
+    @Override
+    protected void registerEntityFlags() {
+        super.registerEntityFlags();
+
+        this.addEntityFlag(98, EntityFlag.IN_ASCENDABLE_BLOCK);
+        this.addEntityFlag(99, EntityFlag.OVER_DESCENDABLE_BLOCK);
+    }
+
+    @Override
+    protected void registerSoundEvents() {
+        super.registerSoundEvents();
+
+        this.addSoundEvent(360, SoundEvent.CAKE_ADD_CANDLE);
+        this.addSoundEvent(360, SoundEvent.EXTINGUISH_CANDLE);
+        this.addSoundEvent(360, SoundEvent.AMBIENT_CANDLE);
+        this.addSoundEvent(363, SoundEvent.UNDEFINED);
+    }
 
     @Override
     protected void registerLevelEvents() {
@@ -86,5 +112,22 @@ public class BedrockPacketHelper_v448 extends BedrockPacketHelper_v440 {
         this.addLevelEvent(81 + legacy, LevelEventType.PARTICLE_ELECTRIC_SPARK);
     }
 
-    
+    @Override
+    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockSession session) {
+        if (type == StackRequestActionType.CRAFT_RECIPE_AUTO) {
+           return new AutoCraftRecipeStackRequestActionData(
+                   VarInts.readUnsignedInt(byteBuf), byteBuf.readByte()
+           );
+        } else {
+            return super.readRequestActionData(byteBuf, type, session);
+        }
+    }
+
+    @Override
+    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockSession session) {
+        super.writeRequestActionData(byteBuf, action, session);
+        if (action.getType() == StackRequestActionType.CRAFT_RECIPE_AUTO) {
+            byteBuf.writeByte(((AutoCraftRecipeStackRequestActionData) action).getTimesCrafted());
+        }
+    }
 }
