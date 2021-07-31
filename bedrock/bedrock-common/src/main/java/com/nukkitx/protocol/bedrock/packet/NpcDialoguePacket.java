@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class NpcDialoguePacket extends BedrockPacket {
 
-    private long runtimeEntityId;
+    private long uniqueEntityId;
     private Action action;
     private String dialogue;
     private String sceneName;
