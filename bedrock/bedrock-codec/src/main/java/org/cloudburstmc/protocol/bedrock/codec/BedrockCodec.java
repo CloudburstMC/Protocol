@@ -100,6 +100,10 @@ public final class BedrockCodec {
         return packetsById[id];
     }
 
+    public BedrockCodecHelper createHelper() {
+        return this.helperFactory.get();
+    }
+
     public Builder toBuilder() {
         Builder builder = new Builder();
 
