@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.compat.serializer;
 
 import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.JSONValue;
 import com.nimbusds.jwt.SignedJWT;
 import io.netty.buffer.ByteBuf;
@@ -33,9 +34,12 @@ public class LoginSerializerCompat implements BedrockPacketSerializer<LoginPacke
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
         Object json = JSONValue.parse(readString(jwt).array());
-        checkArgument(json instanceof JSONArray, "Expected JSON array for login chain");
+        checkArgument(json instanceof JSONObject && ((JSONObject) json).containsKey("chain"), "Invalid login chain");
+        Object chain = ((JSONObject) json).get("chain");
+        checkArgument(chain instanceof JSONArray, "Expected JSON array for login chain");
+
         try {
-            for (Object node : (JSONArray) json) {
+            for (Object node : (JSONArray) chain) {
                 checkArgument(node instanceof String, "Expected String in login chain");
                 packet.getChain().add(SignedJWT.parse((String) node));
             }
