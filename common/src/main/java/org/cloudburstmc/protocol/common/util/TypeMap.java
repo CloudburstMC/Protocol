@@ -73,7 +73,7 @@ public final class TypeMap<T> {
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder<T> {
         private final String type;
-        private Object[] types;
+        private Object[] types = new Object[0];
 
         private void ensureIndex(int index) {
             ensureCapacity(index + 1);
@@ -118,9 +118,14 @@ public final class TypeMap<T> {
         public Builder<T> shift(int startIndex, int amount, int length) {
             checkArgument(startIndex < this.types.length, "Start index is out of bounds");
             int endIndex = startIndex + length;
-            checkArgument(endIndex < this.types.length, "Length exceeds array bounds");
+            checkArgument(endIndex <= this.types.length, "Length exceeds array bounds");
             this.ensureCapacity(this.types.length + amount);
             System.arraycopy(this.types, startIndex, this.types, startIndex + amount, length);
+
+            // Clear old values
+            for (int i = 0; i < amount; i++) {
+                this.types[startIndex + i] = null;
+            }
             return this;
         }
 
@@ -162,6 +167,7 @@ public final class TypeMap<T> {
                 Object type = this.types[i];
                 if (type != null) {
                     toId.put((T) type, i);
+                    toObject.put(i, (T) type);
                 }
             }
             return new TypeMap<>(this.type, toId, toObject);

@@ -171,7 +171,7 @@ public class Bedrock_v291 {
             .build();
 
     protected static final TypeMap<EntityData.Type> ENTITY_DATA_TYPES = TypeMap.<EntityData.Type>builder("EntityDataType")
-            .insert(7, EntityData.Type.FLAGS)
+            // TODO: .insert(7, EntityData.Type.FLAGS)
             .insert(0, EntityData.Type.BYTE)
             .insert(1, EntityData.Type.SHORT)
             .insert(2, EntityData.Type.INT)

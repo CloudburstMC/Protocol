@@ -44,7 +44,7 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .insert(70, EntityFlag.DESCEND_THROUGH_BLOCK)
             .build();
 
-    protected static final TypeMap<SoundEvent> LEVEL_SOUND_EVENTS = Bedrock_v291.SOUND_EVENTS.toBuilder()
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v291.SOUND_EVENTS.toBuilder()
             .replace(239, SoundEvent.BLOCK_BAMBOO_SAPLING_PLACE)
             .insert(240, SoundEvent.PRE_SNEEZE)
             .insert(241, SoundEvent.SNEEZE)
@@ -91,11 +91,11 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .updateSerializer(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE)
             .updateSerializer(UpdateTradePacket.class, UpdateTradeSerializer_v313.INSTANCE)
             .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
-            .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(LEVEL_SOUND_EVENTS))
+            .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .registerPacket(SpawnParticleEffectPacket.class, SpawnParticleEffectSerializer_v313.INSTANCE, 118)
             .registerPacket(AvailableEntityIdentifiersPacket.class, AvailableEntityIdentifiersSerializer_v313.INSTANCE, 119)
-            .registerPacket(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(LEVEL_SOUND_EVENTS), 120)
+            .registerPacket(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS), 120)
             .registerPacket(NetworkChunkPublisherUpdatePacket.class, NetworkChunkPublisherUpdateSerializer_v313.INSTANCE, 121)
             .registerPacket(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v313.INSTANCE, 122)
             .build();
