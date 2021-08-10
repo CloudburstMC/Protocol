@@ -12,6 +12,7 @@ pipeline {
             when { not { anyOf {
                 branch 'master'
                 branch 'develop'
+                branch '3.0'
             }}}
 
             steps {
@@ -23,6 +24,7 @@ pipeline {
                 anyOf {
                     branch 'master'
                     branch 'develop'
+                    branch '3.0'
                 }
             }
 
@@ -64,6 +66,7 @@ pipeline {
                 stage('Snapshot') {
                     when {
                         branch 'develop'
+                        branch '3.0'
                     }
                     steps {
                         rtMavenRun(
