@@ -10,9 +10,9 @@ pipeline {
     stages {
         stage ('Build') {
             when { not { anyOf {
-                branch 'master'
-                branch 'develop'
-                branch '3.0'
+                branch "master"
+                branch "develop"
+                branch "3.0"
             }}}
 
             steps {
@@ -22,9 +22,9 @@ pipeline {
         stage ('Deploy') {
             when {
                 anyOf {
-                    branch 'master'
-                    branch 'develop'
-                    branch '3.0'
+                    branch "master"
+                    branch "develop"
+                    branch "3.0"
                 }
             }
 
@@ -48,7 +48,7 @@ pipeline {
 
                 stage('Release') {
                     when {
-                        branch 'master'
+                        branch "master"
                     }
 
                     steps {
@@ -65,8 +65,10 @@ pipeline {
 
                 stage('Snapshot') {
                     when {
-                        branch 'develop'
-                        branch '3.0'
+                        anyOf {
+                            branch "develop"
+                            branch "3.0"
+                        }
                     }
                     steps {
                         rtMavenRun(
