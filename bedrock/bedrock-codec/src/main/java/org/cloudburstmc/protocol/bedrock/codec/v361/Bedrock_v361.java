@@ -33,17 +33,6 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .shift(LEVEL_EVENT_PARTICLE_TYPE + 22, 1)
             .insert(LEVEL_EVENT_PARTICLE_TYPE + 22, ParticleType.MOB_PORTAL)
             .shift(LEVEL_EVENT_PARTICLE_TYPE + 24, 1)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 24, ParticleType.WATER_SPLASH_MANUAL)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 48, ParticleType.FIREWORKS_STARTER)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 49, ParticleType.FIREWORKS)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 50, ParticleType.FIREWORKS_OVERLAY)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 51, ParticleType.BALLOON_GAS)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 52, ParticleType.COLORED_FLAME)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 53, ParticleType.SPARKLER)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 54, ParticleType.CONDUIT)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 55, ParticleType.BUBBLE_COLUMN_UP)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 56, ParticleType.BUBBLE_COLUMN_DOWN)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 57, ParticleType.SNEEZE)
             .build();
 
     protected static final TypeMap<ResourcePackType> RESOURCE_PACK_TYPES = TypeMap.builder(ResourcePackType.class)
@@ -69,7 +58,7 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .updateSerializer(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v361.INSTANCE)
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v361.INSTANCE)
-            .updateSerializer(LevelEventGenericPacket.class, LevelEventGenericSerializer_v361.INSTANCE)
+            .registerPacket(LevelEventGenericPacket.class, LevelEventGenericSerializer_v361.INSTANCE, 124)
             .updateSerializer(VideoStreamConnectPacket.class, VideoStreamConnectSerializer_v361.INSTANCE)
             // AddEntityPacket 127
             // RemoveEntityPacket 128

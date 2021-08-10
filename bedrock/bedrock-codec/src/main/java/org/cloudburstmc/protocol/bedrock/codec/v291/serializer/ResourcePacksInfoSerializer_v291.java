@@ -55,7 +55,7 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
 
     protected <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, BedrockCodecHelper helper,
                                         BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
-        int length = VarInts.readUnsignedInt(buffer);
+        int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer, helper));
         }
@@ -63,7 +63,7 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
 
     protected <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, BedrockCodecHelper helper,
                                          TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
-        VarInts.writeUnsignedInt(buffer, array.size());
+        buffer.writeShortLE(array.size());
         for (T val : array) {
             consumer.accept(buffer, helper, val);
         }

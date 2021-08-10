@@ -53,6 +53,6 @@ public class Bedrock_v431 extends Bedrock_v428 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
-            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v431.INSTANCE, 144)
+            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v431.INSTANCE)
             .build();
 }

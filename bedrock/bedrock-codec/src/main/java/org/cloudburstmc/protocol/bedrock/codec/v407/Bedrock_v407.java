@@ -32,13 +32,9 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v390.ENTITY_FLAGS.toBuilder()
+            .shift(86, 1)
             .insert(86, EntityFlag.IS_AVOIDING_BLOCK)
-            .insert(87, EntityFlag.FACING_TARGET_TO_RANGE_ATTACK)
-            .insert(88, EntityFlag.HIDDEN_WHEN_INVISIBLE)
-            .insert(89, EntityFlag.IS_IN_UI)
-            .insert(90, EntityFlag.STALKING)
-            .insert(91, EntityFlag.EMOTING)
-            .insert(92, EntityFlag.CELEBRATING)
+            .shift(93, 2)
             .insert(93, EntityFlag.ADMIRING)
             .insert(94, EntityFlag.CELEBRATING_SPECIAL)
             .build();
