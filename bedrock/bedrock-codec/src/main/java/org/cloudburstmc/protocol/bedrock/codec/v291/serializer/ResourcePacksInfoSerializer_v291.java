@@ -7,7 +7,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Collection;
 import java.util.function.BiFunction;
@@ -21,18 +20,18 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
-        writeArrayShortLE(buffer, packet.getBehaviorPackInfos(), helper, this::writeEntry);
-        writeArrayShortLE(buffer, packet.getResourcePackInfos(), helper, this::writeEntry);
+        writePacks(buffer, packet.getBehaviorPackInfos(), helper, false);
+        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
-        readArrayShortLE(buffer, packet.getBehaviorPackInfos(), helper, this::readEntry);
-        readArrayShortLE(buffer, packet.getResourcePackInfos(), helper, this::readEntry);
+        readPacks(buffer, packet.getBehaviorPackInfos(), helper, false);
+        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
-    protected ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+    protected ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper, boolean resource) {
         String packId = helper.readString(buffer);
         String packVersion = helper.readString(buffer);
         long packSize = buffer.readLongLE();
@@ -42,7 +41,7 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
         return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId, false, false);
     }
 
-    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry) {
+    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {
         requireNonNull(entry, "ResourcePacketInfoPacket entry was null");
 
         helper.writeString(buffer, entry.getPackId());
@@ -53,19 +52,19 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
         helper.writeString(buffer, entry.getContentId());
     }
 
-    protected <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, BedrockCodecHelper helper,
-                                        BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+    protected void readPacks(ByteBuf buffer, Collection<ResourcePacksInfoPacket.Entry> array, BedrockCodecHelper helper,
+                             boolean resource) {
         int length = buffer.readUnsignedShortLE();
         for (int i = 0; i < length; i++) {
-            array.add(function.apply(buffer, helper));
+            array.add(this.readEntry(buffer, helper, resource));
         }
     }
 
-    protected <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, BedrockCodecHelper helper,
-                                         TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
+    protected void writePacks(ByteBuf buffer, Collection<ResourcePacksInfoPacket.Entry> array, BedrockCodecHelper helper,
+                              boolean resource) {
         buffer.writeShortLE(array.size());
-        for (T val : array) {
-            consumer.accept(buffer, helper, val);
+        for (ResourcePacksInfoPacket.Entry entry : array) {
+            this.writeEntry(buffer, helper, entry, resource);
         }
     }
 }

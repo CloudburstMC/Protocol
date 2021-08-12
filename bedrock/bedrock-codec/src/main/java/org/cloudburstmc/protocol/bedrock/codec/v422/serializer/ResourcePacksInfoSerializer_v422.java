@@ -15,25 +15,28 @@ public class ResourcePacksInfoSerializer_v422 extends ResourcePacksInfoSerialize
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
         buffer.writeBoolean(packet.isScriptingEnabled());
-        writeArrayShortLE(buffer, packet.getBehaviorPackInfos(), helper, this::writeEntry);
-        writeArrayShortLE(buffer, packet.getResourcePackInfos(), helper, this::writeResourcePackEntry);
+        writePacks(buffer, packet.getBehaviorPackInfos(), helper, false);
+        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
         packet.setScriptingEnabled(buffer.readBoolean());
-        readArrayShortLE(buffer, packet.getBehaviorPackInfos(), helper, this::readEntry);
-        readArrayShortLE(buffer, packet.getResourcePackInfos(), helper, this::readResourcePackEntry);
+        readPacks(buffer, packet.getBehaviorPackInfos(), helper, false);
+        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
-    public void writeResourcePackEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry) {
-        this.writeEntry(buffer, helper, entry);
-        buffer.writeBoolean(entry.isRaytracingCapable());
+    public void writeResourcePackEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry,
+                                       boolean resource) {
+        this.writeEntry(buffer, helper, entry, resource);
+        if (resource) {
+            buffer.writeBoolean(entry.isRaytracingCapable());
+        }
     }
 
     @Override
-    public ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+    public ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper, boolean resource) {
         String packId = helper.readString(buffer);
         String packVersion = helper.readString(buffer);
         long packSize = buffer.readLongLE();
@@ -41,21 +44,8 @@ public class ResourcePacksInfoSerializer_v422 extends ResourcePacksInfoSerialize
         String subPackName = helper.readString(buffer);
         String contentId = helper.readString(buffer);
         boolean isScripting = buffer.readBoolean();
-        return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
-                isScripting, false);
-    }
-
-    public ResourcePacksInfoPacket.Entry readResourcePackEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        String packId = helper.readString(buffer);
-        String packVersion = helper.readString(buffer);
-        long packSize = buffer.readLongLE();
-        String contentKey = helper.readString(buffer);
-        String subPackName = helper.readString(buffer);
-        String contentId = helper.readString(buffer);
-        boolean isScripting = buffer.readBoolean();
-        boolean raytracingCapable = buffer.readBoolean();
+        boolean raytracingCapable = resource && buffer.readBoolean();
         return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
                 isScripting, raytracingCapable);
     }
-
 }

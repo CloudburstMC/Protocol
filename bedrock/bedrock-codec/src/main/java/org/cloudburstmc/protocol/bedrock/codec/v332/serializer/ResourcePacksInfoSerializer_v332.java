@@ -15,27 +15,28 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
         buffer.writeBoolean(packet.isScriptingEnabled());
-        writeArrayShortLE(buffer, packet.getBehaviorPackInfos(), helper, this::writeEntry);
-        writeArrayShortLE(buffer, packet.getResourcePackInfos(), helper, this::writeEntry);
+        writePacks(buffer, packet.getBehaviorPackInfos(), helper, false);
+        writePacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
         packet.setScriptingEnabled(buffer.readBoolean());
-        readArrayShortLE(buffer, packet.getBehaviorPackInfos(), helper, this::readEntry);
-        readArrayShortLE(buffer, packet.getResourcePackInfos(), helper, this::readEntry);
+        readPacks(buffer, packet.getBehaviorPackInfos(), helper, false);
+        readPacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
     @Override
-    public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry) {
-        super.writeEntry(buffer, helper, entry);
+    public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry,
+                              boolean resource) {
+        super.writeEntry(buffer, helper, entry, resource);
 
         buffer.writeBoolean(entry.isScripting());
     }
 
     @Override
-    public ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+    public ResourcePacksInfoPacket.Entry readEntry(ByteBuf buffer, BedrockCodecHelper helper, boolean resource) {
         String packId = helper.readString(buffer);
         String packVersion = helper.readString(buffer);
         long packSize = buffer.readLongLE();
