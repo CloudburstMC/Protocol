@@ -27,9 +27,9 @@ public class ResourcePacksInfoSerializer_v422 extends ResourcePacksInfoSerialize
         readPacks(buffer, packet.getResourcePackInfos(), helper, true);
     }
 
-    public void writeResourcePackEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry,
-                                       boolean resource) {
-        this.writeEntry(buffer, helper, entry, resource);
+    @Override
+    public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {
+        super.writeEntry(buffer, helper, entry, resource);
         if (resource) {
             buffer.writeBoolean(entry.isRaytracingCapable());
         }
