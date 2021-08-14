@@ -31,6 +31,12 @@ public final class DefinitionRegistry<D extends Definition> {
         return new Builder<>();
     }
 
+    public Builder<D> toBuilder() {
+        Builder<D> builder = new Builder<>();
+        builder.addAll(this.runtimeMap.values());
+        return builder;
+    }
+
     public static class Builder<D extends Definition> {
         private final Int2ObjectMap<D> runtimeMap = new Int2ObjectOpenHashMap<>();
         private final Map<String, D> identifierMap = new HashMap<>();
@@ -52,6 +58,22 @@ public final class DefinitionRegistry<D extends Definition> {
             this.identifierMap.put(definition.getIdentifier(), definition);
 
             return this;
+        }
+
+        public Builder<D> remove(D definition) {
+            checkNotNull(definition, "definition");
+            checkArgument(this.identifierMap.containsKey(definition.getIdentifier()),
+                    "Identifier is mot registered");
+            checkArgument(this.runtimeMap.containsKey(definition.getRuntimeId()),
+                    "Runtime ID is not registered");
+            this.runtimeMap.remove(definition.getRuntimeId());
+            this.identifierMap.remove(definition.getIdentifier());
+            
+            return this;
+        }
+
+        public DefinitionRegistry<D> build() {
+            return new DefinitionRegistry<>(this.runtimeMap, this.identifierMap);
         }
     }
 }
