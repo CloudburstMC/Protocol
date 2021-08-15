@@ -100,7 +100,14 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
             VarInts.writeUnsignedInt(buffer, this.entityData.getId(entry.getKey()));
             Object object = entry.getValue();
             EntityData.Type type = EntityData.Type.from(object);
-            VarInts.writeUnsignedInt(buffer, this.entityDataTypes.getId(type));
+
+            int typeId;
+            if (type == EntityData.Type.FLAGS) {
+                typeId = this.entityDataTypes.getId(EntityData.Type.LONG);
+            } else {
+                typeId = this.entityDataTypes.getId(type);
+            }
+            VarInts.writeUnsignedInt(buffer, typeId);
 
             switch (type) {
                 case BYTE:
