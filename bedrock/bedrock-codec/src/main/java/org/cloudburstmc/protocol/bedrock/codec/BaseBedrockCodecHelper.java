@@ -259,7 +259,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
             Object tag = reader.readTag();
             checkArgument(expected.isInstance(tag), "Expected tag of %s type but received %s",
                     expected, tag.getClass());
-            return (T) reader.readTag();
+            return (T) tag;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
