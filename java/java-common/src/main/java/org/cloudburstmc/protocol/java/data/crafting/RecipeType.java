@@ -3,13 +3,16 @@ package org.cloudburstmc.protocol.java.data.crafting;
 import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import net.kyori.adventure.key.Key;
 import org.cloudburstmc.protocol.java.JavaPacketHelper;
 import org.cloudburstmc.protocol.java.data.inventory.ItemStack;
 
+@Getter
+@AllArgsConstructor
 @EqualsAndHashCode
 public abstract class RecipeType<T> {
-    public static final RecipeType<ShapelessRecipe> SHAPELESS = new RecipeType<ShapelessRecipe>() {
+    public static final RecipeType<ShapelessRecipe> SHAPELESS = new RecipeType<ShapelessRecipe>(Key.key("crafting_shapeless")) {
 
         @Override
         public ShapelessRecipe read(JavaPacketHelper helper, ByteBuf buffer) {
@@ -29,7 +32,7 @@ public abstract class RecipeType<T> {
         }
     };
 
-    public static final RecipeType<ShapedRecipe> SHAPED = new RecipeType<ShapedRecipe>() {
+    public static final RecipeType<ShapedRecipe> SHAPED = new RecipeType<ShapedRecipe>(Key.key("crafting_shaped")) {
 
         @Override
         public ShapedRecipe read(JavaPacketHelper helper, ByteBuf buffer) {
@@ -54,48 +57,48 @@ public abstract class RecipeType<T> {
         }
     };
 
-    private static final RecipeType<Recipe> SPECIAL = new RecipeType<Recipe>() {
+    private static final RecipeType<SpecialRecipe> SPECIAL = new RecipeType<SpecialRecipe>(Key.key("crafting_special_armordye")) {
 
         @Override
-        public Recipe read(JavaPacketHelper helper, ByteBuf buffer) {
-            return new Recipe(this, helper.readKey(buffer));
+        public SpecialRecipe read(JavaPacketHelper helper, ByteBuf buffer) {
+            return new SpecialRecipe(this, helper.readKey(buffer));
         }
 
         @Override
-        public void write(JavaPacketHelper helper, ByteBuf buffer, Recipe recipe) {
+        public void write(JavaPacketHelper helper, ByteBuf buffer, SpecialRecipe recipe) {
             helper.writeKey(buffer, recipe.getIdentifier());
         }
     };
 
-    public static final RecipeType<Recipe> SPECIAL_ARMORDYE = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_ARMORDYE = new WrappedRecipeType<>(Key.key("crafting_special_armordye"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_BOOKCLONING = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_BOOKCLONING = new WrappedRecipeType<>(Key.key("crafting_special_bookcloning"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_MAPCLONING = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_MAPCLONING = new WrappedRecipeType<>(Key.key("crafting_special_mapcloning"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_MAPEXTENDING = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_MAPEXTENDING = new WrappedRecipeType<>(Key.key("crafting_special_mapextending"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_FIREWORK_ROCKET = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_FIREWORK_ROCKET = new WrappedRecipeType<>(Key.key("crafting_special_firework_rocket"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_FIREWORK_STAR = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_FIREWORK_STAR = new WrappedRecipeType<>(Key.key("crafting_special_firework_star"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_FIREWORK_STAR_FADE = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_FIREWORK_STAR_FADE = new WrappedRecipeType<>(Key.key("crafting_special_firework_star_fade"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_REPAIRITEM = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_REPAIRITEM = new WrappedRecipeType<>(Key.key("crafting_special_repairitem"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_TIPPEDARROW = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_TIPPEDARROW = new WrappedRecipeType<>(Key.key("crafting_special_tippedarrow"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_BANNERDUPLICATE = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_BANNERDUPLICATE = new WrappedRecipeType<>(Key.key("crafting_special_bannerduplicate"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_BANNERADDPATTERN = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_BANNERADDPATTERN = new WrappedRecipeType<>(Key.key("crafting_special_banneraddpattern"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_SHIELDDECORATION = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_SHIELDDECORATION = new WrappedRecipeType<>(Key.key("crafting_special_shielddecoration"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_SHULKERBOXCOLORING = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_SHULKERBOXCOLORING = new WrappedRecipeType<>(Key.key("crafting_special_shulkerboxcoloring"), SPECIAL);
 
-    public static final RecipeType<Recipe> SPECIAL_SUSPICIOUSSTEW = new WrappedRecipeType<>(SPECIAL);
+    public static final RecipeType<SpecialRecipe> SPECIAL_SUSPICIOUSSTEW = new WrappedRecipeType<>(Key.key("crafting_special_suspiciousstew"), SPECIAL);
 
-    private static final RecipeType<CookingRecipe> COOKING = new RecipeType<CookingRecipe>() {
+    private static final RecipeType<CookingRecipe> COOKING = new RecipeType<CookingRecipe>(Key.key("cooking")) {
         @Override
         public CookingRecipe read(JavaPacketHelper helper, ByteBuf buffer) {
             Key identifier = helper.readKey(buffer);
@@ -119,15 +122,15 @@ public abstract class RecipeType<T> {
         }
     };
 
-    public static final RecipeType<CookingRecipe> SMELTING = new WrappedRecipeType<>(COOKING);
+    public static final RecipeType<CookingRecipe> SMELTING = new WrappedRecipeType<>(Key.key("smelting"), COOKING);
 
-    public static final RecipeType<CookingRecipe> BLASTING = new WrappedRecipeType<>(COOKING);
+    public static final RecipeType<CookingRecipe> BLASTING = new WrappedRecipeType<>(Key.key("blasting"), COOKING);
 
-    public static final RecipeType<CookingRecipe> SMOKING = new WrappedRecipeType<>(COOKING);
+    public static final RecipeType<CookingRecipe> SMOKING = new WrappedRecipeType<>(Key.key("smoking"), COOKING);
 
-    public static final RecipeType<CookingRecipe> CAMPFIRE_COOKING = new WrappedRecipeType<>(COOKING);
+    public static final RecipeType<CookingRecipe> CAMPFIRE_COOKING = new WrappedRecipeType<>(Key.key("campfire_cooking"), COOKING);
 
-    public static final RecipeType<StonecuttingRecipe> STONECUTTING = new RecipeType<StonecuttingRecipe>() {
+    public static final RecipeType<StonecuttingRecipe> STONECUTTING = new RecipeType<StonecuttingRecipe>(Key.key("stonecutting")) {
 
         @Override
         public StonecuttingRecipe read(JavaPacketHelper helper, ByteBuf buffer) {
@@ -148,7 +151,7 @@ public abstract class RecipeType<T> {
         }
     };
 
-    public static final RecipeType<SmithingRecipe> SMITHING = new RecipeType<SmithingRecipe>() {
+    public static final RecipeType<SmithingRecipe> SMITHING = new RecipeType<SmithingRecipe>(Key.key("smithing")) {
 
         @Override
         public SmithingRecipe read(JavaPacketHelper helper, ByteBuf buffer) {
@@ -169,13 +172,20 @@ public abstract class RecipeType<T> {
         }
     };
 
+    private final Key identifier;
+
     public abstract T read(JavaPacketHelper helper, ByteBuf buffer);
 
     public abstract void write(JavaPacketHelper helper, ByteBuf buffer, T recipe);
 
-    @AllArgsConstructor
     private static final class WrappedRecipeType<T> extends RecipeType<T> {
         private final RecipeType<T> type;
+
+        public WrappedRecipeType(Key identifier, RecipeType<T> type) {
+            super(identifier);
+
+            this.type = type;
+        }
 
         @Override
         public T read(JavaPacketHelper helper, ByteBuf buffer) {

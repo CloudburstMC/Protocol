@@ -321,27 +321,27 @@ public class JavaPacketHelper_v754 extends JavaPacketHelper {
 
     @Override
     public void registerRecipeTypes() {
-        this.recipeTypes.put(Key.key("crafting_shapeless"), RecipeType.SHAPELESS);
-        this.recipeTypes.put(Key.key("crafting_shaped"), RecipeType.SHAPED);
-        this.recipeTypes.put(Key.key("crafting_special_armordye"), RecipeType.SPECIAL_ARMORDYE);
-        this.recipeTypes.put(Key.key("crafting_special_bookcloning"), RecipeType.SPECIAL_BOOKCLONING);
-        this.recipeTypes.put(Key.key("crafting_special_mapcloning"), RecipeType.SPECIAL_MAPCLONING);
-        this.recipeTypes.put(Key.key("crafting_special_mapextending"), RecipeType.SPECIAL_MAPEXTENDING);
-        this.recipeTypes.put(Key.key("crafting_special_firework_rocket"), RecipeType.SPECIAL_FIREWORK_ROCKET);
-        this.recipeTypes.put(Key.key("crafting_special_firework_star"), RecipeType.SPECIAL_FIREWORK_STAR);
-        this.recipeTypes.put(Key.key("crafting_special_firework_star_fade"), RecipeType.SPECIAL_FIREWORK_STAR_FADE);
-        this.recipeTypes.put(Key.key("crafting_special_repairitem"), RecipeType.SPECIAL_REPAIRITEM);
-        this.recipeTypes.put(Key.key("crafting_special_tippedarrow"), RecipeType.SPECIAL_TIPPEDARROW);
-        this.recipeTypes.put(Key.key("crafting_special_bannerduplicate"), RecipeType.SPECIAL_BANNERDUPLICATE);
-        this.recipeTypes.put(Key.key("crafting_special_banneraddpattern"), RecipeType.SPECIAL_BANNERADDPATTERN);
-        this.recipeTypes.put(Key.key("crafting_special_shielddecoration"), RecipeType.SPECIAL_SHIELDDECORATION);
-        this.recipeTypes.put(Key.key("crafting_special_shulkerboxcolorning"), RecipeType.SPECIAL_SHULKERBOXCOLORING);
-        this.recipeTypes.put(Key.key("crafting_special_suspiciousstew"), RecipeType.SPECIAL_SUSPICIOUSSTEW);
-        this.recipeTypes.put(Key.key("smelting"), RecipeType.SMELTING);
-        this.recipeTypes.put(Key.key("blasting"), RecipeType.BLASTING);
-        this.recipeTypes.put(Key.key("smoking"), RecipeType.SMOKING);
-        this.recipeTypes.put(Key.key("campfire_cooking"), RecipeType.CAMPFIRE_COOKING);
-        this.recipeTypes.put(Key.key("stonecutting"), RecipeType.STONECUTTING);
-        this.recipeTypes.put(Key.key("smithing"), RecipeType.SMITHING);
+        this.registerRecipeType(RecipeType.SHAPELESS);
+        this.registerRecipeType(RecipeType.SHAPED);
+        this.registerRecipeType(RecipeType.SPECIAL_ARMORDYE);
+        this.registerRecipeType(RecipeType.SPECIAL_BOOKCLONING);
+        this.registerRecipeType(RecipeType.SPECIAL_MAPCLONING);
+        this.registerRecipeType(RecipeType.SPECIAL_MAPEXTENDING);
+        this.registerRecipeType(RecipeType.SPECIAL_FIREWORK_ROCKET);
+        this.registerRecipeType(RecipeType.SPECIAL_FIREWORK_STAR);
+        this.registerRecipeType(RecipeType.SPECIAL_FIREWORK_STAR_FADE);
+        this.registerRecipeType(RecipeType.SPECIAL_REPAIRITEM);
+        this.registerRecipeType(RecipeType.SPECIAL_TIPPEDARROW);
+        this.registerRecipeType(RecipeType.SPECIAL_BANNERDUPLICATE);
+        this.registerRecipeType(RecipeType.SPECIAL_BANNERADDPATTERN);
+        this.registerRecipeType(RecipeType.SPECIAL_SHIELDDECORATION);
+        this.registerRecipeType(RecipeType.SPECIAL_SHULKERBOXCOLORING);
+        this.registerRecipeType(RecipeType.SPECIAL_SUSPICIOUSSTEW);
+        this.registerRecipeType(RecipeType.SMELTING);
+        this.registerRecipeType(RecipeType.BLASTING);
+        this.registerRecipeType(RecipeType.SMOKING);
+        this.registerRecipeType(RecipeType.CAMPFIRE_COOKING);
+        this.registerRecipeType(RecipeType.STONECUTTING);
+        this.registerRecipeType(RecipeType.SMITHING);
     }
 }

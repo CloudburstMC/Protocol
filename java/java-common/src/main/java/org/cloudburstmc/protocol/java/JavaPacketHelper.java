@@ -32,13 +32,11 @@ import org.cloudburstmc.protocol.java.data.profile.property.PropertyMap;
 import org.cloudburstmc.protocol.java.data.world.BlockEntityAction;
 import org.cloudburstmc.protocol.java.data.world.Particle;
 import org.cloudburstmc.protocol.java.data.world.ParticleType;
-import org.cloudburstmc.protocol.java.packet.play.clientbound.LevelParticlesPacket;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.*;
 
@@ -52,7 +50,7 @@ public abstract class JavaPacketHelper {
     protected final Int2ObjectBiMap<Pose> poses = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<ParticleType> particles = new Int2ObjectBiMap<>();
     protected final Int2ObjectBiMap<MobEffectType> mobEffects = new Int2ObjectBiMap<>();
-    protected final BiMap<Key, RecipeType<? extends Recipe>> recipeTypes = HashBiMap.create();
+    private final BiMap<Key, RecipeType<? extends Recipe>> recipeTypes = HashBiMap.create();
 
     protected JavaPacketHelper() {
         this.registerEntityTypes();
@@ -367,11 +365,12 @@ public abstract class JavaPacketHelper {
         return type.read(this, buffer);
     }
 
-    public void writeRecipe(ByteBuf buffer, Recipe recipe) {
+    @SuppressWarnings("unchecked")
+    public <T extends Recipe> void writeRecipe(ByteBuf buffer, Recipe recipe) {
         Preconditions.checkNotNull(buffer, "buffer");
         Preconditions.checkNotNull(recipe, "recipe");
-        this.writeKey(buffer, this.getRecipeTypeKey(recipe.getType()));
-        recipe.getType().write(this, buffer, recipe);
+        this.writeKey(buffer, recipe.getIdentifier());
+        ((RecipeType<Recipe>) recipe.getType()).write(this, buffer, recipe);
     }
 
     public Vector3i readBlockPosition(ByteBuf buffer) {
@@ -583,8 +582,8 @@ public abstract class JavaPacketHelper {
         return this.recipeTypes.get(key);
     }
 
-    public final Key getRecipeTypeKey(RecipeType<?> recipeType) {
-        return this.recipeTypes.inverse().get(recipeType);
+    protected final void registerRecipeType(RecipeType<? extends Recipe> type) {
+        this.recipeTypes.put(type.getIdentifier(), type);
     }
 
     protected abstract void registerEntityTypes();

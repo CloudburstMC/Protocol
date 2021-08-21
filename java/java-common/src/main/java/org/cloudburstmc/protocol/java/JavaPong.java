@@ -1,9 +1,6 @@
 package org.cloudburstmc.protocol.java;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.java.data.profile.GameProfile;
 
@@ -15,19 +12,18 @@ public class JavaPong {
     private Players players;
     private Version version;
 
-    @Data
-    @AllArgsConstructor
-    @RequiredArgsConstructor
+    @Builder
+    @Value
     public static class Players {
-        private final int max;
-        private final int online;
+        int max;
+        int online;
         GameProfile[] sample = null;
     }
 
-    @Data
-    @AllArgsConstructor
+    @Builder
+    @Value
     public static class Version {
-        private String name;
-        private int protocol;
+        String name;
+        int protocol;
     }
 }
