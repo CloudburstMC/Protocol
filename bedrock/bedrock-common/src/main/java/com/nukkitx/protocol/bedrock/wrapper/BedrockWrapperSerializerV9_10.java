@@ -47,8 +47,6 @@ public class BedrockWrapperSerializerV9_10 extends BedrockWrapperSerializer {
                 }
             }
             zlib.deflate(uncompressed, buffer, level);
-        } catch (DataFormatException e) {
-            throw new RuntimeException("Unable to deflate buffer data", e);
         } finally {
             uncompressed.release();
         }
