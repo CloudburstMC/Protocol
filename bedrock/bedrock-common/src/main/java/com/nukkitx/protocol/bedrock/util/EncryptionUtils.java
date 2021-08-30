@@ -7,6 +7,9 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.jwk.Curve;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.JSONValue;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.nukkitx.natives.aes.AesFactory;
@@ -15,9 +18,6 @@ import com.nukkitx.network.util.Preconditions;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
@@ -35,6 +35,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Iterator;
 
 @UtilityClass
 public class EncryptionUtils {
@@ -127,7 +128,9 @@ public class EncryptionUtils {
     public static boolean verifyChain(JSONArray chain) throws JOSEException, ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
         ECPublicKey lastKey = null;
         boolean validChain = false;
-        for (Object node : chain) {
+        Iterator<Object> iterator = chain.iterator();
+        while (iterator.hasNext()) {
+            Object node = iterator.next();
             Preconditions.checkArgument(node instanceof String, "Chain node is not a string");
             JWSObject jwt = JWSObject.parse((String) node);
 
@@ -147,6 +150,10 @@ public class EncryptionUtils {
 
             if (!verifyJwt(jwt, lastKey)) {
                 return false;
+            }
+
+            if (validChain) {
+                return !iterator.hasNext();
             }
 
             if (lastKey.equals(EncryptionUtils.MOJANG_PUBLIC_KEY)) {

@@ -1,9 +1,9 @@
 package com.nukkitx.protocol.bedrock.data.skin;
 
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.JSONValue;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.*;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
 import java.util.Collections;
 import java.util.List;
