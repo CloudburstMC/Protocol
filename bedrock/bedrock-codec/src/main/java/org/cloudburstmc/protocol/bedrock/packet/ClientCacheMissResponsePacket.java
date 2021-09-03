@@ -8,12 +8,14 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+import java.nio.ByteBuffer;
+
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ClientCacheMissResponsePacket implements BedrockPacket {
-    private final Long2ObjectMap<ByteBuf> blobs = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<ByteBuffer> blobs = new Long2ObjectOpenHashMap<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

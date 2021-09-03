@@ -35,6 +35,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
@@ -93,6 +94,23 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         checkNotNull(toWrite, "toWrite");
         VarInts.writeUnsignedInt(buffer, toWrite.readableBytes());
         buffer.writeBytes(toWrite, toWrite.readerIndex(), toWrite.writerIndex());
+    }
+
+    @Override
+    public ByteBuffer readByteBuffer(ByteBuf buffer) {
+        int length = VarInts.readUnsignedInt(buffer);
+        ByteBuffer out = ByteBuffer.allocateDirect(length);
+        buffer.readBytes(out);
+        return out;
+    }
+
+    @Override
+    public void writeByteBuffer(ByteBuf buffer, ByteBuffer toWrite) {
+        checkNotNull(toWrite, "toWrite");
+        toWrite.rewind();
+        VarInts.writeUnsignedInt(buffer, toWrite.remaining());
+        buffer.writeBytes(toWrite);
+
     }
 
     public String readString(ByteBuf buffer) {
