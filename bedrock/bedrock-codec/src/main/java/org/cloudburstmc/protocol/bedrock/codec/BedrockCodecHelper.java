@@ -21,7 +21,6 @@ import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 
-import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -108,10 +107,6 @@ public interface BedrockCodecHelper {
     ByteBuf readByteBuf(ByteBuf buffer);
 
     void writeByteBuf(ByteBuf buffer, ByteBuf toWrite);
-
-    ByteBuffer readByteBuffer(ByteBuf buffer);
-
-    void writeByteBuffer(ByteBuf buffer, ByteBuffer toWrite);
 
     String readString(ByteBuf buffer);
 
