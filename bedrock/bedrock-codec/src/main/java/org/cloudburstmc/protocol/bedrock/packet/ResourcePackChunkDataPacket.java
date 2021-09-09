@@ -1,5 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.util.AbstractReferenceCounted;
+import io.netty.util.ReferenceCounted;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -8,14 +11,14 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 import java.util.UUID;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true, exclude = {"data"})
-public class ResourcePackChunkDataPacket implements BedrockPacket {
+public class ResourcePackChunkDataPacket extends AbstractReferenceCounted implements BedrockPacket {
     private UUID packId;
     private String packVersion;
     private int chunkIndex;
     private long progress;
-    private byte[] data;
+    private ByteBuf data;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -24,5 +27,16 @@ public class ResourcePackChunkDataPacket implements BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESOURCE_PACK_CHUNK_DATA;
+    }
+
+    @Override
+    protected void deallocate() {
+        this.data.release();
+    }
+
+    @Override
+    public ResourcePackChunkDataPacket touch(Object hint) {
+        data.touch(hint);
+        return this;
     }
 }

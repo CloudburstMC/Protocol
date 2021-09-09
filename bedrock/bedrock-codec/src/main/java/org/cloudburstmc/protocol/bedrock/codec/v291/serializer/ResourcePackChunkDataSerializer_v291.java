@@ -19,9 +19,9 @@ public class ResourcePackChunkDataSerializer_v291 implements BedrockPacketSerial
         helper.writeString(buffer, packInfo);
         buffer.writeIntLE(packet.getChunkIndex());
         buffer.writeLongLE(packet.getProgress());
-        byte[] data = packet.getData();
-        buffer.writeIntLE(data.length);
-        buffer.writeBytes(data);
+        ByteBuf data = packet.getData();
+        buffer.writeIntLE(data.readableBytes());
+        buffer.writeBytes(data, data.readerIndex(), data.writerIndex());
     }
 
     @Override
@@ -33,8 +33,7 @@ public class ResourcePackChunkDataSerializer_v291 implements BedrockPacketSerial
         }
         packet.setChunkIndex(buffer.readIntLE());
         packet.setProgress(buffer.readLongLE());
-        byte[] data = new byte[buffer.readIntLE()];
-        buffer.readBytes(data);
+        ByteBuf data = buffer.readRetainedSlice(buffer.readIntLE());
         packet.setData(data);
     }
 }
