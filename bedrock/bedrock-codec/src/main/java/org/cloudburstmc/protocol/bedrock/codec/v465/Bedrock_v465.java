@@ -43,6 +43,9 @@ import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateSubChunkBlocksPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
+import java.util.Optional;
+import java.util.OptionalDouble;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v465 extends Bedrock_v448 {
 
@@ -67,7 +70,7 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .insert(371, SoundEvent.UNDEFINED)
             .build();
 
-    public static final BedrockCodec CODEC = Bedrock_v465.CODEC.toBuilder()
+    public static final BedrockCodec CODEC = Bedrock_v448.CODEC.toBuilder()
             .protocolVersion(465)
             .minecraftVersion("1.17.30")
             .helper(() -> new BedrockCodecHelper_v465(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
