@@ -31,8 +31,8 @@ public class Bedrock_v448 extends Bedrock_v440 {
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v440.LEVEL_EVENTS.toBuilder()
-            .shift(9, 1)
-            .insert(9, ParticleType.CANDLE_FLAME)
+            .shift(LEVEL_EVENT_PARTICLE_TYPE + 9, 1)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE + 9, ParticleType.CANDLE_FLAME)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v440.SOUND_EVENTS.toBuilder()
