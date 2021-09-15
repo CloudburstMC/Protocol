@@ -75,6 +75,8 @@ public enum LevelEvent implements LevelEventType {
     PARTICLE_WAX_OFF,
     PARTICLE_SCRAPE,
     PARTICLE_ELECTRIC_SPARK,
+    PARTICLE_TURTLE_EGG,
+    PARTICLE_SKULK_SHRIEK,
 
     // world
     START_RAINING,

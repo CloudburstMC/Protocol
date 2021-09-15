@@ -12,8 +12,22 @@ public class EducationSettingsPacket implements BedrockPacket {
     private String codeBuilderUri;
     private String codeBuilderTitle;
     private boolean canResizeCodeBuilder;
+    /**
+     * @since v465
+     */
+    private boolean disableLegacyTitle;
+    /**
+     * @since v465
+     */
+    private String postProcessFilter;
+    /**
+     * @since v465
+     */
+    private String screenshotBorderPath;
+    private boolean optionalEntityCapabilities;
     private boolean optionalOverrideUri;
     private boolean quizAttached;
+    private boolean optionalExternalLinkSettings;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

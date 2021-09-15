@@ -10,6 +10,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class AddVolumeEntityPacket implements BedrockPacket {
     private int id;
     private NbtMap data;
+    /**
+     * @since v465
+     */
+    private String engineVersion;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

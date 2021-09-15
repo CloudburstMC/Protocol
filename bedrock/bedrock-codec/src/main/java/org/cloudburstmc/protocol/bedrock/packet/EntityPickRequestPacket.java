@@ -11,6 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class EntityPickRequestPacket implements BedrockPacket {
     private long runtimeEntityId;
     private int hotbarSlot;
+    /**
+     * @since v465
+     */
+    private boolean withData;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

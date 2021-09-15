@@ -672,4 +672,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(SimulationTypePacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(EduUriResourcePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(CreatePhotoPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(UpdateSubChunkBlocksPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

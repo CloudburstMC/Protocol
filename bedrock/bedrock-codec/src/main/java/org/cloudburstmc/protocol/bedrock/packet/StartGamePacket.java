@@ -70,6 +70,10 @@ public class StartGamePacket implements BedrockPacket {
     private int limitedWorldWidth;
     private int limitedWorldHeight;
     private boolean netherType;
+    /**
+     * @since v465
+     */
+    private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
     private boolean forceExperimentalGameplay;
     // Level settings end
     private String levelId;

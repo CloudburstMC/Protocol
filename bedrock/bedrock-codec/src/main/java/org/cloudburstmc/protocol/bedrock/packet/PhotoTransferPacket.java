@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.PhotoType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,6 +13,22 @@ public class PhotoTransferPacket implements BedrockPacket {
     private String name;
     private byte[] data;
     private String bookId;
+    /**
+     * @since v465
+     */
+    private PhotoType photoType;
+    /**
+     * @since v465
+     */
+    private PhotoType sourceType;
+    /**
+     * @since v465
+     */
+    private long ownerId;
+    /**
+     * @since v465
+     */
+    private String newPhotoName;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

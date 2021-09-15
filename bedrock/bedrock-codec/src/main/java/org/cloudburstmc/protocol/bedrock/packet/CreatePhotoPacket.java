@@ -8,20 +8,18 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class HurtArmorPacket implements BedrockPacket {
-    private int cause;
-    private int damage;
-    /**
-     * @since v465
-     */
-    private long armorSlots;
+public class CreatePhotoPacket implements BedrockPacket {
+    private long id;
+    private String photoName;
+    private String photoItemName;
 
     @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
+    public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.HURT_ARMOR;
+        return BedrockPacketType.CREATE_PHOTO;
     }
 }
