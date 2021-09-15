@@ -24,10 +24,7 @@ import org.cloudburstmc.protocol.common.util.TriConsumer;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.*;
 
 public interface BedrockCodecHelper {
 
@@ -173,7 +170,7 @@ public interface BedrockCodecHelper {
 
     void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request);
 
-    void readOptional(ByteBuf buffer, Consumer<ByteBuf> consumer);
+    <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function);
 
-    <T> void writeOptional(ByteBuf buffer, boolean exists, T object, BiConsumer<ByteBuf, T> consumer);
+    <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer);
 }

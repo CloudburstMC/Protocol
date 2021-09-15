@@ -7,6 +7,9 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.EducationSettingsPacket;
 
+import java.util.Optional;
+
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EducationSettingsSerializer_v407 implements BedrockPacketSerializer<EducationSettingsPacket> {
 
@@ -17,7 +20,8 @@ public class EducationSettingsSerializer_v407 implements BedrockPacketSerializer
         helper.writeString(buffer, packet.getCodeBuilderUri());
         helper.writeString(buffer, packet.getCodeBuilderTitle());
         buffer.writeBoolean(packet.isCanResizeCodeBuilder());
-        buffer.writeBoolean(packet.isOptionalOverrideUri());
+        helper.writeOptional(buffer, Optional::isPresent, packet.getOverrideUri(),
+                (byteBuf, optional) -> helper.writeString(byteBuf, optional.get()));
         buffer.writeBoolean(packet.isQuizAttached());
     }
 
@@ -26,7 +30,7 @@ public class EducationSettingsSerializer_v407 implements BedrockPacketSerializer
         packet.setCodeBuilderUri(helper.readString(buffer));
         packet.setCodeBuilderTitle(helper.readString(buffer));
         packet.setCanResizeCodeBuilder(buffer.readBoolean());
-        packet.setOptionalOverrideUri(buffer.readBoolean());
+        packet.setOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
         packet.setQuizAttached(buffer.readBoolean());
     }
 }

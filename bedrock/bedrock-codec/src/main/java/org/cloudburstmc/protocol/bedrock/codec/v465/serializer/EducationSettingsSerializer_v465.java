@@ -5,8 +5,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.EducationSettingsSerializer_v407;
+import org.cloudburstmc.protocol.bedrock.data.OptionalBoolean;
 import org.cloudburstmc.protocol.bedrock.packet.EducationSettingsPacket;
 
+import java.util.Optional;
+
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class EducationSettingsSerializer_v465 extends EducationSettingsSerializer_v407 {
     public static final EducationSettingsSerializer_v465 INSTANCE = new EducationSettingsSerializer_v465();
@@ -19,10 +23,13 @@ public class EducationSettingsSerializer_v465 extends EducationSettingsSerialize
         buffer.writeBoolean(packet.isDisableLegacyTitle());
         helper.writeString(buffer, packet.getPostProcessFilter());
         helper.writeString(buffer, packet.getScreenshotBorderPath());
-        helper.writeOptional(buffer, packet.isOptionalEntityCapabilities(), packet.isEntityCapabilities(), ByteBuf::writeBoolean);
-        helper.writeOptional(buffer, packet.isOptionalOverrideUri(), packet.getOverrideUri(), helper::writeString);
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getEntityCapabilities(),
+                (byteBuf, optional) -> byteBuf.writeBoolean(optional.getAsBoolean()));
+        helper.writeOptional(buffer, Optional::isPresent, packet.getOverrideUri(),
+                (byteBuf, optional) -> helper.writeString(byteBuf, optional.get()));
         buffer.writeBoolean(packet.isQuizAttached());
-        helper.writeOptional(buffer, packet.isOptionalExternalLinkSettings(), packet.isExternalLinkSettings(), ByteBuf::writeBoolean);
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getExternalLinkSettings(),
+                (byteBuf, optional) -> byteBuf.writeBoolean(optional.getAsBoolean()));
     }
 
     @Override
@@ -33,18 +40,11 @@ public class EducationSettingsSerializer_v465 extends EducationSettingsSerialize
         packet.setDisableLegacyTitle(buffer.readBoolean());
         packet.setPostProcessFilter(helper.readString(buffer));
         packet.setScreenshotBorderPath(helper.readString(buffer));
-        helper.readOptional(buffer, buf -> {
-            packet.setOptionalEntityCapabilities(true);
-            packet.setEntityCapabilities(buf.readBoolean());
-        });
-        helper.readOptional(buffer, buf -> {
-            packet.setOptionalOverrideUri(true);
-            packet.setOverrideUri(helper.readString(buf));
-        });
+        packet.setEntityCapabilities(helper.readOptional(buffer, OptionalBoolean.empty(),
+                byteBuf -> OptionalBoolean.of(buffer.readBoolean())));
+        packet.setOverrideUri(helper.readOptional(buffer, Optional.empty(), byteBuf -> Optional.of(helper.readString(byteBuf))));
         packet.setQuizAttached(buffer.readBoolean());
-        helper.readOptional(buffer, buf -> {
-            packet.setOptionalExternalLinkSettings(true);
-            packet.setExternalLinkSettings(buffer.readBoolean());
-        });
+        packet.setExternalLinkSettings(helper.readOptional(buffer, OptionalBoolean.empty(),
+                byteBuf -> OptionalBoolean.of(buffer.readBoolean())));
     }
 }

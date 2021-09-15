@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.Type;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
@@ -373,17 +375,19 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
-    public void readOptional(ByteBuf buffer, Consumer<ByteBuf> consumer) {
+    public <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function) {
         if (buffer.readBoolean()) {
-            consumer.accept(buffer);
+            return function.apply(buffer);
         }
+        return emptyValue;
     }
 
     @Override
-    public <T> void writeOptional(ByteBuf buffer, boolean exists, T object, BiConsumer<ByteBuf, T> consumer) {
+    public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer) {
         checkNotNull(object, "object");
         checkNotNull(consumer, "read consumer");
 
+        boolean exists = isPresent.test(object);
         buffer.writeBoolean(exists);
         if (exists) {
             consumer.accept(buffer, object);

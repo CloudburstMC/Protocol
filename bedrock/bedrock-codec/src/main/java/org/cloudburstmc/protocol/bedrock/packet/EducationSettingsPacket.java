@@ -3,8 +3,12 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.OptionalBoolean;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+import java.util.Optional;
+
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
@@ -24,14 +28,10 @@ public class EducationSettingsPacket implements BedrockPacket {
      * @since v465
      */
     private String screenshotBorderPath;
-    private boolean entityCapabilities;
-    private String overrideUri;
+    private OptionalBoolean entityCapabilities;
+    private Optional<String> overrideUri;
     private boolean quizAttached;
-    private boolean externalLinkSettings;
-
-    private boolean optionalEntityCapabilities;
-    private boolean optionalOverrideUri;
-    private boolean optionalExternalLinkSettings;
+    private OptionalBoolean externalLinkSettings;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

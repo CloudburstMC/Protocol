@@ -14,6 +14,10 @@ import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     public static final NoopBedrockCodecHelper INSTANCE = new NoopBedrockCodecHelper();
 
@@ -119,6 +123,16 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
 
     @Override
     public void writeSkin(ByteBuf buffer, SerializedSkin skin) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer) {
         throw new UnsupportedOperationException();
     }
 }
