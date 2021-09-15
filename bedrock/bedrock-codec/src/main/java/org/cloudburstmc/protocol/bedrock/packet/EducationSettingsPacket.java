@@ -24,9 +24,13 @@ public class EducationSettingsPacket implements BedrockPacket {
      * @since v465
      */
     private String screenshotBorderPath;
+    private boolean entityCapabilities;
+    private String overrideUri;
+    private boolean quizAttached;
+    private boolean externalLinkSettings;
+
     private boolean optionalEntityCapabilities;
     private boolean optionalOverrideUri;
-    private boolean quizAttached;
     private boolean optionalExternalLinkSettings;
 
     @Override

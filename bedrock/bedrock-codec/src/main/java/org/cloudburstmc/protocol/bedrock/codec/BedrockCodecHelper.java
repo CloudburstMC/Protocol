@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface BedrockCodecHelper {
@@ -171,4 +172,8 @@ public interface BedrockCodecHelper {
     ItemStackRequest readItemStackRequest(ByteBuf buffer);
 
     void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request);
+
+    void readOptional(ByteBuf buffer, Consumer<ByteBuf> consumer);
+
+    <T> void writeOptional(ByteBuf buffer, boolean exists, T object, BiConsumer<ByteBuf, T> consumer);
 }

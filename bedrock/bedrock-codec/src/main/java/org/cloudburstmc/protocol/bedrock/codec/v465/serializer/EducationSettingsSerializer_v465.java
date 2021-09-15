@@ -19,10 +19,10 @@ public class EducationSettingsSerializer_v465 extends EducationSettingsSerialize
         buffer.writeBoolean(packet.isDisableLegacyTitle());
         helper.writeString(buffer, packet.getPostProcessFilter());
         helper.writeString(buffer, packet.getScreenshotBorderPath());
-        buffer.writeBoolean(packet.isOptionalEntityCapabilities());
-        buffer.writeBoolean(packet.isOptionalOverrideUri());
+        helper.writeOptional(buffer, packet.isOptionalEntityCapabilities(), packet.isEntityCapabilities(), ByteBuf::writeBoolean);
+        helper.writeOptional(buffer, packet.isOptionalOverrideUri(), packet.getOverrideUri(), helper::writeString);
         buffer.writeBoolean(packet.isQuizAttached());
-        buffer.writeBoolean(packet.isOptionalExternalLinkSettings());
+        helper.writeOptional(buffer, packet.isOptionalExternalLinkSettings(), packet.isExternalLinkSettings(), ByteBuf::writeBoolean);
     }
 
     @Override
@@ -33,9 +33,18 @@ public class EducationSettingsSerializer_v465 extends EducationSettingsSerialize
         packet.setDisableLegacyTitle(buffer.readBoolean());
         packet.setPostProcessFilter(helper.readString(buffer));
         packet.setScreenshotBorderPath(helper.readString(buffer));
-        packet.setOptionalEntityCapabilities(buffer.readBoolean());
-        packet.setOptionalOverrideUri(buffer.readBoolean());
+        helper.readOptional(buffer, buf -> {
+            packet.setOptionalEntityCapabilities(true);
+            packet.setEntityCapabilities(buf.readBoolean());
+        });
+        helper.readOptional(buffer, buf -> {
+            packet.setOptionalOverrideUri(true);
+            packet.setOverrideUri(helper.readString(buf));
+        });
         packet.setQuizAttached(buffer.readBoolean());
-        packet.setOptionalExternalLinkSettings(buffer.readBoolean());
+        helper.readOptional(buffer, buf -> {
+            packet.setOptionalExternalLinkSettings(true);
+            packet.setExternalLinkSettings(buffer.readBoolean());
+        });
     }
 }

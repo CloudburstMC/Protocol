@@ -23,6 +23,8 @@ import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStr
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.Type;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
@@ -367,6 +369,24 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         VarInts.writeUnsignedInt(buffer, values.size());
         for (String value : values) {
             writeString(buffer, value);
+        }
+    }
+
+    @Override
+    public void readOptional(ByteBuf buffer, Consumer<ByteBuf> consumer) {
+        if (buffer.readBoolean()) {
+            consumer.accept(buffer);
+        }
+    }
+
+    @Override
+    public <T> void writeOptional(ByteBuf buffer, boolean exists, T object, BiConsumer<ByteBuf, T> consumer) {
+        checkNotNull(object, "object");
+        checkNotNull(consumer, "read consumer");
+
+        buffer.writeBoolean(exists);
+        if (exists) {
+            consumer.accept(buffer, object);
         }
     }
 }
