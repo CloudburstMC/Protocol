@@ -53,7 +53,7 @@ public class Bedrock_v465 extends Bedrock_v448 {
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v448.LEVEL_EVENTS.toBuilder()
             .insert(LEVEL_EVENT_PARTICLE + 34, LevelEvent.PARTICLE_TURTLE_EGG)
             .insert(LEVEL_EVENT_PARTICLE + 35, LevelEvent.PARTICLE_SKULK_SHRIEK)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 81, ParticleType.SHRIEK)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE + 82, ParticleType.SHRIEK)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v448.SOUND_EVENTS.toBuilder()
