@@ -39,6 +39,7 @@ public class BedrockCodecHelper_v465 extends BedrockCodecHelper_v440 {
 
         ImageData capeData = this.readImage(buffer);
         String geometryData = this.readString(buffer);
+        String geometryDataEngineVersion = this.readString(buffer);
         String animationData = this.readString(buffer);
         String capeId = this.readString(buffer);
         String fullSkinId = this.readString(buffer);
@@ -73,8 +74,8 @@ public class BedrockCodecHelper_v465 extends BedrockCodecHelper_v440 {
         boolean capeOnClassic = buffer.readBoolean();
         boolean primaryUser = buffer.readBoolean();
 
-        return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData,
-                premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+        return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataEngineVersion,
+                animationData, premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -95,6 +96,7 @@ public class BedrockCodecHelper_v465 extends BedrockCodecHelper_v440 {
 
         this.writeImage(buffer, skin.getCapeData());
         this.writeString(buffer, skin.getGeometryData());
+        this.writeString(buffer, skin.getGeometryDataEngineVersion());
         this.writeString(buffer, skin.getAnimationData());
         this.writeString(buffer, skin.getCapeId());
         this.writeString(buffer, skin.getFullSkinId());

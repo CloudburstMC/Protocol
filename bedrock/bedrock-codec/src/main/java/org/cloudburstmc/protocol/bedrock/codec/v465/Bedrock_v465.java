@@ -43,9 +43,6 @@ import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateSubChunkBlocksPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
-import java.util.Optional;
-import java.util.OptionalDouble;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v465 extends Bedrock_v448 {
 
