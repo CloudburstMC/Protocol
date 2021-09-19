@@ -40,6 +40,7 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
@@ -779,5 +780,23 @@ public abstract class BedrockPacketHelper {
 
     public void writeItemStackRequest(ByteBuf buffer, BedrockSession session, ItemStackRequest request) {
         throw new UnsupportedOperationException();
+    }
+
+    public <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function) {
+        if (buffer.readBoolean()) {
+            return function.apply(buffer);
+        }
+        return emptyValue;
+    }
+
+    public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer) {
+        Preconditions.checkNotNull(object, "object");
+        Preconditions.checkNotNull(consumer, "read consumer");
+
+        boolean exists = isPresent.test(object);
+        buffer.writeBoolean(exists);
+        if (exists) {
+            consumer.accept(buffer, object);
+        }
     }
 }

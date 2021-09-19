@@ -40,6 +40,16 @@ public class AnimateEntityPacket extends BedrockPacket {
     private String stopExpression;
 
     /**
+     * The molang stop expression version
+     *
+     * @param stopExpressionVersion the stop expression version
+     * @return molang stop expression version
+     *
+     * @since v465
+     */
+    private int stopExpressionVersion;
+
+    /**
      * Name of the animation controller to use.
      *
      * @param controller controller name

@@ -672,4 +672,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(SimulationTypePacket packet) {
         return false;
     }
+
+    default boolean handle(EduUriResourcePacket packet) {
+        return false;
+    }
+
+    default boolean handle(CreatePhotoPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdateSubChunkBlocksPacket packet) {
+        return false;
+    }
 }

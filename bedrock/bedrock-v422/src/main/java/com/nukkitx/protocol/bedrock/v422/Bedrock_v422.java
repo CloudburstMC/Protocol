@@ -162,7 +162,7 @@ public class Bedrock_v422 {
             .registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v388.INSTANCE, 133)
             .registerPacket(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
             .registerPacket(ClientCacheMissResponsePacket.class, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
-            .registerPacket(EducationSettingsPacket.class, EducationSettingsSerializer_v388.INSTANCE, 137)
+            .registerPacket(EducationSettingsPacket.class, EducationSettingsSerializer_v407.INSTANCE, 137)
             .registerPacket(EmotePacket.class, EmoteSerializer_v388.INSTANCE, 138)
             .registerPacket(MultiplayerSettingsPacket.class, MultiplayerSettingsSerializer_v388.INSTANCE, 139)
             .registerPacket(SettingsCommandPacket.class, SettingsCommandSerializer_v388.INSTANCE, 140)

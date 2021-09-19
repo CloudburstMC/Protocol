@@ -12,6 +12,10 @@ import lombok.EqualsAndHashCode;
 public class AddVolumeEntityPacket extends BedrockPacket {
     private int id;
     private NbtMap data;
+    /**
+     * @since v465
+     */
+    private String engineVersion;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {
