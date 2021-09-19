@@ -23,7 +23,6 @@ import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSeri
 import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_v428;
 import com.nukkitx.protocol.bedrock.v431.serializer.PlayerAuthInputSerializer_v431;
 import com.nukkitx.protocol.bedrock.v440.serializer.RemoveVolumeEntitySerializer_v440;
-import com.nukkitx.protocol.bedrock.v440.serializer.StartGameSerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
 import com.nukkitx.protocol.bedrock.v448.serializer.*;
 import lombok.experimental.UtilityClass;
@@ -44,7 +43,7 @@ public class Bedrock_v465 {
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v440.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, StartGameSerializer_v465.INSTANCE, 11)
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v388.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)
