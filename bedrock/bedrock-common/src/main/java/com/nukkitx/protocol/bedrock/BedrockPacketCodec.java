@@ -97,8 +97,10 @@ public final class BedrockPacketCodec {
     }
 
     public BedrockPacketDefinition<? extends BedrockPacket> getPacketDefinition(int id) {
-        checkElementIndex(id, this.packetsById.length);
-        return packetsById[id];
+        if (id < this.packetsById.length) {
+            return this.packetsById[id];
+        }
+        return null;
     }
 
     public int getId(BedrockPacket packet) {
