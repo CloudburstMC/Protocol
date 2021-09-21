@@ -84,8 +84,6 @@ public final class BedrockCodec {
             serializer.serialize(buf, helper, packet);
         } catch (Exception e) {
             throw new PacketSerializeException("Error whilst serializing " + packet, e);
-        } finally {
-            ReferenceCountUtil.release(packet);
         }
     }
 
