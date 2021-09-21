@@ -17,7 +17,7 @@ public final class UnknownPacket implements BedrockPacket, BedrockPacketSerializ
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UnknownPacket packet) {
-        buffer.writeBytes(packet.payload);
+        buffer.writeBytes(packet.payload, packet.payload.readerIndex(), packet.payload.readableBytes());
     }
 
     @Override
