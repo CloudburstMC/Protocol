@@ -19,7 +19,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true, exclude = {"itemEntries", "blockPalette"})
+@ToString(doNotUseGetters = true, exclude = {"itemDefinitions", "blockPalette"})
 public class StartGamePacket implements BedrockPacket {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(StartGamePacket.class);
 
@@ -80,14 +80,11 @@ public class StartGamePacket implements BedrockPacket {
     private String levelName;
     private String premiumWorldTemplateId;
     private boolean trial;
-    /**
-     * @deprecated as of v428
-     */
+    // SyncedPlayerMovementSettings start
     private AuthoritativeMovementMode authoritativeMovementMode;
-    /**
-     * @since v428
-     */
-    private SyncedPlayerMovementSettings playerMovementSettings;
+    private int rewindHistorySize;
+    boolean serverAuthoritativeBlockBreaking;
+    // SyncedPlayerMovementSettings end
     private long currentTick;
     private int enchantmentSeed;
     private NbtList<NbtMap> blockPalette;

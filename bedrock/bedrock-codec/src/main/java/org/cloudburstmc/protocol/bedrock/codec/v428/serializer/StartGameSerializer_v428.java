@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.StartGameSerializer_v419;
 import org.cloudburstmc.protocol.bedrock.data.BlockPropertyData;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.SyncedPlayerMovementSettings;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -33,7 +32,7 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
         helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
-        writeSyncedPlayerMovementSettings(buffer, helper, packet.getPlayerMovementSettings()); // new for v428
+        writeSyncedPlayerMovementSettings(buffer, packet); // new for v428
         buffer.writeLongLE(packet.getCurrentTick());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
@@ -66,7 +65,7 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
         packet.setLevelName(helper.readString(buffer));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
-        packet.setPlayerMovementSettings(readSyncedPlayerMovementSettings(buffer, helper)); // new for v428
+        readSyncedPlayerMovementSettings(buffer, packet); // new for v428
         packet.setCurrentTick(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
@@ -87,18 +86,16 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
         packet.setInventoriesServerAuthoritative(buffer.readBoolean());
     }
 
-    protected void writeSyncedPlayerMovementSettings(ByteBuf buffer, BedrockCodecHelper helper, SyncedPlayerMovementSettings playerMovementSettings) {
-        VarInts.writeUnsignedInt(buffer, playerMovementSettings.getMovementMode().ordinal());
-        VarInts.writeInt(buffer, playerMovementSettings.getRewindHistorySize());
-        buffer.writeBoolean(playerMovementSettings.isServerAuthoritativeBlockBreaking());
+    protected void writeSyncedPlayerMovementSettings(ByteBuf buffer, StartGamePacket packet) {
+        VarInts.writeUnsignedInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
+        VarInts.writeInt(buffer, packet.getRewindHistorySize());
+        buffer.writeBoolean(packet.isServerAuthoritativeBlockBreaking());
     }
 
-    protected SyncedPlayerMovementSettings readSyncedPlayerMovementSettings(ByteBuf buffer, BedrockCodecHelper helper) {
-        SyncedPlayerMovementSettings playerMovementSettings = new SyncedPlayerMovementSettings();
-        playerMovementSettings.setMovementMode(MOVEMENT_MODES[VarInts.readUnsignedInt(buffer)]);
-        playerMovementSettings.setRewindHistorySize(VarInts.readInt(buffer));
-        playerMovementSettings.setServerAuthoritativeBlockBreaking(buffer.readBoolean());
-        return playerMovementSettings;
+    protected void readSyncedPlayerMovementSettings(ByteBuf buffer, StartGamePacket packet) {
+        packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readUnsignedInt(buffer)]);
+        packet.setRewindHistorySize(VarInts.readInt(buffer));
+        packet.setServerAuthoritativeBlockBreaking(buffer.readBoolean());
     }
 
 }
