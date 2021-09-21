@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerMixData;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
+import com.nukkitx.protocol.bedrock.data.inventory.MaterialReducer;
 import com.nukkitx.protocol.bedrock.data.inventory.PotionMixData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -20,6 +21,10 @@ public class CraftingDataPacket extends BedrockPacket {
     private final List<CraftingData> craftingData = new ObjectArrayList<>();
     private final List<PotionMixData> potionMixData = new ObjectArrayList<>();
     private final List<ContainerMixData> containerMixData = new ObjectArrayList<>();
+    /**
+     * @since v465
+     */
+    private final List<MaterialReducer> materialReducers = new ObjectArrayList<>();
     private boolean cleanRecipes;
 
     @Override

@@ -31,5 +31,6 @@
         <module>bedrock-v431</module>
         <module>bedrock-v440</module>
         <module>bedrock-v448</module>
+        <module>bedrock-v465</module>
     </modules>
 </project>

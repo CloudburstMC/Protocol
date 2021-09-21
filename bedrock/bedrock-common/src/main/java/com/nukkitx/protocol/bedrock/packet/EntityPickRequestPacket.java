@@ -11,6 +11,10 @@ import lombok.EqualsAndHashCode;
 public class EntityPickRequestPacket extends BedrockPacket {
     private long runtimeEntityId;
     private int hotbarSlot;
+    /**
+     * @since v465
+     */
+    private boolean withData;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

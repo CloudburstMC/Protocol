@@ -34,9 +34,17 @@ public class SerializedSkin {
     private final ImageData capeData;
     private final String geometryData;
     private final String animationData;
+    /**
+     * @since v465
+     */
+    private final String geometryDataEngineVersion;
     private final boolean premium;
     private final boolean persona;
     private final boolean capeOnClassic;
+    /**
+     * @since v465
+     */
+    private final boolean primaryUser;
     private final String capeId;
     private final String fullSkinId;
     private final String armSize;
@@ -52,7 +60,7 @@ public class SerializedSkin {
         String skinResourcePatch = convertLegacyGeometryName(geometryName);
 
         return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData, Collections.emptyList(), capeData,
-                geometryData, "", premiumSkin, false, false, "", "",
+                geometryData, "", "", premiumSkin, false, false, true, "", "",
                 "wide", "#0", Collections.emptyList(), Collections.emptyList());
     }
 
@@ -70,12 +78,36 @@ public class SerializedSkin {
                                     String animationData, boolean premium, boolean persona, boolean capeOnClassic,
                                     String capeId, String fullSkinId, String armSize, String skinColor,
                                     List<PersonaPieceData> personaPieces, List<PersonaPieceTintData> tintColors) {
+        return of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData, premium, persona, capeOnClassic,
+                true, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+    }
+
+    public static SerializedSkin of(String skinId, String playFabId, String skinResourcePatch, ImageData skinData,
+                                    List<AnimationData> animations, ImageData capeData, String geometryData,
+                                    String animationData, boolean premium, boolean persona, boolean capeOnClassic,
+                                    boolean primaryUser, String capeId, String fullSkinId, String armSize,
+                                    String skinColor, List<PersonaPieceData> personaPieces,
+                                    List<PersonaPieceTintData> tintColors) {
 
         String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
 
         return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData,
-                Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, animationData,
-                premium, persona, capeOnClassic, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+                Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, "", animationData,
+                premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+    }
+
+    public static SerializedSkin of(String skinId, String playFabId, String skinResourcePatch, ImageData skinData,
+                                    List<AnimationData> animations, ImageData capeData, String geometryData,
+                                    String geometryDataEngineVersion, String animationData, boolean premium,
+                                    boolean persona, boolean capeOnClassic, boolean primaryUser, String capeId,
+                                    String fullSkinId, String armSize, String skinColor, List<PersonaPieceData> personaPieces,
+                                    List<PersonaPieceTintData> tintColors) {
+
+        String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
+
+        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData,
+                Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, geometryDataEngineVersion, animationData,
+                premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
     }
 
     public static Builder builder() {

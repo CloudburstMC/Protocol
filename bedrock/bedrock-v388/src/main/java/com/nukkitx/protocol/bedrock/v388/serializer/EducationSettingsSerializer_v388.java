@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class EducationSettingsSerializer_v388 implements BedrockPacketSerializer<EducationSettingsPacket> {
 
     public static final EducationSettingsSerializer_v388 INSTANCE = new EducationSettingsSerializer_v388();

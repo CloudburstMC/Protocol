@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v440;
+package com.nukkitx.protocol.bedrock.v448;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -18,34 +18,32 @@ import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
 import com.nukkitx.protocol.bedrock.v407.serializer.*;
 import com.nukkitx.protocol.bedrock.v419.serializer.*;
 import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
-import com.nukkitx.protocol.bedrock.v422.serializer.ResourcePacksInfoSerializer_v422;
 import com.nukkitx.protocol.bedrock.v428.serializer.CameraShakeSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_v428;
 import com.nukkitx.protocol.bedrock.v431.serializer.PlayerAuthInputSerializer_v431;
-import com.nukkitx.protocol.bedrock.v440.serializer.AddVolumeEntitySerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.RemoveVolumeEntitySerializer_v440;
-import com.nukkitx.protocol.bedrock.v440.serializer.StartGameSerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
+import com.nukkitx.protocol.bedrock.v448.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class Bedrock_v440 {
-    public static BedrockPacketCodec V440_CODEC = BedrockPacketCodec.builder()
-            .protocolVersion(440)
-            .minecraftVersion("1.17.0")
-            .helper(BedrockPacketHelper_v440.INSTANCE)
+public class Bedrock_v465 {
+    public static BedrockPacketCodec V465_CODEC = BedrockPacketCodec.builder()
+            .protocolVersion(465)
+            .minecraftVersion("1.17.30")
+            .helper(BedrockPacketHelper_v465.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
             .registerPacket(ClientToServerHandshakePacket.class, ClientToServerHandshakeSerializer_v291.INSTANCE, 4)
             .registerPacket(DisconnectPacket.class, DisconnectSerializer_v291.INSTANCE, 5)
-            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v422.INSTANCE, 6)
+            .registerPacket(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v448.INSTANCE, 6)
             .registerPacket(ResourcePackStackPacket.class, ResourcePackStackSerializer_v419.INSTANCE, 7)
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v440.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, StartGameSerializer_v465.INSTANCE, 11)
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v388.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)
@@ -68,10 +66,10 @@ public class Bedrock_v440 {
             .registerPacket(MobArmorEquipmentPacket.class, MobArmorEquipmentSerializer_v291.INSTANCE, 32)
             .registerPacket(InteractPacket.class, InteractSerializer_v388.INSTANCE, 33)
             .registerPacket(BlockPickRequestPacket.class, BlockPickRequestSerializer_v291.INSTANCE, 34)
-            .registerPacket(EntityPickRequestPacket.class, EntityPickRequestSerializer_v291.INSTANCE, 35)
+            .registerPacket(EntityPickRequestPacket.class, EntityPickRequestSerializer_v465.INSTANCE, 35)
             .registerPacket(PlayerActionPacket.class, PlayerActionSerializer_v291.INSTANCE, 36)
             .registerPacket(EntityFallPacket.class, EntityFallSerializer_v291.INSTANCE, 37)
-            .registerPacket(HurtArmorPacket.class, HurtArmorSerializer_v407.INSTANCE, 38)
+            .registerPacket(HurtArmorPacket.class, HurtArmorSerializer_v465.INSTANCE, 38)
             .registerPacket(SetEntityDataPacket.class, SetEntityDataSerializer_v419.INSTANCE, 39)
             .registerPacket(SetEntityMotionPacket.class, SetEntityMotionSerializer_v291.INSTANCE, 40)
             .registerPacket(SetEntityLinkPacket.class, SetEntityLinkSerializer_v291.INSTANCE, 41)
@@ -85,7 +83,7 @@ public class Bedrock_v440 {
             .registerPacket(InventoryContentPacket.class, InventoryContentSerializer_v407.INSTANCE, 49)
             .registerPacket(InventorySlotPacket.class, InventorySlotSerializer_v407.INSTANCE, 50)
             .registerPacket(ContainerSetDataPacket.class, ContainerSetDataSerializer_v291.INSTANCE, 51)
-            .registerPacket(CraftingDataPacket.class, CraftingDataSerializer_v407.INSTANCE, 52)
+            .registerPacket(CraftingDataPacket.class, CraftingDataSerializer_v465.INSTANCE, 52)
             .registerPacket(CraftingEventPacket.class, CraftingEventSerializer_v291.INSTANCE, 53)
             .registerPacket(GuiDataPickItemPacket.class, GuiDataPickItemSerializer_v291.INSTANCE, 54)
             .registerPacket(AdventureSettingsPacket.class, AdventureSettingsSerializer_v291.INSTANCE, 55)
@@ -109,7 +107,7 @@ public class Bedrock_v440 {
             .registerPacket(CameraPacket.class, CameraSerializer_v291.INSTANCE, 73)
             .registerPacket(BossEventPacket.class, BossEventSerializer_v291.INSTANCE, 74)
             .registerPacket(ShowCreditsPacket.class, ShowCreditsSerializer_v291.INSTANCE, 75)
-            .registerPacket(AvailableCommandsPacket.class, AvailableCommandsSerializer_v388.INSTANCE, 76)
+            .registerPacket(AvailableCommandsPacket.class, AvailableCommandsSerializer_v448.INSTANCE, 76)
             .registerPacket(CommandRequestPacket.class, CommandRequestSerializer_v291.INSTANCE, 77)
             .registerPacket(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v361.INSTANCE, 78)
             .registerPacket(CommandOutputPacket.class, CommandOutputSerializer_v291.INSTANCE, 79)
@@ -121,7 +119,7 @@ public class Bedrock_v440 {
             .registerPacket(TransferPacket.class, TransferSerializer_v291.INSTANCE, 85)
             .registerPacket(PlaySoundPacket.class, PlaySoundSerializer_v291.INSTANCE, 86)
             .registerPacket(StopSoundPacket.class, StopSoundSerializer_v291.INSTANCE, 87)
-            .registerPacket(SetTitlePacket.class, SetTitleSerializer_v291.INSTANCE, 88)
+            .registerPacket(SetTitlePacket.class, SetTitleSerializer_v448.INSTANCE, 88)
             .registerPacket(AddBehaviorTreePacket.class, AddBehaviorTreeSerializer_v291.INSTANCE, 89)
             .registerPacket(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v388.INSTANCE, 90)
             .registerPacket(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v291.INSTANCE, 91)
@@ -131,8 +129,8 @@ public class Bedrock_v440 {
             .registerPacket(AutomationClientConnectPacket.class, AutomationClientConnectSerializer_v291.INSTANCE, 95)
             .registerPacket(SetLastHurtByPacket.class, SetLastHurtBySerializer_v291.INSTANCE, 96)
             .registerPacket(BookEditPacket.class, BookEditSerializer_v291.INSTANCE, 97)
-            .registerPacket(NpcRequestPacket.class, NpcRequestSerializer_v291.INSTANCE, 98)
-            .registerPacket(PhotoTransferPacket.class, PhotoTransferSerializer_v291.INSTANCE, 99)
+            .registerPacket(NpcRequestPacket.class, NpcRequestSerializer_v448.INSTANCE, 98)
+            .registerPacket(PhotoTransferPacket.class, PhotoTransferSerializer_v465.INSTANCE, 99)
             .registerPacket(ModalFormRequestPacket.class, ModalFormRequestSerializer_v291.INSTANCE, 100)
             .registerPacket(ModalFormResponsePacket.class, ModalFormResponseSerializer_v291.INSTANCE, 101)
             .registerPacket(ServerSettingsRequestPacket.class, ServerSettingsRequestSerializer_v291.INSTANCE, 102)
@@ -168,7 +166,7 @@ public class Bedrock_v440 {
             .registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v388.INSTANCE, 133)
             .registerPacket(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
             .registerPacket(ClientCacheMissResponsePacket.class, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
-            .registerPacket(EducationSettingsPacket.class, EducationSettingsSerializer_v407.INSTANCE, 137)
+            .registerPacket(EducationSettingsPacket.class, EducationSettingsSerializer_v465.INSTANCE, 137)
             .registerPacket(EmotePacket.class, EmoteSerializer_v388.INSTANCE, 138)
             .registerPacket(MultiplayerSettingsPacket.class, MultiplayerSettingsSerializer_v388.INSTANCE, 139)
             .registerPacket(SettingsCommandPacket.class, SettingsCommandSerializer_v388.INSTANCE, 140)
@@ -189,7 +187,7 @@ public class Bedrock_v440 {
             .registerPacket(DebugInfoPacket.class, DebugInfoSerializer_v407.INSTANCE, 155)
             .registerPacket(PacketViolationWarningPacket.class, PacketViolationWarningSerializer_v407.INSTANCE, 156)
             .registerPacket(MotionPredictionHintsPacket.class, MotionPredictionHintsSerializer_v419.INSTANCE, 157)
-            .registerPacket(AnimateEntityPacket.class, AnimateEntitySerializer_v419.INSTANCE, 158)
+            .registerPacket(AnimateEntityPacket.class, AnimateEntitySerializer_v465.INSTANCE, 158)
             .registerPacket(CameraShakePacket.class, CameraShakeSerializer_v428.INSTANCE, 159)
             .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v419.INSTANCE, 160)
             .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
@@ -197,7 +195,12 @@ public class Bedrock_v440 {
             .registerPacket(FilterTextPacket.class, FilterTextSerializer_v422.INSTANCE, 163)
             .registerPacket(ClientboundDebugRendererPacket.class, ClientboundDebugRendererSerializer_v428.INSTANCE, 164)
             .registerPacket(SyncEntityPropertyPacket.class, SyncEntityPropertySerializer_v440.INSTANCE, 165)
-            .registerPacket(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v440.INSTANCE, 166)
+            .registerPacket(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v465.INSTANCE, 166)
             .registerPacket(RemoveVolumeEntityPacket.class, RemoveVolumeEntitySerializer_v440.INSTANCE, 167)
+            .registerPacket(SimulationTypePacket.class, SimulationTypeSerializer_v448.INSTANCE, 168)
+            .registerPacket(NpcDialoguePacket.class, NpcDialogueSerializer_v448.INSTANCE, 169)
+            .registerPacket(EduUriResourcePacket.class, EduUriResourceSerializer_v465.INSTANCE, 170)
+            .registerPacket(CreatePhotoPacket.class, CreatePhotoSerializer_v465.INSTANCE, 171)
+            .registerPacket(UpdateSubChunkBlocksPacket.class, UpdateSubChunkBlocksSerializer_v465.INSTANCE, 172)
             .build();
 }
