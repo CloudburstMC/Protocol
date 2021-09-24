@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v448.serializer;
+package com.nukkitx.protocol.bedrock.v465.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
