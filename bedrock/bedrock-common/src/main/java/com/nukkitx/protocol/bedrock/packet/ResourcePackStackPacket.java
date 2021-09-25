@@ -33,8 +33,8 @@ public class ResourcePackStackPacket extends BedrockPacket {
 
     @Value
     public static class Entry {
-        private final String packId;
-        private final String packVersion;
-        private final String subPackName;
+        String packId;
+        String packVersion;
+        String subPackName;
     }
 }

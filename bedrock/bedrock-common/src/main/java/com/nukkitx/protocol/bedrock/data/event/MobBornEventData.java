@@ -4,9 +4,9 @@ import lombok.Value;
 
 @Value
 public class MobBornEventData implements EventData {
-    private final int entityType;
-    private final int variant;
-    private final int color;
+    int entityType;
+    int variant;
+    int color;
 
     @Override
     public EventDataType getType() {

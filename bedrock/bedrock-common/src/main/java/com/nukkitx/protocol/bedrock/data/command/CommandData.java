@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.data.command;
 
 import lombok.Value;
+import lombok.experimental.NonFinal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,12 +9,12 @@ import java.util.Objects;
 
 @Value
 public class CommandData {
-    private final String name;
-    private final String description;
-    private final List<Flag> flags;
-    private final int permission;
-    private final CommandEnumData aliases;
-    private final CommandParamData[][] overloads;
+    String name;
+    String description;
+    List<Flag> flags;
+    int permission;
+    CommandEnumData aliases;
+    CommandParamData[][] overloads;
 
     public String toString() {
         StringBuilder overloads = new StringBuilder("[\r\n");
@@ -40,12 +41,13 @@ public class CommandData {
 
     @Value
     public static class Builder {
-        private final String name;
-        private final String description;
-        private final int flags;
-        private final int permission;
-        private final int aliases;
-        private CommandParamData.Builder[][] overloads;
+        String name;
+        String description;
+        int flags;
+        int permission;
+        int aliases;
+        @NonFinal
+        CommandParamData.Builder[][] overloads;
     }
 
     // Bit flags

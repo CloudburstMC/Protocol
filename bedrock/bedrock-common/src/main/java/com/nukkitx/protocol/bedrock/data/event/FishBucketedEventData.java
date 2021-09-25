@@ -4,10 +4,10 @@ import lombok.Value;
 
 @Value
 public class FishBucketedEventData implements EventData {
-    private final int pattern;
-    private final int preset;
-    private final int bucketedEntityType;
-    private final boolean releaseEvent;
+    int pattern;
+    int preset;
+    int bucketedEntityType;
+    boolean releaseEvent;
 
     @Override
     public EventDataType getType() {

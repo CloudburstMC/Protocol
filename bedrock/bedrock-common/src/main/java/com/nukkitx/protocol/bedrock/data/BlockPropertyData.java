@@ -5,6 +5,6 @@ import lombok.Value;
 
 @Value
 public class BlockPropertyData {
-    private final String name;
-    private final NbtMap properties;
+    String name;
+    NbtMap properties;
 }

@@ -4,9 +4,9 @@ import lombok.Value;
 
 @Value
 public class RaidUpdateEventData implements EventData {
-    private final int currentWave;
-    private final int totalWaves;
-    private final boolean winner;
+    int currentWave;
+    int totalWaves;
+    boolean winner;
 
     @Override
     public EventDataType getType() {

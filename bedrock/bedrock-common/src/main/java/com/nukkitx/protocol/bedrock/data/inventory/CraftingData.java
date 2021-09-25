@@ -11,18 +11,18 @@ import java.util.UUID;
 @Value
 @RequiredArgsConstructor
 public class CraftingData {
-    private final CraftingDataType type;
-    private final String recipeId;
-    private final int width;
-    private final int height;
-    private final int inputId;
-    private final int inputDamage;
-    private final List<ItemData> inputs;
-    private final List<ItemData> outputs;
-    private final UUID uuid;
-    private final String craftingTag;
-    private final int priority;
-    private final int networkId;
+    CraftingDataType type;
+    String recipeId;
+    int width;
+    int height;
+    int inputId;
+    int inputDamage;
+    List<ItemData> inputs;
+    List<ItemData> outputs;
+    UUID uuid;
+    String craftingTag;
+    int priority;
+    int networkId;
 
     // @Todo changed networkId to id to match rest of code
 

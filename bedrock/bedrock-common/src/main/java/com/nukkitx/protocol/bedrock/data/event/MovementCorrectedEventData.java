@@ -4,11 +4,11 @@ import lombok.Value;
 
 @Value
 public class MovementCorrectedEventData implements EventData {
-    private final float positionDelta;
-    private final float cheatingScore;
-    private final float scoreThreshold;
-    private final float distanceThreshold;
-    private final int durationThreshold;
+    float positionDelta;
+    float cheatingScore;
+    float scoreThreshold;
+    float distanceThreshold;
+    int durationThreshold;
 
     @Override
     public EventDataType getType() {

@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class PortalBuiltEventData implements EventData {
-    private int dimensionId;
+    int dimensionId;
 
     @Override
     public EventDataType getType() {

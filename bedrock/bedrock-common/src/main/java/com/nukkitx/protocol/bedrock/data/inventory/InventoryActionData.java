@@ -6,11 +6,11 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class InventoryActionData {
-    private final InventorySource source;
-    private final int slot;
-    private final ItemData fromItem;
-    private final ItemData toItem;
-    private final int stackNetworkId;
+    InventorySource source;
+    int slot;
+    ItemData fromItem;
+    ItemData toItem;
+    int stackNetworkId;
 
     public InventoryActionData(InventorySource source, int slot, ItemData fromItem, ItemData toItem) {
         this(source, slot, fromItem, toItem, 0);

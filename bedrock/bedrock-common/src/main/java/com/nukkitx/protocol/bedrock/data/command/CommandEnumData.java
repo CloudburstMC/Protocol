@@ -6,8 +6,8 @@ import lombok.Value;
 @Value
 public class CommandEnumData {
     @NonNull
-    private final String name;
+    String name;
     @NonNull
-    private final String[] values;
-    private final boolean isSoft;
+    String[] values;
+    boolean isSoft;
 }

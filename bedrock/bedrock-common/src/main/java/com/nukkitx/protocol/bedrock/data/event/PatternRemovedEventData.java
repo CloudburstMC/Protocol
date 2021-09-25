@@ -4,11 +4,11 @@ import lombok.Value;
 
 @Value
 public class PatternRemovedEventData implements EventData {
-    private final int itemId;
-    private final int auxValue;
-    private final int patternsSize;
-    private final int patternIndex;
-    private final int patternColor;
+    int itemId;
+    int auxValue;
+    int patternsSize;
+    int patternIndex;
+    int patternColor;
 
     @Override
     public EventDataType getType() {

@@ -55,16 +55,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    private AtomicInteger hardcodedBlockingId = new AtomicInteger(-1);
+    private final AtomicInteger hardcodedBlockingId = new AtomicInteger(-1);
 
     static {
         // Required for Android API versions prior to 26.
-        HASH_LOCAL = new ThreadLocal<Sha256>() {
-            @Override
-            protected Sha256 initialValue() {
-                return Natives.SHA_256.get();
-            }
-        };
+        HASH_LOCAL = ThreadLocal.withInitial(Natives.SHA_256);
     }
 
     BedrockSession(SessionConnection<ByteBuf> connection, EventLoop eventLoop, BedrockWrapperSerializer serializer) {

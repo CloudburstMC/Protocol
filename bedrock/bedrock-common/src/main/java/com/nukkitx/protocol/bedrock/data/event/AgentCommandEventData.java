@@ -4,11 +4,11 @@ import lombok.Value;
 
 @Value
 public class AgentCommandEventData implements EventData {
-    private final int agentResult;
-    private final String command;
-    private final String dataKey;
-    private final int dataValue;
-    private final String output;
+    int agentResult;
+    String command;
+    String dataKey;
+    int dataValue;
+    String output;
 
     @Override
     public EventDataType getType() {

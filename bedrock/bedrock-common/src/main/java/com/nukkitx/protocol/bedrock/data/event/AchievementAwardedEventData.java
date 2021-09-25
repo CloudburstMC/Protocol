@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class AchievementAwardedEventData implements EventData {
-    private final int achievementId;
+    int achievementId;
 
     @Override
     public EventDataType getType() {

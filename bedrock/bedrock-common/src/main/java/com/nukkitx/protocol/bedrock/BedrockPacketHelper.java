@@ -19,6 +19,7 @@ import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
 import com.nukkitx.protocol.bedrock.data.structure.StructureSettings;
 import com.nukkitx.protocol.bedrock.packet.InventoryTransactionPacket;
 import com.nukkitx.protocol.bedrock.util.TriConsumer;
+import com.nukkitx.protocol.serializer.PacketHelper;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import com.nukkitx.protocol.util.QuadConsumer;
 import com.nukkitx.protocol.util.TriFunction;
@@ -44,7 +45,7 @@ import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
-public abstract class BedrockPacketHelper {
+public abstract class BedrockPacketHelper implements PacketHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketHelper.class);
 
     protected final Int2ObjectBiMap<EntityData> entityData = new Int2ObjectBiMap<>();
@@ -727,9 +728,7 @@ public abstract class BedrockPacketHelper {
     public void writeCommandEnumConstraints(ByteBuf buffer, CommandEnumConstraintData data, List<CommandEnumData> enums, List<String> enumValues) {
         buffer.writeIntLE(enumValues.indexOf(data.getOption()));
         buffer.writeIntLE(enums.indexOf(data.getEnumData()));
-        writeArray(buffer, data.getConstraints(), (buf, constraint) -> {
-            buf.writeByte(constraint.ordinal());
-        });
+        writeArray(buffer, data.getConstraints(), (buf, constraint) -> buf.writeByte(constraint.ordinal()));
     }
 
     /**

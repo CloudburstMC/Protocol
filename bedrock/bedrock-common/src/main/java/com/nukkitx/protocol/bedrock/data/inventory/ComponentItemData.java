@@ -6,6 +6,6 @@ import lombok.Value;
 @Value
 public class ComponentItemData {
 
-    private final String name;
-    private final NbtMap data;
+    String name;
+    NbtMap data;
 }

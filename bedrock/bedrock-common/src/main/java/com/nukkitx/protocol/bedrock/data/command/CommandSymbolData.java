@@ -10,10 +10,10 @@ public class CommandSymbolData {
     private static final int ARG_FLAG_POSTFIX = 0x1000000;
     private static final int ARG_FLAG_SOFT_ENUM = 0x4000000;
 
-    private final int value;
-    private final boolean commandEnum;
-    private final boolean softEnum;
-    private final boolean postfix;
+    int value;
+    boolean commandEnum;
+    boolean softEnum;
+    boolean postfix;
 
     public static CommandSymbolData deserialize(int type) {
         int value = type & 0xffff;

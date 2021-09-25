@@ -6,11 +6,11 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class AttributeData {
-    private final String name;
-    private final float minimum;
-    private final float maximum;
-    private final float value;
-    private final float defaultValue;
+    String name;
+    float minimum;
+    float maximum;
+    float value;
+    float defaultValue;
 
     public AttributeData(String name, float minimum, float maximum, float value) {
         this.name = name;

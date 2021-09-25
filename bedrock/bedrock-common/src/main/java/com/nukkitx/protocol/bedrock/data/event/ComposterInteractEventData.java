@@ -5,8 +5,8 @@ import lombok.Value;
 
 @Value
 public class ComposterInteractEventData implements EventData {
-    private final BlockInteractionType blockInteractionType;
-    private final int itemId;
+    BlockInteractionType blockInteractionType;
+    int itemId;
 
     @Override
     public EventDataType getType() {

@@ -9,9 +9,9 @@ import lombok.Value;
 public class RecipeIngredient {
     public static final RecipeIngredient EMPTY = new RecipeIngredient(0, 0, 0);
 
-    private final int id;
-    private final int auxValue;
-    private final int stackSize;
+    int id;
+    int auxValue;
+    int stackSize;
 
     public static RecipeIngredient of(int id, int auxValue, int stackSize) {
         if (id == 0) {

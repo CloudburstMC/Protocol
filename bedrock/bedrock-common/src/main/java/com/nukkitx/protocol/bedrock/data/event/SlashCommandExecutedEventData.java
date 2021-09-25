@@ -6,9 +6,9 @@ import java.util.List;
 
 @Value
 public class SlashCommandExecutedEventData implements EventData {
-    private final String commandName;
-    private final int successCount;
-    private final List<String> outputMessages;
+    String commandName;
+    int successCount;
+    List<String> outputMessages;
 
     @Override
     public EventDataType getType() {

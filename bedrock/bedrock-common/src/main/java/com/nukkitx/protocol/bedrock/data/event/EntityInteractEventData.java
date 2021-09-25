@@ -4,10 +4,10 @@ import lombok.Value;
 
 @Value
 public class EntityInteractEventData implements EventData {
-    private final int interactionType;
-    private final int legacyEntityTypeId;
-    private final int variant;
-    private final int paletteColor;
+    int interactionType;
+    int legacyEntityTypeId;
+    int variant;
+    int paletteColor;
 
     @Override
     public EventDataType getType() {

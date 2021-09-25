@@ -8,14 +8,14 @@ import lombok.Value;
 @Value
 public class PotionMixData {
     // Potion to be put in
-    private final int inputId;
-    private final int inputMeta;
+    int inputId;
+    int inputMeta;
 
     // Item to be added to the brewing stand to brew the output potion
-    private final int reagentId;
-    private final int reagentMeta;
+    int reagentId;
+    int reagentMeta;
 
     // Output Potion
-    private final int outputId;
-    private final int outputMeta;
+    int outputId;
+    int outputMeta;
 }

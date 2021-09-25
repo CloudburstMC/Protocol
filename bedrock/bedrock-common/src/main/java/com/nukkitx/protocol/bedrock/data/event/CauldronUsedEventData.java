@@ -4,9 +4,9 @@ import lombok.Value;
 
 @Value
 public class CauldronUsedEventData implements EventData {
-    private final int potionId;
-    private final int color;
-    private final int fillLevel;
+    int potionId;
+    int color;
+    int fillLevel;
 
     @Override
     public EventDataType getType() {

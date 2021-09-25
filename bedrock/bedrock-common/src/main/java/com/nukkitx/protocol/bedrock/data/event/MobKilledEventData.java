@@ -9,14 +9,14 @@ import lombok.experimental.NonFinal;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class MobKilledEventData implements EventData {
-    private final long killerUniqueEntityId;
-    private final long victimUniqueEntityId;
-    private final int killerEntityType;
-    private final int entityDamageCause;
+    long killerUniqueEntityId;
+    long victimUniqueEntityId;
+    int killerEntityType;
+    int entityDamageCause;
     @NonFinal
-    private int villagerTradeTier = -1;
+    int villagerTradeTier = -1;
     @NonFinal
-    private String villagerDisplayName = "";
+    String villagerDisplayName = "";
 
     @Override
     public EventDataType getType() {

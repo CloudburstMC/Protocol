@@ -6,10 +6,10 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 public class AnimationData {
-    private final ImageData image;
-    private final AnimatedTextureType textureType;
-    private final float frames;
-    private final AnimationExpressionType expressionType;
+    ImageData image;
+    AnimatedTextureType textureType;
+    float frames;
+    AnimationExpressionType expressionType;
 
     public AnimationData(ImageData image, AnimatedTextureType textureType, float frames) {
         this.image = image;

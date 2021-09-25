@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class BellUsedEventData implements EventData {
-    private final int itemId;
+    int itemId;
 
     @Override
     public EventDataType getType() {

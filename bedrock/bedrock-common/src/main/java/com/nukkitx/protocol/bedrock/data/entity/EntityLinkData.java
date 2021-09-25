@@ -6,11 +6,11 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class EntityLinkData {
-    private final long from;
-    private final long to;
-    private final Type type;
-    private final boolean immediate;
-    private final boolean riderInitiated;
+    long from;
+    long to;
+    Type type;
+    boolean immediate;
+    boolean riderInitiated;
 
     @Deprecated
     public EntityLinkData(long from, long to, Type type, boolean immediate) {

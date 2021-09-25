@@ -30,13 +30,13 @@ public class ResourcePacksInfoPacket extends BedrockPacket {
 
     @Value
     public static class Entry {
-        private final String packId;
-        private final String packVersion;
-        private final long packSize;
-        private final String contentKey;
-        private final String subPackName;
-        private final String contentId;
-        private final boolean scripting;
-        private final boolean raytracingCapable;
+        String packId;
+        String packVersion;
+        long packSize;
+        String contentKey;
+        String subPackName;
+        String contentId;
+        boolean scripting;
+        boolean raytracingCapable;
     }
 }

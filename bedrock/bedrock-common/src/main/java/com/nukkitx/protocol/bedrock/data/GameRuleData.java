@@ -6,9 +6,9 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class GameRuleData<T> {
-    private final String name;
-    private final boolean editable;
-    private final T value;
+    String name;
+    boolean editable;
+    T value;
 
     public GameRuleData(String name, T value) {
         this.name = name;

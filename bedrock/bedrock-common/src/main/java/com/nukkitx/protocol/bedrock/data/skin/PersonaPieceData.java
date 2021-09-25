@@ -4,9 +4,9 @@ import lombok.Value;
 
 @Value
 public class PersonaPieceData {
-    private final String id;
-    private final String type;
-    private final String packId;
-    private final boolean isDefault;
-    private final String productId;
+    String id;
+    String type;
+    String packId;
+    boolean isDefault;
+    String productId;
 }

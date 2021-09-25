@@ -5,9 +5,9 @@ import lombok.Value;
 
 @Value
 public class CommandOutputMessage {
-    private final boolean internal;
+    boolean internal;
     @NonNull
-    private final String messageId;
+    String messageId;
     @NonNull
-    private final String[] parameters;
+    String[] parameters;
 }
