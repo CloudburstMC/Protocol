@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v448;
+package com.nukkitx.protocol.bedrock.v465;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -25,6 +25,7 @@ import com.nukkitx.protocol.bedrock.v431.serializer.PlayerAuthInputSerializer_v4
 import com.nukkitx.protocol.bedrock.v440.serializer.RemoveVolumeEntitySerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
 import com.nukkitx.protocol.bedrock.v448.serializer.*;
+import com.nukkitx.protocol.bedrock.v465.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
