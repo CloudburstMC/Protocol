@@ -10,12 +10,15 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import lombok.ToString;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
 @ToString
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class CraftingDataPacket extends BedrockPacket {
     private final List<CraftingData> craftingData = new ObjectArrayList<>();
@@ -26,6 +29,46 @@ public class CraftingDataPacket extends BedrockPacket {
      */
     private final List<MaterialReducer> materialReducers = new ObjectArrayList<>();
     private boolean cleanRecipes;
+
+    public CraftingDataPacket addCraftingData(CraftingData craftingData) {
+        this.craftingData.add(craftingData);
+        return this;
+    }
+
+    public CraftingDataPacket addCraftingData(CraftingData... craftingData) {
+        this.craftingData.addAll(Arrays.asList(craftingData));
+        return this;
+    }
+
+    public CraftingDataPacket addPotionMixData(PotionMixData potionMixData) {
+        this.potionMixData.add(potionMixData);
+        return this;
+    }
+
+    public CraftingDataPacket addPotionMixData(PotionMixData... potionMixData) {
+        this.potionMixData.addAll(Arrays.asList(potionMixData));
+        return this;
+    }
+
+    public CraftingDataPacket addContainerMixData(ContainerMixData containerMixData) {
+        this.containerMixData.add(containerMixData);
+        return this;
+    }
+
+    public CraftingDataPacket addContainerMixData(ContainerMixData... containerMixData) {
+        this.containerMixData.addAll(Arrays.asList(containerMixData));
+        return this;
+    }
+
+    public CraftingDataPacket addMaterialReducer(MaterialReducer materialReducer) {
+        this.materialReducers.add(materialReducer);
+        return this;
+    }
+
+    public CraftingDataPacket addMaterialReducers(MaterialReducer... materialReducers) {
+        this.materialReducers.addAll(Arrays.asList(materialReducers));
+        return this;
+    }
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

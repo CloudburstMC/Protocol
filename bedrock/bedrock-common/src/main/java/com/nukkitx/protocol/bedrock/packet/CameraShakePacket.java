@@ -7,6 +7,7 @@ import com.nukkitx.protocol.bedrock.data.CameraShakeType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * Causes the client's camera view to shake with a specified intensity and duration.
@@ -14,6 +15,7 @@ import lombok.EqualsAndHashCode;
  * No known uses yet.
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class CameraShakePacket extends BedrockPacket {
 

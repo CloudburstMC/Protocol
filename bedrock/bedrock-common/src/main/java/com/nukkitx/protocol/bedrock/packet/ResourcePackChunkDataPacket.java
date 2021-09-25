@@ -5,11 +5,13 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import lombok.ToString;
 
 import java.util.UUID;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(exclude = {"data"})
 public class ResourcePackChunkDataPacket extends BedrockPacket {

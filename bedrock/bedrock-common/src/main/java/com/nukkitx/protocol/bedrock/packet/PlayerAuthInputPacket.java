@@ -14,12 +14,15 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class PlayerAuthInputPacket extends BedrockPacket {
     private Vector3f rotation; // head rot after motion
@@ -46,6 +49,26 @@ public class PlayerAuthInputPacket extends BedrockPacket {
      * @since v428
      */
     private final List<PlayerBlockActionData> playerActions = new ObjectArrayList<>();
+
+    public PlayerAuthInputPacket addInputData(PlayerAuthInputData inputData) {
+        this.inputData.add(inputData);
+        return this;
+    }
+
+    public PlayerAuthInputPacket addInputData(PlayerAuthInputData... inputData) {
+        this.inputData.addAll(Arrays.asList(inputData));
+        return this;
+    }
+
+    public PlayerAuthInputPacket addPlayerAction(PlayerBlockActionData playerAction) {
+        this.playerActions.add(playerAction);
+        return this;
+    }
+
+    public PlayerAuthInputPacket addPlayerActions(PlayerBlockActionData... playerActions) {
+        this.playerActions.addAll(Arrays.asList(playerActions));
+        return this;
+    }
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

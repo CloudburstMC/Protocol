@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 
 /**
@@ -14,6 +15,7 @@ import lombok.EqualsAndHashCode;
  * creative inventory window ID.
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class CreativeContentPacket extends BedrockPacket {
     /**

@@ -12,10 +12,13 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class InventoryTransactionPacket extends BedrockPacket {
     private int legacyRequestId;
@@ -44,6 +47,26 @@ public class InventoryTransactionPacket extends BedrockPacket {
      * @return runtime ID of block
      */
     private int blockRuntimeId;
+
+    public InventoryTransactionPacket addLegacySlot(LegacySetItemSlotData legacySlot) {
+        this.legacySlots.add(legacySlot);
+        return this;
+    }
+
+    public InventoryTransactionPacket addLegacySlots(LegacySetItemSlotData... legacySlots) {
+        this.legacySlots.addAll(Arrays.asList(legacySlots));
+        return this;
+    }
+
+    public InventoryTransactionPacket addAction(InventoryActionData action) {
+        this.actions.add(action);
+        return this;
+    }
+
+    public InventoryTransactionPacket addActions(InventoryActionData... actions) {
+        this.actions.addAll(Arrays.asList(actions));
+        return this;
+    }
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

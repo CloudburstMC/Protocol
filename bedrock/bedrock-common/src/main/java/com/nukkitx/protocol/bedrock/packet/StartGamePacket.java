@@ -13,10 +13,13 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.*;
+import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(exclude = {"itemEntries", "blockPalette"})
 public class StartGamePacket extends BedrockPacket {
@@ -91,7 +94,7 @@ public class StartGamePacket extends BedrockPacket {
     private int enchantmentSeed;
     private NbtList<NbtMap> blockPalette;
     private final List<BlockPropertyData> blockProperties = new ObjectArrayList<>();
-    private List<ItemEntry> itemEntries = new ObjectArrayList<>();
+    private final List<ItemEntry> itemEntries = new ObjectArrayList<>();
     private String multiplayerCorrelationId;
     /**
      * @since v407
@@ -104,6 +107,46 @@ public class StartGamePacket extends BedrockPacket {
      * @since v440
      */
     private String serverEngine;
+
+    public StartGamePacket addGameRule(GameRuleData<?> gameRule) {
+        this.gamerules.add(gameRule);
+        return this;
+    }
+
+    public StartGamePacket addGameRules(GameRuleData<?>... gameRules) {
+        this.gamerules.addAll(Arrays.asList(gameRules));
+        return this;
+    }
+
+    public StartGamePacket addExperiment(ExperimentData experiment) {
+        this.experiments.add(experiment);
+        return this;
+    }
+
+    public StartGamePacket addExperiments(ExperimentData... experiment) {
+        this.experiments.addAll(Arrays.asList(experiment));
+        return this;
+    }
+
+    public StartGamePacket addBlockProperty(BlockPropertyData blockProperty) {
+        this.blockProperties.add(blockProperty);
+        return this;
+    }
+
+    public StartGamePacket addBlockProperties(BlockPropertyData... blockProperties) {
+        this.blockProperties.addAll(Arrays.asList(blockProperties));
+        return this;
+    }
+
+    public StartGamePacket addItemEntry(ItemEntry itemEntry) {
+        this.itemEntries.add(itemEntry);
+        return this;
+    }
+
+    public StartGamePacket addItemEntries(ItemEntry... itemEntries) {
+        this.itemEntries.addAll(Arrays.asList(itemEntries));
+        return this;
+    }
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

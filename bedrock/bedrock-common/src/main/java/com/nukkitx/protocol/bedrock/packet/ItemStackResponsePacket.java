@@ -5,8 +5,10 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,9 +18,20 @@ import java.util.List;
  * should be in sync with the server again.
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public class ItemStackResponsePacket extends BedrockPacket {
     private final List<Response> entries = new ArrayList<>();
+
+    public ItemStackResponsePacket addEntry(Response entry) {
+        this.entries.add(entry);
+        return this;
+    }
+
+    public ItemStackResponsePacket addEntries(Response... entries) {
+        this.entries.addAll(Arrays.asList(entries));
+        return this;
+    }
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

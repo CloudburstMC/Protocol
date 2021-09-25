@@ -6,9 +6,11 @@ import com.nukkitx.protocol.bedrock.data.EduSharedUriResource;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import lombok.ToString;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class EduUriResourcePacket extends BedrockPacket {

@@ -7,11 +7,13 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * Extension of the {@link SetEntityMotionPacket} which adds the {@link #onGround} field.
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MotionPredictionHintsPacket extends BedrockPacket {
 

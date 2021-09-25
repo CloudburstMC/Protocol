@@ -14,6 +14,11 @@ import java.util.Arrays;
 public class ClientCacheMissResponsePacket extends BedrockPacket {
     private final Long2ObjectMap<byte[]> blobs = new Long2ObjectOpenHashMap<>();
 
+    public ClientCacheMissResponsePacket putBlob(long key, byte[] blob) {
+        this.blobs.put(key, blob);
+        return this;
+    }
+
     @Override
     public boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);

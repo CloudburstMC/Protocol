@@ -6,10 +6,13 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class TextPacket extends BedrockPacket {
     private Type type;
@@ -19,6 +22,16 @@ public class TextPacket extends BedrockPacket {
     private List<String> parameters = new ObjectArrayList<>();
     private String xuid;
     private String platformChatId = "";
+
+    public TextPacket addParameter(String parameter) {
+        this.parameters.add(parameter);
+        return this;
+    }
+
+    public TextPacket addParameters(String... parameters) {
+        this.parameters.addAll(Arrays.asList(parameters));
+        return this;
+    }
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

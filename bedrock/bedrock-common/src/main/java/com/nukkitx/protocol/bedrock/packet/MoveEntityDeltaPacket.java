@@ -5,11 +5,14 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class MoveEntityDeltaPacket extends BedrockPacket {
     private long runtimeEntityId;
@@ -27,6 +30,16 @@ public class MoveEntityDeltaPacket extends BedrockPacket {
     private float pitch;
     private float yaw;
     private float headYaw;
+
+    public MoveEntityDeltaPacket addFlag(Flag flag) {
+        this.flags.add(flag);
+        return this;
+    }
+
+    public MoveEntityDeltaPacket addFlags(Flag... flags) {
+        this.flags.addAll(Arrays.asList(flags));
+        return this;
+    }
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

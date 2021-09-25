@@ -10,8 +10,10 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.util.ReferenceCounted;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public final class UnknownPacket extends BedrockPacket implements BedrockPacketSerializer<UnknownPacket>, ReferenceCounted {
     private ByteBuf payload;

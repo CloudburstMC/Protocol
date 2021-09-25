@@ -7,11 +7,15 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.util.Arrays;
 
 /**
  * Used to trigger an entity animation on the specified runtime IDs to the client that receives it.
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AnimateEntityPacket extends BedrockPacket {
 
@@ -72,6 +76,18 @@ public class AnimateEntityPacket extends BedrockPacket {
      * @return runtime entity IDs list
      */
     private final LongList runtimeEntityIds = new LongArrayList();
+
+    public AnimateEntityPacket addRuntimeEntityId(long runtimeEntityId) {
+        this.runtimeEntityIds.add(runtimeEntityId);
+        return this;
+    }
+
+    public AnimateEntityPacket addRuntimeEntityIds(long... runtimeEntityIds) {
+        for (long runtimeEntityId : runtimeEntityIds) {
+            this.runtimeEntityIds.add(runtimeEntityId);
+        }
+        return this;
+    }
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

@@ -10,10 +10,13 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class ClientboundMapItemDataPacket extends BedrockPacket {
     private final LongList trackedEntityIds = new LongArrayList();
@@ -28,6 +31,38 @@ public class ClientboundMapItemDataPacket extends BedrockPacket {
     private int xOffset;
     private int yOffset;
     private int[] colors;
+
+    public ClientboundMapItemDataPacket addTrackedEntityId(long trackedEntityId) {
+        this.trackedEntityIds.add(trackedEntityId);
+        return this;
+    }
+
+    public ClientboundMapItemDataPacket addTrackedEntityIds(long... trackedEntityIds) {
+        for (long trackedEntityId : trackedEntityIds) {
+            this.trackedEntityIds.add(trackedEntityId);
+        }
+        return this;
+    }
+
+    public ClientboundMapItemDataPacket addTrackedObject(MapTrackedObject trackedObject) {
+        this.trackedObjects.add(trackedObject);
+        return this;
+    }
+
+    public ClientboundMapItemDataPacket addTrackedObjects(MapTrackedObject... trackedObjects) {
+        this.trackedObjects.addAll(Arrays.asList(trackedObjects));
+        return this;
+    }
+
+    public ClientboundMapItemDataPacket addDecoration(MapDecoration decoration) {
+        this.decorations.add(decoration);
+        return this;
+    }
+
+    public ClientboundMapItemDataPacket addTrackedObjects(MapDecoration... decorations) {
+        this.decorations.addAll(Arrays.asList(decorations));
+        return this;
+    }
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
