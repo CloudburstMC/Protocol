@@ -131,6 +131,7 @@ server.bind().join();
 | bedrock-v431 | 1.16.220 |
 | bedrock-v440 | 1.17.0 |
 | bedrock-v448 | 1.17.10 |
+| bedrock-v465 | 1.17.30 |
 
 ##### Repository:
 
