@@ -72,7 +72,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             }
 
             if (definition != null && BLOCKING_ID.equals(definition.getIdentifier())) {
-                blockingTicks = buffer.readLong();
+                blockingTicks = stream.readLong();
             }
         } catch (IOException e) {
             throw new IllegalStateException("Unable to read item user data", e);
@@ -212,7 +212,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             }
 
             if (BLOCKING_ID.equals(definition.getIdentifier())) {
-                buffer.writeLong(item.getBlockingTicks());
+                stream.writeLong(item.getBlockingTicks());
             }
 
             VarInts.writeUnsignedInt(buffer, userDataBuf.readableBytes());
@@ -272,7 +272,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             }
 
             if (BLOCKING_ID.equals(definition.getIdentifier())) {
-                buffer.writeLong(item.getBlockingTicks());
+                stream.writeLong(item.getBlockingTicks());
             }
 
             VarInts.writeUnsignedInt(buffer, userDataBuf.readableBytes());
