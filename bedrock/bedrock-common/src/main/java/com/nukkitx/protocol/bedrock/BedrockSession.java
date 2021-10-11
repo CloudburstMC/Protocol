@@ -55,7 +55,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     private volatile boolean closed = false;
     private volatile boolean logging = true;
 
-    private AtomicInteger hardcodedBlockingId = new AtomicInteger(-1);
+    private final AtomicInteger hardcodedBlockingId = new AtomicInteger(-1);
 
     static {
         // Required for Android API versions prior to 26.
@@ -98,7 +98,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void sendPacketImmediately(@Nonnull BedrockPacket packet) {
         this.checkPacket(packet);
 
-        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class));
+        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class), true);
     }
 
     private void checkPacket(BedrockPacket packet) {
@@ -115,10 +115,14 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
+        this.sendWrapped(packets, encrypt, false);
+    }
+
+    public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
         ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
         try {
             this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
-            this.sendWrapped(compressed, encrypt);
+            this.sendWrapped(compressed, encrypt, immediate);
         } catch (Exception e) {
             log.error("Unable to compress packets", e);
         } finally {
@@ -128,7 +132,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt) {
+    public void sendWrapped(ByteBuf compressed, boolean encrypt) {
+        this.sendWrapped(compressed, encrypt, false);
+    }
+
+    public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
         Objects.requireNonNull(compressed, "compressed");
         try {
             ByteBuf finalPayload = ByteBufAllocator.DEFAULT.ioBuffer(1 + compressed.readableBytes() + 8);
@@ -145,7 +153,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             } else {
                 finalPayload.writeBytes(compressed);
             }
-            this.connection.send(finalPayload);
+            if (immediate) {
+                this.connection.sendImmediate(finalPayload);
+            } else {
+                this.connection.send(finalPayload);
+            }
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt package", e);
         }

@@ -11,12 +11,14 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Bedrock implements MinecraftInterface {
-    final EventLoopGroup eventLoopGroup;
+    final EventLoopGroup bossGroup;
+    final EventLoopGroup workerGroup;
     final ScheduledFuture<?> tickFuture;
 
-    Bedrock(EventLoopGroup eventLoopGroup) {
-        this.eventLoopGroup = eventLoopGroup;
-        this.tickFuture = eventLoopGroup.scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
+    Bedrock(EventLoopGroup bossGroup, EventLoopGroup workerGroup) {
+        this.bossGroup = bossGroup;
+        this.workerGroup = workerGroup;
+        this.tickFuture = workerGroup.scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
     }
 
     protected abstract void onTick();

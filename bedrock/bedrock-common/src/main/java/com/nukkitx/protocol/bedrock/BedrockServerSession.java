@@ -7,6 +7,7 @@ import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import io.netty.channel.EventLoop;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.CompletableFuture;
 
 public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
 
@@ -24,8 +25,32 @@ public class BedrockServerSession extends BedrockSession implements MinecraftSer
     }
 
     public void disconnect(@Nullable String reason, boolean hideReason) {
+        EventLoop eventLoop = this.getEventLoop();
+        if (eventLoop.inEventLoop()) {
+            disconnect0(reason, hideReason);
+        } else {
+            eventLoop.submit(() -> disconnect0(reason, hideReason));
+        }
+    }
+
+    public CompletableFuture<Void> disconnectFuture(@Nullable String reason, boolean hideReason) {
         this.checkForClosed();
 
+        EventLoop eventLoop = this.getEventLoop();
+        if (eventLoop.inEventLoop()) {
+            disconnect0(reason, hideReason);
+            return CompletableFuture.completedFuture(null);
+        } else {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            eventLoop.submit(() -> {
+                disconnect0(reason, hideReason);
+                future.complete(null);
+            });
+            return future;
+        }
+    }
+
+    private void disconnect0(@Nullable String reason, boolean hideReason) {
         DisconnectPacket packet = new DisconnectPacket();
         if (reason == null || hideReason) {
             packet.setMessageSkipped(true);

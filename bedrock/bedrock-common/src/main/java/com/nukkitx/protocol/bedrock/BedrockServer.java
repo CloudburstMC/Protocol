@@ -13,8 +13,11 @@ import io.netty.channel.socket.DatagramPacket;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BedrockServer extends Bedrock {
@@ -26,17 +29,21 @@ public class BedrockServer extends Bedrock {
         this(bindAddress, 1);
     }
 
-    public BedrockServer(InetSocketAddress bindAddress, int maxThreads) {
-        this(bindAddress, maxThreads, EventLoops.commonGroup());
+    public BedrockServer(InetSocketAddress bindAddress, int bindThreads) {
+        this(bindAddress, bindThreads, EventLoops.commonGroup());
     }
 
-    public BedrockServer(InetSocketAddress bindAddress, int maxThreads, EventLoopGroup eventLoopGroup) {
-        this(bindAddress, maxThreads, eventLoopGroup, false);
+    public BedrockServer(InetSocketAddress bindAddress, int bindThreads, EventLoopGroup eventLoopGroup) {
+        this(bindAddress, bindThreads, eventLoopGroup, false);
     }
 
-    public BedrockServer(InetSocketAddress bindAddress, int maxThreads, EventLoopGroup eventLoopGroup, boolean allowProxyProtocol) {
-        super(eventLoopGroup);
-        this.rakNetServer = new RakNetServer(bindAddress, maxThreads, eventLoopGroup, allowProxyProtocol);
+    public BedrockServer(InetSocketAddress bindAddress, int bindThreads, EventLoopGroup group, boolean allowProxyProtocol) {
+        this(bindAddress, bindThreads, group, group, allowProxyProtocol);
+    }
+
+    public BedrockServer(InetSocketAddress bindAddress, int bindThreads, EventLoopGroup bossGroup, EventLoopGroup workerGroup, boolean allowProxyProtocol) {
+        super(bossGroup, workerGroup);
+        this.rakNetServer = new RakNetServer(bindAddress, bindThreads, bossGroup, allowProxyProtocol);
         this.rakNetServer.setProtocolVersion(-1);
         this.rakNetServer.setListener(new BedrockServerListener());
     }
@@ -60,9 +67,11 @@ public class BedrockServer extends Bedrock {
     }
 
     public void close(String reason) {
+        List<CompletableFuture<Void>> futures = new ArrayList<>(this.sessions.size());
         for (BedrockServerSession session : this.sessions) {
-            session.disconnect(reason);
+            futures.add(session.disconnectFuture(reason, false));
         }
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         this.rakNetServer.close();
         this.tickFuture.cancel(false);
     }
@@ -102,7 +111,7 @@ public class BedrockServer extends Bedrock {
         @Override
         public void onSessionCreation(RakNetServerSession connection) {
             BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
-            BedrockServerSession session = new BedrockServerSession(connection, BedrockServer.this.eventLoopGroup.next(), serializer);
+            BedrockServerSession session = new BedrockServerSession(connection, BedrockServer.this.workerGroup.next(), serializer);
             connection.setListener(new BedrockRakNetSessionListener.Server(session, connection, BedrockServer.this));
         }
 

@@ -22,7 +22,7 @@ public class BedrockClient extends Bedrock {
     }
 
     public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup eventLoopGroup) {
-        super(eventLoopGroup);
+        super(eventLoopGroup, eventLoopGroup);
         this.rakNetClient = new RakNetClient(bindAddress, eventLoopGroup);
     }
 
@@ -75,7 +75,7 @@ public class BedrockClient extends Bedrock {
 
         RakNetClientSession connection = this.rakNetClient.connect(address);
         BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
-        this.session = new BedrockClientSession(connection, this.eventLoopGroup.next(), serializer);
+        this.session = new BedrockClientSession(connection, connection.getEventLoop(), serializer);
         BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
                 connection, this, future);
         connection.setListener(listener);
