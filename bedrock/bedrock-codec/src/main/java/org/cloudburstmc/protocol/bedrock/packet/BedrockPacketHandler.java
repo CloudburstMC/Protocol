@@ -684,4 +684,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(UpdateSubChunkBlocksPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(SubChunkPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(SubChunkRequestPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

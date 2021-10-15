@@ -83,5 +83,6 @@ public enum ParticleType implements LevelEventType {
     WAX,
     ELECTRIC_SPARK,
     CANDLE_FLAME,
-    SHRIEK
+    SHRIEK,
+    SCULK_SOUL
 }
