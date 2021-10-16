@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StriderRiddenInLavalInOverworldEventData implements EventData {
-    public static final StriderRiddenInLavalInOverworldEventData INSTANCE = new StriderRiddenInLavalInOverworldEventData();
+public class StriderRiddenInLavaInOverworldEventData implements EventData {
+    public static final StriderRiddenInLavaInOverworldEventData INSTANCE = new StriderRiddenInLavaInOverworldEventData();
 
     @Override
     public EventDataType getType() {

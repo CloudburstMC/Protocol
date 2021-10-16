@@ -21,9 +21,9 @@ public class EventSerializer_v471 extends EventSerializer_v389 {
         this.writers.put(EventDataType.COPPER_WAXED_OR_UNWAXED, this::writeCopperWaxedUnwaxed);
         this.readers.put(EventDataType.CODE_BUILDER_ACTION, this::readCodeBuilderAction);
         this.writers.put(EventDataType.CODE_BUILDER_ACTION, this::writeCodeBuilderAction);
-        this.readers.put(EventDataType.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD, (b, h) -> StriderRiddenInLavalInOverworldEventData.INSTANCE);
+        this.readers.put(EventDataType.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD, (b, h) -> StriderRiddenInLavaInOverworldEventData.INSTANCE);
         this.writers.put(EventDataType.STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD, (b, h, e) -> {});
-        this.readers.put(EventDataType.SNEAK_CLOSE_TO_SCULK_SENSOR, (b, h) -> SneakCloseToSculkSensorventData.INSTANCE);
+        this.readers.put(EventDataType.SNEAK_CLOSE_TO_SCULK_SENSOR, (b, h) -> SneakCloseToSculkSensorEventData.INSTANCE);
         this.writers.put(EventDataType.SNEAK_CLOSE_TO_SCULK_SENSOR, (b, h, e) -> {});
     }
 
