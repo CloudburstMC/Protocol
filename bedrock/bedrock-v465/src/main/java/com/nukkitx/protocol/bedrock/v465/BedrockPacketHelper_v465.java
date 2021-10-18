@@ -26,7 +26,7 @@ public class BedrockPacketHelper_v465 extends BedrockPacketHelper_v448 {
         super.registerLevelEvents();
 
         this.addLevelEvent(2034, LevelEventType.PARTICLE_TURTLE_EGG);
-        this.addLevelEvent(2035, LevelEventType.PARTICLE_SKULK_SHRIEK);
+        this.addLevelEvent(2035, LevelEventType.PARTICLE_SCULK_SHRIEK);
 
         int legacy = 0x4000;
         this.addLevelEvent(82 + legacy, LevelEventType.PARTICLE_SHRIEK);
