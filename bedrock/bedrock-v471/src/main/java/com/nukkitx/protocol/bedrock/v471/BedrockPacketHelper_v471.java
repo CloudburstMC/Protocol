@@ -1,25 +1,17 @@
 package com.nukkitx.protocol.bedrock.v471;
 
+import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
-import com.nukkitx.protocol.bedrock.data.entity.EntityEventType;
-import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
-import com.nukkitx.protocol.bedrock.data.skin.ImageData;
-import com.nukkitx.protocol.bedrock.data.skin.PersonaPieceData;
-import com.nukkitx.protocol.bedrock.data.skin.PersonaPieceTintData;
-import com.nukkitx.protocol.bedrock.data.skin.SerializedSkin;
-import com.nukkitx.protocol.bedrock.v448.BedrockPacketHelper_v448;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.CraftGrindstoneStackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.CraftLoomStackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.v465.BedrockPacketHelper_v465;
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
-import java.util.List;
 
 import static com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType.*;
-import static com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED;
-import static com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType.CRAFT_RECIPE_OPTIONAL;
-import static com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType.CRAFT_RESULTS_DEPRECATED;
-import static java.util.Objects.requireNonNull;
 
 public class BedrockPacketHelper_v471 extends BedrockPacketHelper_v465 {
     public static final BedrockPacketHelper_v471 INSTANCE = new BedrockPacketHelper_v471();
@@ -67,5 +59,33 @@ public class BedrockPacketHelper_v471 extends BedrockPacketHelper_v465 {
         this.stackRequestActionTypes.put(15, CRAFT_LOOM); // new for v471
         this.stackRequestActionTypes.put(16, CRAFT_NON_IMPLEMENTED_DEPRECATED);
         this.stackRequestActionTypes.put(17, CRAFT_RESULTS_DEPRECATED);
+    }
+
+    @Override
+    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockSession session) {
+        switch (type) {
+            case CRAFT_REPAIR_AND_DISENCHANT:
+                return new CraftGrindstoneStackRequestActionData(VarInts.readUnsignedInt(byteBuf), VarInts.readInt(byteBuf));
+            case CRAFT_LOOM:
+                return new CraftLoomStackRequestActionData(this.readString(byteBuf));
+            default:
+                return super.readRequestActionData(byteBuf, type, session);
+        }
+    }
+
+    @Override
+    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockSession session) {
+        switch (action.getType()) {
+            case CRAFT_REPAIR_AND_DISENCHANT:
+                CraftGrindstoneStackRequestActionData actionData = (CraftGrindstoneStackRequestActionData) action;
+                VarInts.writeUnsignedInt(byteBuf, actionData.getRecipeNetworkId());
+                VarInts.writeInt(byteBuf, actionData.getRepairCost());
+                return;
+            case CRAFT_LOOM:
+                this.writeString(byteBuf, ((CraftLoomStackRequestActionData) action).getPatternId());
+                return;
+            default:
+                super.writeRequestActionData(byteBuf, action, session);
+        }
     }
 }
