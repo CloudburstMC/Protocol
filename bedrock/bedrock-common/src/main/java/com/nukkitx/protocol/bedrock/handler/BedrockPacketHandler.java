@@ -684,4 +684,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(UpdateSubChunkBlocksPacket packet) {
         return false;
     }
+
+    default boolean handle(SubChunkPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SubChunkRequestPacket packet) {
+        return false;
+    }
 }
