@@ -26,7 +26,7 @@ public class SubChunkSerializer_v475 implements BedrockPacketSerializer<SubChunk
         buffer.writeByte(packet.getHeightMapType().ordinal());
         if (packet.getHeightMapType() == HeightMapDataType.HAS_DATA) {
             ByteBuf heightMapBuf = packet.getHeightMapData();
-            buffer.writeBytes(heightMapBuf, heightMapBuf.readableBytes(), HEIGHT_MAP_LENGTH);
+            buffer.writeBytes(heightMapBuf, heightMapBuf.readerIndex(), HEIGHT_MAP_LENGTH);
         }
         buffer.writeBoolean(packet.isCacheEnabled());
         if (packet.isCacheEnabled()) {
