@@ -114,5 +114,6 @@ public enum LevelEvent implements LevelEventType {
     SET_DATA,
 
     ALL_PLAYERS_SLEEPING,
+    SLEEPING_PLAYERS,
     JUMP_PREVENTED
 }

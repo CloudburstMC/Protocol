@@ -102,6 +102,15 @@ public class StartGamePacket implements BedrockPacket {
      * @since v440
      */
     private String serverEngine;
+    /**
+     * A XXHash64 of all block states by their compound tag.
+     * <b>The exact way this is calculated is not currently known.</b>
+     * <p>
+     * A value of 0 will not be validated by the client.
+     *
+     * @since v475
+     */
+    private long blockRegistryChecksum;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

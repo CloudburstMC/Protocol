@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v471.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v475.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -11,11 +11,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SubChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunkPacket> {
+public class SubChunkSerializer_v475 implements BedrockPacketSerializer<SubChunkPacket> {
+
+    public static final SubChunkSerializer_v475 INSTANCE = new SubChunkSerializer_v475();
 
     private static final int HEIGHT_MAP_LENGTH = 256;
-
-    public static final SubChunkSerializer_v471 INSTANCE = new SubChunkSerializer_v471();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
@@ -24,8 +24,14 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
         helper.writeByteBuf(buffer, packet.getData());
         VarInts.writeInt(buffer, packet.getResult().ordinal());
         buffer.writeByte(packet.getHeightMapType().ordinal());
-        ByteBuf heightMapBuf = packet.getHeightMapData();
-        buffer.writeBytes(heightMapBuf, heightMapBuf.readableBytes(), HEIGHT_MAP_LENGTH);
+        if (packet.getHeightMapType() == HeightMapDataType.HAS_DATA) {
+            ByteBuf heightMapBuf = packet.getHeightMapData();
+            buffer.writeBytes(heightMapBuf, heightMapBuf.readableBytes(), HEIGHT_MAP_LENGTH);
+        }
+        buffer.writeBoolean(packet.isCacheEnabled());
+        if (packet.isCacheEnabled()) {
+            buffer.writeLongLE(packet.getBlobId());
+        }
     }
 
     @Override
@@ -35,6 +41,13 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
         packet.setData(helper.readByteBuf(buffer));
         packet.setResult(SubChunkRequestResult.values()[VarInts.readInt(buffer)]);
         packet.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
-        packet.setHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
+
+        if (packet.getHeightMapType() == HeightMapDataType.HAS_DATA) {
+            packet.setHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
+        }
+        packet.setCacheEnabled(buffer.readBoolean());
+        if (packet.isCacheEnabled()) {
+            packet.setBlobId(buffer.readLongLE());
+        }
     }
 }

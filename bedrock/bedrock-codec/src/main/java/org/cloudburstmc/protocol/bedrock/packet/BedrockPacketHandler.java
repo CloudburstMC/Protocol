@@ -692,4 +692,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(SubChunkRequestPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(PhotoInfoRequestPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

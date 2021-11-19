@@ -20,6 +20,8 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
     private SubChunkRequestResult result;
     private HeightMapDataType heightMapType;
     private ByteBuf heightMapData;
+    private boolean cacheEnabled;
+    private long blobId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
