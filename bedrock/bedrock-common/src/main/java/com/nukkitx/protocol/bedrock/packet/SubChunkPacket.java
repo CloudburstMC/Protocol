@@ -18,6 +18,8 @@ public class SubChunkPacket extends BedrockPacket {
     private SubChunkRequestResult result;
     private HeightMapDataType heightMapType;
     private byte[] heightMapData;
+    private boolean cacheEnabled;
+    private long blobId;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

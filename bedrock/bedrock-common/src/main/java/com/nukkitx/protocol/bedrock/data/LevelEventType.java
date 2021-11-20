@@ -115,6 +115,7 @@ public enum LevelEventType {
 
     ALL_PLAYERS_SLEEPING,
     JUMP_PREVENTED,
+    SLEEPING_PLAYERS,
 
     // Legacy particles
     PARTICLE_BUBBLE,

@@ -692,4 +692,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(SubChunkRequestPacket packet) {
         return false;
     }
+
+    default boolean handle(PhotoInfoRequestPacket packet) {
+        return false;
+    }
 }

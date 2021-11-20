@@ -104,6 +104,10 @@ public class StartGamePacket extends BedrockPacket {
      * @since v440
      */
     private String serverEngine;
+    /**
+     * @since v475
+     */
+    private long blockRegistryChecksum;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

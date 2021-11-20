@@ -9,13 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bedrock-v440</artifactId>
+    <artifactId>bedrock-v475</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
-            <artifactId>bedrock-v431</artifactId>
+            <artifactId>bedrock-v471</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>
