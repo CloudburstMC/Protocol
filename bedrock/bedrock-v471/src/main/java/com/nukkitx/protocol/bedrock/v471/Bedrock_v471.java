@@ -272,7 +272,7 @@ public class Bedrock_v471 {
             .registerPacket(EduUriResourcePacket.class, EduUriResourceSerializer_v465.INSTANCE, 170)
             .registerPacket(CreatePhotoPacket.class, CreatePhotoSerializer_v465.INSTANCE, 171)
             .registerPacket(UpdateSubChunkBlocksPacket.class, UpdateSubChunkBlocksSerializer_v465.INSTANCE, 172)
-            .registerPacket(PhotoInfoRequestPacket.class, PhotoInfoRequestSerializer_v471.INSTANCE, 473)
+            .registerPacket(PhotoInfoRequestPacket.class, PhotoInfoRequestSerializer_v471.INSTANCE, 173)
             .registerPacket(SubChunkPacket.class, SubChunkSerializer_v471.INSTANCE, 174)
             .registerPacket(SubChunkRequestPacket.class, SubChunkRequestSerializer_v471.INSTANCE, 175)
             .build();
