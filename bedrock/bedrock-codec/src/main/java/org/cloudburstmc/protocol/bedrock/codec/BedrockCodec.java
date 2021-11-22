@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
@@ -19,6 +18,7 @@ import javax.annotation.concurrent.Immutable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -150,6 +150,12 @@ public final class BedrockCodec {
             BedrockPacketDefinition<T> updatedInfo = new BedrockPacketDefinition<>(info.getId(), info.getFactory(), serializer);
 
             packets.replace(packetClass, info, updatedInfo);
+
+            return this;
+        }
+
+        public Builder retainPackets(Class<? extends BedrockPacket>... packets) {
+            this.packets.keySet().retainAll(Arrays.asList(packets));
 
             return this;
         }
