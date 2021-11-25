@@ -18,12 +18,16 @@ public class BedrockClient extends Bedrock {
     BedrockClientSession session;
 
     public BedrockClient(InetSocketAddress bindAddress) {
-        this(bindAddress, EventLoops.commonGroup());
+        this(bindAddress, EventLoops.commonGroup(), EventLoops.commonGroup());
     }
 
     public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup eventLoopGroup) {
-        super(eventLoopGroup, eventLoopGroup);
-        this.rakNetClient = new RakNetClient(bindAddress, eventLoopGroup);
+        this(bindAddress, eventLoopGroup, eventLoopGroup);
+    }
+
+    public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup bossGroup, EventLoopGroup workerGroup) {
+        super(bossGroup, workerGroup);
+        this.rakNetClient = new RakNetClient(bindAddress, bossGroup);
     }
 
     @Override
