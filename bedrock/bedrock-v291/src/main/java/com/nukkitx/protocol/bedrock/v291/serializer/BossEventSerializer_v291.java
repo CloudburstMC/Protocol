@@ -48,7 +48,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, BossEventPacket packet) {
-        packet.setBossUniqueEntityId(VarInts.readInt(buffer));
+        packet.setBossUniqueEntityId(VarInts.readLong(buffer));
         BossEventPacket.Action action = BossEventPacket.Action.values()[VarInts.readUnsignedInt(buffer)];
         packet.setAction(action);
 
