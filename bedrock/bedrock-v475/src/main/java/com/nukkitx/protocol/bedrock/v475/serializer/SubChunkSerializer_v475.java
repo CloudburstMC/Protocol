@@ -20,7 +20,7 @@ public class SubChunkSerializer_v475 extends SubChunkSerializer_v471 {
         buffer.writeByte(packet.getHeightMapType().ordinal());
         if (packet.getHeightMapType() == HeightMapDataType.HAS_DATA) {
             byte[] heightMapBuf = packet.getHeightMapData();
-            buffer.writeBytes(heightMapBuf);
+            buffer.writeBytes(heightMapBuf, 0, HEIGHT_MAP_LENGTH);
         }
         buffer.writeBoolean(packet.isCacheEnabled());
         if (packet.isCacheEnabled()) {
@@ -37,9 +37,8 @@ public class SubChunkSerializer_v475 extends SubChunkSerializer_v471 {
         packet.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
 
         if (packet.getHeightMapType() == HeightMapDataType.HAS_DATA) {
-            ByteBuf heightMapBuffer = buffer.readBytes(buffer.readableBytes());
-            byte[] heightMap = new byte[heightMapBuffer.readableBytes()];
-            heightMapBuffer.readBytes(heightMap);
+            byte[] heightMap = new byte[HEIGHT_MAP_LENGTH];
+            buffer.readBytes(heightMap);
         }
         packet.setCacheEnabled(buffer.readBoolean());
         if (packet.isCacheEnabled()) {

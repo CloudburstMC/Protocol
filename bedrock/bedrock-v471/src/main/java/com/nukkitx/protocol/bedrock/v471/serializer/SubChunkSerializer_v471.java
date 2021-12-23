@@ -12,7 +12,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunkPacket> {
+
     public static final SubChunkSerializer_v471 INSTANCE = new SubChunkSerializer_v471();
+
+    protected static final int HEIGHT_MAP_LENGTH = 256;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, SubChunkPacket packet) {
@@ -21,7 +24,7 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
         helper.writeByteArray(buffer, packet.getData());
         VarInts.writeInt(buffer, packet.getResult().ordinal());
         buffer.writeByte(packet.getHeightMapType().ordinal());
-        buffer.writeBytes(packet.getHeightMapData());
+        buffer.writeBytes(packet.getHeightMapData(), 0, HEIGHT_MAP_LENGTH);
     }
 
     @Override
@@ -32,9 +35,8 @@ public class SubChunkSerializer_v471 implements BedrockPacketSerializer<SubChunk
         packet.setResult(SubChunkRequestResult.values()[VarInts.readInt(buffer)]);
         packet.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
 
-        ByteBuf heightMapBuffer = buffer.readBytes(buffer.readableBytes());
-        byte[] heightMap = new byte[heightMapBuffer.readableBytes()];
-        heightMapBuffer.readBytes(heightMap);
+        byte[] heightMap = new byte[HEIGHT_MAP_LENGTH];
+        buffer.readBytes(heightMap);
 
         packet.setHeightMapData(heightMap);
     }
