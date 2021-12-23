@@ -1,29 +1,29 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.ScoreInfo;
 import com.nukkitx.protocol.bedrock.packet.SetScorePacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import static com.nukkitx.protocol.bedrock.packet.SetScorePacket.Action;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SetScoreSerializer_v291 implements PacketSerializer<SetScorePacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class SetScoreSerializer_v291 implements BedrockPacketSerializer<SetScorePacket> {
     public static final SetScoreSerializer_v291 INSTANCE = new SetScoreSerializer_v291();
 
 
     @Override
-    public void serialize(ByteBuf buffer, SetScorePacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, SetScorePacket packet) {
         Action action = packet.getAction();
         buffer.writeByte(action.ordinal());
 
-        BedrockUtils.writeArray(buffer, packet.getInfos(), (buf, scoreInfo) -> {
+        helper.writeArray(buffer, packet.getInfos(), (buf, scoreInfo) -> {
             VarInts.writeLong(buf, scoreInfo.getScoreboardId());
-            BedrockUtils.writeString(buf, scoreInfo.getObjectiveId());
+            helper.writeString(buf, scoreInfo.getObjectiveId());
             buf.writeIntLE(scoreInfo.getScore());
             if (action == Action.SET) {
                 buf.writeByte(scoreInfo.getType().ordinal());
@@ -33,7 +33,7 @@ public class SetScoreSerializer_v291 implements PacketSerializer<SetScorePacket>
                         VarInts.writeLong(buf, scoreInfo.getEntityId());
                         break;
                     case FAKE:
-                        BedrockUtils.writeString(buf, scoreInfo.getName());
+                        helper.writeString(buf, scoreInfo.getName());
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid score info received");
@@ -43,13 +43,13 @@ public class SetScoreSerializer_v291 implements PacketSerializer<SetScorePacket>
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, SetScorePacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, SetScorePacket packet) {
         Action action = Action.values()[buffer.readUnsignedByte()];
         packet.setAction(action);
 
-        BedrockUtils.readArray(buffer, packet.getInfos(), buf -> {
+        helper.readArray(buffer, packet.getInfos(), buf -> {
             long scoreboardId = VarInts.readLong(buf);
-            String objectiveId = BedrockUtils.readString(buf);
+            String objectiveId = helper.readString(buf);
             int score = buf.readIntLE();
             if (action == Action.SET) {
                 ScoreInfo.ScorerType type = ScoreInfo.ScorerType.values()[buf.readUnsignedByte()];
@@ -59,7 +59,7 @@ public class SetScoreSerializer_v291 implements PacketSerializer<SetScorePacket>
                         long entityId = VarInts.readLong(buf);
                         return new ScoreInfo(scoreboardId, objectiveId, score, type, entityId);
                     case FAKE:
-                        String name = BedrockUtils.readString(buf);
+                        String name = helper.readString(buf);
                         return new ScoreInfo(scoreboardId, objectiveId, score, name);
                     default:
                         throw new IllegalArgumentException("Invalid score info received");

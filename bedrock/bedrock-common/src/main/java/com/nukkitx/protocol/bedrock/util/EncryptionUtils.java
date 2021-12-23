@@ -6,19 +6,24 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
-import com.nimbusds.jose.jwk.ECKey;
+import com.nimbusds.jose.jwk.Curve;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.JSONValue;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.nukkitx.natives.aes.AesFactory;
+import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.util.Preconditions;
-import com.nukkitx.protocol.util.NativeCodeFactory;
-import com.voxelwind.server.jni.CryptoUtil;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
+import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
 import java.security.*;
@@ -28,11 +33,15 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Iterator;
 
 @UtilityClass
 public class EncryptionUtils {
-    private static final boolean CAN_USE_ENCRYPTION = CryptoUtil.isJCEUnlimitedStrength() || NativeCodeFactory.cipher.isLoaded();
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(EncryptionUtils.class);
+
+    private static final AesFactory AES_FACTORY;
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final String MOJANG_PUBLIC_KEY_BASE64 =
@@ -44,6 +53,14 @@ public class EncryptionUtils {
         // Since Java 8u231, secp384r1 is deprecated and will throw an exception.
         String namedGroups = System.getProperty("jdk.tls.namedGroups");
         System.setProperty("jdk.tls.namedGroups", namedGroups == null || namedGroups.isEmpty() ? "secp384r1" : ", secp384r1");
+
+        AesFactory aesFactory;
+        try {
+            aesFactory = Natives.AES_CFB8.get();
+        } catch (NullPointerException | IllegalStateException e) {
+            aesFactory = null;
+        }
+        AES_FACTORY = aesFactory;
 
         try {
             KEY_PAIR_GEN = KeyPairGenerator.getInstance("EC");
@@ -83,7 +100,7 @@ public class EncryptionUtils {
      * @throws JOSEException invalid key provided
      */
     public static void signJwt(JWSObject jws, ECPrivateKey key) throws JOSEException {
-        jws.sign(new ECDSASigner(key, ECKey.Curve.P_384));
+        jws.sign(new ECDSASigner(key, Curve.P_384));
     }
 
     /**
@@ -111,18 +128,36 @@ public class EncryptionUtils {
     public static boolean verifyChain(JSONArray chain) throws JOSEException, ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
         ECPublicKey lastKey = null;
         boolean validChain = false;
-        for (Object node : chain) {
+        Iterator<Object> iterator = chain.iterator();
+        while (iterator.hasNext()) {
+            Object node = iterator.next();
             Preconditions.checkArgument(node instanceof String, "Chain node is not a string");
             JWSObject jwt = JWSObject.parse((String) node);
 
-            if (lastKey == null) {
-                validChain = verifyJwt(jwt, MOJANG_PUBLIC_KEY);
-            } else {
-                validChain = verifyJwt(jwt, lastKey);
+            // x509 cert is expected in every claim
+            URI x5u = jwt.getHeader().getX509CertURL();
+            if (x5u == null) {
+                return false;
             }
 
-            if (!validChain) {
-                break;
+            ECPublicKey expectedKey = EncryptionUtils.generateKey(jwt.getHeader().getX509CertURL().toString());
+            // First key is self-signed
+            if (lastKey == null) {
+                lastKey = expectedKey;
+            } else if (!lastKey.equals(expectedKey)) {
+                return false;
+            }
+
+            if (!verifyJwt(jwt, lastKey)) {
+                return false;
+            }
+
+            if (validChain) {
+                return !iterator.hasNext();
+            }
+
+            if (lastKey.equals(EncryptionUtils.MOJANG_PUBLIC_KEY)) {
+                validChain = true;
             }
 
             Object payload = JSONValue.parse(jwt.getPayload().toString());
@@ -210,7 +245,7 @@ public class EncryptionUtils {
      * @return can use encryption
      */
     public static boolean canUseEncryption() {
-        return CAN_USE_ENCRYPTION;
+        return AES_FACTORY != null;
     }
 
     /**
@@ -220,5 +255,26 @@ public class EncryptionUtils {
      */
     public static ECPublicKey getMojangPublicKey() {
         return MOJANG_PUBLIC_KEY;
+    }
+
+    public static Cipher createCipher(boolean gcm, boolean encrypt, SecretKey key) {
+        try {
+            byte[] iv;
+            String transformation;
+            if (gcm) {
+                iv = new byte[16];
+                System.arraycopy(key.getEncoded(), 0, iv, 0, 12);
+                iv[15] = 2;
+                transformation = "AES/CTR/NoPadding";
+            } else {
+                iv = Arrays.copyOf(key.getEncoded(), 16);
+                transformation = "AES/CFB8/NoPadding";
+            }
+            Cipher cipher = Cipher.getInstance(transformation);
+            cipher.init(encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+            return cipher;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new AssertionError("Unable to initialize required encryption", e);
+        }
     }
 }

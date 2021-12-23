@@ -29,9 +29,9 @@ public class BossEventPacket extends BedrockPacket {
 
     public enum Action {
         /**
-         * Shows the bossbar to the player.
+         * Creates the bossbar to the player.
          */
-        SHOW,
+        CREATE,
         /**
          * Registers a player to a boss fight.
          */
@@ -39,7 +39,7 @@ public class BossEventPacket extends BedrockPacket {
         /**
          * Removes the bossbar from the client.
          */
-        HIDE,
+        REMOVE,
         /**
          * Unregisters a player from a boss fight.
          */
@@ -47,18 +47,18 @@ public class BossEventPacket extends BedrockPacket {
         /**
          * Appears not to be implemented. Currently bar percentage only appears to change in response to the target entity's health.
          */
-        HEALTH_PERCENTAGE,
+        UPDATE_PERCENTAGE,
         /**
          * Also appears to not be implemented. Title clientside sticks as the target entity's nametag, or their entity transactionType name if not set.
          */
-        TITLE,
+        UPDATE_NAME,
         /**
          * Darken the sky when the boss bar is shown.
          */
-        DARKEN_SKY,
+        UPDATE_PROPERTIES,
         /**
          * Not implemented :( Intended to alter bar appearance, but these currently produce no effect on clientside whatsoever.
          */
-        OVERLAY
+        UPDATE_STYLE
     }
 }

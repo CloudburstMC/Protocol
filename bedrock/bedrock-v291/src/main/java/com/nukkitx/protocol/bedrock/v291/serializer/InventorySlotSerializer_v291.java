@@ -1,28 +1,29 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.packet.InventorySlotPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class InventorySlotSerializer_v291 implements PacketSerializer<InventorySlotPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class InventorySlotSerializer_v291 implements BedrockPacketSerializer<InventorySlotPacket> {
     public static final InventorySlotSerializer_v291 INSTANCE = new InventorySlotSerializer_v291();
 
     @Override
-    public void serialize(ByteBuf buffer, InventorySlotPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, InventorySlotPacket packet, BedrockSession session) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
         VarInts.writeUnsignedInt(buffer, packet.getSlot());
-        BedrockUtils.writeItemData(buffer, packet.getItem());
+        helper.writeItem(buffer, packet.getItem(), session);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, InventorySlotPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, InventorySlotPacket packet, BedrockSession session) {
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
         packet.setSlot(VarInts.readUnsignedInt(buffer));
-        packet.setItem(BedrockUtils.readItemData(buffer));
+        packet.setItem(helper.readItem(buffer, session));
     }
 }

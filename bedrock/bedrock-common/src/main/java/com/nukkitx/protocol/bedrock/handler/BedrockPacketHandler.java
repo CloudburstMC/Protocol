@@ -93,6 +93,10 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
+    default boolean handle(FilterTextPacket packet) {
+        return false;
+    }
+
     default boolean handle(InteractPacket packet) {
         return false;
     }
@@ -505,11 +509,11 @@ public interface BedrockPacketHandler extends PacketHandler {
         return false;
     }
 
-    default boolean handle(StructureTemplateDataExportRequestPacket packet) {
+    default boolean handle(StructureTemplateDataRequestPacket packet) {
         return false;
     }
 
-    default boolean handle(StructureTemplateDataExportResponsePacket packet) {
+    default boolean handle(StructureTemplateDataResponsePacket packet) {
         return false;
     }
 
@@ -570,6 +574,126 @@ public interface BedrockPacketHandler extends PacketHandler {
     }
 
     default boolean handle(VideoStreamConnectPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CodeBuilderPacket packet) {
+        return false;
+    }
+
+    default boolean handle(EmoteListPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemStackRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemStackResponsePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerArmorDamagePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerEnchantOptionsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CreativeContentPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdatePlayerGameTypePacket packet) {
+        return false;
+    }
+
+    default boolean handle(PositionTrackingDBServerBroadcastPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PositionTrackingDBClientRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PacketViolationWarningPacket packet) {
+        return false;
+    }
+
+    default boolean handle(DebugInfoPacket packet) {
+        return false;
+    }
+
+    default boolean handle(MotionPredictionHintsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(AnimateEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CameraShakePacket packet) {
+        return false;
+    }
+
+    default boolean handle(CorrectPlayerMovePredictionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PlayerFogPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ItemComponentPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ClientboundDebugRendererPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SyncEntityPropertyPacket packet) {
+        return false;
+    }
+
+    default boolean handle(AddVolumeEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RemoveVolumeEntityPacket packet) {
+        return false;
+    }
+
+    default boolean handle(NpcDialoguePacket packet) {
+        return false;
+    }
+
+    default boolean handle(SimulationTypePacket packet) {
+        return false;
+    }
+
+    default boolean handle(EduUriResourcePacket packet) {
+        return false;
+    }
+
+    default boolean handle(CreatePhotoPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdateSubChunkBlocksPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SubChunkPacket packet) {
+        return false;
+    }
+
+    default boolean handle(SubChunkRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(PhotoInfoRequestPacket packet) {
         return false;
     }
 }

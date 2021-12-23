@@ -1,8 +1,8 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.BookEditPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 
 import static com.nukkitx.protocol.bedrock.packet.BookEditPacket.Action;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class BookEditSerializer_v291 implements PacketSerializer<BookEditPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEditPacket> {
     public static final BookEditSerializer_v291 INSTANCE = new BookEditSerializer_v291();
     private static final Int2ObjectBiMap<Action> types = new Int2ObjectBiMap<>();
 
@@ -24,15 +24,15 @@ public class BookEditSerializer_v291 implements PacketSerializer<BookEditPacket>
     }
 
     @Override
-    public void serialize(ByteBuf buffer, BookEditPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, BookEditPacket packet) {
         buffer.writeByte(packet.getAction().ordinal());
         buffer.writeByte(packet.getInventorySlot());
         switch (packet.getAction()) {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 buffer.writeByte(packet.getPageNumber());
-                BedrockUtils.writeString(buffer, packet.getText());
-                BedrockUtils.writeString(buffer, packet.getPhotoName());
+                helper.writeString(buffer, packet.getText());
+                helper.writeString(buffer, packet.getPhotoName());
                 break;
             case DELETE_PAGE:
                 buffer.writeByte(packet.getPageNumber());
@@ -42,23 +42,23 @@ public class BookEditSerializer_v291 implements PacketSerializer<BookEditPacket>
                 buffer.writeByte(packet.getSecondaryPageNumber());
                 break;
             case SIGN_BOOK:
-                BedrockUtils.writeString(buffer, packet.getTitle());
-                BedrockUtils.writeString(buffer, packet.getAuthor());
-                BedrockUtils.writeString(buffer, packet.getXuid());
+                helper.writeString(buffer, packet.getTitle());
+                helper.writeString(buffer, packet.getAuthor());
+                helper.writeString(buffer, packet.getXuid());
                 break;
         }
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, BookEditPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, BookEditPacket packet) {
         packet.setAction(types.get(buffer.readUnsignedByte()));
         packet.setInventorySlot(buffer.readUnsignedByte());
         switch (packet.getAction()) {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 packet.setPageNumber(buffer.readUnsignedByte());
-                packet.setText(BedrockUtils.readString(buffer));
-                packet.setPhotoName(BedrockUtils.readString(buffer));
+                packet.setText(helper.readString(buffer));
+                packet.setPhotoName(helper.readString(buffer));
                 break;
             case DELETE_PAGE:
                 packet.setPageNumber(buffer.readUnsignedByte());
@@ -68,9 +68,9 @@ public class BookEditSerializer_v291 implements PacketSerializer<BookEditPacket>
                 packet.setSecondaryPageNumber(buffer.readUnsignedByte());
                 break;
             case SIGN_BOOK:
-                packet.setTitle(BedrockUtils.readString(buffer));
-                packet.setAuthor(BedrockUtils.readString(buffer));
-                packet.setXuid(BedrockUtils.readString(buffer));
+                packet.setTitle(helper.readString(buffer));
+                packet.setAuthor(helper.readString(buffer));
+                packet.setXuid(helper.readString(buffer));
                 break;
         }
     }

@@ -38,6 +38,8 @@ public class TextPacket extends BedrockPacket {
         TIP,
         SYSTEM,
         WHISPER,
-        ANNOUNCEMENT
+        ANNOUNCEMENT,
+        OBJECT,
+        OBJECT_WHISPER
     }
 }

@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.nbt.tag.Tag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AvailableEntityIdentifiersPacket extends BedrockPacket {
-    private Tag<?> tag;
+    private NbtMap identifiers;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

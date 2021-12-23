@@ -1,14 +1,15 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
-import com.nukkitx.nbt.CompoundTagBuilder;
-import com.nukkitx.nbt.tag.CompoundTag;
-import com.nukkitx.nbt.tag.ListTag;
+import com.nukkitx.nbt.NbtList;
+import com.nukkitx.nbt.NbtMap;
+import com.nukkitx.nbt.NbtType;
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
+import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.StartGamePacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
@@ -16,29 +17,82 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGamePacket> {
     public static final StartGameSerializer_v291 INSTANCE = new StartGameSerializer_v291();
 
-    private static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
+    protected static final PlayerPermission[] PLAYER_PERMISSIONS = PlayerPermission.values();
 
     @Override
-    public void serialize(ByteBuf buffer, StartGamePacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
         VarInts.writeLong(buffer, packet.getUniqueEntityId());
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        VarInts.writeInt(buffer, packet.getPlayerGamemode());
-        BedrockUtils.writeVector3f(buffer, packet.getPlayerPosition());
-        BedrockUtils.writeVector2f(buffer, packet.getRotation());
-        // Level settings start
+        VarInts.writeInt(buffer, packet.getPlayerGameType().ordinal());
+        helper.writeVector3f(buffer, packet.getPlayerPosition());
+        helper.writeVector2f(buffer, packet.getRotation());
+
+        this.writeLevelSettings(buffer, helper, packet);
+
+        helper.writeString(buffer, packet.getLevelId());
+        helper.writeString(buffer, packet.getLevelName());
+        helper.writeString(buffer, packet.getPremiumWorldTemplateId());
+        buffer.writeBoolean(packet.isTrial());
+        buffer.writeLongLE(packet.getCurrentTick());
+        VarInts.writeInt(buffer, packet.getEnchantmentSeed());
+
+        NbtList<NbtMap> palette = packet.getBlockPalette();
+        VarInts.writeUnsignedInt(buffer, palette.size());
+        for (NbtMap entry : palette) {
+            NbtMap blockTag = entry.getCompound("block");
+            helper.writeString(buffer, blockTag.getString("name"));
+            buffer.writeShortLE(entry.getShort("meta"));
+        }
+
+        helper.writeString(buffer, packet.getMultiplayerCorrelationId());
+    }
+
+    @Override
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
+        packet.setUniqueEntityId(VarInts.readLong(buffer));
+        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setPlayerGameType(GameType.from(VarInts.readInt(buffer)));
+        packet.setPlayerPosition(helper.readVector3f(buffer));
+        packet.setRotation(helper.readVector2f(buffer));
+
+        this.readLevelSettings(buffer, helper, packet);
+
+        packet.setLevelId(helper.readString(buffer));
+        packet.setLevelName(helper.readString(buffer));
+        packet.setPremiumWorldTemplateId(helper.readString(buffer));
+        packet.setTrial(buffer.readBoolean());
+        packet.setCurrentTick(buffer.readLongLE());
+        packet.setEnchantmentSeed(VarInts.readInt(buffer));
+
+        int paletteLength = VarInts.readUnsignedInt(buffer);
+        List<NbtMap> palette = new ObjectArrayList<>(paletteLength);
+        for (int i = 0; i < paletteLength; i++) {
+            palette.add(NbtMap.builder()
+                    .putCompound("block", NbtMap.builder()
+                            .putString("name", helper.readString(buffer))
+                            .build())
+                    .putShort("meta", buffer.readShortLE())
+                    .build());
+        }
+        packet.setBlockPalette(new NbtList<>(NbtType.COMPOUND, palette));
+
+        packet.setMultiplayerCorrelationId(helper.readString(buffer));
+    }
+
+    protected void writeLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
         VarInts.writeInt(buffer, packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
-        VarInts.writeInt(buffer, packet.getLevelGamemode());
+        VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
         VarInts.writeInt(buffer, packet.getDifficulty());
-        BedrockUtils.writeBlockPosition(buffer, packet.getDefaultSpawn());
+        helper.writeBlockPosition(buffer, packet.getDefaultSpawn());
         buffer.writeBoolean(packet.isAchievementsDisabled());
-        VarInts.writeInt(buffer, packet.getTime());
-        buffer.writeBoolean(packet.getEduEditionOffers() != 0);
+        VarInts.writeInt(buffer, packet.getDayCycleStopTime());
+        buffer.writeBoolean(packet.getEduEditionOffers() != 0); // Is Education world
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
         buffer.writeFloatLE(packet.getRainLevel());
         buffer.writeFloatLE(packet.getLightningLevel());
@@ -47,7 +101,7 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         buffer.writeBoolean(packet.getXblBroadcastMode() != GamePublishSetting.NO_MULTI_PLAY);
         buffer.writeBoolean(packet.isCommandsEnabled());
         buffer.writeBoolean(packet.isTexturePacksRequired());
-        BedrockUtils.writeArray(buffer, packet.getGamerules(), BedrockUtils::writeGameRule);
+        helper.writeArray(buffer, packet.getGamerules(), helper::writeGameRule);
         buffer.writeBoolean(packet.isBonusChestEnabled());
         buffer.writeBoolean(packet.isStartingWithMap());
         buffer.writeBoolean(packet.isTrustingPlayers());
@@ -61,42 +115,18 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         buffer.writeBoolean(packet.isResourcePackLocked());
         buffer.writeBoolean(packet.isFromLockedWorldTemplate());
         buffer.writeBoolean(packet.isUsingMsaGamertagsOnly());
-        // Level settings end
-        BedrockUtils.writeString(buffer, packet.getLevelId());
-        BedrockUtils.writeString(buffer, packet.getWorldName());
-        BedrockUtils.writeString(buffer, packet.getPremiumWorldTemplateId());
-        buffer.writeBoolean(packet.isTrial());
-        buffer.writeLongLE(packet.getCurrentTick());
-        VarInts.writeInt(buffer, packet.getEnchantmentSeed());
-
-        List<CompoundTag> palette = packet.getBlockPalette().getValue();
-        VarInts.writeUnsignedInt(buffer, palette.size());
-        for (CompoundTag entry : palette) {
-            CompoundTag blockTag = entry.getCompound("block");
-            BedrockUtils.writeString(buffer, blockTag.getString("name"));
-            buffer.writeShortLE(entry.getShort("meta"));
-        }
-
-        BedrockUtils.writeString(buffer, packet.getMultiplayerCorrelationId());
     }
 
-    @Override
-    public void deserialize(ByteBuf buffer, StartGamePacket packet) {
-        packet.setUniqueEntityId(VarInts.readLong(buffer));
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        packet.setPlayerGamemode(VarInts.readInt(buffer));
-        packet.setPlayerPosition(BedrockUtils.readVector3f(buffer));
-        packet.setRotation(BedrockUtils.readVector2f(buffer));
-        // Level settings start
+    protected void readLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
         packet.setSeed(VarInts.readInt(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
-        packet.setLevelGamemode(VarInts.readInt(buffer));
+        packet.setLevelGameType(GameType.from(VarInts.readInt(buffer)));
         packet.setDifficulty(VarInts.readInt(buffer));
-        packet.setDefaultSpawn(BedrockUtils.readBlockPosition(buffer));
+        packet.setDefaultSpawn(helper.readBlockPosition(buffer));
         packet.setAchievementsDisabled(buffer.readBoolean());
-        packet.setTime(VarInts.readInt(buffer));
-        packet.setEduEditionOffers(buffer.readBoolean() ? 1 : 0);
+        packet.setDayCycleStopTime(VarInts.readInt(buffer));
+        packet.setEduEditionOffers(buffer.readBoolean() ? 1 : 0); // Is Education world
         packet.setEduFeaturesEnabled(buffer.readBoolean());
         packet.setRainLevel(buffer.readFloatLE());
         packet.setLightningLevel(buffer.readFloatLE());
@@ -105,7 +135,7 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         buffer.readBoolean(); // broadcasting to XBL
         packet.setCommandsEnabled(buffer.readBoolean());
         packet.setTexturePacksRequired(buffer.readBoolean());
-        BedrockUtils.readArray(buffer, packet.getGamerules(), BedrockUtils::readGameRule);
+        helper.readArray(buffer, packet.getGamerules(), helper::readGameRule);
         packet.setBonusChestEnabled(buffer.readBoolean());
         packet.setStartingWithMap(buffer.readBoolean());
         packet.setTrustingPlayers(buffer.readBoolean());
@@ -119,26 +149,5 @@ public class StartGameSerializer_v291 implements PacketSerializer<StartGamePacke
         packet.setResourcePackLocked(buffer.readBoolean());
         packet.setFromLockedWorldTemplate(buffer.readBoolean());
         packet.setUsingMsaGamertagsOnly(buffer.readBoolean());
-        // Level settings end
-        packet.setLevelId(BedrockUtils.readString(buffer));
-        packet.setWorldName(BedrockUtils.readString(buffer));
-        packet.setPremiumWorldTemplateId(BedrockUtils.readString(buffer));
-        packet.setTrial(buffer.readBoolean());
-        packet.setCurrentTick(buffer.readLongLE());
-        packet.setEnchantmentSeed(VarInts.readInt(buffer));
-
-        int paletteLength = VarInts.readUnsignedInt(buffer);
-        List<CompoundTag> palette = new ObjectArrayList<>(paletteLength);
-        for (int i = 0; i < paletteLength; i++) {
-            palette.add(CompoundTagBuilder.builder()
-                    .tag(CompoundTagBuilder.builder()
-                            .stringTag("name", BedrockUtils.readString(buffer))
-                            .build("block"))
-                    .shortTag("meta", buffer.readShortLE())
-                    .buildRootTag());
-        }
-        packet.setBlockPalette(new ListTag<>("", CompoundTag.class, palette));
-
-        packet.setMultiplayerCorrelationId(BedrockUtils.readString(buffer));
     }
 }

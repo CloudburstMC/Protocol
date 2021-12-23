@@ -18,6 +18,6 @@ public class StopSoundPacket extends BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.STOP_SOUND_PACKET;
+        return BedrockPacketType.STOP_SOUND;
     }
 }

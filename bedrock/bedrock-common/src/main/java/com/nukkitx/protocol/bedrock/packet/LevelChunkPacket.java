@@ -10,8 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
+@ToString(doNotUseGetters = true, exclude = {"data"})
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-@ToString(exclude = {"data"}) // We don't really want to be printing the entire chunk
 public class LevelChunkPacket extends BedrockPacket {
     private int chunkX;
     private int chunkZ;

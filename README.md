@@ -1,6 +1,6 @@
 # Protocol
 
-[![License](https://img.shields.io/badge/license-Apache-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-LGPL-blue.svg)](LICENSE)
 [![Build Status](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/badge/icon)](https://ci.nukkitx.com/job/NukkitX/job/Protocol/job/master/)
 [![Discord](https://img.shields.io/discord/393465748535640064.svg)](https://discord.gg/seCw62a)
 
@@ -113,7 +113,7 @@ server.bind().join();
 ##### Protocol Versions:
 
 | Dependency | Minecraft Version |
-|:-:|:-:|
+| :---: | :---: |
 | bedrock-v291 | 1.7.0 |
 | bedrock-v313 | 1.8.0 |
 | bedrock-v332 | 1.9.0 |
@@ -123,6 +123,16 @@ server.bind().join();
 | bedrock-v388 | 1.13.0 |
 | bedrock-v389 | 1.14.0 - 1.14.50 |
 | bedrock-v390 | 1.14.60 |
+| bedrock-v407 | 1.16.0 - 1.16.10 |
+| bedrock-v408 | 1.16.20 |
+| bedrock-v419 | 1.16.100 |
+| bedrock-v422 | 1.16.200 - 1.16.201 |
+| bedrock-v428 | 1.16.210 |
+| bedrock-v431 | 1.16.220 |
+| bedrock-v440 | 1.17.0 |
+| bedrock-v448 | 1.17.10 - 1.17.11 |
+| bedrock-v465 | 1.17.30 - 1.17.34 |
+| bedrock-v471 | 1.17.40 - 1.17.41 |
 
 ##### Repository:
 
@@ -146,7 +156,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.5.6</version>
+            <version>2.9.4</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -154,8 +164,8 @@ server.bind().join();
 
 #### Projects Using This Library
 
+* [__Cloudburst__ - A bedrock first server software](https://github.com/CloudburstMC/Server)
 * [__ProxyPass__ - Vanilla server man-in-the-middle proxy](https://github.com/NukkitX/ProxyPass)
-* [__DragonProxy__ - Allow Bedrock clients to join Java Edition servers](https://github.com/DragonetMC/DragonProxy)
 * [__Geyser__ - A bridge between Bedrock and Java Edition](https://github.com/GeyserMC/Geyser)
 * [__BedrockConnect__ - Allow Xbox/Switch Bedrock clients to add and join servers](https://github.com/Pugmatt/BedrockConnect)
 

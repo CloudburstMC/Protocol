@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.math.vector.Vector3i;
-import com.nukkitx.nbt.tag.Tag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class BlockEntityDataPacket extends BedrockPacket {
     private Vector3i blockPosition;
-    private Tag<?> data;
+    private NbtMap data;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

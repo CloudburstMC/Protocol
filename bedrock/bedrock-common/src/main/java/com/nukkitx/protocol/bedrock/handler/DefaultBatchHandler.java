@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.handler;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.AccessLevel;
@@ -23,8 +24,17 @@ public class DefaultBatchHandler implements BatchHandler {
             }
 
             BedrockPacketHandler handler = session.getPacketHandler();
-            if (handler == null || !packet.handle(handler)) {
-                log.debug("Unhandled packet for {}: {}", session.getAddress(), packet);
+            boolean release = true;
+            try {
+                if (handler != null && packet.handle(handler)) {
+                    release = false;
+                } else {
+                    log.debug("Unhandled packet for {}: {}", session.getAddress(), packet);
+                }
+            } finally {
+                if (release) {
+                    ReferenceCountUtil.release(packet);
+                }
             }
         }
     }

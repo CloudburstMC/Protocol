@@ -2,7 +2,8 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.CommandEnumData;
+import com.nukkitx.protocol.bedrock.data.command.CommandEnumData;
+import com.nukkitx.protocol.bedrock.data.command.SoftEnumUpdateType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class UpdateSoftEnumPacket extends BedrockPacket {
     private CommandEnumData softEnum;
-    private Type type;
+    private SoftEnumUpdateType type;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -20,11 +21,5 @@ public class UpdateSoftEnumPacket extends BedrockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_SOFT_ENUM;
-    }
-
-    public enum Type {
-        ADD,
-        REMOVE,
-        UPDATE
     }
 }

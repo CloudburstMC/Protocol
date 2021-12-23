@@ -3,6 +3,8 @@ package com.nukkitx.protocol.bedrock;
 import com.nukkitx.network.raknet.RakNetClient;
 import com.nukkitx.network.raknet.RakNetClientSession;
 import com.nukkitx.network.util.EventLoops;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializers;
 import io.netty.channel.EventLoopGroup;
 
 import java.net.Inet4Address;
@@ -16,18 +18,22 @@ public class BedrockClient extends Bedrock {
     BedrockClientSession session;
 
     public BedrockClient(InetSocketAddress bindAddress) {
-        this(bindAddress, EventLoops.commonGroup());
+        this(bindAddress, EventLoops.commonGroup(), EventLoops.commonGroup());
     }
 
     public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup eventLoopGroup) {
-        super(eventLoopGroup);
-        this.rakNetClient = new RakNetClient(bindAddress, eventLoopGroup);
+        this(bindAddress, eventLoopGroup, eventLoopGroup);
+    }
+
+    public BedrockClient(InetSocketAddress bindAddress, EventLoopGroup bossGroup, EventLoopGroup workerGroup) {
+        super(bossGroup, workerGroup);
+        this.rakNetClient = new RakNetClient(bindAddress, bossGroup);
     }
 
     @Override
     protected void onTick() {
         if (this.session != null) {
-            this.eventLoopGroup.execute(session::onTick);
+            this.session.tick();
         }
     }
 
@@ -36,23 +42,25 @@ public class BedrockClient extends Bedrock {
         return this.rakNetClient;
     }
 
+    public void setRakNetVersion(int version) {
+        this.rakNetClient.setProtocolVersion(version);
+    }
+
     @Override
-    public void close() {
-        if (session != null) {
-            session.disconnect();
+    public void close(boolean force) {
+        if (this.session != null && !this.session.isClosed()) {
+            this.session.disconnect();
         }
-        rakNetClient.close();
+        this.rakNetClient.close(force);
+        this.tickFuture.cancel(false);
     }
 
     public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address) {
-        CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
+        return this.connect(address, 10, TimeUnit.SECONDS);
+    }
 
-        this.ping(address).whenComplete((pong, throwable) -> {
-            if (throwable != null) {
-                future.completeExceptionally(throwable);
-                return;
-            }
-
+    public CompletableFuture<BedrockClientSession> connect(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.ping(address, timeout, unit).thenApply(pong -> {
             int port;
             if (address.getAddress() instanceof Inet4Address && pong.getIpv4Port() != -1) {
                 port = pong.getIpv4Port();
@@ -62,33 +70,28 @@ public class BedrockClient extends Bedrock {
                 port = address.getPort();
             }
 
-            InetSocketAddress connectAddress = new InetSocketAddress(address.getAddress(), port);
-
-            RakNetClientSession connection = this.rakNetClient.create(connectAddress);
-            this.session = new BedrockClientSession(connection);
-            BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
-                    connection, this, future);
-            connection.setListener(listener);
-            connection.connect();
-        });
-        return future;
+            return new InetSocketAddress(address.getAddress(), port);
+        }).thenCompose(this::directConnect);
     }
 
     public CompletableFuture<BedrockClientSession> directConnect(InetSocketAddress address) {
         CompletableFuture<BedrockClientSession> future = new CompletableFuture<>();
 
-        RakNetClientSession connection = this.rakNetClient.create(address);
-        this.session = new BedrockClientSession(connection);
+        RakNetClientSession connection = this.rakNetClient.connect(address);
+        BedrockWrapperSerializer serializer = BedrockWrapperSerializers.getSerializer(connection.getProtocolVersion());
+        this.session = new BedrockClientSession(connection, connection.getEventLoop(), serializer);
         BedrockRakNetSessionListener.Client listener = new BedrockRakNetSessionListener.Client(this.session,
                 connection, this, future);
         connection.setListener(listener);
-        connection.connect();
-
         return future;
     }
 
     public CompletableFuture<BedrockPong> ping(InetSocketAddress address) {
-        return this.rakNetClient.ping(address, 10, TimeUnit.SECONDS).thenApply(BedrockPong::fromRakNet);
+        return this.ping(address, 10, TimeUnit.SECONDS);
+    }
+
+    public CompletableFuture<BedrockPong> ping(InetSocketAddress address, long timeout, TimeUnit unit) {
+        return this.rakNetClient.ping(address, timeout, unit).thenApply(BedrockPong::fromRakNet);
     }
 
     public BedrockClientSession getSession() {

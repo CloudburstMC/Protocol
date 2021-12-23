@@ -1,84 +1,60 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.MoveEntityDeltaPacket;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.bedrock.packet.MoveEntityDeltaPacket.Flag;
+import com.nukkitx.protocol.bedrock.util.TriConsumer;
+import com.nukkitx.protocol.bedrock.v291.serializer.MoveEntityDeltaSerializer_v291;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MoveEntityDeltaSerializer_v388 implements PacketSerializer<MoveEntityDeltaPacket> {
+import java.util.Set;
+
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class MoveEntityDeltaSerializer_v388 extends MoveEntityDeltaSerializer_v291 {
+
     public static final MoveEntityDeltaSerializer_v388 INSTANCE = new MoveEntityDeltaSerializer_v388();
 
-    private static final int HAS_X = 0x01;
-    private static final int HAS_Y = 0x02;
-    private static final int HAS_Z = 0x4;
-    private static final int HAS_PITCH = 0x8;
-    private static final int HAS_YAW = 0x10;
-    private static final int HAS_ROLL = 0x20;
-
     @Override
-    public void serialize(ByteBuf buffer, MoveEntityDeltaPacket packet) {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, MoveEntityDeltaPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
-        short flags = 0;
-        Vector3i movementDelta = packet.getMovementDelta();
-        Vector3f rotationDelta = packet.getRotationDelta();
-        flags |= movementDelta.getX() != 0 ? HAS_X : 0;
-        flags |= movementDelta.getY() != 0 ? HAS_Y : 0;
-        flags |= movementDelta.getZ() != 0 ? HAS_Z : 0;
-        flags |= rotationDelta.getX() != 0 ? HAS_PITCH : 0;
-        flags |= rotationDelta.getY() != 0 ? HAS_YAW : 0;
-        flags |= rotationDelta.getZ() != 0 ? HAS_ROLL : 0;
+
+        int flagsIndex = buffer.writerIndex();
+        buffer.writeShortLE(0); // flags
+
+        int flags = 0;
+        for (Flag flag : packet.getFlags()) {
+            flags |= 1 << flag.ordinal();
+
+            TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> writer = this.writers.get(flag);
+            if (writer != null) {
+                writer.accept(buffer, helper, packet);
+            }
+        }
+
+        // Go back to flags and set them
+        int currentIndex = buffer.writerIndex();
+        buffer.writerIndex(flagsIndex);
         buffer.writeShortLE(flags);
-        if ((flags & HAS_X) != 0) {
-            VarInts.writeInt(buffer, movementDelta.getX());
-        }
-        if ((flags & HAS_Y) != 0) {
-            VarInts.writeInt(buffer, movementDelta.getY());
-        }
-        if ((flags & HAS_Z) != 0) {
-            VarInts.writeInt(buffer, movementDelta.getZ());
-        }
-        if ((flags & HAS_PITCH) != 0) {
-            BedrockUtils.writeByteAngle(buffer, rotationDelta.getX());
-        }
-        if ((flags & HAS_YAW) != 0) {
-            BedrockUtils.writeByteAngle(buffer, rotationDelta.getY());
-        }
-        if ((flags & HAS_ROLL) != 0) {
-            BedrockUtils.writeByteAngle(buffer, rotationDelta.getZ());
-        }
+        buffer.writerIndex(currentIndex);
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, MoveEntityDeltaPacket packet) {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, MoveEntityDeltaPacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
-        short flags = buffer.readShortLE();
-        int x = 0, y = 0, z = 0;
-        float pitch = 0, yaw = 0, roll = 0;
-        if ((flags & HAS_X) != 0) {
-            x = VarInts.readInt(buffer);
+        int flags = buffer.readUnsignedShortLE();
+        Set<Flag> flagSet = packet.getFlags();
+
+        for (Flag flag : FLAGS) {
+            if ((flags & (1 << flag.ordinal())) != 0) {
+                flagSet.add(flag);
+                TriConsumer<ByteBuf, BedrockPacketHelper, MoveEntityDeltaPacket> reader = this.readers.get(flag);
+                if (reader != null) {
+                    reader.accept(buffer, helper, packet);
+                }
+            }
         }
-        if ((flags & HAS_Y) != 0) {
-            y = VarInts.readInt(buffer);
-        }
-        if ((flags & HAS_Z) != 0) {
-            z = VarInts.readInt(buffer);
-        }
-        if ((flags & HAS_PITCH) != 0) {
-            pitch = BedrockUtils.readByteAngle(buffer);
-        }
-        if ((flags & HAS_YAW) != 0) {
-            yaw = BedrockUtils.readByteAngle(buffer);
-        }
-        if ((flags & HAS_ROLL) != 0) {
-            roll = BedrockUtils.readByteAngle(buffer);
-        }
-        packet.setMovementDelta(Vector3i.from(x, y, z));
-        packet.setRotationDelta(Vector3f.from(pitch, yaw, roll));
     }
 }

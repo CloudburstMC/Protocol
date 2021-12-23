@@ -7,10 +7,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Bedrock_v291 {
-    public static BedrockPacketCodec V291_CODEC = BedrockPacketCodec.builder()
+    public static final BedrockPacketCodec V291_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(291)
             .minecraftVersion("1.7.0")
-            .headerSerializer(PacketHeaderSerializer_v291.INSTANCE)
+            .helper(BedrockPacketHelper_v291.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
@@ -34,7 +34,7 @@ public class Bedrock_v291 {
             .registerPacket(UpdateBlockPacket.class, UpdateBlockSerializer_v291.INSTANCE, 21)
             .registerPacket(AddPaintingPacket.class, AddPaintingSerializer_v291.INSTANCE, 22)
             .registerPacket(ExplodePacket.class, ExplodeSerializer_v291.INSTANCE, 23)
-            .registerPacket(LevelSoundEvent1Packet.class, LevelSoundEventSerializer_v291.INSTANCE, 24)
+            .registerPacket(LevelSoundEvent1Packet.class, LevelSoundEvent1Serializer_v291.INSTANCE, 24)
             .registerPacket(LevelEventPacket.class, LevelEventSerializer_v291.INSTANCE, 25)
             .registerPacket(BlockEventPacket.class, BlockEventSerializer_v291.INSTANCE, 26)
             .registerPacket(EntityEventPacket.class, EntityEventSerializer_v291.INSTANCE, 27)

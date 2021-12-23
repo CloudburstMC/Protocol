@@ -1,30 +1,32 @@
 package com.nukkitx.protocol.bedrock.v313.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.data.ExperimentData;
 import com.nukkitx.protocol.bedrock.packet.ResourcePackStackPacket;
-import com.nukkitx.protocol.bedrock.v313.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
+import com.nukkitx.protocol.bedrock.v291.serializer.ResourcePackStackSerializer_v291;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResourcePackStackSerializer_v313 implements PacketSerializer<ResourcePackStackPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ResourcePackStackSerializer_v313 extends ResourcePackStackSerializer_v291 {
     public static final ResourcePackStackSerializer_v313 INSTANCE = new ResourcePackStackSerializer_v313();
 
+    private static final ExperimentData LEGACY_EXPERIMENT_DATA = new ExperimentData("legacy_experiment", true);
 
     @Override
-    public void serialize(ByteBuf buffer, ResourcePackStackPacket packet) {
-        buffer.writeBoolean(packet.isForcedToAccept());
-        BedrockUtils.writeArray(buffer, packet.getBehaviorPacks(), BedrockUtils::writePackInstanceEntry);
-        BedrockUtils.writeArray(buffer, packet.getResourcePacks(), BedrockUtils::writePackInstanceEntry);
-        buffer.writeBoolean(packet.isExperimental());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackStackPacket packet) {
+        super.serialize(buffer, helper, packet);
+
+        buffer.writeBoolean(packet.getExperiments().contains(LEGACY_EXPERIMENT_DATA));
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, ResourcePackStackPacket packet) {
-        packet.setForcedToAccept(buffer.readBoolean());
-        BedrockUtils.readArray(buffer, packet.getBehaviorPacks(), BedrockUtils::readPackInstanceEntry);
-        BedrockUtils.readArray(buffer, packet.getResourcePacks(), BedrockUtils::readPackInstanceEntry);
-        packet.setExperimental(buffer.readBoolean());
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePackStackPacket packet) {
+        super.deserialize(buffer, helper, packet);
+
+        if (buffer.readBoolean()) {
+            packet.getExperiments().add(LEGACY_EXPERIMENT_DATA);
+        }
     }
 }

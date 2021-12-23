@@ -1,6 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
-import com.nukkitx.nbt.tag.Tag;
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class UpdateBlockPropertiesPacket extends BedrockPacket {
-    private Tag<?> properties;
+    private NbtMap properties;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

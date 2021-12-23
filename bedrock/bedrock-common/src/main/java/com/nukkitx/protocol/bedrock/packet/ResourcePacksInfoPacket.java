@@ -17,6 +17,7 @@ public class ResourcePacksInfoPacket extends BedrockPacket {
     private final List<Entry> resourcePackInfos = new ObjectArrayList<>();
     private boolean forcedToAccept;
     private boolean scriptingEnabled;
+    private boolean forcingServerPacksEnabled;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -32,9 +33,10 @@ public class ResourcePacksInfoPacket extends BedrockPacket {
         private final String packId;
         private final String packVersion;
         private final long packSize;
-        private final String encryptionKey;
-        private final String subpackName;
+        private final String contentKey;
+        private final String subPackName;
         private final String contentId;
         private final boolean scripting;
+        private final boolean raytracingCapable;
     }
 }

@@ -1,56 +1,48 @@
 package com.nukkitx.protocol.bedrock.v291.serializer;
 
 import com.nukkitx.network.VarInts;
-import com.nukkitx.protocol.bedrock.data.CraftingData;
-import com.nukkitx.protocol.bedrock.data.CraftingType;
-import com.nukkitx.protocol.bedrock.data.ItemData;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
+import com.nukkitx.protocol.bedrock.BedrockSession;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.packet.CraftingDataPacket;
-import com.nukkitx.protocol.bedrock.v291.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CraftingDataSerializer_v291 implements PacketSerializer<CraftingDataPacket> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<CraftingDataPacket> {
     public static final CraftingDataSerializer_v291 INSTANCE = new CraftingDataSerializer_v291();
 
+    protected static final ItemData[] EMPTY_ARRAY = {};
+
     @Override
-    public void serialize(ByteBuf buffer, CraftingDataPacket packet) {
-        BedrockUtils.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataPacket packet, BedrockSession session) {
+        helper.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
             VarInts.writeInt(buf, craftingData.getType().ordinal());
             switch (craftingData.getType()) {
                 case SHAPELESS:
                 case SHAPELESS_CHEMISTRY:
                 case SHULKER_BOX:
-                    BedrockUtils.writeArray(buf, craftingData.getInputs(), BedrockUtils::writeItemData);
-                    BedrockUtils.writeArray(buf, craftingData.getOutputs(), BedrockUtils::writeItemData);
-                    BedrockUtils.writeUuid(buf, craftingData.getUuid());
+                    this.writeShapelessRecipe(buf, helper, craftingData, session);
                     break;
                 case SHAPED:
                 case SHAPED_CHEMISTRY:
-                    VarInts.writeInt(buf, craftingData.getWidth());
-                    VarInts.writeInt(buf, craftingData.getHeight());
-                    int count = craftingData.getWidth() * craftingData.getHeight();
-                    ItemData[] inputs = craftingData.getInputs();
-                    for (int i = 0; i < count; i++) {
-                        BedrockUtils.writeItemData(buf, inputs[i]);
-                    }
-                    BedrockUtils.writeArray(buf, craftingData.getOutputs(), BedrockUtils::writeItemData);
-                    BedrockUtils.writeUuid(buf, craftingData.getUuid());
+                    this.writeShapedRecipe(buf, helper, craftingData, session);
                     break;
                 case FURNACE:
                 case FURNACE_DATA:
-                    VarInts.writeInt(buf, craftingData.getInputId());
-                    if (craftingData.getType() == CraftingType.FURNACE_DATA) {
-                        VarInts.writeInt(buf, craftingData.getInputDamage());
-                    }
-                    BedrockUtils.writeItemData(buf, craftingData.getOutputs()[0]);
+                    this.writeFurnaceRecipe(buf, helper, craftingData, session);
                     break;
                 case MULTI:
-                    BedrockUtils.writeUuid(buf, craftingData.getUuid());
+                    this.writeMultiRecipe(buf, helper, craftingData);
                     break;
             }
         });
@@ -58,62 +50,96 @@ public class CraftingDataSerializer_v291 implements PacketSerializer<CraftingDat
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, CraftingDataPacket packet) {
-        BedrockUtils.readArray(buffer, packet.getCraftingData(), buf -> {
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataPacket packet, BedrockSession session) {
+        helper.readArray(buffer, packet.getCraftingData(), buf -> {
             int typeInt = VarInts.readInt(buf);
-            CraftingType type = CraftingType.byId(typeInt);
-            if (type == null) {
-                // TODO: 23/04/19 log type
-                return null;
-            }
+            CraftingDataType type = CraftingDataType.byId(typeInt);
 
             switch (type) {
                 case SHAPELESS:
                 case SHAPELESS_CHEMISTRY:
                 case SHULKER_BOX:
-                    int inputCount = VarInts.readUnsignedInt(buf);
-                    ItemData[] inputs = new ItemData[inputCount];
-                    for (int i = 0; i < inputCount; i++) {
-                        inputs[i] = BedrockUtils.readItemData(buf);
-                    }
-                    int outputCount = VarInts.readUnsignedInt(buf);
-                    ItemData[] outputs = new ItemData[outputCount];
-                    for (int i = 0; i < outputCount; i++) {
-                        outputs[i] = BedrockUtils.readItemData(buf);
-                    }
-                    UUID uuid = BedrockUtils.readUuid(buf);
-                    return new CraftingData(type, -1, -1, -1, -1, inputs, outputs,
-                            uuid, null);
+                    return this.readShapelessRecipe(buf, helper, type, session);
                 case SHAPED:
                 case SHAPED_CHEMISTRY:
-                    int width = VarInts.readInt(buf);
-                    int height = VarInts.readInt(buf);
-                    int inputCount2 = width * height;
-                    ItemData[] inputs2 = new ItemData[inputCount2];
-                    for (int i = 0; i < inputCount2; i++) {
-                        inputs2[i] = BedrockUtils.readItemData(buf);
-                    }
-                    int outputCount2 = VarInts.readUnsignedInt(buf);
-                    ItemData[] outputs2 = new ItemData[outputCount2];
-                    for (int i = 0; i < outputCount2; i++) {
-                        outputs2[i] = BedrockUtils.readItemData(buf);
-                    }
-                    UUID uuid2 = BedrockUtils.readUuid(buf);
-                    return new CraftingData(type, width, height, -1, -1, inputs2, outputs2, uuid2,
-                            null);
+                    return this.readShapedRecipe(buf, helper, type, session);
                 case FURNACE:
                 case FURNACE_DATA:
-                    int inputId = VarInts.readInt(buf);
-                    int inputDamage = type == CraftingType.FURNACE_DATA ? VarInts.readInt(buf) : -1;
-                    ItemData[] output = new ItemData[]{BedrockUtils.readItemData(buf)};
-                    return new CraftingData(type, -1, -1, inputId, inputDamage, null, output,
-                            null, null);
+                    return this.readFurnaceRecipe(buf, helper, type, session);
                 case MULTI:
-                    UUID uuid3 = BedrockUtils.readUuid(buf);
-                    return CraftingData.fromMulti(uuid3);
+                    return this.readMultiRecipe(buf, helper, type);
+                default:
+                    throw new IllegalArgumentException("Unhandled crafting data type: " + type);
             }
-            throw new IllegalArgumentException("Unhandled crafting data type: " + type);
         });
         packet.setCleanRecipes(buffer.readBoolean());
+    }
+
+    protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
+        List<ItemData> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, buf -> helper.readItem(buf, session));
+
+        List<ItemData> outputs = new ObjectArrayList<>();
+        helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
+
+        UUID uuid = helper.readUuid(buffer);
+        return new CraftingData(type, -1, -1, -1, -1, inputs, outputs, uuid, null);
+    }
+
+    protected void writeShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
+        helper.writeArray(buffer, data.getInputs(), (buf, item) -> helper.writeItem(buf, item, session));
+        helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item, session));
+        helper.writeUuid(buffer, data.getUuid());
+    }
+
+    protected CraftingData readShapedRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
+        int width = VarInts.readInt(buffer);
+        int height = VarInts.readInt(buffer);
+        int inputCount = width * height;
+        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
+        for (int i = 0; i < inputCount; i++) {
+            inputs.add(helper.readItem(buffer, session));
+        }
+        List<ItemData> outputs = new ObjectArrayList<>();
+        helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
+        UUID uuid = helper.readUuid(buffer);
+        return new CraftingData(type, width, height, -1, -1, inputs, outputs, uuid, null);
+    }
+
+    protected void writeShapedRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
+        VarInts.writeInt(buffer, data.getWidth());
+        VarInts.writeInt(buffer, data.getHeight());
+        int count = data.getWidth() * data.getHeight();
+        List<ItemData> inputs = data.getInputs();
+        for (int i = 0; i < count; i++) {
+            helper.writeItem(buffer, inputs.get(i), session);
+        }
+        helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item, session));
+        helper.writeUuid(buffer, data.getUuid());
+    }
+
+    protected CraftingData readFurnaceRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
+        int inputId = VarInts.readInt(buffer);
+        int inputDamage = type == CraftingDataType.FURNACE_DATA ? VarInts.readInt(buffer) : -1;
+        List<ItemData> output = new ObjectArrayList<>(Collections.singleton(helper.readItem(buffer, session)));
+        return new CraftingData(type, -1, -1, inputId, inputDamage, null, output,
+                null, null);
+    }
+
+    protected void writeFurnaceRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
+        VarInts.writeInt(buffer, data.getInputId());
+        if (data.getType() == CraftingDataType.FURNACE_DATA) {
+            VarInts.writeInt(buffer, data.getInputDamage());
+        }
+        helper.writeItem(buffer, data.getOutputs().get(0), session);
+    }
+
+    protected CraftingData readMultiRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type) {
+        UUID uuid = helper.readUuid(buffer);
+        return CraftingData.fromMulti(uuid);
+    }
+
+    protected void writeMultiRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data) {
+        helper.writeUuid(buffer, data.getUuid());
     }
 }

@@ -22,14 +22,26 @@ public abstract class BedrockRakNetSessionListener implements RakNetSessionListe
     @Override
     public void onEncapsulated(EncapsulatedPacket packet) {
         if (connection.getState() != RakNetState.CONNECTED) {
-            // We shouldn't be receiving packets till the connection is full established.
+            // We shouldn't be receiving packets until the connection is fully established.
             return;
         }
         ByteBuf buffer = packet.getBuffer();
 
         int packetId = buffer.readUnsignedByte();
-        if (packetId == 0xfe /* Wrapper packet */) {
-            session.onWrappedPacket(buffer);
+        if (packetId == 0xfe && buffer.isReadable()) {
+            // Wrapper packet
+            if (this.session.getEventLoop().inEventLoop()) {
+                this.session.onWrappedPacket(buffer);
+            } else {
+                buffer.retain(); // Handling on different thread
+                this.session.getEventLoop().execute(() -> {
+                    try {
+                        this.session.onWrappedPacket(buffer);
+                    } finally {
+                        buffer.release();
+                    }
+                });
+            }
         }
     }
 

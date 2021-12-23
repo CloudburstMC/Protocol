@@ -1,26 +1,26 @@
 package com.nukkitx.protocol.bedrock.v388.serializer;
 
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.packet.EducationSettingsPacket;
-import com.nukkitx.protocol.bedrock.v388.BedrockUtils;
-import com.nukkitx.protocol.serializer.PacketSerializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class EducationSettingsSerializer_v388 implements PacketSerializer<EducationSettingsPacket> {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class EducationSettingsSerializer_v388 implements BedrockPacketSerializer<EducationSettingsPacket> {
 
     public static final EducationSettingsSerializer_v388 INSTANCE = new EducationSettingsSerializer_v388();
 
     @Override
-    public void serialize(ByteBuf buffer, EducationSettingsPacket packet) {
-        BedrockUtils.writeString(buffer, packet.getSettings());
-        buffer.writeBoolean(packet.isUnknown0());
+    public void serialize(ByteBuf buffer, BedrockPacketHelper helper, EducationSettingsPacket packet) {
+        helper.writeString(buffer, packet.getCodeBuilderUri());
+        buffer.writeBoolean(packet.isQuizAttached());
     }
 
     @Override
-    public void deserialize(ByteBuf buffer, EducationSettingsPacket packet) {
-        packet.setSettings(BedrockUtils.readString(buffer));
-        packet.setUnknown0(buffer.readBoolean());
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, EducationSettingsPacket packet) {
+        packet.setCodeBuilderUri(helper.readString(buffer));
+        packet.setQuizAttached(buffer.readBoolean());
     }
 }

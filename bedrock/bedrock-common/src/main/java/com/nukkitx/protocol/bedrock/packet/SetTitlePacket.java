@@ -14,6 +14,8 @@ public class SetTitlePacket extends BedrockPacket {
     private int fadeInTime;
     private int stayTime;
     private int fadeOutTime;
+    private String xuid;
+    private String platformOnlineId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
@@ -25,11 +27,14 @@ public class SetTitlePacket extends BedrockPacket {
     }
 
     public enum Type {
-        CLEAR_TITLE,
-        RESET_TITLE,
-        SET_TITLE,
-        SET_SUBTITLE,
-        SET_ACTIONBAR_MESSAGE,
-        SET_ANIMATION_TIMES
+        CLEAR,
+        RESET,
+        TITLE,
+        SUBTITLE,
+        ACTIONBAR,
+        TIMES,
+        TITLE_JSON,
+        SUBTITLE_JSON,
+        ACTIONBAR_JSON
     }
 }
