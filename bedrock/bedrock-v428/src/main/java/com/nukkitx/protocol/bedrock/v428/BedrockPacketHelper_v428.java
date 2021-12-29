@@ -1,10 +1,15 @@
 package com.nukkitx.protocol.bedrock.v428;
 
+import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.command.CommandParam;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.MineBlockStackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.*;
 import com.nukkitx.protocol.bedrock.v422.BedrockPacketHelper_v422;
 import io.netty.buffer.ByteBuf;
@@ -164,6 +169,28 @@ public class BedrockPacketHelper_v428 extends BedrockPacketHelper_v422 {
         this.stackRequestActionTypes.put(13, CRAFT_RECIPE_OPTIONAL);
         this.stackRequestActionTypes.put(14, CRAFT_NON_IMPLEMENTED_DEPRECATED);
         this.stackRequestActionTypes.put(15, CRAFT_RESULTS_DEPRECATED);
+    }
+
+    @Override
+    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockSession session) {
+        StackRequestActionData action;
+        if (type == StackRequestActionType.MINE_BLOCK) {
+            action = new MineBlockStackRequestActionData(VarInts.readInt(byteBuf), VarInts.readInt(byteBuf), VarInts.readInt(byteBuf));
+        } else {
+            action = super.readRequestActionData(byteBuf, type, session);
+        }
+        return action;
+    }
+
+    @Override
+    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockSession session) {
+        if (action.getType() == StackRequestActionType.MINE_BLOCK) {
+            VarInts.writeInt(byteBuf, ((MineBlockStackRequestActionData) action).getHotbarSlot());
+            VarInts.writeInt(byteBuf, ((MineBlockStackRequestActionData) action).getPredictedDurability());
+            VarInts.writeInt(byteBuf, ((MineBlockStackRequestActionData) action).getStackNetworkId());
+        } else {
+            super.writeRequestActionData(byteBuf, action, session);
+        }
     }
 
     @SuppressWarnings("DuplicatedCode")
