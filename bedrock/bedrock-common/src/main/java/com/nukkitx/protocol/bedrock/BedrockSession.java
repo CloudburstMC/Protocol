@@ -143,11 +143,12 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             finalPayload.writeByte(0xfe); // Wrapped packet ID
             if (this.encryptionCipher != null && encrypt) {
                 ByteBuffer trailer = ByteBuffer.wrap(this.generateTrailer(compressed));
+                ByteBuffer[] inBuffers = compressed.nioBuffers(compressed.readerIndex(), compressed.readableBytes());
+                ByteBuffer outBuffer = finalPayload.nioBuffer(finalPayload.writerIndex(), compressed.readableBytes() + 8);
 
-                ByteBuffer outBuffer = finalPayload.internalNioBuffer(1, compressed.readableBytes() + 8);
-                ByteBuffer inBuffer = compressed.internalNioBuffer(compressed.readerIndex(), compressed.readableBytes());
-
-                this.encryptionCipher.update(inBuffer, outBuffer);
+                for (ByteBuffer inBuffer : inBuffers) {
+                    this.encryptionCipher.update(inBuffer, outBuffer);
+                }
                 this.encryptionCipher.update(trailer, outBuffer);
                 finalPayload.writerIndex(finalPayload.writerIndex() + compressed.readableBytes() + 8);
             } else {
@@ -266,15 +267,17 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void onWrappedPacket(final ByteBuf batched) {
         try {
             if (this.isEncrypted()) {
-                // This method only supports contiguous buffers, not composite.
-                ByteBuffer inBuffer = batched.internalNioBuffer(batched.readerIndex(), batched.readableBytes());
-                ByteBuffer outBuffer = inBuffer.duplicate();
+                int index = batched.readerIndex();
+                ByteBuffer[] inBuffers = batched.nioBuffers(batched.readerIndex(), batched.readableBytes());
+                ByteBuffer[] outBuffers = batched.nioBuffers(batched.readerIndex(), batched.readableBytes());
                 // Copy-safe so we can use the same buffer.
-                this.decryptionCipher.update(inBuffer, outBuffer);
+                int decryptedSize = 0;
+                for (int i = 0; i < inBuffers.length; i++) {
+                    decryptedSize += this.decryptionCipher.update(inBuffers[i], outBuffers[i]);
+                }
 
                 // TODO: Maybe verify the checksum?
-
-                batched.writerIndex(batched.writerIndex() - 8);
+                batched.writerIndex(index + decryptedSize - 8);
             }
             batched.markReaderIndex();
 

@@ -5,6 +5,7 @@ import com.nukkitx.natives.zlib.Deflater;
 import com.nukkitx.natives.zlib.Inflater;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.CompositeByteBuf;
 
 import java.util.zip.DataFormatException;
 
@@ -36,7 +37,7 @@ public class Zlib {
     public void inflate(ByteBuf compressed, ByteBuf decompressed, int maxSize) throws DataFormatException {
         ByteBuf source = null;
         try {
-            if (!compressed.isDirect()) {
+            if (!compressed.isDirect() || compressed instanceof CompositeByteBuf) {
                 // We don't have a direct buffer. Create one.
                 ByteBuf temporary = ByteBufAllocator.DEFAULT.ioBuffer();
                 temporary.writeBytes(compressed);
@@ -73,7 +74,7 @@ public class Zlib {
         ByteBuf destination = null;
         ByteBuf source = null;
         try {
-            if (!uncompressed.isDirect()) {
+            if (!uncompressed.isDirect() || uncompressed instanceof CompositeByteBuf) {
                 // Source is not a direct buffer. Work on a temporary direct buffer and then write the contents out.
                 source = ByteBufAllocator.DEFAULT.ioBuffer();
                 source.writeBytes(uncompressed);
