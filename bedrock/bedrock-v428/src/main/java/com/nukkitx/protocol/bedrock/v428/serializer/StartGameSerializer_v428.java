@@ -91,14 +91,14 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
     }
 
     protected void writeSyncedPlayerMovementSettings(ByteBuf buffer, BedrockPacketHelper helper, SyncedPlayerMovementSettings playerMovementSettings) {
-        VarInts.writeUnsignedInt(buffer, playerMovementSettings.getMovementMode().ordinal());
+        VarInts.writeInt(buffer, playerMovementSettings.getMovementMode().ordinal());
         VarInts.writeInt(buffer, playerMovementSettings.getRewindHistorySize());
         buffer.writeBoolean(playerMovementSettings.isServerAuthoritativeBlockBreaking());
     }
 
     protected SyncedPlayerMovementSettings readSyncedPlayerMovementSettings(ByteBuf buffer, BedrockPacketHelper helper) {
         SyncedPlayerMovementSettings playerMovementSettings = new SyncedPlayerMovementSettings();
-        playerMovementSettings.setMovementMode(MOVEMENT_MODES[VarInts.readUnsignedInt(buffer)]);
+        playerMovementSettings.setMovementMode(MOVEMENT_MODES[VarInts.readInt(buffer)]);
         playerMovementSettings.setRewindHistorySize(VarInts.readInt(buffer));
         playerMovementSettings.setServerAuthoritativeBlockBreaking(buffer.readBoolean());
         return playerMovementSettings;
