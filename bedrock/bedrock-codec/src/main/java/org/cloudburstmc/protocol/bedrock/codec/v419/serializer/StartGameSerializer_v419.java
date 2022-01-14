@@ -34,7 +34,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         helper.writeString(buffer, packet.getLevelName());
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
-        VarInts.writeUnsignedInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
+        VarInts.writeInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
         buffer.writeLongLE(packet.getCurrentTick());
         VarInts.writeInt(buffer, packet.getEnchantmentSeed());
 
@@ -67,7 +67,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         packet.setLevelName(helper.readString(buffer));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
-        packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readUnsignedInt(buffer)]);
+        packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readInt(buffer)]);
         packet.setCurrentTick(buffer.readLongLE());
         packet.setEnchantmentSeed(VarInts.readInt(buffer));
 
