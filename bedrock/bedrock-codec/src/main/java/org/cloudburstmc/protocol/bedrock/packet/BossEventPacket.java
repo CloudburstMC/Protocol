@@ -59,6 +59,7 @@ public class BossEventPacket implements BedrockPacket {
         /**
          * Not implemented :( Intended to alter bar appearance, but these currently produce no effect on clientside whatsoever.
          */
-        UPDATE_STYLE
+        UPDATE_STYLE,
+        QUERY
     }
 }

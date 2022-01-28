@@ -15,5 +15,6 @@ public enum CommandOriginType {
     ENTITY_SERVER,
     PRECOMPILED,
     GAME_DIRECTOR_ENTITY_SERVER,
-    SCRIPT
+    SCRIPT,
+    EXECUTE_CONTEXT
 }
