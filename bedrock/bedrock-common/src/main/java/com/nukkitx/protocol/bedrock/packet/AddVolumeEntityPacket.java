@@ -16,6 +16,15 @@ public class AddVolumeEntityPacket extends BedrockPacket {
      * @since v465
      */
     private String engineVersion;
+    /**
+     * @since v485
+     */
+    private String identifier;
+    /**
+     * @since v485
+     */
+    private String instanceName;
+
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

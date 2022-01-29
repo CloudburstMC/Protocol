@@ -17,6 +17,14 @@ public class LevelChunkPacket extends BedrockPacket {
     private int chunkZ;
     private int subChunksLength;
     private boolean cachingEnabled;
+    /**
+     * @since v471
+     */
+    private boolean requestSubChunks;
+    /**
+     * @since v485
+     */
+    private int subChunkLimit;
     private final LongList blobIds = new LongArrayList();
     private byte[] data;
 
