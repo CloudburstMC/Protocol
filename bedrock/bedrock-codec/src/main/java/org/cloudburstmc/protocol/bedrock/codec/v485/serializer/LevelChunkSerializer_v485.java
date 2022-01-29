@@ -17,10 +17,13 @@ public class LevelChunkSerializer_v485 extends LevelChunkSerializer_v361 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {
         VarInts.writeInt(buffer, packet.getChunkX());
         VarInts.writeInt(buffer, packet.getChunkZ());
-        if (!packet.isRequestSubChunks() || packet.getSubChunkLimit() < 0) {
+
+        if (!packet.isRequestSubChunks()) {
             VarInts.writeUnsignedInt(buffer, packet.getSubChunksLength());
+        } else if (packet.getSubChunkLimit() < 0) {
+            VarInts.writeUnsignedInt(buffer, -1);
         } else {
-            VarInts.writeUnsignedInt(buffer, packet.getSubChunksLength());
+            VarInts.writeUnsignedInt(buffer, -2);
             buffer.writeShortLE(packet.getSubChunkLimit());
         }
 
@@ -42,11 +45,16 @@ public class LevelChunkSerializer_v485 extends LevelChunkSerializer_v361 {
         packet.setChunkX(VarInts.readInt(buffer));
         packet.setChunkZ(VarInts.readInt(buffer));
 
-        packet.setSubChunksLength(VarInts.readUnsignedInt(buffer));
-        if (packet.getSubChunksLength() == -1) { // TODO: finish & verify
+        int subChunksCount = VarInts.readUnsignedInt(buffer);
+        if (subChunksCount >= 0) {
+            packet.setSubChunksLength(subChunksCount);
+        } else {
             packet.setRequestSubChunks(true);
-            packet.setSubChunksLength(VarInts.readUnsignedInt(buffer));
-            packet.setSubChunkLimit(buffer.readUnsignedShortLE());
+            if (subChunksCount == -1) {
+                packet.setSubChunkLimit(subChunksCount);
+            } else if (subChunksCount == -2) {
+                packet.setSubChunkLimit(buffer.readUnsignedShortLE());
+            }
         }
 
         packet.setCachingEnabled(buffer.readBoolean());

@@ -704,4 +704,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ScriptMessagePacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(CodeBuilderSourcePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

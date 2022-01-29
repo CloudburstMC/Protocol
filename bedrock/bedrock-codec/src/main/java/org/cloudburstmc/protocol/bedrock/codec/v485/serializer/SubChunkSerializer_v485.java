@@ -43,7 +43,7 @@ public class SubChunkSerializer_v485 extends SubChunkSerializer_v475 {
     protected void serializeSubChunk(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet, SubChunkData subChunk) {
         this.writeSubChunkOffset(buffer, subChunk.getPosition());
         buffer.writeByte(subChunk.getResult().ordinal());
-        if (subChunk.getResult() == SubChunkRequestResult.SUCCESS_ALL_AIR || packet.isCacheEnabled()) {
+        if (subChunk.getResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
             helper.writeByteBuf(buffer, subChunk.getData());
         }
         buffer.writeByte(subChunk.getHeightMapType().ordinal());
@@ -61,7 +61,7 @@ public class SubChunkSerializer_v485 extends SubChunkSerializer_v475 {
         SubChunkData subChunk = new SubChunkData();
         subChunk.setPosition(this.readSubChunkOffset(buffer));
         subChunk.setResult(SubChunkRequestResult.values()[buffer.readByte()]);
-        if (subChunk.getResult() == SubChunkRequestResult.SUCCESS_ALL_AIR || packet.isCacheEnabled()) {
+        if (subChunk.getResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
             subChunk.setData(helper.readByteBuf(buffer));
         }
         subChunk.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
