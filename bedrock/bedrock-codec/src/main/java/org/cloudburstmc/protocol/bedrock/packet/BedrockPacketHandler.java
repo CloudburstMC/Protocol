@@ -696,4 +696,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(PhotoInfoRequestPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(PlayerStartItemCooldownPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ScriptMessagePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(CodeBuilderSourcePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

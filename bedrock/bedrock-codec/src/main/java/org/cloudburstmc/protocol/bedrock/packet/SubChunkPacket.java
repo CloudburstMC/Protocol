@@ -1,27 +1,27 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import com.nukkitx.math.vector.Vector3i;
-import io.netty.buffer.ByteBuf;
 import io.netty.util.AbstractReferenceCounted;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.HeightMapDataType;
-import org.cloudburstmc.protocol.bedrock.data.SubChunkRequestResult;
+import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 @ToString(doNotUseGetters = true)
 public class SubChunkPacket extends AbstractReferenceCounted implements BedrockPacket {
     private int dimension;
-    private Vector3i subChunkPosition;
-    private ByteBuf data;
-    private SubChunkRequestResult result;
-    private HeightMapDataType heightMapType;
-    private ByteBuf heightMapData;
     private boolean cacheEnabled;
-    private long blobId;
+    /**
+     * @since v485
+     */
+    private Vector3i centerPosition;
+    private List<SubChunkData> subChunks = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -34,14 +34,12 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
 
     @Override
     public SubChunkPacket touch(Object o) {
-        this.data.touch(o);
-        this.heightMapData.touch(o);
+        this.subChunks.forEach(SubChunkData::touch);
         return this;
     }
 
     @Override
     protected void deallocate() {
-        this.data.release();
-        this.heightMapData.release();
+        this.subChunks.forEach(SubChunkData::release);
     }
 }
