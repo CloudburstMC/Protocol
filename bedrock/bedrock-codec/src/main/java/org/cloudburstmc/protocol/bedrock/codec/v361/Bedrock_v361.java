@@ -37,8 +37,8 @@ public class Bedrock_v361 extends Bedrock_v354 {
 
     protected static final TypeMap<ResourcePackType> RESOURCE_PACK_TYPES = TypeMap.builder(ResourcePackType.class)
             .insert(0, ResourcePackType.INVALID)
-            .insert(1, ResourcePackType.RESOURCE)
-            .insert(2, ResourcePackType.BEHAVIOR)
+            .insert(1, ResourcePackType.RESOURCES)
+            .insert(2, ResourcePackType.DATA_ADD_ON)
             .insert(3, ResourcePackType.WORLD_TEMPLATE)
             .insert(4, ResourcePackType.ADDON)
             .insert(5, ResourcePackType.SKINS)

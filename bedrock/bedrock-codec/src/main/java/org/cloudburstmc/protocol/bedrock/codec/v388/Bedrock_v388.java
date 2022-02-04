@@ -76,9 +76,9 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .replace(1, ResourcePackType.ADDON)
             .replace(2, ResourcePackType.CACHED)
             .replace(3, ResourcePackType.COPY_PROTECTED)
-            .replace(4, ResourcePackType.BEHAVIOR)
+            .replace(4, ResourcePackType.DATA_ADD_ON)
             .replace(5, ResourcePackType.PERSONA_PIECE)
-            .replace(6, ResourcePackType.RESOURCE)
+            .replace(6, ResourcePackType.RESOURCES)
             .replace(7, ResourcePackType.SKINS)
             .insert(8, ResourcePackType.WORLD_TEMPLATE)
             .build();

@@ -196,17 +196,17 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
     }
 
     protected AgentCommandEventData readAgentCommand(ByteBuf buffer, BedrockCodecHelper helper) {
-        int agentResult = VarInts.readInt(buffer);
+        AgentResult result = AgentResult.values()[VarInts.readInt(buffer)];
         int dataValue = VarInts.readInt(buffer);
         String command = helper.readString(buffer);
         String dataKey = helper.readString(buffer);
         String output = helper.readString(buffer);
-        return new AgentCommandEventData(agentResult, command, dataKey, dataValue, output);
+        return new AgentCommandEventData(result, command, dataKey, dataValue, output);
     }
 
     protected void writeAgentCommand(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
         AgentCommandEventData event = (AgentCommandEventData) eventData;
-        VarInts.writeInt(buffer, event.getAgentResult());
+        VarInts.writeInt(buffer, event.getResult().ordinal());
         VarInts.writeInt(buffer, event.getDataValue());
         helper.writeString(buffer, event.getCommand());
         helper.writeString(buffer, event.getDataKey());

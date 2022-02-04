@@ -112,23 +112,23 @@ server.bind().join();
 
 ##### Protocol Versions:
 
-| Class | Minecraft Version |
-| :---: | :---: |
-| Bedrock_v291 | 1.7.0 |
-| Bedrock_v313 | 1.8.0 |
-| Bedrock_v332 | 1.9.0 |
-| Bedrock_v340 | 1.10.0 |
-| Bedrock_v354 | 1.11.0 |
-| Bedrock_v361 | 1.12.0 |
-| Bedrock_v388 | 1.13.0 |
-| Bedrock_v389 | 1.14.0 - 1.14.50 |
-| Bedrock_v390 | 1.14.60 |
-| Bedrock_v407 | 1.16.0 - 1.16.10 |
-| Bedrock_v408 | 1.16.20 |
-| Bedrock_v419 | 1.16.100 |
+|    Class     |  Minecraft Version  |
+|:------------:|:-------------------:|
+| Bedrock_v291 |        1.7.0        |
+| Bedrock_v313 |        1.8.0        |
+| Bedrock_v332 |        1.9.0        |
+| Bedrock_v340 |       1.10.0        |
+| Bedrock_v354 |       1.11.0        |
+| Bedrock_v361 |       1.12.0        |
+| Bedrock_v388 |       1.13.0        |
+| Bedrock_v389 |  1.14.0 - 1.14.50   |
+| Bedrock_v390 |       1.14.60       |
+| Bedrock_v407 |  1.16.0 - 1.16.10   |
+| Bedrock_v408 |       1.16.20       |
+| Bedrock_v419 |      1.16.100       |
 | Bedrock_v422 | 1.16.200 - 1.16.201 |
-| Bedrock_v428 | 1.16.210 |
-| Bedrock_v431 | 1.16.220 |
+| Bedrock_v428 |      1.16.210       |
+| Bedrock_v431 |      1.16.220       |
 
 ##### Repository:
 

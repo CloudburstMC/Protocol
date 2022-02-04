@@ -25,8 +25,8 @@ public class TextSerializer_v332 implements BedrockPacketSerializer<TextPacket> 
             case RAW:
             case TIP:
             case SYSTEM:
-            case OBJECT:
-            case OBJECT_WHISPER:
+            case JSON:
+            case WHISPER_JSON:
                 helper.writeString(buffer, packet.getMessage());
                 break;
             case TRANSLATION:
@@ -57,8 +57,8 @@ public class TextSerializer_v332 implements BedrockPacketSerializer<TextPacket> 
             case RAW:
             case TIP:
             case SYSTEM:
-            case OBJECT:
-            case OBJECT_WHISPER:
+            case JSON:
+            case WHISPER_JSON:
                 packet.setMessage(helper.readString(buffer));
                 break;
             case TRANSLATION:

@@ -1,9 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.data.command;
 
 public enum CommandPermission {
-    NORMAL,
-    OPERATOR,
+    ANY,
+    GAME_DIRECTORS,
+    ADMIN,
     HOST,
-    AUTOMATION,
-    ADMIN
+    OWNER,
+    INTERNAL
 }

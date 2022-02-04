@@ -16,7 +16,7 @@ import java.util.Set;
 @ToString(doNotUseGetters = true)
 public class AdventureSettingsPacket implements BedrockPacket {
     private final Set<AdventureSetting> settings = EnumSet.noneOf(AdventureSetting.class);
-    private CommandPermission commandPermission = CommandPermission.NORMAL;
+    private CommandPermission commandPermission = CommandPermission.ANY;
     private PlayerPermission playerPermission = PlayerPermission.VISITOR;
     private long uniqueEntityId;
 

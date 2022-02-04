@@ -4,7 +4,7 @@ import lombok.Value;
 
 @Value
 public class AgentCommandEventData implements EventData {
-    private final int agentResult;
+    private final AgentResult result;
     private final String command;
     private final String dataKey;
     private final int dataValue;

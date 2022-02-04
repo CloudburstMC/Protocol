@@ -2,8 +2,8 @@ package org.cloudburstmc.protocol.bedrock.data;
 
 public enum ResourcePackType {
     INVALID,
-    RESOURCE,
-    BEHAVIOR,
+    RESOURCES,
+    DATA_ADD_ON,
     WORLD_TEMPLATE,
     ADDON,
     SKINS,
