@@ -23,7 +23,8 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static org.cloudburstmc.protocol.common.util.Preconditions.*;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @Immutable
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -94,7 +95,9 @@ public final class BedrockCodec {
     }
 
     public BedrockPacketDefinition<? extends BedrockPacket> getPacketDefinition(int id) {
-        checkElementIndex(id, this.packetsById.length);
+        if (id < 0 || id >= packetsById.length) {
+            return null;
+        }
         return packetsById[id];
     }
 
