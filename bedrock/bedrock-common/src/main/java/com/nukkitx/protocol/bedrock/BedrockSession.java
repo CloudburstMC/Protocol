@@ -119,10 +119,22 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
+        if (this.eventLoop.inEventLoop()) {
+            this.sendWrapped0(packets, encrypt, immediate);
+        } else {
+            this.eventLoop.execute(() -> this.sendWrapped0(packets, encrypt, immediate));
+            if (log.isDebugEnabled()) {
+                Throwable t = new Throwable();
+                log.debug("Called BedrockSession#sendWrapped() from wrong thread: {}", Thread.currentThread().getName(), t);
+            }
+        }
+    }
+
+    private void sendWrapped0(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
         ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
         try {
             this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
-            this.sendWrapped(compressed, encrypt, immediate);
+            this.sendWrapped0(compressed, encrypt, immediate);
         } catch (Exception e) {
             log.error("Unable to compress packets", e);
         } finally {
@@ -137,6 +149,18 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
+        if (this.eventLoop.inEventLoop()) {
+            this.sendWrapped0(compressed, encrypt, immediate);
+        } else {
+            this.eventLoop.execute(() -> this.sendWrapped0(compressed, encrypt, immediate));
+            if (log.isDebugEnabled()) {
+                Throwable t = new Throwable();
+                log.debug("Called BedrockSession#sendWrapped() from wrong thread: {}", Thread.currentThread().getName(), t);
+            }
+        }
+    }
+
+    private void sendWrapped0(ByteBuf compressed, boolean encrypt, boolean immediate) {
         Objects.requireNonNull(compressed, "compressed");
         try {
             ByteBuf finalPayload = ByteBufAllocator.DEFAULT.ioBuffer(1 + compressed.readableBytes() + 8);
