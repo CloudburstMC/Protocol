@@ -18,7 +18,7 @@ public class SubChunkRequestPacket extends BedrockPacket {
     /**
      * @since v485
      */
-    private int requestCount;
+    private long requestCount;
     /**
      * @since v485
      */
