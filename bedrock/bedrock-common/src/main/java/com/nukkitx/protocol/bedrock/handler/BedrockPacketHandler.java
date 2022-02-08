@@ -696,4 +696,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(PhotoInfoRequestPacket packet) {
         return false;
     }
+
+    default boolean handle(PlayerStartItemCooldownPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ScriptMessagePacket packet) {
+        return false;
+    }
+
+    default boolean handle(CodeBuilderSourcePacket packet) {
+        return false;
+    }
 }

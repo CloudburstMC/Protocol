@@ -16,7 +16,17 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, BossEventPacket packet) {
         VarInts.writeLong(buffer, packet.getBossUniqueEntityId());
         VarInts.writeUnsignedInt(buffer, packet.getAction().ordinal());
+        this.serializeAction(buffer, helper, packet);
+    }
 
+    @Override
+    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, BossEventPacket packet) {
+        packet.setBossUniqueEntityId(VarInts.readLong(buffer));
+        packet.setAction(BossEventPacket.Action.values()[VarInts.readUnsignedInt(buffer)]);
+        this.deserializeAction(buffer, helper, packet);
+    }
+
+    protected void serializeAction(ByteBuf buffer, BedrockPacketHelper helper, BossEventPacket packet) {
         switch (packet.getAction()) {
             case REGISTER_PLAYER:
             case UNREGISTER_PLAYER:
@@ -46,13 +56,8 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
         }
     }
 
-    @Override
-    public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, BossEventPacket packet) {
-        packet.setBossUniqueEntityId(VarInts.readLong(buffer));
-        BossEventPacket.Action action = BossEventPacket.Action.values()[VarInts.readUnsignedInt(buffer)];
-        packet.setAction(action);
-
-        switch (action) {
+    protected void deserializeAction(ByteBuf buffer, BedrockPacketHelper helper, BossEventPacket packet) {
+        switch (packet.getAction()) {
             case REGISTER_PLAYER:
             case UNREGISTER_PLAYER:
                 packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
