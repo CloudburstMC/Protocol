@@ -138,7 +138,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
-        checkEventLoop(this.eventLoop, () -> sendWrapped(compressed, encrypt, immediate), compressed);
+        checkEventLoop(this.eventLoop, () -> sendWrapped0(compressed, encrypt, immediate), compressed);
     }
 
     private void sendWrapped0(ByteBuf compressed, boolean encrypt, boolean immediate) {
