@@ -16,6 +16,7 @@ import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoop;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
@@ -118,19 +119,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         this.sendWrapped(packets, encrypt, false);
     }
 
-    public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
-        if (this.eventLoop.inEventLoop()) {
-            this.sendWrapped0(packets, encrypt, immediate);
-        } else {
-            this.eventLoop.execute(() -> this.sendWrapped0(packets, encrypt, immediate));
-            if (log.isDebugEnabled()) {
-                Throwable t = new Throwable();
-                log.debug("Called BedrockSession#sendWrapped() from wrong thread: {}", Thread.currentThread().getName(), t);
-            }
-        }
-    }
-
-    private void sendWrapped0(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
+    private void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
         ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
         try {
             this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
@@ -149,15 +138,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
-        if (this.eventLoop.inEventLoop()) {
-            this.sendWrapped0(compressed, encrypt, immediate);
-        } else {
-            this.eventLoop.execute(() -> this.sendWrapped0(compressed, encrypt, immediate));
-            if (log.isDebugEnabled()) {
-                Throwable t = new Throwable();
-                log.debug("Called BedrockSession#sendWrapped() from wrong thread: {}", Thread.currentThread().getName(), t);
-            }
-        }
+        checkEventLoop(this.eventLoop, () -> sendWrapped(compressed, encrypt, immediate), compressed);
     }
 
     private void sendWrapped0(ByteBuf compressed, boolean encrypt, boolean immediate) {
@@ -289,6 +270,10 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void onWrappedPacket(final ByteBuf batched) {
+        checkEventLoop(this.eventLoop, () -> onWrappedPacket(batched), batched);
+    }
+
+    private void onWrappedPacket0(final ByteBuf batched) {
         try {
             if (this.isEncrypted()) {
                 int index = batched.readerIndex();
@@ -380,6 +365,31 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     public SessionConnection<ByteBuf> getConnection() {
         return this.connection;
+    }
+
+    private static void checkEventLoop(EventLoop eventLoop, Runnable consumer, Object value) {
+        if (eventLoop.inEventLoop()) {
+            consumer.run();
+        } else {
+            referenceAction(ReferenceCountUtil::retain, value);
+            eventLoop.execute(() -> {
+                try {
+                    consumer.run();
+                } finally {
+                    referenceAction(ReferenceCountUtil::release, value);
+                }
+            });
+        }
+    }
+
+    private static void referenceAction(Consumer<Object> consumer, Object object) {
+        if (consumer instanceof Collection) {
+            for (Object o : (Collection<?>) consumer) {
+                consumer.accept(o);
+            }
+        } else {
+            consumer.accept(object);
+        }
     }
 
 //    @ParametersAreNonnullByDefault
