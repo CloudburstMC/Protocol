@@ -30,7 +30,9 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -137,7 +139,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         this.sendWrapped(compressed, encrypt, false);
     }
 
-    public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
+    public void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
         checkEventLoop(this.eventLoop, () -> sendWrapped0(compressed, encrypt, immediate), compressed);
     }
 
@@ -204,7 +206,11 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    public synchronized void enableEncryption(@Nonnull SecretKey secretKey) {
+    public void enableEncryption(@Nonnull SecretKey secretKey) {
+        checkEventLoop(this.eventLoop, () -> enableEncryption(secretKey), null);
+    }
+
+    public void enableEncryption0(@Nonnull SecretKey secretKey) {
         this.checkForClosed();
         log.debug("Encryption enabled.");
         Objects.requireNonNull(secretKey, "secretKey");
@@ -367,12 +373,13 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         return this.connection;
     }
 
-    private static void checkEventLoop(EventLoop eventLoop, Runnable consumer, Object value) {
+    private static Future<?> checkEventLoop(EventLoop eventLoop, Runnable consumer, Object value) {
         if (eventLoop.inEventLoop()) {
             consumer.run();
+            return CompletableFuture.completedFuture(null);
         } else {
             referenceAction(ReferenceCountUtil::retain, value);
-            eventLoop.execute(() -> {
+            return eventLoop.submit(() -> {
                 try {
                     consumer.run();
                 } finally {
