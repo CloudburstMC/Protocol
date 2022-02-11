@@ -276,7 +276,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void onWrappedPacket(final ByteBuf batched) {
-        checkEventLoop(this.eventLoop, () -> onWrappedPacket(batched), batched);
+        checkEventLoop(this.eventLoop, () -> onWrappedPacket0(batched), batched);
     }
 
     private void onWrappedPacket0(final ByteBuf batched) {
