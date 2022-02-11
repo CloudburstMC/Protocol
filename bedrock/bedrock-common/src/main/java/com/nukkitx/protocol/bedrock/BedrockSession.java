@@ -207,7 +207,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void enableEncryption(@Nonnull SecretKey secretKey) {
-        checkEventLoop(this.eventLoop, () -> enableEncryption(secretKey), null);
+        checkEventLoop(this.eventLoop, () -> enableEncryption0(secretKey), null);
     }
 
     public void enableEncryption0(@Nonnull SecretKey secretKey) {
