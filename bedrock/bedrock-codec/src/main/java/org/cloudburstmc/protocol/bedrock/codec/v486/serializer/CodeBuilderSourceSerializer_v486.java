@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v485.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v486.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -10,9 +10,9 @@ import org.cloudburstmc.protocol.bedrock.data.CodeBuilderOperationType;
 import org.cloudburstmc.protocol.bedrock.packet.CodeBuilderSourcePacket;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CodeBuilderSourceSerializer_v485 implements BedrockPacketSerializer<CodeBuilderSourcePacket> {
+public class CodeBuilderSourceSerializer_v486 implements BedrockPacketSerializer<CodeBuilderSourcePacket> {
 
-    public static final CodeBuilderSourceSerializer_v485 INSTANCE = new CodeBuilderSourceSerializer_v485();
+    public static final CodeBuilderSourceSerializer_v486 INSTANCE = new CodeBuilderSourceSerializer_v486();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CodeBuilderSourcePacket packet) {

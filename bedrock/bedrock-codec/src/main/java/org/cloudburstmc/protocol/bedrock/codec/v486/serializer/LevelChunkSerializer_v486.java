@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v485.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v486.serializer;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongList;
@@ -10,8 +10,8 @@ import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LevelChunkSerializer_v485 extends LevelChunkSerializer_v361 {
-    public static final LevelChunkSerializer_v485 INSTANCE = new LevelChunkSerializer_v485();
+public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
+    public static final LevelChunkSerializer_v486 INSTANCE = new LevelChunkSerializer_v486();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {

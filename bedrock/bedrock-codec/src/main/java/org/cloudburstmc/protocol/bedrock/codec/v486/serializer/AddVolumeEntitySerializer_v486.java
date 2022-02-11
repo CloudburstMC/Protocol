@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v485.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v486.serializer;
 
 import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
@@ -10,8 +10,8 @@ import org.cloudburstmc.protocol.bedrock.packet.AddVolumeEntityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class AddVolumeEntitySerializer_v485 extends AddVolumeEntitySerializer_v465 {
-    public static final AddVolumeEntitySerializer_v485 INSTANCE = new AddVolumeEntitySerializer_v485();
+public class AddVolumeEntitySerializer_v486 extends AddVolumeEntitySerializer_v465 {
+    public static final AddVolumeEntitySerializer_v486 INSTANCE = new AddVolumeEntitySerializer_v486();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddVolumeEntityPacket packet) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v485.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v486.serializer;
 
 import com.nukkitx.math.vector.Vector3i;
 import io.netty.buffer.ByteBuf;
@@ -10,17 +10,16 @@ import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SubChunkRequestSerializer_v485 extends SubChunkRequestSerializer_v471 {
+public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v471 {
 
-    public static final SubChunkRequestSerializer_v485 INSTANCE = new SubChunkRequestSerializer_v485();
+    public static final SubChunkRequestSerializer_v486 INSTANCE = new SubChunkRequestSerializer_v486();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
         VarInts.writeInt(buffer, packet.getDimension());
         helper.writeVector3i(buffer, packet.getSubChunkPosition());
-        buffer.writeIntLE((int) packet.getRequestCount());
 
-        buffer.writeShortLE(packet.getPositionOffsets().size());
+        buffer.writeIntLE(packet.getPositionOffsets().size());
         packet.getPositionOffsets().forEach(position -> this.writeSubChunkOffset(buffer, position));
     }
 
@@ -28,9 +27,8 @@ public class SubChunkRequestSerializer_v485 extends SubChunkRequestSerializer_v4
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
         packet.setDimension(VarInts.readInt(buffer));
         packet.setSubChunkPosition(helper.readVector3i(buffer));
-        packet.setRequestCount(buffer.readUnsignedIntLE());
 
-        int size = buffer.readUnsignedShortLE();
+        int size = buffer.readIntLE(); // Unsigned but realistically, we're not going to read that many.
         for (int i = 0; i < size; i++) {
             packet.getPositionOffsets().add(this.readSubChunkOffset(buffer));
         }

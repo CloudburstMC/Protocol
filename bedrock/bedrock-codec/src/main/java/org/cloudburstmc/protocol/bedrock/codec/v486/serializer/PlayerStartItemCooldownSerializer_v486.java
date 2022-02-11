@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v485.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v486.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -9,9 +9,9 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerStartItemCooldownPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerStartItemCooldownSerializer_v485 implements BedrockPacketSerializer<PlayerStartItemCooldownPacket> {
+public class PlayerStartItemCooldownSerializer_v486 implements BedrockPacketSerializer<PlayerStartItemCooldownPacket> {
 
-    public static final PlayerStartItemCooldownSerializer_v485 INSTANCE = new PlayerStartItemCooldownSerializer_v485();
+    public static final PlayerStartItemCooldownSerializer_v486 INSTANCE = new PlayerStartItemCooldownSerializer_v486();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerStartItemCooldownPacket packet) {

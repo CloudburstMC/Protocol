@@ -18,7 +18,6 @@ public class SubChunkRequestPacket implements BedrockPacket {
     /**
      * @since v485
      */
-    private long requestCount;
     private List<Vector3i> positionOffsets = new ObjectArrayList<>();
 
     @Override
