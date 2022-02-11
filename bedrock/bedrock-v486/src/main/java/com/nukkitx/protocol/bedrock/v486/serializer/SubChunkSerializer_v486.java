@@ -19,7 +19,7 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
         VarInts.writeInt(buffer, packet.getDimension());
         helper.writeVector3i(buffer, packet.getCenterPosition());
 
-        buffer.writeShortLE(packet.getSubChunks().size());
+        buffer.writeIntLE(packet.getSubChunks().size());
         packet.getSubChunks().forEach(subChunk -> this.serializeSubChunk(buffer, helper, packet, subChunk));
     }
 
@@ -29,7 +29,7 @@ public class SubChunkSerializer_v486 extends SubChunkSerializer_v475 {
         packet.setDimension(VarInts.readInt(buffer));
         packet.setCenterPosition(helper.readVector3i(buffer));
 
-        int size = buffer.readUnsignedShortLE();
+        int size = buffer.readIntLE(); // Unsigned but realistically, we're not going to read that many.
         for (int i = 0; i < size; i++) {
             packet.getSubChunks().add(this.deserializeSubChunk(buffer, helper, packet));
         }
