@@ -7,8 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.BlockSyncType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode(doNotUseGetters = true)
-@ToString(doNotUseGetters = true)
+@EqualsAndHashCode(doNotUseGetters = true, callSuper = true)
 public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
     private long runtimeEntityId;
     private BlockSyncType entityBlockSyncType;
@@ -20,5 +19,15 @@ public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
 
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_BLOCK_SYNCED;
+    }
+
+    public String toString() {
+        return "UpdateBlockSyncedPacket(runtimeEntityId=" + this.runtimeEntityId +
+                ", entityBlockSyncType=" + this.entityBlockSyncType +
+                ", flags=" + this.flags +
+                ", blockPosition=" + this.blockPosition +
+                ", runtimeId=" + this.runtimeId +
+                ", dataLayer=" + this.dataLayer +
+                ")";
     }
 }
