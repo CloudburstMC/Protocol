@@ -20,4 +20,14 @@ public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_BLOCK_SYNCED;
     }
+
+    public String toString() {
+        return "UpdateBlockSyncedPacket(runtimeEntityId=" + this.runtimeEntityId +
+                ", entityBlockSyncType=" + this.entityBlockSyncType +
+                ", flags=" + this.flags +
+                ", blockPosition=" + this.blockPosition +
+                ", runtimeId=" + this.runtimeId +
+                ", dataLayer=" + this.dataLayer +
+                ")";
+    }
 }

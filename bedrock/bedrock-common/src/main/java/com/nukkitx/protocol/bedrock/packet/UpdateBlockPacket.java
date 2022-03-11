@@ -18,10 +18,10 @@ public class UpdateBlockPacket extends BedrockPacket {
     public static final Set<Flag> FLAG_ALL_PRIORITY = Collections.unmodifiableSet(
             EnumSet.of(Flag.NEIGHBORS, Flag.NETWORK, Flag.PRIORITY));
 
-    private final Set<Flag> flags = EnumSet.noneOf(Flag.class);
-    private Vector3i blockPosition;
-    private int runtimeId;
-    private int dataLayer;
+    final Set<Flag> flags = EnumSet.noneOf(Flag.class);
+    Vector3i blockPosition;
+    int runtimeId;
+    int dataLayer;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {
