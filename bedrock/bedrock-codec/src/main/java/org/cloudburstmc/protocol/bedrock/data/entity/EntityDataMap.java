@@ -1,12 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.math.vector.Vector3i;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.FLAGS;
 import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.FLAGS_2;

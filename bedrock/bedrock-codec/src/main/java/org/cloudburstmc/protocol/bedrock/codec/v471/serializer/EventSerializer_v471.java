@@ -5,7 +5,15 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v389.serializer.EventSerializer_v389;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.event.*;
+import org.cloudburstmc.protocol.bedrock.data.event.CodeBuilderActionEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.CodeBuilderScoreboardEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.CopperWaxedOrUnwaxedEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.EventData;
+import org.cloudburstmc.protocol.bedrock.data.event.EventDataType;
+import org.cloudburstmc.protocol.bedrock.data.event.PiglinBarterEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.SneakCloseToSculkSensorEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.StriderRiddenInLavaInOverworldEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.TargetBlockHitEventData;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class EventSerializer_v471 extends EventSerializer_v389 {

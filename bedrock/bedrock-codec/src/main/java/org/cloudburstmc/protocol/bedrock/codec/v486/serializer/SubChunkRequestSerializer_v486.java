@@ -1,9 +1,9 @@
 package org.cloudburstmc.protocol.bedrock.codec.v486.serializer;
 
-import com.nukkitx.math.vector.Vector3i;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.SubChunkRequestSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket;

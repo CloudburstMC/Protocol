@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AbstractReferenceCounted;
-import io.netty.util.ReferenceCounted;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import lombok.Data;

@@ -6,11 +6,28 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
 import org.cloudburstmc.protocol.bedrock.codec.v475.Bedrock_v475;
-import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.AddVolumeEntitySerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.BossEventSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.CodeBuilderSourceSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.LevelChunkSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.PlayerStartItemCooldownSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.ScriptMessageSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.SubChunkRequestSerializer_v486;
+import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.SubChunkSerializer_v486;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.packet.AddVolumeEntityPacket;
+import org.cloudburstmc.protocol.bedrock.packet.BossEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.CodeBuilderSourcePacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.PlayerStartItemCooldownPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ScriptMessagePacket;
+import org.cloudburstmc.protocol.bedrock.packet.SubChunkPacket;
+import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v486 extends Bedrock_v475 {

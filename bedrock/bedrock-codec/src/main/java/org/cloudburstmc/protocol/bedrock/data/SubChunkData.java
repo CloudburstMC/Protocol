@@ -1,10 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import com.nukkitx.math.vector.Vector3i;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AbstractReferenceCounted;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.cloudburstmc.math.vector.Vector3i;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

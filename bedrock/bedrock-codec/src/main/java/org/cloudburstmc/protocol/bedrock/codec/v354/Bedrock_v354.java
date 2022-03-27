@@ -7,13 +7,29 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v340.BedrockCodecHelper_v340;
 import org.cloudburstmc.protocol.bedrock.codec.v340.Bedrock_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.ClientboundMapItemDataSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.CraftingDataSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.EventSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.LecternUpdateSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.MapCreateLockedCopySerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.OnScreenTextureAnimationSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.UpdateTradeSerializer_v354;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
+import org.cloudburstmc.protocol.bedrock.packet.EventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LecternUpdatePacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.MapCreateLockedCopyPacket;
+import org.cloudburstmc.protocol.bedrock.packet.OnScreenTextureAnimationPacket;
+import org.cloudburstmc.protocol.bedrock.packet.UpdateTradePacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v354 extends Bedrock_v340 {
