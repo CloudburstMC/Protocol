@@ -81,6 +81,13 @@ public interface ItemData {
     int getNetId();
 
     /**
+     * Sets the item's net id.
+     *
+     * @param netId the item's net id
+     */
+    void setNetId(int netId);
+
+    /**
      * Gets if this item is valid.
      *
      * @return if this item is valid
@@ -103,6 +110,15 @@ public interface ItemData {
      * @return if this item is equal to the other item data
      */
     boolean equals(ItemData other, boolean checkAmount, boolean checkMetadata, boolean checkUserdata);
+
+    /**
+     * Creates a new builder for this item.
+     *
+     * @return a new builder for this item
+     */
+    default Builder toBuilder() {
+        return new Builder(this);
+    }
 
     /**
      * Creates a new builder for this ItemData.

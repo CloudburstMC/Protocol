@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory;
 
 import com.nukkitx.nbt.NbtMap;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.NonFinal;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
@@ -12,7 +11,6 @@ import java.util.Objects;
 
 @Data
 @Immutable
-@Builder(toBuilder = true, builderClassName = "Builder")
 final class BaseItemData implements ItemData {
     static final String[] EMPTY_ARRAY = new String[0];
     private ItemDefinition definition;
