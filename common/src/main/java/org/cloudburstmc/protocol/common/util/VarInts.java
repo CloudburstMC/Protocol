@@ -7,8 +7,7 @@ import lombok.experimental.UtilityClass;
 public class VarInts {
 
     public static void writeInt(ByteBuf buffer, int value) {
-        long val = value & 0xFFFFFFFFL;
-        encode(buffer, (val << 1) ^ (val >> 31));
+        encode(buffer, ((value << 1) ^ (value >> 31)) & 0xFFFFFFFFL);
     }
 
     public static int readInt(ByteBuf buffer) {
@@ -44,6 +43,20 @@ public class VarInts {
     // Based off of Andrew Steinborn's blog post:
     // https://steinborn.me/posts/performance/how-fast-can-you-write-a-varint/
     private static void encode(ByteBuf buf, long value) {
+        // Peel the one and two byte count cases explicitly as they are the most common VarInt sizes
+        // that the server will write, to improve inlining.
+        if ((value & ~0x7FL) == 0) {
+            buf.writeByte((byte) value);
+        } else if ((value & ~0x3FFFL) == 0) {
+            int w = (int) ((value & 0x7FL | 0x80L) << 8 |
+                    (value >>> 7));
+            buf.writeShort(w);
+        } else {
+            encodeFull(buf, value);
+        }
+    }
+
+    private static void encodeFull(ByteBuf buf, long value) {
         if ((value & ~0x7FL) == 0) {
             buf.writeByte((byte) value);
         } else if ((value & ~0x3FFFL) == 0) {
