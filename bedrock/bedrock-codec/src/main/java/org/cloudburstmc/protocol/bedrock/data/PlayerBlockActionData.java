@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-import com.nukkitx.math.vector.Vector3i;
 import lombok.Data;
+import org.cloudburstmc.math.vector.Vector3i;
 
 @Data
 public class PlayerBlockActionData {

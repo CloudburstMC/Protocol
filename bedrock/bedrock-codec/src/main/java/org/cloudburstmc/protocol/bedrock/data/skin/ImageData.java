@@ -1,6 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.data.skin;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

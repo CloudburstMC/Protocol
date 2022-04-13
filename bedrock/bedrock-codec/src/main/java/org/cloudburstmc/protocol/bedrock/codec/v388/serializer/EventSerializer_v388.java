@@ -3,7 +3,13 @@ package org.cloudburstmc.protocol.bedrock.codec.v388.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.EventSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.data.event.*;
+import org.cloudburstmc.protocol.bedrock.data.event.EntityDefinitionTriggerEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.EventData;
+import org.cloudburstmc.protocol.bedrock.data.event.EventDataType;
+import org.cloudburstmc.protocol.bedrock.data.event.MobKilledEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.MovementAnomalyEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.MovementCorrectedEventData;
+import org.cloudburstmc.protocol.bedrock.data.event.RaidUpdateEventData;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class EventSerializer_v388 extends EventSerializer_v354 {

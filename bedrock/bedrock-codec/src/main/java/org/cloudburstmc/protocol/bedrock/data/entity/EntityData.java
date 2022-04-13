@@ -1,10 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.nbt.NbtMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 
 import javax.annotation.Nonnull;

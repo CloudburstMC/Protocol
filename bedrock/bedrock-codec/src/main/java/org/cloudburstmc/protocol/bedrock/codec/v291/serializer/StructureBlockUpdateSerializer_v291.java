@@ -1,13 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.structure.*;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureBlockType;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureEditorData;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureRedstoneSaveMode;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
+import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 

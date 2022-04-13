@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec.v440;
 
-import com.nukkitx.math.vector.Vector3f;
-import com.nukkitx.math.vector.Vector3i;
 import io.netty.buffer.ByteBuf;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.v431.BedrockCodecHelper_v431;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;

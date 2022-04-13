@@ -6,12 +6,24 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1S
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.Bedrock_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.AvailableCommandsSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.EventSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.LecternUpdateSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.StructureBlockUpdateSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.VideoStreamConnectSerializer_v340;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
+import org.cloudburstmc.protocol.bedrock.packet.EventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LecternUpdatePacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
+import org.cloudburstmc.protocol.bedrock.packet.VideoStreamConnectPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v340 extends Bedrock_v332 {

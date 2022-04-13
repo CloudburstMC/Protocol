@@ -3,7 +3,11 @@ package org.cloudburstmc.protocol.bedrock.data.skin;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.JSONValue;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.Collections;
 import java.util.List;
@@ -177,6 +181,8 @@ public class SerializedSkin {
         private String skinColor;
         private List<PersonaPieceData> personaPieces;
         private List<PersonaPieceTintData> tintColors;
+        private String geometryDataEngineVersion;
+        private boolean primaryUser;
 
         Builder() {
         }
@@ -271,6 +277,16 @@ public class SerializedSkin {
             return this;
         }
 
+        public Builder geometryDataEngineVersion(String version) {
+            this.geometryDataEngineVersion = version;
+            return this;
+        }
+
+        public Builder primaryUser(boolean primaryUser) {
+            this.primaryUser = primaryUser;
+            return this;
+        }
+
         public SerializedSkin build() {
             if (playFabId == null) playFabId = "";
             if (animationData == null) animationData = "";
@@ -278,6 +294,7 @@ public class SerializedSkin {
             if (capeId == null) capeId = "";
             if (fullSkinId == null) fullSkinId = skinId + capeId;
             if (armSize == null) armSize = "wide";
+            if (geometryDataEngineVersion == null) geometryDataEngineVersion = "";
             if (skinColor == null) skinColor = "#0";
             if (personaPieces == null) personaPieces = Collections.emptyList();
             if (tintColors == null) tintColors = Collections.emptyList();
@@ -286,8 +303,8 @@ public class SerializedSkin {
                 return SerializedSkin.of(skinId, playFabId, geometryName, skinData, animations, capeData, geometryData,
                         animationData, premium, persona, capeOnClassic, capeId, fullSkinId);
             } else {
-                return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData,
-                        animationData, premium, persona, capeOnClassic, capeId, fullSkinId);
+                return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataEngineVersion,
+                        animationData, premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
             }
         }
 

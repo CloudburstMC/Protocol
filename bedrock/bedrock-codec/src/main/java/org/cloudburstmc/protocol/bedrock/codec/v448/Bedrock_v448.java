@@ -7,19 +7,28 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSeriali
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v422.Bedrock_v422;
 import org.cloudburstmc.protocol.bedrock.codec.v440.BedrockCodecHelper_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v440.Bedrock_v440;
-import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.AddVolumeEntitySerializer_v440;
-import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.RemoveVolumeEntitySerializer_v440;
-import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.StartGameSerializer_v440;
-import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.SyncEntityPropertySerializer_v440;
-import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommandsSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.NpcDialogueSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.NpcRequestSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.ResourcePacksInfoSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.SetTitleSerializer_v448;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.SimulationTypeSerializer_v448;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
+import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
+import org.cloudburstmc.protocol.bedrock.packet.NpcDialoguePacket;
+import org.cloudburstmc.protocol.bedrock.packet.NpcRequestPacket;
+import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
+import org.cloudburstmc.protocol.bedrock.packet.SetTitlePacket;
+import org.cloudburstmc.protocol.bedrock.packet.SimulationTypePacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
-import org.cloudburstmc.protocol.common.util.TriConsumer;
 
 import java.util.Collection;
-import java.util.function.BiFunction;
 
 import static java.util.Objects.requireNonNull;
 
