@@ -18,12 +18,12 @@ public class SequencedHashSet<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        return map.get(o);
+        return map.getInt(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return map.get(o);
+        return map.getInt(o);
     }
 
     @Override
