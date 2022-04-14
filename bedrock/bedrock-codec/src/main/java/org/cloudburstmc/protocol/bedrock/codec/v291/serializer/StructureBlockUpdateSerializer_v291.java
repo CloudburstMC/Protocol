@@ -7,13 +7,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureBlockType;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureEditorData;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureRedstoneSaveMode;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
-import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.bedrock.data.structure.*;
 import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -80,7 +74,7 @@ public class StructureBlockUpdateSerializer_v291 implements BedrockPacketSeriali
         // Structure Editor Data end
         boolean boundingBoxVisible = buffer.readBoolean();
 
-        StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, size, offset,
+        StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, true, size, offset,
                 -1, rotation, mirror, StructureAnimationMode.NONE, 0f,
                 structureIntegrity, integritySeed, Vector3f.ZERO);
         StructureEditorData editorData = new StructureEditorData(name, dataField, includePlayers, boundingBoxVisible,
