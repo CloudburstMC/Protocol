@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.GamePublishSetting;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.SpawnBiomeType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,7 +19,7 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
         helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());
@@ -60,15 +61,13 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
         buffer.writeBoolean(packet.isNetherType());
         helper.writeString(buffer, packet.getEduSharedUriResource().getButtonName());
         helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
-        buffer.writeBoolean(packet.isForceExperimentalGameplay());
-        if (packet.isForceExperimentalGameplay()) {
-            buffer.writeBoolean(true); // optional boolean
-        }
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
     }
 
     @Override
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setSpawnBiomeType(SpawnBiomeType.byId(buffer.readShortLE()));
         packet.setCustomBiomeName(helper.readString(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
@@ -109,8 +108,6 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
         packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
-        if (buffer.readBoolean()) { // optional boolean
-            packet.setForceExperimentalGameplay(buffer.readBoolean());
-        }
+        packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
     }
 }

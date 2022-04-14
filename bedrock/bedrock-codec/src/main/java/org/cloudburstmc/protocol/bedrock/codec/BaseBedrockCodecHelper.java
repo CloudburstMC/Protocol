@@ -22,12 +22,7 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerMixData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.PotionMixData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
@@ -485,12 +480,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override

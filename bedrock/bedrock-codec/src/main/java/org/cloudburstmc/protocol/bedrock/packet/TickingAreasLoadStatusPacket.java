@@ -5,19 +5,24 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Client bound packet to indicate whether the server has preloaded the ticking areas.
+ *
+ * @since v503
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ContainerClosePacket implements BedrockPacket {
-    private byte id;
-    private boolean serverInitiated;
+public class TickingAreasLoadStatusPacket implements BedrockPacket {
+    boolean waitingForPreload;
 
     @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
+    public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CONTAINER_CLOSE;
+        return BedrockPacketType.TICKING_AREAS_LOAD_STATUS;
     }
 }

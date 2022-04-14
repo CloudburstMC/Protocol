@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -31,6 +32,7 @@ public class AddPlayerPacket implements BedrockPacket {
     private final AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
     private String deviceId;
     private int buildPlatform;
+    private GameType gameType;
 
     public void setUniqueEntityId(long uniqueEntityId) {
         this.uniqueEntityId = uniqueEntityId;

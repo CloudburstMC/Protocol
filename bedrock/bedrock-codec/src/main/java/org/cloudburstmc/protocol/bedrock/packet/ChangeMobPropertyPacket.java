@@ -3,18 +3,23 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderCategoryType;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderOperationType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * Server-bound packet to change the properties of a mob.
+ *
+ * @since v503
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class CodeBuilderSourcePacket implements BedrockPacket {
-
-    private CodeBuilderOperationType operation;
-    private CodeBuilderCategoryType category;
-    private String value;
+public class ChangeMobPropertyPacket implements BedrockPacket {
+    private long uniqueEntityId;
+    private String property;
+    private boolean boolValue;
+    private String stringValue;
+    private int intValue;
+    private float floatValue;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -23,6 +28,6 @@ public class CodeBuilderSourcePacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CODE_BUILDER_SOURCE;
+        return BedrockPacketType.CHANGE_MOB_PROPERTY;
     }
 }

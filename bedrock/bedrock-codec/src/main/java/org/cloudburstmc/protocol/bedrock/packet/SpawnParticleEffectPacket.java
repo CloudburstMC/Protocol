@@ -6,14 +6,18 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+import java.util.Optional;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SpawnParticleEffectPacket implements BedrockPacket {
     private int dimensionId;
     private long uniqueEntityId = -1;
     private Vector3f position;
     private String identifier;
+    private Optional<String> molangVariablesJson;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

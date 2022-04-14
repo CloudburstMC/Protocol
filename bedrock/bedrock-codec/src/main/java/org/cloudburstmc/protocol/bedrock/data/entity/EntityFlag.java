@@ -102,5 +102,9 @@ public enum EntityFlag {
     IN_ASCENDABLE_BLOCK,
     OVER_DESCENDABLE_BLOCK,
     CROAKING,
-    EAT_MOB
+    EAT_MOB,
+    JUMP_GOAL_JUMP,
+    EMERGING,
+    SNIFFING,
+    DIGGING
 }

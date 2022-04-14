@@ -6,14 +6,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.AuthoritativeMovementMode;
-import org.cloudburstmc.protocol.bedrock.data.BlockPropertyData;
-import org.cloudburstmc.protocol.bedrock.data.GamePublishSetting;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.SpawnBiomeType;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @SuppressWarnings("DuplicatedCode")
@@ -94,7 +90,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
     }
 
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
         helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());
@@ -134,14 +130,12 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         buffer.writeIntLE(packet.getLimitedWorldWidth());
         buffer.writeIntLE(packet.getLimitedWorldHeight());
         buffer.writeBoolean(packet.isNetherType());
-        buffer.writeBoolean(packet.isForceExperimentalGameplay());
-        if (packet.isForceExperimentalGameplay()) {
-            buffer.writeBoolean(true); // optional boolean
-        }
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
     }
 
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setSpawnBiomeType(SpawnBiomeType.byId(buffer.readShortLE()));
         packet.setCustomBiomeName(helper.readString(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
@@ -181,8 +175,14 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         packet.setLimitedWorldWidth(buffer.readIntLE());
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
-        if (buffer.readBoolean()) { // optional boolean
-            packet.setForceExperimentalGameplay(buffer.readBoolean());
-        }
+        packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+    }
+
+    protected long readSeed(ByteBuf buffer) {
+        return VarInts.readInt(buffer);
+    }
+
+    protected void writeSeed(ByteBuf buffer, long seed) {
+        VarInts.writeInt(buffer, (int) seed);
     }
 }

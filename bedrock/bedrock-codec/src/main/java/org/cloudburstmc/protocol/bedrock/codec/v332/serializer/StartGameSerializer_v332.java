@@ -16,7 +16,7 @@ public class StartGameSerializer_v332 extends StartGameSerializer_v291 { // No n
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
@@ -50,7 +50,7 @@ public class StartGameSerializer_v332 extends StartGameSerializer_v291 { // No n
 
     @Override
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
         packet.setLevelGameType(GameType.values()[VarInts.readInt(buffer)]);

@@ -32,6 +32,10 @@ public class EventPacket implements BedrockPacket {
         CAULDRON_USED,
         PLAYER_DEATH,
         BOSS_KILLED,
+        /**
+         * @deprecated use {@link AgentActionEventPacket}
+         */
+        @Deprecated
         AGENT_COMMAND,
         AGENT_CREATED,
         PATTERN_REMOVED,

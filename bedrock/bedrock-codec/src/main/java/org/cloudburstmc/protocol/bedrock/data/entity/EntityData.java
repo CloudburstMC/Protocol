@@ -145,7 +145,19 @@ public enum EntityData {
      */
     GOAT_HORN_COUNT(null),
     BASE_RUNTIME_ID(null),
-    UPDATE_PROPERTIES(null);
+    UPDATE_PROPERTIES(null),
+    /**
+     * @since v503
+     */
+    MOVEMENT_SOUND_DISTANCE_OFFSET(null),
+    /**
+     * @since v503
+     */
+    HEARTBEAT_INTERVAL_TICKS(null),
+    /**
+     * @since v503
+     */
+    HEARTBEAT_SOUND_EVENT(null);
 
     private final Type type;
     private final boolean flags;

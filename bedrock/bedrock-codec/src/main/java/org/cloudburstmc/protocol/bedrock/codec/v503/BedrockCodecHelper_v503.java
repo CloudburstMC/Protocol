@@ -1,10 +1,9 @@
-package org.cloudburstmc.protocol.bedrock.codec.v440;
+package org.cloudburstmc.protocol.bedrock.codec.v503;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.codec.v431.BedrockCodecHelper_v431;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
@@ -12,56 +11,14 @@ import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureRotation;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
-import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
-    public BedrockCodecHelper_v440(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes) {
+public class BedrockCodecHelper_v503 extends BedrockCodecHelper_v465 {
+    public BedrockCodecHelper_v503(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
+                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
         super(entityData, entityDataTypes, entityFlags, gameRulesTypes, stackRequestActionTypes);
-    }
-
-    @Override
-    public void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule) {
-        Preconditions.checkNotNull(buffer, "buffer");
-        Preconditions.checkNotNull(gameRule, "gameRule");
-
-        Object value = gameRule.getValue();
-        int id = this.gameRuleType.getId(value.getClass());
-
-        writeString(buffer, gameRule.getName());
-        buffer.writeBoolean(gameRule.isEditable());
-        VarInts.writeUnsignedInt(buffer, id);
-        switch (id) {
-            case 1:
-                buffer.writeBoolean((boolean) value);
-                break;
-            case 2:
-                VarInts.writeUnsignedInt(buffer, (int) value);
-                break;
-            case 3:
-                buffer.writeFloatLE((float) value);
-                break;
-        }
-    }
-
-    @Override
-    public GameRuleData<?> readGameRule(ByteBuf buffer) {
-        Preconditions.checkNotNull(buffer, "buffer");
-
-        String name = readString(buffer);
-        boolean editable = buffer.readBoolean();
-        int type = VarInts.readUnsignedInt(buffer);
-
-        switch (type) {
-            case 1:
-                return new GameRuleData<>(name, editable, buffer.readBoolean());
-            case 2:
-                return new GameRuleData<>(name, editable, VarInts.readUnsignedInt(buffer));
-            case 3:
-                return new GameRuleData<>(name, editable, buffer.readFloatLE());
-        }
-        throw new IllegalStateException("Invalid gamerule type received");
     }
 
     @Override
@@ -69,6 +26,7 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
         String paletteName = this.readString(buffer);
         boolean ignoringEntities = buffer.readBoolean();
         boolean ignoringBlocks = buffer.readBoolean();
+        boolean nonTickingPlayersAndTickingAreasEnabled = buffer.readBoolean();
         Vector3i size = this.readBlockPosition(buffer);
         Vector3i offset = this.readBlockPosition(buffer);
         long lastEditedByEntityId = VarInts.readLong(buffer);
@@ -80,8 +38,9 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
         int integritySeed = buffer.readIntLE();
         Vector3f pivot = this.readVector3f(buffer);
 
-        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
-                rotation, mirror, animationMode, animationSeconds, integrityValue, integritySeed, pivot);
+        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks,
+                nonTickingPlayersAndTickingAreasEnabled, size, offset, lastEditedByEntityId, rotation, mirror,
+                animationMode, animationSeconds, integrityValue, integritySeed, pivot);
     }
 
     @Override
@@ -89,6 +48,7 @@ public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
         this.writeString(buffer, settings.getPaletteName());
         buffer.writeBoolean(settings.isIgnoringBlocks());
         buffer.writeBoolean(settings.isIgnoringBlocks());
+        buffer.writeBoolean(settings.isNonTickingPlayersAndTickingAreasEnabled());
         this.writeBlockPosition(buffer, settings.getSize());
         this.writeBlockPosition(buffer, settings.getOffset());
         VarInts.writeLong(buffer, settings.getLastEditedByEntityId());

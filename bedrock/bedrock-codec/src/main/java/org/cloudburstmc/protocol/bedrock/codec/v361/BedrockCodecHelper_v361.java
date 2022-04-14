@@ -170,7 +170,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         float integrityValue = buffer.readFloatLE();
         int integritySeed = buffer.readIntLE();
 
-        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
+        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
                 rotation, mirror, StructureAnimationMode.NONE, 0f, integrityValue, integritySeed,
                 Vector3f.ZERO);
     }

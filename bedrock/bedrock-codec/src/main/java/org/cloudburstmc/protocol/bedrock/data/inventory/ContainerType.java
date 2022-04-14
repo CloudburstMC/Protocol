@@ -41,7 +41,8 @@ public enum ContainerType {
     CARTOGRAPHY(30),
     HUD(31),
     JIGSAW_EDITOR(32),
-    SMITHING_TABLE(33);
+    SMITHING_TABLE(33),
+    CHEST_BOAT(34);
 
     public static final ContainerType[] VALUES;
 

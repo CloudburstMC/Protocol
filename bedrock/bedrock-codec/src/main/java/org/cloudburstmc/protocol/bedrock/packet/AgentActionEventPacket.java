@@ -3,18 +3,22 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderCategoryType;
-import org.cloudburstmc.protocol.bedrock.data.CodeBuilderOperationType;
+import org.cloudburstmc.protocol.bedrock.data.ee.AgentActionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @since v503
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class CodeBuilderSourcePacket implements BedrockPacket {
-
-    private CodeBuilderOperationType operation;
-    private CodeBuilderCategoryType category;
-    private String value;
+public class AgentActionEventPacket implements BedrockPacket {
+    private String requestId;
+    private AgentActionType actionType;
+    /**
+     * @see AgentActionType for type specific JSON
+     */
+    private String responseJson;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -23,6 +27,6 @@ public class CodeBuilderSourcePacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CODE_BUILDER_SOURCE;
+        return BedrockPacketType.AGENT_ACTION_EVENT;
     }
 }

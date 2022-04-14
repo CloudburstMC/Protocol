@@ -84,7 +84,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
     }
 
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
@@ -118,7 +118,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
     }
 
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
         packet.setLevelGameType(GameType.from(VarInts.readInt(buffer)));
@@ -149,5 +149,13 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
         packet.setResourcePackLocked(buffer.readBoolean());
         packet.setFromLockedWorldTemplate(buffer.readBoolean());
         packet.setUsingMsaGamertagsOnly(buffer.readBoolean());
+    }
+
+    protected long readSeed(ByteBuf buffer) {
+        return VarInts.readInt(buffer);
+    }
+
+    protected void writeSeed(ByteBuf buffer, long seed) {
+        VarInts.writeInt(buffer, (int) seed);
     }
 }

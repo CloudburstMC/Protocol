@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import com.nukkitx.nbt.NbtMap;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -22,6 +23,19 @@ public class AddVolumeEntityPacket implements BedrockPacket {
      * @since v485
      */
     private String instanceName;
+
+    /**
+     * @since v503
+     */
+    private Vector3i minBounds;
+    /**
+     * @since v503
+     */
+    private Vector3i maxBounds;
+    /**
+     * @since v503
+     */
+    private int dimension;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

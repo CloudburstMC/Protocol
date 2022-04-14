@@ -11,17 +11,10 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.AuthoritativeMovementMode;
-import org.cloudburstmc.protocol.bedrock.data.BlockPropertyData;
-import org.cloudburstmc.protocol.bedrock.data.EduSharedUriResource;
-import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.GamePublishSetting;
-import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
-import org.cloudburstmc.protocol.bedrock.data.SpawnBiomeType;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 import java.util.List;
 
@@ -38,7 +31,7 @@ public class StartGamePacket implements BedrockPacket {
     private Vector3f playerPosition;
     private Vector2f rotation;
     // Level settings start
-    private int seed;
+    private long seed;
     private SpawnBiomeType spawnBiomeType;
     private String customBiomeName;
     private int dimensionId;
@@ -82,7 +75,7 @@ public class StartGamePacket implements BedrockPacket {
      * @since v465
      */
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
-    private boolean forceExperimentalGameplay;
+    private OptionalBoolean forceExperimentalGameplay;
     // Level settings end
     private String levelId;
     private String levelName;

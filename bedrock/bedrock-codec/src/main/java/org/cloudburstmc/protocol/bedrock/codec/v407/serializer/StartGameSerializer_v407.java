@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
 import org.cloudburstmc.protocol.bedrock.data.SpawnBiomeType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
+import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,7 +36,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
         helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());
@@ -73,12 +74,13 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         buffer.writeIntLE(packet.getLimitedWorldWidth());
         buffer.writeIntLE(packet.getLimitedWorldHeight());
         buffer.writeBoolean(packet.isNetherType());
-        buffer.writeBoolean(packet.isForceExperimentalGameplay());
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
     }
 
     @Override
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setSpawnBiomeType(SpawnBiomeType.byId(buffer.readShortLE()));
         packet.setCustomBiomeName(helper.readString(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
@@ -116,6 +118,6 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         packet.setLimitedWorldWidth(buffer.readIntLE());
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
-        packet.setForceExperimentalGameplay(buffer.readBoolean());
+        packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
     }
 }

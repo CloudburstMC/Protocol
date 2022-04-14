@@ -708,4 +708,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(CodeBuilderSourcePacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(TickingAreasLoadStatusPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(DimensionDataPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(AgentActionEventPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ChangeMobPropertyPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
