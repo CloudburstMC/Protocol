@@ -156,7 +156,19 @@ public enum EntityData {
     /**
      * @since v428
      */
-    UPDATE_PROPERTIES(null);
+    UPDATE_PROPERTIES(null),
+    /**
+     * @since v503
+     */
+    MOVEMENT_SOUND_DISTANCE_OFFSET(null),
+    /**
+     * @since v503
+     */
+    HEARTBEAT_INTERVAL_TICKS(Type.INT),
+    /**
+     * @since v503
+     */
+    HEARTBEAT_SOUND_EVENT(Type.INT);
 
     private final Type type;
     private final boolean flags;

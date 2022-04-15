@@ -10,6 +10,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class RemoveVolumeEntityPacket extends BedrockPacket {
     private int id;
+    /**
+     * @since v503
+     */
+    private int dimension;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

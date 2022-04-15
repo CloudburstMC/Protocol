@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.packet;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
+import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
@@ -31,6 +32,10 @@ public class AddPlayerPacket extends BedrockPacket {
     private final AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
     private String deviceId;
     private int buildPlatform;
+    /**
+     * @since v503
+     */
+    private GameType gameType;
 
     public void setUniqueEntityId(long uniqueEntityId) {
         this.uniqueEntityId = uniqueEntityId;

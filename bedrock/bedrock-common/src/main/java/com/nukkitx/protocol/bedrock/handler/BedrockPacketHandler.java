@@ -708,4 +708,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(CodeBuilderSourcePacket packet) {
         return false;
     }
+
+    default boolean handle(TickingAreasLoadStatusPacket packet) {
+        return false;
+    }
+
+    default boolean handle(DimensionDataPacket packet) {
+        return false;
+    }
+
+    default boolean handle(AgentActionEventPacket packet) {
+        return false;
+    }
+
+    default boolean handle(ChangeMobPropertyPacket packet) {
+        return false;
+    }
 }

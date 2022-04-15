@@ -74,7 +74,7 @@ public class StructureBlockUpdateSerializer_v340 implements BedrockPacketSeriali
         // Structure Editor Data end
         boolean boundingBoxVisible = buffer.readBoolean();
 
-        StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, size, offset,
+        StructureSettings settings = new StructureSettings("", ignoreEntities, ignoreBlocks, true, size, offset,
                 -1, rotation, mirror, StructureAnimationMode.NONE, 0,
                 structureIntegrity, integritySeed, Vector3f.ZERO);
         StructureEditorData editorData = new StructureEditorData(name, dataField, includePlayers, boundingBoxVisible,

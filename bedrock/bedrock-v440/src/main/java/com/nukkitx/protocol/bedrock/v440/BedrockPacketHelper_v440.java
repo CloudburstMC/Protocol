@@ -139,7 +139,7 @@ public class BedrockPacketHelper_v440 extends BedrockPacketHelper_v431 {
         int integritySeed = buffer.readIntLE();
         Vector3f pivot = this.readVector3f(buffer);
 
-        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
+        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
                 rotation, mirror, animationMode, animationSeconds, integrityValue, integritySeed, pivot);
     }
 

@@ -78,6 +78,8 @@ public enum LevelEventType {
     PARTICLE_TURTLE_EGG,
     PARTICLE_SCULK_SHRIEK,
     SCULK_CATALYST_BLOOM,
+    SCULK_CHARGE,
+    SCULK_CHARGE_POP,
 
     // world
     START_RAINING,

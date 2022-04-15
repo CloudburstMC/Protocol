@@ -7,6 +7,9 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Optional;
+
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class SpawnParticleEffectPacket extends BedrockPacket {
@@ -14,6 +17,10 @@ public class SpawnParticleEffectPacket extends BedrockPacket {
     private long uniqueEntityId = -1;
     private Vector3f position;
     private String identifier;
+    /**
+     * @since v503
+     */
+    private Optional<String> molangVariablesJson;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

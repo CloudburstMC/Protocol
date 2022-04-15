@@ -263,7 +263,7 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
         float integrityValue = buffer.readFloatLE();
         int integritySeed = buffer.readIntLE();
 
-        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, size, offset, lastEditedByEntityId,
+        return new StructureSettings(paletteName, ignoringEntities, ignoringBlocks, true, size, offset, lastEditedByEntityId,
                 rotation, mirror, StructureAnimationMode.NONE, 0, integrityValue, integritySeed, Vector3f.ZERO);
     }
 

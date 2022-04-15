@@ -11,6 +11,7 @@ public class StructureSettings {
     private final String paletteName;
     private final boolean ignoringEntities;
     private final boolean ignoringBlocks;
+    private final boolean nonTickingPlayersAndTickingAreasEnabled;
     private final Vector3i size;
     private final Vector3i offset;
     private final long lastEditedByEntityId;

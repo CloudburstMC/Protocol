@@ -84,7 +84,7 @@ public class StartGameSerializer_v291 implements BedrockPacketSerializer<StartGa
     }
 
     protected void writeLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        VarInts.writeInt(buffer, (int) packet.getSeed());
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());

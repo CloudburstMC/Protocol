@@ -4,10 +4,12 @@ public enum GameType {
     SURVIVAL,
     CREATIVE,
     ADVENTURE,
+    @Deprecated
     SURVIVAL_VIEWER,
+    @Deprecated
     CREATIVE_VIEWER,
     DEFAULT,
-    WORLD_DEFAULT;
+    SPECTATOR;
 
     private static final GameType[] VALUES = values();
 

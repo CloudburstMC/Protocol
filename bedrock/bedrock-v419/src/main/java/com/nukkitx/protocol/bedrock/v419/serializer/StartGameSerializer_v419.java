@@ -92,7 +92,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
     }
 
     protected void writeLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
         helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());
@@ -139,7 +139,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
     }
 
     protected void readLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setSpawnBiomeType(SpawnBiomeType.byId(buffer.readShortLE()));
         packet.setCustomBiomeName(helper.readString(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
@@ -182,5 +182,13 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         if (buffer.readBoolean()) { // optional boolean
             packet.setForceExperimentalGameplay(buffer.readBoolean());
         }
+    }
+
+    protected long readSeed(ByteBuf buffer) {
+        return VarInts.readInt(buffer);
+    }
+
+    protected void writeSeed(ByteBuf buffer, long seed) {
+        VarInts.writeInt(buffer, (int) seed);
     }
 }

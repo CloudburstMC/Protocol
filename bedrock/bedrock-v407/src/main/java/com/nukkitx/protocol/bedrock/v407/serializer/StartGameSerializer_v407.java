@@ -35,7 +35,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        VarInts.writeInt(buffer, (int) packet.getSeed());
         buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
         helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());

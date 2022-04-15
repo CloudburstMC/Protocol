@@ -19,7 +19,7 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        VarInts.writeInt(buffer, packet.getSeed());
+        writeSeed(buffer, packet.getSeed());
         buffer.writeShortLE(packet.getSpawnBiomeType().ordinal());
         helper.writeString(buffer, packet.getCustomBiomeName());
         VarInts.writeInt(buffer, packet.getDimensionId());
@@ -69,7 +69,7 @@ public class StartGameSerializer_v465 extends StartGameSerializer_v440 {
 
     @Override
     protected void readLevelSettings(ByteBuf buffer, BedrockPacketHelper helper, StartGamePacket packet) {
-        packet.setSeed(VarInts.readInt(buffer));
+        packet.setSeed(readSeed(buffer));
         packet.setSpawnBiomeType(SpawnBiomeType.byId(buffer.readShortLE()));
         packet.setCustomBiomeName(helper.readString(buffer));
         packet.setDimensionId(VarInts.readInt(buffer));
