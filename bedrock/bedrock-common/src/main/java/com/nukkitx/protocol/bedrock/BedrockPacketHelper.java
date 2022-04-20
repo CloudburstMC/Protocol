@@ -298,7 +298,13 @@ public abstract class BedrockPacketHelper {
 
     public AsciiString readLEAsciiString(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
-        return (AsciiString) buffer.readCharSequence(buffer.readIntLE(), StandardCharsets.US_ASCII);
+        CharSequence string = buffer.readCharSequence(buffer.readIntLE(), StandardCharsets.US_ASCII);
+        // Older Netty versions do not necessarily provide an AsciiString for this method
+        if (string instanceof AsciiString) {
+            return (AsciiString) string;
+        } else {
+            return new AsciiString(string);
+        }
     }
 
     public void writeLEAsciiString(ByteBuf buffer, AsciiString string) {
