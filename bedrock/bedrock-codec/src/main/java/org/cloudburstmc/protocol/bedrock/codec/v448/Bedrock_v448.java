@@ -7,7 +7,6 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSeriali
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v440.BedrockCodecHelper_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v440.Bedrock_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommandsSerializer_v448;
 import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.NpcDialogueSerializer_v448;
@@ -54,7 +53,7 @@ public class Bedrock_v448 extends Bedrock_v440 {
     public static final BedrockCodec CODEC = Bedrock_v440.CODEC.toBuilder()
             .protocolVersion(448)
             .minecraftVersion("1.17.10")
-            .helper(() -> new BedrockCodecHelper_v440(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v448(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))

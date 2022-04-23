@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v503;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
+import org.cloudburstmc.protocol.bedrock.codec.v471.BedrockCodecHelper_v471;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class BedrockCodecHelper_v503 extends BedrockCodecHelper_v465 {
+public class BedrockCodecHelper_v503 extends BedrockCodecHelper_v471 {
     public BedrockCodecHelper_v503(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
                                    TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<StackRequestActionType> stackRequestActionTypes) {

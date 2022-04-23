@@ -244,7 +244,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 );
             case CRAFT_RECIPE_AUTO:
                 return new AutoCraftRecipeStackRequestActionData(
-                        VarInts.readUnsignedInt(byteBuf)
+                        VarInts.readUnsignedInt(byteBuf), (byte) 0
                 );
             case CRAFT_CREATIVE:
                 return new CraftCreativeStackRequestActionData(
