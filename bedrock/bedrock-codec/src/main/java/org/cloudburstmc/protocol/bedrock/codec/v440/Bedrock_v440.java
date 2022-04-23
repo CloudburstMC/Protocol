@@ -79,7 +79,7 @@ public class Bedrock_v440 extends Bedrock_v431 {
             .insert(360, SoundEvent.UNDEFINED)
             .build();
 
-    public static final BedrockCodec CODEC = Bedrock_v422.CODEC.toBuilder()
+    public static final BedrockCodec CODEC = Bedrock_v431.CODEC.toBuilder()
             .protocolVersion(440)
             .minecraftVersion("1.17.0")
             .helper(() -> new BedrockCodecHelper_v440(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
