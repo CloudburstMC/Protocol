@@ -28,7 +28,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
         List<StackRequestActionData> actions = new ArrayList<>();
 
         this.readArray(buffer, actions, byteBuf -> {
-            StackRequestActionType type = this.getStackRequestActionTypeFromId(byteBuf.readByte());
+            StackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
             return readRequestActionData(byteBuf, type);
         });
         List<String> filteredStrings = new ArrayList<>(); // new for v422
@@ -42,7 +42,7 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
 
         this.writeArray(buffer, request.getActions(), (byteBuf, action) -> {
             StackRequestActionType type = action.getType();
-            byteBuf.writeByte(this.getIdFromStackRequestActionType(type));
+            byteBuf.writeByte(this.stackRequestActionTypes.getId(type));
             writeRequestActionData(byteBuf, action);
         });
         this.writeArray(buffer, request.getFilterStrings(), this::writeString); // new for v422

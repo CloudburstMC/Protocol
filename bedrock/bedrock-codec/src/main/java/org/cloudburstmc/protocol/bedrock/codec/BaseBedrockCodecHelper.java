@@ -23,7 +23,6 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
@@ -455,18 +454,6 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments) {
-        throw new UnsupportedOperationException();
-    }
-
-    protected void registerStackActionRequestTypes() {
-        throw new UnsupportedOperationException();
-    }
-
-    public StackRequestActionType getStackRequestActionTypeFromId(int id) {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getIdFromStackRequestActionType(StackRequestActionType type) {
         throw new UnsupportedOperationException();
     }
 
