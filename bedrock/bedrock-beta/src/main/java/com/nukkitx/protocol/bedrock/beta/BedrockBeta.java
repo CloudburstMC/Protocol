@@ -28,7 +28,6 @@ import com.nukkitx.protocol.bedrock.v465.serializer.*;
 import com.nukkitx.protocol.bedrock.v471.serializer.EventSerializer_v471;
 import com.nukkitx.protocol.bedrock.v471.serializer.PhotoInfoRequestSerializer_v471;
 import com.nukkitx.protocol.bedrock.v486.serializer.*;
-import com.nukkitx.protocol.bedrock.v503.BedrockPacketHelper_v503;
 import com.nukkitx.protocol.bedrock.v503.serializer.*;
 import lombok.experimental.UtilityClass;
 
@@ -37,7 +36,7 @@ public class BedrockBeta {
     public static BedrockPacketCodec BETA_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(526)
             .minecraftVersion("1.19.0.30")
-            .helper(BedrockPacketHelper_v503.INSTANCE)
+            .helper(BedrockPacketHelperBeta.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
