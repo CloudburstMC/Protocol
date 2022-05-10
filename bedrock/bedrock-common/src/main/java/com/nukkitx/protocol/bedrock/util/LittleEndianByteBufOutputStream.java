@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.util;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.ByteBufUtil;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -46,8 +47,7 @@ public class LittleEndianByteBufOutputStream extends ByteBufOutputStream {
 
     @Override
     public void writeUTF(String string) throws IOException {
-        byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
-        this.writeShort(bytes.length);
-        this.write(bytes);
+        this.writeShort(ByteBufUtil.utf8Bytes(string));
+        this.buffer.writeCharSequence(string, StandardCharsets.UTF_8);
     }
 }
