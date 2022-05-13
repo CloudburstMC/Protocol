@@ -34,5 +34,13 @@ public enum PlayerActionType {
     /**
      * @since v428
      */
-    BLOCK_CONTINUE_DESTROY
+    BLOCK_CONTINUE_DESTROY,
+    /**
+     * @since v526
+     */
+    ITEM_USE_ON_START,
+    /**
+     * @since v526
+     */
+    ITEM_USE_ON_STOP
 }

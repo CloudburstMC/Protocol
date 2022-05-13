@@ -106,5 +106,9 @@ public enum EntityFlag {
     JUMP_GOAL_JUMP,
     EMERGING,
     SNIFFING,
-    DIGGING
+    DIGGING,
+    /**
+     * @since v526
+     */
+    SONIC_BOOM
 }
