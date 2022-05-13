@@ -63,7 +63,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected DefinitionRegistry<BlockDefinition> blockDefinitions;
 
     protected static boolean isAir(ItemDefinition definition) {
-        return definition == null || definition.getRuntimeId() == 0;
+        return definition == null || "minecraft:air".equals(definition.getIdentifier());
     }
 
     public byte[] readByteArray(ByteBuf buffer) {
