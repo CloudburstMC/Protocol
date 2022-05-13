@@ -47,7 +47,7 @@ public class BedrockBeta {
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v503.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, StartGameSerializerBeta.INSTANCE, 11)
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v503.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)

@@ -15,6 +15,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
@@ -108,6 +109,12 @@ public class StartGamePacket extends BedrockPacket {
      * @since v475
      */
     private long blockRegistryChecksum;
+
+    /**
+     * @since v526
+     */
+    private Object playerPropertyData;
+    private UUID worldTemplateId;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
