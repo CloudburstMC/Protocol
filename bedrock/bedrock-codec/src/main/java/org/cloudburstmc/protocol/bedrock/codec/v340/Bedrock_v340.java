@@ -1,42 +1,27 @@
 package org.cloudburstmc.protocol.bedrock.codec.v340;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.Bedrock_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.AvailableCommandsSerializer_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.EventSerializer_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.LecternUpdateSerializer_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.StructureBlockUpdateSerializer_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.VideoStreamConnectSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
-import org.cloudburstmc.protocol.bedrock.packet.EventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LecternUpdatePacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
-import org.cloudburstmc.protocol.bedrock.packet.VideoStreamConnectPacket;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v340 extends Bedrock_v332 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v332.COMMAND_PARAMS.toBuilder()
             .shift(28, -1)
-            .build();
-
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v332.ENTITY_DATA.toBuilder()
-            .replace(39, EntityData.HAS_NPC_COMPONENT)
-            .insert(99, EntityData.INTERACTIVE_TAG)
-            .insert(100, EntityData.TRADE_TIER)
-            .insert(101, EntityData.MAX_TRADE_TIER)
             .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v332.ENTITY_FLAGS.toBuilder()
@@ -51,6 +36,15 @@ public class Bedrock_v340 extends Bedrock_v332 {
             .insert(79, EntityFlag.DOOR_OPENER)
             .build();
 
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v332.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .replace(EntityDataTypes.HAS_NPC, 39, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .insert(EntityDataTypes.INTERACT_TEXT, 99, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.TRADE_TIER, 100, EntityDataFormat.INT)
+            .insert(EntityDataTypes.MAX_TRADE_TIER, 101, EntityDataFormat.INT)
+            .build();
+
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v332.SOUND_EVENTS.toBuilder()
             .replace(255, SoundEvent.SHIELD_BLOCK)
             .insert(256, SoundEvent.LECTERN_BOOK_PLACE)
@@ -60,7 +54,7 @@ public class Bedrock_v340 extends Bedrock_v332 {
     public static final BedrockCodec CODEC = Bedrock_v332.CODEC.toBuilder()
             .protocolVersion(340)
             .minecraftVersion("1.10.0")
-            .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, GAME_RULE_TYPES))
             .updateSerializer(EventPacket.class, EventSerializer_v340.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v340(COMMAND_PARAMS))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v340.INSTANCE)

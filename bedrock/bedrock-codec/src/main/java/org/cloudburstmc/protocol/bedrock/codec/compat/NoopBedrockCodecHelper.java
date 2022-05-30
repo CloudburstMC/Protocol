@@ -2,12 +2,11 @@ package org.cloudburstmc.protocol.bedrock.codec.compat;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
@@ -22,8 +21,7 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     public static final NoopBedrockCodecHelper INSTANCE = new NoopBedrockCodecHelper();
 
     private NoopBedrockCodecHelper() {
-        super(TypeMap.empty(EntityData.class), TypeMap.empty(EntityData.Type.class), TypeMap.empty(EntityFlag.class),
-                TypeMap.empty("GameRule"));
+        super(EntityDataTypeMap.builder().build(), TypeMap.empty("GameRule"));
     }
 
     @Override

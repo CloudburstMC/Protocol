@@ -2,17 +2,12 @@ package org.cloudburstmc.protocol.bedrock.codec.v428;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v422.BedrockCodecHelper_v422;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.MineBlockStackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
-import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
-import org.cloudburstmc.protocol.bedrock.data.skin.PersonaPieceData;
-import org.cloudburstmc.protocol.bedrock.data.skin.PersonaPieceTintData;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -22,8 +17,9 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
 
-    public BedrockCodecHelper_v428(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes, stackRequestActionTypes);
+    public BedrockCodecHelper_v428(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes);
     }
 
     @Override

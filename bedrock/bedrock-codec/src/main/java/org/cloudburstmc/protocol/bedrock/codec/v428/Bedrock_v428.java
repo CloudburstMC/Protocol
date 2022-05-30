@@ -3,49 +3,43 @@ package org.cloudburstmc.protocol.bedrock.codec.v428;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.AvailableCommandsSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.codec.v422.Bedrock_v422;
-import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.CameraShakeSerializer_v428;
-import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.ClientboundDebugRendererSerializer_v428;
-import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.ItemStackResponseSerializer_v428;
-import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.PlayerAuthInputSerializer_v428;
-import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.StartGameSerializer_v428;
+import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
-import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
-import org.cloudburstmc.protocol.bedrock.packet.CameraShakePacket;
-import org.cloudburstmc.protocol.bedrock.packet.ClientboundDebugRendererPacket;
-import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
-import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v428 extends Bedrock_v422 {
 
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v422.ENTITY_DATA.toBuilder()
-            .shift(60, 1)
-            .replace(120, EntityData.FREEZING_EFFECT_STRENGTH)
-            .insert(121, EntityData.BUOYANCY_DATA)
-            .insert(122, EntityData.GOAT_HORN_COUNT)
-            .insert(123, EntityData.BASE_RUNTIME_ID)
-            .build();
-
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v422.ENTITY_FLAGS.toBuilder()
             .insert(96, EntityFlag.RAM_ATTACK)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v422.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .shift(60, 1)
+            .insert(EntityDataTypes.SEAT_ROTATION_OFFSET_DEGREES, 60, EntityDataFormat.FLOAT)
+            .replace(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 120, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .insert(EntityDataTypes.BUOYANCY_DATA, 121, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.GOAT_HORN_COUNT, 122, EntityDataFormat.INT)
+            .insert(EntityDataTypes.BASE_RUNTIME_ID, 123, EntityDataFormat.STRING)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v422.LEVEL_EVENTS.toBuilder()
@@ -85,7 +79,7 @@ public class Bedrock_v428 extends Bedrock_v422 {
     public static final BedrockCodec CODEC = Bedrock_v422.CODEC.toBuilder()
             .protocolVersion(428)
             .minecraftVersion("1.16.210")
-            .helper(() -> new BedrockCodecHelper_v428(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v428(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v428.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v428.INSTANCE)
             .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v428.INSTANCE)

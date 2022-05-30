@@ -2,14 +2,9 @@ package org.cloudburstmc.protocol.bedrock.codec.v390;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v388.BedrockCodecHelper_v388;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
-import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
-import org.cloudburstmc.protocol.bedrock.data.skin.PersonaPieceData;
-import org.cloudburstmc.protocol.bedrock.data.skin.PersonaPieceTintData;
-import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
+import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
@@ -18,9 +13,8 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v390 extends BedrockCodecHelper_v388 {
 
-    public BedrockCodecHelper_v390(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
-                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
+    public BedrockCodecHelper_v390(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+        super(entityData, gameRulesTypes);
     }
 
     @Override

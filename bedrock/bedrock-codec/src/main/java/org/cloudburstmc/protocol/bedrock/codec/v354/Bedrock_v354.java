@@ -1,42 +1,25 @@
 package org.cloudburstmc.protocol.bedrock.codec.v354;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v340.BedrockCodecHelper_v340;
 import org.cloudburstmc.protocol.bedrock.codec.v340.Bedrock_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.ClientboundMapItemDataSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.CraftingDataSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.EventSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.LecternUpdateSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.MapCreateLockedCopySerializer_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.OnScreenTextureAnimationSerializer_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.UpdateTradeSerializer_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.ClientboundMapItemDataPacket;
-import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
-import org.cloudburstmc.protocol.bedrock.packet.EventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LecternUpdatePacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.MapCreateLockedCopyPacket;
-import org.cloudburstmc.protocol.bedrock.packet.OnScreenTextureAnimationPacket;
-import org.cloudburstmc.protocol.bedrock.packet.UpdateTradePacket;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v354 extends Bedrock_v340 {
-
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v340.ENTITY_DATA.toBuilder()
-            .insert(102, EntityData.TRADE_XP)
-            .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v340.ENTITY_FLAGS.toBuilder()
             .shift(74, 1)
@@ -47,6 +30,12 @@ public class Bedrock_v354 extends Bedrock_v340 {
             .insert(84, EntityFlag.DELAYED_ATTACK)
             .insert(85, EntityFlag.IS_AVOIDING_MOBS)
             .insert(86, EntityFlag.FACING_TARGET_TO_RANGE_ATTACK)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v340.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .insert(EntityDataTypes.TRADE_EXPERIENCE, 102, EntityDataFormat.INT)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v340.SOUND_EVENTS.toBuilder()
@@ -79,7 +68,7 @@ public class Bedrock_v354 extends Bedrock_v340 {
     public static final BedrockCodec CODEC = Bedrock_v340.CODEC.toBuilder()
             .protocolVersion(354)
             .minecraftVersion("1.11.0")
-            .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v340(ENTITY_DATA, GAME_RULE_TYPES))
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v354.INSTANCE)
             .updateSerializer(EventPacket.class, EventSerializer_v354.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v354.INSTANCE)

@@ -6,10 +6,9 @@ import com.nukkitx.nbt.NbtMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v428.BedrockCodecHelper_v428;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -28,8 +27,9 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
-    public BedrockCodecHelper_v431(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes, TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes, stackRequestActionTypes);
+    public BedrockCodecHelper_v431(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes);
     }
 
     @Override

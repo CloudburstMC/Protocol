@@ -3,52 +3,28 @@ package org.cloudburstmc.protocol.bedrock.codec.v313;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.Bedrock_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.AddEntitySerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.AvailableEntityIdentifiersSerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.BiomeDefinitionListSerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.NetworkChunkPublisherUpdateSerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.ResourcePackStackSerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.SpawnParticleEffectSerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.StartGameSerializer_v313;
-import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.UpdateTradeSerializer_v313;
+import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.AddEntityPacket;
-import org.cloudburstmc.protocol.bedrock.packet.AvailableEntityIdentifiersPacket;
-import org.cloudburstmc.protocol.bedrock.packet.BiomeDefinitionListPacket;
-import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
-import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket;
-import org.cloudburstmc.protocol.bedrock.packet.ResourcePackStackPacket;
-import org.cloudburstmc.protocol.bedrock.packet.SpawnParticleEffectPacket;
-import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
-import org.cloudburstmc.protocol.bedrock.packet.UpdateTradePacket;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v313 extends Bedrock_v291 {
-
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v291.ENTITY_DATA.toBuilder()
-            .insert(88, EntityData.SITTING_AMOUNT)
-            .insert(89, EntityData.SITTING_AMOUNT_PREVIOUS)
-            .insert(90, EntityData.EATING_COUNTER)
-            .insert(91, EntityData.FLAGS_2)
-            .insert(92, EntityData.LAYING_AMOUNT)
-            .insert(93, EntityData.LAYING_AMOUNT_PREVIOUS)
-            .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v291.ENTITY_FLAGS.toBuilder()
             .insert(61, EntityFlag.TRANSITION_SITTING)
@@ -61,6 +37,30 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .insert(68, EntityFlag.IN_SCAFFOLDING)
             .insert(69, EntityFlag.OVER_SCAFFOLDING)
             .insert(70, EntityFlag.DESCEND_THROUGH_BLOCK)
+            .build();
+
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v291.PARTICLE_TYPES.toBuilder()
+            .insert(45, ParticleType.FIREWORKS_STARTER)
+            .insert(46, ParticleType.FIREWORKS)
+            .insert(47, ParticleType.FIREWORKS_OVERLAY)
+            .insert(48, ParticleType.BALLOON_GAS)
+            .insert(49, ParticleType.COLORED_FLAME)
+            .insert(50, ParticleType.SPARKLER)
+            .insert(51, ParticleType.CONDUIT)
+            .insert(52, ParticleType.BUBBLE_COLUMN_UP)
+            .insert(53, ParticleType.BUBBLE_COLUMN_DOWN)
+            .insert(54, ParticleType.SNEEZE)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v291.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(EntityDataTypes.SITTING_AMOUNT, 88, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.SITTING_AMOUNT_PREVIOUS, 89, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.EATING_COUNTER, 90, EntityDataFormat.INT)
+            .insert(EntityDataTypes.FLAGS_2, 91, EntityDataFormat.LONG, new FlagTransformer(ENTITY_FLAGS, 1))
+            .insert(EntityDataTypes.LAYING_AMOUNT, 92, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.LAYING_AMOUNT_PREVIOUS, 93, EntityDataFormat.FLOAT)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v291.SOUND_EVENTS.toBuilder()
@@ -89,22 +89,13 @@ public class Bedrock_v313 extends Bedrock_v291 {
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v291.LEVEL_EVENTS.toBuilder()
             .insert(LEVEL_EVENT_BLOCK + 11, LevelEvent.AGENT_SPAWN_EFFECT)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 45, ParticleType.FIREWORKS_STARTER)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 46, ParticleType.FIREWORKS)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 47, ParticleType.FIREWORKS_OVERLAY)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 48, ParticleType.BALLOON_GAS)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 49, ParticleType.COLORED_FLAME)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 50, ParticleType.SPARKLER)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 51, ParticleType.CONDUIT)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 52, ParticleType.BUBBLE_COLUMN_UP)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 53, ParticleType.BUBBLE_COLUMN_DOWN)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 54, ParticleType.SNEEZE)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v291.CODEC.toBuilder()
             .protocolVersion(313)
             .minecraftVersion("1.8.0")
-            .helper(() -> new BedrockCodecHelper_v313(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v313(ENTITY_DATA, GAME_RULE_TYPES))
             .updateSerializer(ResourcePackStackPacket.class, ResourcePackStackSerializer_v313.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v313.INSTANCE)
             .updateSerializer(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE)

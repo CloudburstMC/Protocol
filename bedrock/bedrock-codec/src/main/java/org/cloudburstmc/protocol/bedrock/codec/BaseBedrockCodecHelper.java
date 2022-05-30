@@ -20,8 +20,6 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
@@ -50,9 +48,7 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected static final InternalLogger log = InternalLoggerFactory.getInstance(BaseBedrockCodecHelper.class);
 
-    protected final TypeMap<EntityData> entityData;
-    protected final TypeMap<EntityData.Type> entityDataTypes;
-    protected final TypeMap<EntityFlag> entityFlags;
+    protected final EntityDataTypeMap entityData;
     protected final TypeMap<Class<?>> gameRuleType;
 
     @Getter

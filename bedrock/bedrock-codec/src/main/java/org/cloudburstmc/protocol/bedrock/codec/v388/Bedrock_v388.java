@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v388;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,28 +14,35 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v388 extends Bedrock_v361 {
-
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v361.ENTITY_DATA.toBuilder()
-            .insert(107, EntityData.AMBIENT_SOUND_INTERVAL)
-            .insert(108, EntityData.AMBIENT_SOUND_INTERVAL_RANGE)
-            .insert(109, EntityData.AMBIENT_SOUND_EVENT_NAME)
-            .insert(110, EntityData.FALL_DAMAGE_MULTIPLIER)
-            .insert(111, EntityData.NAME_RAW_TEXT)
-            .insert(112, EntityData.CAN_RIDE_TARGET)
-            .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v361.ENTITY_FLAGS.toBuilder()
             .insert(88, EntityFlag.IS_IN_UI)
             .insert(89, EntityFlag.STALKING)
             .insert(90, EntityFlag.EMOTING)
             .insert(91, EntityFlag.CELEBRATING)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v361.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(EntityDataTypes.AMBIENT_SOUND_INTERVAL, 107, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.AMBIENT_SOUND_INTERVAL_RANGE, 108, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.AMBIENT_SOUND_EVENT_NAME, 109, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.FALL_DAMAGE_MULTIPLIER, 110, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.NAME_RAW_TEXT, 111, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.CAN_RIDE_TARGET, 112, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v361.COMMAND_PARAMS.toBuilder()
@@ -86,7 +94,7 @@ public class Bedrock_v388 extends Bedrock_v361 {
     public static final BedrockCodec CODEC = Bedrock_v361.CODEC.toBuilder()
             .protocolVersion(388)
             .minecraftVersion("1.13.0")
-            .helper(() -> new BedrockCodecHelper_v388(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v388(ENTITY_DATA, GAME_RULE_TYPES))
             .deregisterPacket(ExplodePacket.class)
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(ResourcePackStackPacket.class, ResourcePackStackSerializer_v388.INSTANCE)

@@ -1,9 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec.v422;
 
 import io.netty.buffer.ByteBuf;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v419.BedrockCodecHelper_v419;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.CraftRecipeOptionalStackRequestActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
@@ -16,10 +15,9 @@ import java.util.List;
 
 public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
 
-    public BedrockCodecHelper_v422(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
-                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes,
+    public BedrockCodecHelper_v422(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<StackRequestActionType> stackRequestActionTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes, stackRequestActionTypes);
+        super(entityData, gameRulesTypes, stackRequestActionTypes);
     }
 
     @Override

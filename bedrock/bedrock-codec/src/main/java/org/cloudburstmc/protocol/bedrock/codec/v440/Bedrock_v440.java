@@ -3,11 +3,11 @@ package org.cloudburstmc.protocol.bedrock.codec.v440;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v422.Bedrock_v422;
 import org.cloudburstmc.protocol.bedrock.codec.v431.Bedrock_v431;
 import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.AddVolumeEntitySerializer_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.RemoveVolumeEntitySerializer_v440;
@@ -16,42 +16,46 @@ import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.SyncEntityPropert
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.AddVolumeEntityPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.RemoveVolumeEntityPacket;
-import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
-import org.cloudburstmc.protocol.bedrock.packet.SyncEntityPropertyPacket;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v440 extends Bedrock_v431 {
 
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v431.ENTITY_DATA.toBuilder()
-            .replace(120, EntityData.BASE_RUNTIME_ID)
-            .replace(121, EntityData.FREEZING_EFFECT_STRENGTH)
-            .replace(122, EntityData.BUOYANCY_DATA)
-            .replace(123, EntityData.GOAT_HORN_COUNT)
-            .insert(124, EntityData.UPDATE_PROPERTIES)
-            .build();
-
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v431.ENTITY_FLAGS.toBuilder()
             .insert(97, EntityFlag.PLAYING_DEAD)
             .build();
 
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v431.PARTICLE_TYPES.toBuilder()
+            .insert(73, ParticleType.PORTAL_REVERSE)
+            .insert(74, ParticleType.SNOWFLAKE)
+            .insert(75, ParticleType.VIBRATION_SIGNAL)
+            .insert(76, ParticleType.SCULK_SENSOR_REDSTONE)
+            .insert(77, ParticleType.SPORE_BLOSSOM_SHOWER)
+            .insert(78, ParticleType.SPORE_BLOSSOM_AMBIENT)
+            .insert(79, ParticleType.WAX)
+            .insert(80, ParticleType.ELECTRIC_SPARK)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v431.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .replace(EntityDataTypes.BASE_RUNTIME_ID, 120, EntityDataFormat.STRING)
+            .replace(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 121, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .replace(EntityDataTypes.BUOYANCY_DATA, 122, EntityDataFormat.STRING)
+            .replace(EntityDataTypes.GOAT_HORN_COUNT, 123, EntityDataFormat.INT)
+            .insert(EntityDataTypes.UPDATE_PROPERTIES, 124, EntityDataFormat.NBT)
+            .build();
+
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v431.LEVEL_EVENTS.toBuilder()
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 73, ParticleType.PORTAL_REVERSE)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 74, ParticleType.SNOWFLAKE)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 75, ParticleType.VIBRATION_SIGNAL)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 76, ParticleType.SCULK_SENSOR_REDSTONE)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 77, ParticleType.SPORE_BLOSSOM_SHOWER)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 78, ParticleType.SPORE_BLOSSOM_AMBIENT)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 79, ParticleType.WAX)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 80, ParticleType.ELECTRIC_SPARK)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v431.SOUND_EVENTS.toBuilder()
@@ -82,7 +86,7 @@ public class Bedrock_v440 extends Bedrock_v431 {
     public static final BedrockCodec CODEC = Bedrock_v431.CODEC.toBuilder()
             .protocolVersion(440)
             .minecraftVersion("1.17.0")
-            .helper(() -> new BedrockCodecHelper_v440(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v440(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v440.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))

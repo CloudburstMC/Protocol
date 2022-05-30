@@ -9,40 +9,35 @@ import io.netty.buffer.ByteBufInputStream;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraint;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginType;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlags;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.cloudburstmc.protocol.bedrock.data.entity.EntityData.Type;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
-    public BedrockCodecHelper_v291(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
-                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
+    public BedrockCodecHelper_v291(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+        super(entityData, gameRulesTypes);
     }
 
     @Override
@@ -232,56 +227,51 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         int length = VarInts.readUnsignedInt(buffer);
 
         for (int i = 0; i < length; i++) {
-            int metadataInt = VarInts.readUnsignedInt(buffer);
-            EntityData entityData = this.entityData.getType(metadataInt);
-            EntityData.Type type = this.entityDataTypes.getType(VarInts.readUnsignedInt(buffer));
-            if (entityData != null && entityData.isFlags()) {
-                if (type != Type.LONG) {
-                    throw new IllegalArgumentException("Expected long value for flags, got " + type.name());
-                }
-                type = Type.FLAGS;
-            }
+            int id = VarInts.readUnsignedInt(buffer);
+            EntityDataFormat format = EntityDataFormat.values()[VarInts.readUnsignedInt(buffer)];
 
-            Object object;
-            switch (type) {
+            Object value;
+            switch (format) {
                 case BYTE:
-                    object = buffer.readByte();
+                    value = buffer.readByte();
                     break;
                 case SHORT:
-                    object = buffer.readShortLE();
+                    value = buffer.readShortLE();
                     break;
                 case INT:
-                    object = VarInts.readInt(buffer);
+                    value = VarInts.readInt(buffer);
                     break;
                 case FLOAT:
-                    object = buffer.readFloatLE();
+                    value = buffer.readFloatLE();
                     break;
                 case STRING:
-                    object = readString(buffer);
+                    value = readString(buffer);
                     break;
                 case NBT:
-                    object = this.readItem(buffer);
+                    value = this.readItem(buffer).getTag();
                     break;
                 case VECTOR3I:
-                    object = readVector3i(buffer);
+                    value = readVector3i(buffer);
                     break;
-                case FLAGS:
-                    int index = entityData == EntityData.FLAGS_2 ? 1 : 0;
-                    entityDataMap.getOrCreateFlags().set(VarInts.readLong(buffer), index, this.entityFlags);
-                    continue;
                 case LONG:
-                    object = VarInts.readLong(buffer);
+                    value = VarInts.readLong(buffer);
                     break;
                 case VECTOR3F:
-                    object = readVector3f(buffer);
+                    value = readVector3f(buffer);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown entity data type received");
+                    throw new UnsupportedOperationException("Unknown entity data type received");
             }
-            if (entityData != null) {
-                entityDataMap.put(entityData, object);
+
+            EntityDataTypeMap.Definition<?>[] definitions = this.entityData.fromId(id, format);
+            if (definitions != null) {
+                for (EntityDataTypeMap.Definition<?> definition : definitions) {
+                    //noinspection unchecked
+                    EntityDataTransformer<Object, ?> transformer = (EntityDataTransformer<Object, ?>) definition.getTransformer();
+                    entityDataMap.put(definition.getType(), transformer.deserialize(this, value));
+                }
             } else {
-                log.debug("Unknown entity data: {} type {} value {}", metadataInt, type, object);
+                log.debug("Unknown entity data: {} type {} value {}", id, format, value);
             }
         }
     }
@@ -292,65 +282,51 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
         VarInts.writeUnsignedInt(buffer, entityDataMap.size());
 
-        for (Map.Entry<EntityData, Object> entry : entityDataMap.entrySet()) {
-            int index = buffer.writerIndex();
-            VarInts.writeUnsignedInt(buffer, this.entityData.getId(entry.getKey()));
-            Object object = entry.getValue();
-            EntityData.Type type = EntityData.Type.from(object);
+        for (Map.Entry<EntityDataType<?>, Object> entry : entityDataMap.entrySet()) {
+            EntityDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
 
-            int typeId;
-            if (type == EntityData.Type.FLAGS) {
-                typeId = this.entityDataTypes.getId(EntityData.Type.LONG);
-            } else {
-                typeId = this.entityDataTypes.getId(type);
-            }
-            VarInts.writeUnsignedInt(buffer, typeId);
+            VarInts.writeUnsignedInt(buffer, definition.getId());
+            VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
 
-            switch (type) {
+            @SuppressWarnings("unchecked")
+            Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
+                    .serialize(this, entry.getValue());
+
+            switch (definition.getFormat()) {
                 case BYTE:
-                    buffer.writeByte((byte) object);
+                    buffer.writeByte((byte) value);
                     break;
                 case SHORT:
-                    buffer.writeShortLE((short) object);
+                    buffer.writeShortLE((short) value);
                     break;
                 case INT:
-                    VarInts.writeInt(buffer, (int) object);
+                    VarInts.writeInt(buffer, (int) value);
                     break;
                 case FLOAT:
-                    buffer.writeFloatLE((float) object);
+                    buffer.writeFloatLE((float) value);
                     break;
                 case STRING:
-                    writeString(buffer, (String) object);
+                    writeString(buffer, (String) value);
                     break;
                 case NBT:
-                    ItemData item;
-                    if (object instanceof NbtMap) {
-                        item = ItemData.builder()
-                                .definition(ItemDefinition.LEGACY_FIREWORK)
-                                .damage(0)
-                                .count(1)
-                                .tag((NbtMap) object)
-                                .build();
-                    } else {
-                        item = (ItemData) object;
-                    }
-                    this.writeItem(buffer, item);
+                    this.writeItem(buffer, ItemData.builder()
+                            .definition(ItemDefinition.LEGACY_FIREWORK)
+                            .damage(0)
+                            .count(1)
+                            .tag((NbtMap) value)
+                            .build());
                     break;
                 case VECTOR3I:
-                    writeVector3i(buffer, (Vector3i) object);
+                    writeVector3i(buffer, (Vector3i) value);
                     break;
-                case FLAGS:
-                    int flagsIndex = entry.getKey() == EntityData.FLAGS_2 ? 1 : 0;
-                    object = ((EntityFlags) object).get(flagsIndex, this.entityFlags);
                 case LONG:
-                    VarInts.writeLong(buffer, (long) object);
+                    VarInts.writeLong(buffer, (long) value);
                     break;
                 case VECTOR3F:
-                    writeVector3f(buffer, (Vector3f) object);
+                    writeVector3f(buffer, (Vector3f) value);
                     break;
                 default:
-                    buffer.writerIndex(index);
-                    break;
+                    throw new UnsupportedOperationException("Unknown entity data type " + definition.getFormat());
             }
         }
     }

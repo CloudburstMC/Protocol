@@ -1,67 +1,50 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v354.Bedrock_v354;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.AddPaintingSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.ClientCacheBlobStatusSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.ClientCacheMissResponseSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.ClientCacheStatusSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.CommandBlockUpdateSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.CraftingDataSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelChunkSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.ResourcePackDataInfoSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.StartGameSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.StructureBlockUpdateSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.StructureTemplateDataRequestSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.StructureTemplateDataResponseSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.UpdateBlockPropertiesSerializer_v361;
-import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.VideoStreamConnectSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.packet.AddHangingEntityPacket;
-import org.cloudburstmc.protocol.bedrock.packet.AddPaintingPacket;
-import org.cloudburstmc.protocol.bedrock.packet.ClientCacheBlobStatusPacket;
-import org.cloudburstmc.protocol.bedrock.packet.ClientCacheMissResponsePacket;
-import org.cloudburstmc.protocol.bedrock.packet.ClientCacheStatusPacket;
-import org.cloudburstmc.protocol.bedrock.packet.CommandBlockUpdatePacket;
-import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventGenericPacket;
-import org.cloudburstmc.protocol.bedrock.packet.ResourcePackDataInfoPacket;
-import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
-import org.cloudburstmc.protocol.bedrock.packet.StructureBlockUpdatePacket;
-import org.cloudburstmc.protocol.bedrock.packet.StructureTemplateDataRequestPacket;
-import org.cloudburstmc.protocol.bedrock.packet.StructureTemplateDataResponsePacket;
-import org.cloudburstmc.protocol.bedrock.packet.UpdateBlockPropertiesPacket;
-import org.cloudburstmc.protocol.bedrock.packet.VideoStreamConnectPacket;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v361 extends Bedrock_v354 {
-
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v354.ENTITY_DATA.toBuilder()
-            .replace(40, EntityData.NPC_DATA)
-            .insert(103, EntityData.SKIN_ID)
-            .insert(104, EntityData.SPAWNING_FRAMES)
-            .insert(105, EntityData.COMMAND_BLOCK_TICK_DELAY)
-            .insert(106, EntityData.COMMAND_BLOCK_EXECUTE_ON_FIRST_TICK)
-            .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v354.ENTITY_FLAGS.toBuilder()
             .insert(87, EntityFlag.HIDDEN_WHEN_INVISIBLE)
             .build();
 
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v354.PARTICLE_TYPES.toBuilder()
+            .shift(1, 1)
+            .insert(1, ParticleType.BUBBLE_MANUAL)
+            .shift(22, 1)
+            .insert(22, ParticleType.MOB_PORTAL)
+            .shift(24, 1)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v354.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .replace(EntityDataTypes.NPC_DATA, 40, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.SKIN_ID, 103, EntityDataFormat.INT)
+            .insert(EntityDataTypes.SPAWNING_FRAMES, 104, EntityDataFormat.INT)
+            .insert(EntityDataTypes.COMMAND_BLOCK_TICK_DELAY, 105, EntityDataFormat.INT)
+            .insert(EntityDataTypes.COMMAND_BLOCK_EXECUTE_ON_FIRST_TICK, 106, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .build();
+
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v354.LEVEL_EVENTS.toBuilder()
             .insert(LEVEL_EVENT_PARTICLE + 23, LevelEvent.PARTICLE_TELEPORT_TRAIL)
-            .shift(LEVEL_EVENT_PARTICLE_TYPE + 1, 1)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 1, ParticleType.BUBBLE_MANUAL)
-            .shift(LEVEL_EVENT_PARTICLE_TYPE + 22, 1)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 22, ParticleType.MOB_PORTAL)
-            .shift(LEVEL_EVENT_PARTICLE_TYPE + 24, 1)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
     protected static final TypeMap<ResourcePackType> RESOURCE_PACK_TYPES = TypeMap.builder(ResourcePackType.class)
@@ -78,7 +61,7 @@ public class Bedrock_v361 extends Bedrock_v354 {
     public static BedrockCodec CODEC = Bedrock_v354.CODEC.toBuilder()
             .protocolVersion(361)
             .minecraftVersion("1.12.0")
-            .helper(() -> new BedrockCodecHelper_v361(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES))
+            .helper(() -> new BedrockCodecHelper_v361(ENTITY_DATA, GAME_RULE_TYPES))
             .deregisterPacket(AddHangingEntityPacket.class)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v361.INSTANCE)
             .updateSerializer(AddPaintingPacket.class, AddPaintingSerializer_v361.INSTANCE)

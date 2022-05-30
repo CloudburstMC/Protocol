@@ -11,8 +11,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.*;
 
 public final class TypeMap<T> {
 
@@ -155,7 +154,20 @@ public final class TypeMap<T> {
             return this;
         }
 
+        public Builder<T> insert(int offset, TypeMap<? extends T> map) {
+            checkNotNull(map, "map");
+            map.toObject.forEach((index, value) -> {
+                checkNotNull(value, "value");
+                this.ensureIndex(index);
+                this.types[index] = value;
+            });
+            return this;
+        }
+
         public Builder<T> remove(int index) {
+            checkElementIndex(index, this.types.length);
+            checkArgument(this.types[index] != null, "Cannot remove null value");
+            this.types[index] = null;
             return this;
         }
 

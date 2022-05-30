@@ -5,10 +5,9 @@ import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.nbt.NbtUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v313.BedrockCodecHelper_v313;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -19,9 +18,8 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v332 extends BedrockCodecHelper_v313 {
 
-    public BedrockCodecHelper_v332(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
-                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
+    public BedrockCodecHelper_v332(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+        super(entityData, gameRulesTypes);
     }
 
     @Override

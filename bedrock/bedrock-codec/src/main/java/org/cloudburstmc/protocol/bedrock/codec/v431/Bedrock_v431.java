@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v431;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
@@ -13,15 +14,23 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent1Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEvent2Packet;
-import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
-import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bedrock_v431 extends Bedrock_v428 {
+
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v428.PARTICLE_TYPES.toBuilder()
+            .shift(29, 2)
+            .insert(29, ParticleType.STALACTITE_DRIP_WATER)
+            .insert(30, ParticleType.STALACTITE_DRIP_LAVA)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v428.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v428.LEVEL_EVENTS.toBuilder()
             .insert(LEVEL_EVENT_SOUND + 64, LevelEvent.SOUND_POINTED_DRIPSTONE_LAND)
@@ -33,9 +42,7 @@ public class Bedrock_v431 extends Bedrock_v428 {
             .insert(LEVEL_EVENT_PARTICLE + 31, LevelEvent.PARTICLE_WAX_OFF)
             .insert(LEVEL_EVENT_PARTICLE + 32, LevelEvent.PARTICLE_SCRAPE)
             .insert(LEVEL_EVENT_PARTICLE + 33, LevelEvent.PARTICLE_ELECTRIC_SPARK)
-            .shift(LEVEL_EVENT_PARTICLE_TYPE + 29, 2)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 29, ParticleType.STALACTITE_DRIP_WATER)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 30, ParticleType.STALACTITE_DRIP_LAVA)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v428.SOUND_EVENTS.toBuilder()
@@ -52,7 +59,7 @@ public class Bedrock_v431 extends Bedrock_v428 {
     public static BedrockCodec CODEC = Bedrock_v428.CODEC.toBuilder()
             .protocolVersion(431)
             .minecraftVersion("1.16.220")
-            .helper(() -> new BedrockCodecHelper_v431(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v431(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

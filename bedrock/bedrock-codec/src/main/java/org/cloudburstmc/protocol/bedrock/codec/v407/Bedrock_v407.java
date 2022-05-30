@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
@@ -12,24 +13,18 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v407 extends Bedrock_v390 {
-
-    protected static final TypeMap<EntityData> ENTITY_DATA = Bedrock_v390.ENTITY_DATA.toBuilder()
-            .insert(113, EntityData.LOW_TIER_CURED_TRADE_DISCOUNT)
-            .insert(114, EntityData.HIGH_TIER_CURED_TRADE_DISCOUNT)
-            .insert(115, EntityData.NEARBY_CURED_TRADE_DISCOUNT)
-            .insert(116, EntityData.NEARBY_CURED_DISCOUNT_TIME_STAMP)
-            .insert(117, EntityData.HITBOX)
-            .insert(118, EntityData.IS_BUOYANT)
-            .insert(119, EntityData.BUOYANCY_DATA)
-            .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v390.ENTITY_FLAGS.toBuilder()
             .shift(86, 1)
@@ -37,6 +32,25 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .shift(93, 2)
             .insert(93, EntityFlag.ADMIRING)
             .insert(94, EntityFlag.CELEBRATING_SPECIAL)
+            .build();
+
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v390.PARTICLE_TYPES.toBuilder()
+            .insert(68, ParticleType.BLUE_FLAME)
+            .insert(69, ParticleType.SOUL)
+            .insert(70, ParticleType.OBSIDIAN_TEAR)
+            .build();
+
+    protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v390.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
+            .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
+            .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
+            .insert(EntityDataTypes.LOW_TIER_CURED_TRADE_DISCOUNT, 113, EntityDataFormat.INT)
+            .insert(EntityDataTypes.HIGH_TIER_CURED_TRADE_DISCOUNT, 114, EntityDataFormat.INT)
+            .insert(EntityDataTypes.NEARBY_CURED_TRADE_DISCOUNT, 115, EntityDataFormat.INT)
+            .insert(EntityDataTypes.NEARBY_CURED_DISCOUNT_TIME_STAMP, 116, EntityDataFormat.INT)
+            .insert(EntityDataTypes.HITBOX, 117, EntityDataFormat.NBT)
+            .insert(EntityDataTypes.IS_BUOYANT, 118, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .insert(EntityDataTypes.BUOYANCY_DATA, 119, EntityDataFormat.STRING)
             .build();
 
     protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v390.ENTITY_EVENTS.toBuilder()
@@ -50,9 +64,7 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(LEVEL_EVENT_BLOCK + 102, LevelEvent.BLOCK_UPDATE_BREAK)
             .insert(4000, LevelEvent.SET_DATA)
             .insert(9800, LevelEvent.ALL_PLAYERS_SLEEPING)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 68, ParticleType.BLUE_FLAME)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 69, ParticleType.SOUL)
-            .insert(LEVEL_EVENT_PARTICLE_TYPE + 70, ParticleType.OBSIDIAN_TEAR)
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v390.SOUND_EVENTS.toBuilder()
@@ -109,7 +121,7 @@ public class Bedrock_v407 extends Bedrock_v390 {
     public static BedrockCodec CODEC = Bedrock_v390.CODEC.toBuilder()
             .protocolVersion(407)
             .minecraftVersion("1.16.0")
-            .helper(() -> new BedrockCodecHelper_v407(ENTITY_DATA, ENTITY_DATA_TYPES, ENTITY_FLAGS, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v407(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v407.INSTANCE)
             .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v407.INSTANCE)
             .updateSerializer(HurtArmorPacket.class, HurtArmorSerializer_v407.INSTANCE)

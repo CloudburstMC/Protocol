@@ -4,9 +4,8 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v361.BedrockCodecHelper_v361;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityData;
-import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
@@ -26,9 +25,8 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     protected static final AnimatedTextureType[] TEXTURE_TYPES = AnimatedTextureType.values();
 
-    public BedrockCodecHelper_v388(TypeMap<EntityData> entityData, TypeMap<EntityData.Type> entityDataTypes,
-                                   TypeMap<EntityFlag> entityFlags, TypeMap<Class<?>> gameRulesTypes) {
-        super(entityData, entityDataTypes, entityFlags, gameRulesTypes);
+    public BedrockCodecHelper_v388(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes) {
+        super(entityData, gameRulesTypes);
     }
 
     @Override
