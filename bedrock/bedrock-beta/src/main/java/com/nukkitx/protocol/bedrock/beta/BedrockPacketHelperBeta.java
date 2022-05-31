@@ -44,7 +44,7 @@ public class BedrockPacketHelperBeta extends BedrockPacketHelper_v503 {
     protected void registerEntityFlags() {
         super.registerEntityFlags();
 
-        this.addEntityFlag(105, EntityFlag.SONIC_BOOM);
+        this.addEntityFlag(106, EntityFlag.SONIC_BOOM);
     }
 
 
