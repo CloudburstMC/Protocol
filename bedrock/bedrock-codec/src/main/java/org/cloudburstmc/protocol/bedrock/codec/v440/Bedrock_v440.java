@@ -20,7 +20,6 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
-import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -47,11 +46,8 @@ public class Bedrock_v440 extends Bedrock_v431 {
             .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
-            .replace(EntityDataTypes.BASE_RUNTIME_ID, 120, EntityDataFormat.STRING)
-            .replace(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 121, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
-            .replace(EntityDataTypes.BUOYANCY_DATA, 122, EntityDataFormat.STRING)
-            .replace(EntityDataTypes.GOAT_HORN_COUNT, 123, EntityDataFormat.INT)
-            .insert(EntityDataTypes.UPDATE_PROPERTIES, 124, EntityDataFormat.NBT)
+            .shift(120, 1)
+            .insert(EntityDataTypes.UPDATE_PROPERTIES, 120, EntityDataFormat.NBT)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v431.LEVEL_EVENTS.toBuilder()

@@ -1,9 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
@@ -11,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.*;
 
@@ -39,7 +37,9 @@ public class EntityDataTypeMap {
     }
 
     public Builder toBuilder() {
-        return new Builder(copy(this.idDefinitions, false));
+        Builder builder = new Builder(copy(this.idDefinitions));
+        builder.typeDefinitionMap.putAll(this.typeDefinitionMap);
+        return builder;
     }
 
     public static Builder builder() {
@@ -47,6 +47,7 @@ public class EntityDataTypeMap {
     }
 
     @Getter
+    @ToString
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Definition<T> {
         int id;
@@ -66,11 +67,11 @@ public class EntityDataTypeMap {
         return value;
     }
 
-    private static Definition<?>[][][] copy(Definition<?>[][][] array, boolean compact) {
-        Definition<?>[][][] copy = new Definition[lastNonNullIndex(array)][][];
+    private static Definition<?>[][][] copy(Definition<?>[][][] array) {
+        Definition<?>[][][] copy = new Definition[lastNonNullIndex(array) + 1][][];
         for (int i = 0; i < copy.length; i++) {
             if (array[i] == null) continue;
-            copy[i] = new Definition[compact ? lastNonNullIndex(array) : FORMATS.length][];
+            copy[i] = new Definition[FORMATS.length][];
             for (int i2 = 0; i2 < copy[i].length && i2 < array[i].length; i2++) {
                 if (array[i][i2] == null) continue;
                 int length = array[i][i2].length;
@@ -122,19 +123,10 @@ public class EntityDataTypeMap {
          */
         public <T> Builder replace(EntityDataType<T> type, int index, EntityDataFormat format, EntityDataTransformer<?, T> transformer) {
             checkArgument(index < this.types.length, "Index is out of bounds");
-            Definition<?>[][] formats = this.types[index];
+            checkArgument(this.types[index] != null, "No data types to replace at %s", index);
 
-            checkArgument(formats != null, "No data types to replace at %s", index);
-
-            for (Definition<?>[] definitions : formats) {
-                if (definitions != null) {
-                    for (Definition<?> definition : definitions) {
-                        if (definition != null) {
-                            this.typeDefinitionMap.remove(definition.type);
-                        }
-                    }
-                }
-            }
+            iterateIndex(index, definition -> this.typeDefinitionMap.remove(definition.type));
+            this.types[index] = null;
 
             return insert(type, index, format, transformer);
         }
@@ -148,7 +140,7 @@ public class EntityDataTypeMap {
             checkNotNull(type, "type");
             checkNotNull(transformer, "transformer");
             checkNotNull(format, "format");
-            checkArgument(index > 0, "index cannot be negative");
+            checkArgument(index >= 0, "index cannot be negative");
             checkArgument(!this.typeDefinitionMap.containsKey(type), "type already defined");
 
             this.ensureIndex(index + 1);
@@ -192,7 +184,7 @@ public class EntityDataTypeMap {
          * @return this builder
          */
         public Builder shift(int startIndex, int delta, int length) {
-            checkArgument(startIndex < this.types.length, "Start index is out of bounds");
+            checkArgument(startIndex < this.types.length, "Start index is out of bounds (%s >= %s)", startIndex, this.types.length);
             int endIndex = startIndex + length;
             checkArgument(endIndex <= this.types.length, "Length exceeds array bounds");
             this.ensureCapacity(this.types.length + delta);
@@ -207,13 +199,7 @@ public class EntityDataTypeMap {
                 int index = startIndex + delta + i;
                 Definition<?>[][] formats = this.types[index];
                 if (formats == null) continue;
-                for (Definition<?>[] format : formats) {
-                    if (format == null) continue;
-                    for (Definition<?> definition : format) {
-                        if (definition == null) continue;
-                        definition.id = index;
-                    }
-                }
+                iterateIndex(index, definition -> definition.id = index);
             }
             return this;
         }
@@ -222,15 +208,7 @@ public class EntityDataTypeMap {
             checkElementIndex(index, this.types.length);
             checkArgument(this.types[index] != null, "Cannot remove null value");
 
-            Definition<?>[][] formats = this.types[index];
-            for (Definition<?>[] format : formats) {
-                if (format == null) continue;
-                for (Definition<?> definition : format) {
-                    if (definition == null) continue;
-                    this.typeDefinitionMap.remove(definition.type);
-                }
-            }
-
+            iterateIndex(index, definition -> this.typeDefinitionMap.remove(definition.type));
             this.types[index] = null;
             return this;
         }
@@ -248,8 +226,20 @@ public class EntityDataTypeMap {
             return this;
         }
 
+        private void iterateIndex(int index, Consumer<Definition<?>> consumer) {
+            Definition<?>[][] formats = this.types[index];
+            if (formats == null) return;
+            for (Definition<?>[] format : formats) {
+                if (format == null) continue;
+                for (Definition<?> definition : format) {
+                    if (definition == null) continue;
+                    consumer.accept(definition);
+                }
+            }
+        }
+
         public EntityDataTypeMap build() {
-            return new EntityDataTypeMap(copy(this.types, true), this.typeDefinitionMap);
+            return new EntityDataTypeMap(copy(this.types), this.typeDefinitionMap);
         }
     }
 }

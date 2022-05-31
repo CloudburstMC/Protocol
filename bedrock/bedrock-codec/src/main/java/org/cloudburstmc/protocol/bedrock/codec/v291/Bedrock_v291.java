@@ -15,6 +15,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.BlockDefinitionTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -152,14 +153,14 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.ROW_TIME_LEFT, 13, EntityDataFormat.FLOAT)
             .insert(EntityDataTypes.ROW_TIME_RIGHT, 14, EntityDataFormat.FLOAT)
             .insert(EntityDataTypes.VALUE, 15, EntityDataFormat.INT)
-            .insert(EntityDataTypes.DISPLAY_BLOCK_STATE, 16, EntityDataFormat.INT)
+            .insert(EntityDataTypes.DISPLAY_BLOCK_STATE, 16, EntityDataFormat.INT, new BlockDefinitionTransformer())
             .insert(EntityDataTypes.DISPLAY_OFFSET, 17, EntityDataFormat.INT)
             .insert(EntityDataTypes.CUSTOM_DISPLAY, 18, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.HORSE_TYPE, 19, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.OLD_SWELL, 20, EntityDataFormat.INT)
             .insert(EntityDataTypes.SWELL_DIRECTION, 21, EntityDataFormat.INT)
             .insert(EntityDataTypes.CHARGE_AMOUNT, 22, EntityDataFormat.BYTE)
-            .insert(EntityDataTypes.CARRY_BLOCK_STATE, 23, EntityDataFormat.INT)
+            .insert(EntityDataTypes.CARRY_BLOCK_STATE, 23, EntityDataFormat.INT, new BlockDefinitionTransformer())
             .insert(EntityDataTypes.CLIENT_EVENT, 24, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.USING_ITEM, 25, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .insert(EntityDataTypes.PLAYER_FLAGS, 26, EntityDataFormat.BYTE)

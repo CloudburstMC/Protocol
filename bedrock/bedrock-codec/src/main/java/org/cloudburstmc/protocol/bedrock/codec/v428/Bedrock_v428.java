@@ -36,8 +36,8 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .shift(60, 1)
             .insert(EntityDataTypes.SEAT_ROTATION_OFFSET_DEGREES, 60, EntityDataFormat.FLOAT)
-            .replace(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 120, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
-            .insert(EntityDataTypes.BUOYANCY_DATA, 121, EntityDataFormat.STRING)
+            .shift(120, 1)
+            .insert(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 120, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .insert(EntityDataTypes.GOAT_HORN_COUNT, 122, EntityDataFormat.INT)
             .insert(EntityDataTypes.BASE_RUNTIME_ID, 123, EntityDataFormat.STRING)
             .build();

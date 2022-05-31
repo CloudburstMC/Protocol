@@ -29,11 +29,11 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         return get(FLAGS);
     }
 
-    public EntityDataMap putFlags(EnumSet<EntityFlag> flags) {
+    public EnumSet<EntityFlag> putFlags(EnumSet<EntityFlag> flags) {
         Objects.requireNonNull(flags, "flags");
         this.map.put(FLAGS, flags);
         this.map.put(FLAGS_2, flags);
-        return this;
+        return flags;
     }
 
     @SuppressWarnings("unchecked")
@@ -82,11 +82,12 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         return this.map.get(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object put(EntityDataType<?> key, Object value) {
-        Objects.requireNonNull(key, "type");
-        Objects.requireNonNull(value, "value");
-        checkArgument(key.isInstance(value));
+        checkNotNull(key, "type");
+        checkNotNull(value, "value was null for %s", key);
+        checkArgument(key.isInstance(value), "value with type %s is not an instance of %s", value.getClass(), key);
         if (key == FLAGS || key == FLAGS_2) {
             return this.putFlags((EnumSet<EntityFlag>) value);
         }

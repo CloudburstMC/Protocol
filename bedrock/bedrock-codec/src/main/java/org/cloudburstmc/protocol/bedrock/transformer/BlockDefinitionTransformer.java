@@ -13,6 +13,9 @@ public class BlockDefinitionTransformer implements EntityDataTransformer<Integer
 
     @Override
     public BlockDefinition deserialize(BedrockCodecHelper helper, EntityDataMap map, Integer value) {
+        if (helper.getBlockDefinitions() == null) {
+            return null;
+        }
         return helper.getBlockDefinitions().getDefinition(value);
     }
 }

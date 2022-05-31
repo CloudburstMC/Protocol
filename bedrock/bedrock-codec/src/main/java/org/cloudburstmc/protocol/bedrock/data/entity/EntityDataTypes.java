@@ -346,6 +346,8 @@ public class EntityDataTypes {
     };
     public static final EntityDataType<Boolean> IS_BUOYANT = new EntityDataType<Boolean>() {
     };
+    public static final EntityDataType<String> BASE_RUNTIME_ID = new EntityDataType<String>() {
+    };
     /**
      * Custom properties from the <pre>PropertyComponent</pre>.
      */
@@ -356,8 +358,6 @@ public class EntityDataTypes {
     public static final EntityDataType<String> BUOYANCY_DATA = new EntityDataType<String>() {
     };
     public static final EntityDataType<Integer> GOAT_HORN_COUNT = new EntityDataType<Integer>() {
-    };
-    public static final EntityDataType<String> BASE_RUNTIME_ID = new EntityDataType<String>() {
     };
     /**
      * @since v503
