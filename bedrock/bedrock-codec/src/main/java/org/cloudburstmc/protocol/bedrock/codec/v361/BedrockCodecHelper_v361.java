@@ -83,7 +83,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     @Override
     public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
         checkNotNull(entityDataMap, "entityDataDictionary");
@@ -96,7 +96,6 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
             VarInts.writeUnsignedInt(buffer, definition.getId());
             VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
 
-            @SuppressWarnings("unchecked")
             Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
                     .serialize(this, entityDataMap, entry.getValue());
 

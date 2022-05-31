@@ -53,6 +53,10 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         }
     }
 
+    public <T> void putType(EntityDataType<T> type, T value) {
+        this.put(type, value);
+    }
+
     @Override
     public int size() {
         return this.map.size();
