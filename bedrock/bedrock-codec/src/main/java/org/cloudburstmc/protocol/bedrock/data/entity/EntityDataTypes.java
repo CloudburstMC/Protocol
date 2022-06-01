@@ -353,7 +353,7 @@ public class EntityDataTypes {
      */
     public static final EntityDataType<NbtMap> UPDATE_PROPERTIES = new EntityDataType<NbtMap>() {
     };
-    public static final EntityDataType<Boolean> FREEZING_EFFECT_STRENGTH = new EntityDataType<Boolean>() {
+    public static final EntityDataType<Float> FREEZING_EFFECT_STRENGTH = new EntityDataType<Float>() {
     };
     public static final EntityDataType<String> BUOYANCY_DATA = new EntityDataType<String>() {
     };
