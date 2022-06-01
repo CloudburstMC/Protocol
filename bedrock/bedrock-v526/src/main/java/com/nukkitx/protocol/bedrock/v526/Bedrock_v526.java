@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta;
+package com.nukkitx.protocol.bedrock.v526;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -20,7 +20,6 @@ import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
 import com.nukkitx.protocol.bedrock.v428.serializer.CameraShakeSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_v428;
-import com.nukkitx.protocol.bedrock.v431.serializer.PlayerAuthInputSerializer_v431;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
 import com.nukkitx.protocol.bedrock.v448.serializer.*;
 import com.nukkitx.protocol.bedrock.v465.serializer.*;
@@ -28,15 +27,14 @@ import com.nukkitx.protocol.bedrock.v471.serializer.EventSerializer_v471;
 import com.nukkitx.protocol.bedrock.v471.serializer.PhotoInfoRequestSerializer_v471;
 import com.nukkitx.protocol.bedrock.v486.serializer.*;
 import com.nukkitx.protocol.bedrock.v503.serializer.*;
-import com.nukkitx.protocol.bedrock.v526.BedrockPacketHelper_v526;
 import com.nukkitx.protocol.bedrock.v526.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class BedrockBeta {
-    public static BedrockPacketCodec BETA_CODEC = BedrockPacketCodec.builder()
-            .protocolVersion(530)
-            .minecraftVersion("1.19.10.20")
+public class Bedrock_v526 {
+    public static BedrockPacketCodec V526_CODEC = BedrockPacketCodec.builder()
+            .protocolVersion(526)
+            .minecraftVersion("1.19.0")
             .helper(BedrockPacketHelper_v526.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
@@ -178,7 +176,7 @@ public class BedrockBeta {
             .registerPacket(AnvilDamagePacket.class, AnvilDamageSerializer_v388.INSTANCE, 141)
             .registerPacket(CompletedUsingItemPacket.class, CompletedUsingItemSerializer_v388.INSTANCE, 142)
             .registerPacket(NetworkSettingsPacket.class, NetworkSettingsSerializer_v388.INSTANCE, 143)
-            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v431.INSTANCE, 144)
+            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v526.INSTANCE, 144)
             .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
             .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v407.INSTANCE, 147)

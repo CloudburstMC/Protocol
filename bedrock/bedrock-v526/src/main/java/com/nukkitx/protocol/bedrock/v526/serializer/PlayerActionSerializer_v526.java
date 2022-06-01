@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v526.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -10,8 +10,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerActionSerializerBeta implements BedrockPacketSerializer<PlayerActionPacket> {
-    public static final PlayerActionSerializerBeta INSTANCE = new PlayerActionSerializerBeta();
+public class PlayerActionSerializer_v526 implements BedrockPacketSerializer<PlayerActionPacket> {
+    public static final PlayerActionSerializer_v526 INSTANCE = new PlayerActionSerializer_v526();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, PlayerActionPacket packet) {

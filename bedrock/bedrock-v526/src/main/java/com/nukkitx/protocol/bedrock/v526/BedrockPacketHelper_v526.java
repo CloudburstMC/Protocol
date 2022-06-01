@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta;
+package com.nukkitx.protocol.bedrock.v526;
 
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
@@ -7,8 +7,8 @@ import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityFlag;
 import com.nukkitx.protocol.bedrock.v503.BedrockPacketHelper_v503;
 
-public class BedrockPacketHelperBeta extends BedrockPacketHelper_v503 {
-    public static final BedrockPacketHelperBeta INSTANCE = new BedrockPacketHelperBeta();
+public class BedrockPacketHelper_v526 extends BedrockPacketHelper_v503 {
+    public static final BedrockPacketHelper_v526 INSTANCE = new BedrockPacketHelper_v526();
 
     @Override
     protected void registerCommandParams() {

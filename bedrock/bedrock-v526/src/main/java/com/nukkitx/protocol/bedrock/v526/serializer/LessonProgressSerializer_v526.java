@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v526.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -10,8 +10,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LessonProgressSerializerBeta implements BedrockPacketSerializer<LessonProgressPacket> {
-    public static final LessonProgressSerializerBeta INSTANCE = new LessonProgressSerializerBeta();
+public class LessonProgressSerializer_v526 implements BedrockPacketSerializer<LessonProgressPacket> {
+    public static final LessonProgressSerializer_v526 INSTANCE = new LessonProgressSerializer_v526();
 
     private static final LessonAction[] ACTIONS = LessonAction.values();
 

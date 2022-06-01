@@ -4,10 +4,7 @@ import com.nukkitx.math.vector.Vector2f;
 import com.nukkitx.math.vector.Vector3f;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.ClientPlayMode;
-import com.nukkitx.protocol.bedrock.data.InputMode;
-import com.nukkitx.protocol.bedrock.data.PlayerAuthInputData;
-import com.nukkitx.protocol.bedrock.data.PlayerBlockActionData;
+import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequest;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemUseTransaction;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
@@ -28,11 +25,16 @@ public class PlayerAuthInputPacket extends BedrockPacket {
     private final Set<PlayerAuthInputData> inputData = EnumSet.noneOf(PlayerAuthInputData.class);
     private InputMode inputMode;
     private ClientPlayMode playMode;
+    /**
+     * @since v526
+     */
+    private InputInteractionModel inputInteractionModel;
     private Vector3f vrGazeDirection;
     private long tick;
     private Vector3f delta;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_INTERACTION} in order for this to not be null.
+     *
      * @since v428
      */
     private ItemUseTransaction itemUseTransaction;
