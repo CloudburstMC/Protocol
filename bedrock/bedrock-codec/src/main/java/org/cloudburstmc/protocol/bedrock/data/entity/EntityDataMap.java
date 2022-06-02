@@ -29,11 +29,7 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         return get(FLAGS);
     }
 
-    public EntityFlag putFlag(EntityFlag flag) {
-        return this.putFlag(flag, true);
-    }
-
-    public EntityFlag putFlag(EntityFlag flag, boolean value) {
+    public EntityFlag setFlag(EntityFlag flag, boolean value) {
         Objects.requireNonNull(flag, "flag");
         EnumSet<EntityFlag> flags = this.getOrCreateFlags();
         if (value) {
