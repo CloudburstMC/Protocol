@@ -6,10 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.protocol.bedrock.data.ClientPlayMode;
-import org.cloudburstmc.protocol.bedrock.data.InputMode;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerBlockActionData;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemUseTransaction;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -49,6 +46,10 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      * @since v428
      */
     private final List<PlayerBlockActionData> playerActions = new ObjectArrayList<>();
+    /**
+     * @since v527
+     */
+    private InputInteractionModel inputInteractionModel;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

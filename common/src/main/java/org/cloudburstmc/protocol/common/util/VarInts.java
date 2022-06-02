@@ -56,6 +56,7 @@ public class VarInts {
         }
     }
 
+    @SuppressWarnings({"DuplicateExpressions", "DuplicatedCode"})
     private static void encodeFull(ByteBuf buf, long value) {
         if ((value & ~0x7FL) == 0) {
             buf.writeByte((byte) value);

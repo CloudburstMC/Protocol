@@ -17,6 +17,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -104,6 +105,10 @@ public class StartGamePacket implements BedrockPacket {
      */
     private String serverEngine;
     /**
+     * @since v527
+     */
+    private NbtMap playerPropertyData;
+    /**
      * A XXHash64 of all block states by their compound tag.
      * <b>The exact way this is calculated is not currently known.</b>
      * <p>
@@ -112,6 +117,10 @@ public class StartGamePacket implements BedrockPacket {
      * @since v475
      */
     private long blockRegistryChecksum;
+    /**
+     * @since v527
+     */
+    private UUID worldTemplateId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

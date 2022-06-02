@@ -724,4 +724,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ChangeMobPropertyPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(LessonProgressPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(RequestAbilityPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(RequestPermissionsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ToastRequestPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
