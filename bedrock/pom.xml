@@ -36,7 +36,7 @@
         <module>bedrock-v475</module>
         <module>bedrock-v486</module>
         <module>bedrock-v503</module>
-        <module>bedrock-v526</module>
+        <module>bedrock-v527</module>
         <module>bedrock-beta</module>
     </modules>
 </project>

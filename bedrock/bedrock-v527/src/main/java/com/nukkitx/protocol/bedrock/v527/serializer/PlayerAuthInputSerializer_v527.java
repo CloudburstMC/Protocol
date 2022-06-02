@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v526.serializer;
+package com.nukkitx.protocol.bedrock.v527.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.InputInteractionModel;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlayerAuthInputSerializer_v526 extends PlayerAuthInputSerializer_v431 {
+public class PlayerAuthInputSerializer_v527 extends PlayerAuthInputSerializer_v431 {
 
-    public static final PlayerAuthInputSerializer_v526 INSTANCE = new PlayerAuthInputSerializer_v526();
+    public static final PlayerAuthInputSerializer_v527 INSTANCE = new PlayerAuthInputSerializer_v527();
 
     protected static final InputInteractionModel[] VALUES = InputInteractionModel.values();
 

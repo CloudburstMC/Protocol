@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v526.serializer;
+package com.nukkitx.protocol.bedrock.v527.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -11,8 +11,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RequestAbilitySerializer_v526 implements BedrockPacketSerializer<RequestAbilityPacket> {
-    public static final RequestAbilitySerializer_v526 INSTANCE = new RequestAbilitySerializer_v526();
+public class RequestAbilitySerializer_v527 implements BedrockPacketSerializer<RequestAbilityPacket> {
+    public static final RequestAbilitySerializer_v527 INSTANCE = new RequestAbilitySerializer_v527();
 
     protected static final Ability[] ABILITIES = Ability.values();
     protected static final AbilityType[] ABILITY_TYPES = AbilityType.values();

@@ -28,8 +28,8 @@ import com.nukkitx.protocol.bedrock.v471.serializer.EventSerializer_v471;
 import com.nukkitx.protocol.bedrock.v471.serializer.PhotoInfoRequestSerializer_v471;
 import com.nukkitx.protocol.bedrock.v486.serializer.*;
 import com.nukkitx.protocol.bedrock.v503.serializer.*;
-import com.nukkitx.protocol.bedrock.v526.BedrockPacketHelper_v526;
-import com.nukkitx.protocol.bedrock.v526.serializer.*;
+import com.nukkitx.protocol.bedrock.v527.BedrockPacketHelper_v527;
+import com.nukkitx.protocol.bedrock.v527.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -37,7 +37,7 @@ public class BedrockBeta {
     public static BedrockPacketCodec BETA_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(530)
             .minecraftVersion("1.19.10.20")
-            .helper(BedrockPacketHelper_v526.INSTANCE)
+            .helper(BedrockPacketHelper_v527.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
@@ -48,7 +48,7 @@ public class BedrockBeta {
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v526.INSTANCE, 11)
+            .registerPacket(StartGamePacket.class, StartGameSerializer_v527.INSTANCE, 11)
             .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v503.INSTANCE, 12)
             .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)
@@ -72,7 +72,7 @@ public class BedrockBeta {
             .registerPacket(InteractPacket.class, InteractSerializer_v388.INSTANCE, 33)
             .registerPacket(BlockPickRequestPacket.class, BlockPickRequestSerializer_v291.INSTANCE, 34)
             .registerPacket(EntityPickRequestPacket.class, EntityPickRequestSerializer_v465.INSTANCE, 35)
-            .registerPacket(PlayerActionPacket.class, PlayerActionSerializer_v526.INSTANCE, 36)
+            .registerPacket(PlayerActionPacket.class, PlayerActionSerializer_v527.INSTANCE, 36)
             .registerPacket(EntityFallPacket.class, EntityFallSerializer_v291.INSTANCE, 37)
             .registerPacket(HurtArmorPacket.class, HurtArmorSerializer_v465.INSTANCE, 38)
             .registerPacket(SetEntityDataPacket.class, SetEntityDataSerializer_v419.INSTANCE, 39)
@@ -217,9 +217,9 @@ public class BedrockBeta {
             .registerPacket(DimensionDataPacket.class, DimensionDataSerializer_v503.INSTANCE, 180)
             .registerPacket(AgentActionEventPacket.class, AgentActionEventSerializer_v503.INSTANCE, 181)
             .registerPacket(ChangeMobPropertyPacket.class, ChangeMobPropertySerializer_v503.INSTANCE, 182)
-            .registerPacket(LessonProgressPacket.class, LessonProgressSerializer_v526.INSTANCE, 183)
-            .registerPacket(RequestAbilityPacket.class, RequestAbilitySerializer_v526.INSTANCE, 184)
-            .registerPacket(RequestPermissionsPacket.class, RequestPermissionsSerializer_v526.INSTANCE, 185)
-            .registerPacket(ToastRequestPacket.class, ToastRequestSerializer_v526.INSTANCE, 186)
+            .registerPacket(LessonProgressPacket.class, LessonProgressSerializer_v527.INSTANCE, 183)
+            .registerPacket(RequestAbilityPacket.class, RequestAbilitySerializer_v527.INSTANCE, 184)
+            .registerPacket(RequestPermissionsPacket.class, RequestPermissionsSerializer_v527.INSTANCE, 185)
+            .registerPacket(ToastRequestPacket.class, ToastRequestSerializer_v527.INSTANCE, 186)
             .build();
 }

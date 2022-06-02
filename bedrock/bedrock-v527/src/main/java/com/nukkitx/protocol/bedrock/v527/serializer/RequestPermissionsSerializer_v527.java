@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v526.serializer;
+package com.nukkitx.protocol.bedrock.v527.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -9,8 +9,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RequestPermissionsSerializer_v526 implements BedrockPacketSerializer<RequestPermissionsPacket> {
-    public static final RequestPermissionsSerializer_v526 INSTANCE = new RequestPermissionsSerializer_v526();
+public class RequestPermissionsSerializer_v527 implements BedrockPacketSerializer<RequestPermissionsPacket> {
+    public static final RequestPermissionsSerializer_v527 INSTANCE = new RequestPermissionsSerializer_v527();
 
     protected static final PlayerPermission[] VALUES = PlayerPermission.values();
 

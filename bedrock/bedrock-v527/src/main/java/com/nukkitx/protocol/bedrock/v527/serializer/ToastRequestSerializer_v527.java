@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v526.serializer;
+package com.nukkitx.protocol.bedrock.v527.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -8,8 +8,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ToastRequestSerializer_v526 implements BedrockPacketSerializer<ToastRequestPacket> {
-    public static final ToastRequestSerializer_v526 INSTANCE = new ToastRequestSerializer_v526();
+public class ToastRequestSerializer_v527 implements BedrockPacketSerializer<ToastRequestPacket> {
+    public static final ToastRequestSerializer_v527 INSTANCE = new ToastRequestSerializer_v527();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ToastRequestPacket packet) {
