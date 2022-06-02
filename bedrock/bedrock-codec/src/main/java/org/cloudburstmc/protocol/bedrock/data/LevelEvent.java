@@ -80,6 +80,7 @@ public enum LevelEvent implements LevelEventType {
     SCULK_CATALYST_BLOOM,
     SCULK_CHARGE,
     SCULK_CHARGE_POP,
+    SONIC_EXPLOSION,
 
     // world
     START_RAINING,

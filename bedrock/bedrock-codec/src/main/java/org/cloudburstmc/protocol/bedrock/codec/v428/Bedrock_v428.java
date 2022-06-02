@@ -20,7 +20,6 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
-import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -37,7 +36,7 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .shift(60, 1)
             .insert(EntityDataTypes.SEAT_ROTATION_OFFSET_DEGREES, 60, EntityDataFormat.FLOAT)
             .shift(120, 1)
-            .insert(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 120, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .insert(EntityDataTypes.FREEZING_EFFECT_STRENGTH, 120, EntityDataFormat.FLOAT)
             .insert(EntityDataTypes.GOAT_HORN_COUNT, 122, EntityDataFormat.INT)
             .insert(EntityDataTypes.BASE_RUNTIME_ID, 123, EntityDataFormat.STRING)
             .build();

@@ -374,4 +374,20 @@ public class EntityDataTypes {
      */
     public static final EntityDataType<Integer> HEARTBEAT_SOUND_EVENT = new EntityDataType<Integer>() {
     };
+    /**
+     * @since v527
+     */
+    public static final EntityDataType<Vector3i> PLAYER_LAST_DEATH_POS = new EntityDataType<Vector3i>() {
+    };
+    /**
+     * @since v527
+     */
+    public static final EntityDataType<Integer> PLAYER_LAST_DEATH_DIMENSION = new EntityDataType<Integer>() {
+    };
+    /**
+     * @since v527
+     */
+    public static final EntityDataType<Boolean> PLAYER_HAS_DIED = new EntityDataType<Boolean>() {
+    };
+
 }
