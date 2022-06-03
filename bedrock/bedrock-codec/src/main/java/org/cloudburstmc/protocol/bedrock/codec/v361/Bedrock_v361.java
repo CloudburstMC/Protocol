@@ -24,11 +24,12 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v354.PARTICLE_TYPES.toBuilder()
-            .shift(1, 1)
-            .insert(1, ParticleType.BUBBLE_MANUAL)
+            .shift(2, 1)
+            .insert(2, ParticleType.BUBBLE_MANUAL)
             .shift(22, 1)
             .insert(22, ParticleType.MOB_PORTAL)
             .shift(24, 1)
+            .insert(24, ParticleType.WATER_SPLASH_MANUAL)
             .build();
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v354.ENTITY_DATA.toBuilder()
