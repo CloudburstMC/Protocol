@@ -154,7 +154,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.ROW_TIME_RIGHT, 14, EntityDataFormat.FLOAT)
             .insert(EntityDataTypes.VALUE, 15, EntityDataFormat.INT)
             .insert(EntityDataTypes.DISPLAY_BLOCK_STATE, 16, EntityDataFormat.INT, new BlockDefinitionTransformer())
-            .insert(EntityDataTypes.DISPLAY_OFFSET, 17, EntityDataFormat.INT)
+            .insert(EntityDataTypes.DISPLAY_OFFSET, 17, EntityDataFormat.VECTOR3I)
             .insert(EntityDataTypes.CUSTOM_DISPLAY, 18, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.HORSE_TYPE, 19, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.OLD_SWELL, 20, EntityDataFormat.INT)
