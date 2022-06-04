@@ -33,6 +33,7 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .build();
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v503.ENTITY_DATA.toBuilder()
+            .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .update(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, new TypeMapTransformer<>(PARTICLE_TYPES))
             .insert(EntityDataTypes.PLAYER_LAST_DEATH_POS, 128, EntityDataFormat.VECTOR3I)
