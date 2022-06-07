@@ -1,79 +1,24 @@
 package org.cloudburstmc.protocol.common;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
+public interface DefinitionRegistry<D extends Definition> {
 
-public final class DefinitionRegistry<D extends Definition> {
-    private final Int2ObjectMap<D> runtimeMap;
-    private final Map<String, D> identifierMap;
+    D getDefinition(String identifier);
+    D getDefinition(int runtimeId);
 
-    private DefinitionRegistry(Int2ObjectMap<D> runtimeMap, Map<String, D> identifierMap) {
-        this.runtimeMap = runtimeMap;
-        this.identifierMap = identifierMap;
-    }
+    Builder<D> toBuilder();
 
-    public D getDefinition(String identifier) {
-        return this.identifierMap.get(identifier);
-    }
-
-    public D getDefinition(int runtimeId) {
-        return this.runtimeMap.get(runtimeId);
-    }
-
-    public static <D extends Definition> Builder<D> builder() {
-        return new Builder<>();
-    }
-
-    public Builder<D> toBuilder() {
-        Builder<D> builder = new Builder<>();
-        builder.addAll(this.runtimeMap.values());
-        return builder;
-    }
-
-    public static class Builder<D extends Definition> {
-        private final Int2ObjectMap<D> runtimeMap = new Int2ObjectOpenHashMap<>();
-        private final Map<String, D> identifierMap = new HashMap<>();
-
-        public Builder<D> addAll(Collection<D> definitions) {
+    interface Builder<D extends Definition> {
+        default Builder<D> addAll(Collection<D> definitions) {
             for (D definition : definitions) {
                 this.add(definition);
             }
             return this;
         }
 
-        public Builder<D> add(D definition) {
-            checkNotNull(definition, "definition");
-            checkArgument(!this.identifierMap.containsKey(definition.getPersistentIdentifier()),
-                    "Identifier is already registered");
-            checkArgument(!this.runtimeMap.containsKey(definition.getRuntimeId()),
-                    "Runtime ID is already registered");
-            this.runtimeMap.put(definition.getRuntimeId(), definition);
-            this.identifierMap.put(definition.getPersistentIdentifier(), definition);
-
-            return this;
-        }
-
-        public Builder<D> remove(D definition) {
-            checkNotNull(definition, "definition");
-            checkArgument(this.identifierMap.containsKey(definition.getPersistentIdentifier()),
-                    "Identifier is mot registered");
-            checkArgument(this.runtimeMap.containsKey(definition.getRuntimeId()),
-                    "Runtime ID is not registered");
-            this.runtimeMap.remove(definition.getRuntimeId());
-            this.identifierMap.remove(definition.getPersistentIdentifier());
-            
-            return this;
-        }
-
-        public DefinitionRegistry<D> build() {
-            return new DefinitionRegistry<>(this.runtimeMap, this.identifierMap);
-        }
+        Builder<D> add(D definition);
+        Builder<D> remove(D definition);
+        DefinitionRegistry<D> build();
     }
 }
