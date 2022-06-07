@@ -136,12 +136,17 @@ public class BedrockPacketHelper_v361 extends BedrockPacketHelper_v354 {
         for (int i = 0; i < length; i++) {
             int metadataInt = VarInts.readUnsignedInt(buffer);
             EntityData entityData = this.entityData.get(metadataInt);
-            EntityData.Type type = this.entityDataTypes.get(VarInts.readUnsignedInt(buffer));
+            int typeId = VarInts.readUnsignedInt(buffer);
+            EntityData.Type type = this.entityDataTypes.get(typeId);
             if (entityData != null && entityData.isFlags()) {
                 if (type != EntityData.Type.LONG) {
                     throw new IllegalArgumentException("Expected long value for flags, got " + type.name());
                 }
                 type = EntityData.Type.FLAGS;
+            }
+
+            if (type == null) {
+                throw new IllegalArgumentException("Unknown EntityDataType: " + typeId);
             }
 
             Object object;
