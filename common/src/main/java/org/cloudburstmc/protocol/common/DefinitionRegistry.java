@@ -50,24 +50,24 @@ public final class DefinitionRegistry<D extends Definition> {
 
         public Builder<D> add(D definition) {
             checkNotNull(definition, "definition");
-            checkArgument(!this.identifierMap.containsKey(definition.getIdentifier()),
+            checkArgument(!this.identifierMap.containsKey(definition.getPersistentIdentifier()),
                     "Identifier is already registered");
             checkArgument(!this.runtimeMap.containsKey(definition.getRuntimeId()),
                     "Runtime ID is already registered");
             this.runtimeMap.put(definition.getRuntimeId(), definition);
-            this.identifierMap.put(definition.getIdentifier(), definition);
+            this.identifierMap.put(definition.getPersistentIdentifier(), definition);
 
             return this;
         }
 
         public Builder<D> remove(D definition) {
             checkNotNull(definition, "definition");
-            checkArgument(this.identifierMap.containsKey(definition.getIdentifier()),
+            checkArgument(this.identifierMap.containsKey(definition.getPersistentIdentifier()),
                     "Identifier is mot registered");
             checkArgument(this.runtimeMap.containsKey(definition.getRuntimeId()),
                     "Runtime ID is not registered");
             this.runtimeMap.remove(definition.getRuntimeId());
-            this.identifierMap.remove(definition.getIdentifier());
+            this.identifierMap.remove(definition.getPersistentIdentifier());
             
             return this;
         }

@@ -161,7 +161,7 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
 
         StringBuilder sb = new StringBuilder();
         sb.append('{');
-        for (; ; ) {
+        while (i.hasNext()) {
             Entry<EntityDataType<?>, Object> e = i.next();
             EntityDataType<?> key = e.getKey();
             if (key == FLAGS_2) continue; // We don't want this to be visible.
@@ -171,5 +171,6 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
                 return sb.append('}').toString();
             sb.append(',').append(' ');
         }
+        return sb.toString();
     }
 }
