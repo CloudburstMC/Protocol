@@ -12,7 +12,7 @@ public class SimpleBlockDefinition extends BlockDefinition {
     private final NbtMap state;
 
     // Cache identifier as this implementation is immutable
-    private String persistentIdentifier;
+    private transient String persistentIdentifier;
 
     @Override
     public String getPersistentIdentifier() {
