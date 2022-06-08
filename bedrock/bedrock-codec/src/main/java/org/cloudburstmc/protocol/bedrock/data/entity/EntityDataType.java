@@ -22,4 +22,8 @@ public abstract class EntityDataType<T> {
         }
         return false;
     }
+
+    public String getTypeName() {
+        return this.type.getTypeName();
+    }
 }

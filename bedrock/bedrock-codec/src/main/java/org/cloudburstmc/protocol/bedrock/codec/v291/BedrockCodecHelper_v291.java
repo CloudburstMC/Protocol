@@ -279,6 +279,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
         checkNotNull(entityDataMap, "entityDataDictionary");
@@ -291,45 +292,48 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
             VarInts.writeUnsignedInt(buffer, definition.getId());
             VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
 
-            @SuppressWarnings("unchecked")
-            Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
-                    .serialize(this, entityDataMap, entry.getValue());
+            try {
+                Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
+                        .serialize(this, entityDataMap, entry.getValue());
 
-            switch (definition.getFormat()) {
-                case BYTE:
-                    buffer.writeByte((byte) value);
-                    break;
-                case SHORT:
-                    buffer.writeShortLE((short) value);
-                    break;
-                case INT:
-                    VarInts.writeInt(buffer, (int) value);
-                    break;
-                case FLOAT:
-                    buffer.writeFloatLE((float) value);
-                    break;
-                case STRING:
-                    writeString(buffer, (String) value);
-                    break;
-                case NBT:
-                    this.writeItem(buffer, ItemData.builder()
-                            .definition(ItemDefinition.LEGACY_FIREWORK)
-                            .damage(0)
-                            .count(1)
-                            .tag((NbtMap) value)
-                            .build());
-                    break;
-                case VECTOR3I:
-                    writeVector3i(buffer, (Vector3i) value);
-                    break;
-                case LONG:
-                    VarInts.writeLong(buffer, (long) value);
-                    break;
-                case VECTOR3F:
-                    writeVector3f(buffer, (Vector3f) value);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Unknown entity data type " + definition.getFormat());
+                switch (definition.getFormat()) {
+                    case BYTE:
+                        buffer.writeByte((byte) value);
+                        break;
+                    case SHORT:
+                        buffer.writeShortLE((short) value);
+                        break;
+                    case INT:
+                        VarInts.writeInt(buffer, (int) value);
+                        break;
+                    case FLOAT:
+                        buffer.writeFloatLE((float) value);
+                        break;
+                    case STRING:
+                        writeString(buffer, (String) value);
+                        break;
+                    case NBT:
+                        this.writeItem(buffer, ItemData.builder()
+                                .definition(ItemDefinition.LEGACY_FIREWORK)
+                                .damage(0)
+                                .count(1)
+                                .tag((NbtMap) value)
+                                .build());
+                        break;
+                    case VECTOR3I:
+                        writeVector3i(buffer, (Vector3i) value);
+                        break;
+                    case LONG:
+                        VarInts.writeLong(buffer, (long) value);
+                        break;
+                    case VECTOR3F:
+                        writeVector3f(buffer, (Vector3f) value);
+                        break;
+                    default:
+                        throw new UnsupportedOperationException("Unknown entity data type " + definition.getFormat());
+                }
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Failed to encode EntityData " + definition.getId() + " of " + definition.getType().getTypeName(), e);
             }
         }
     }
