@@ -1,24 +1,10 @@
 package org.cloudburstmc.protocol.common.util;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class VarInts {
-
-    public static void main(String[] args) {
-        for (int i = 0; i < 64; i++) {
-            ByteBuf buffer = Unpooled.buffer(16);
-            long value = 1L << i;
-            writeLong(buffer, value);
-
-            long newValue = readLong(buffer);
-            if (value != newValue) {
-                System.out.println("Failed to encode/decode " + value + ": " + newValue);
-            }
-        }
-    }
 
     public static void writeInt(ByteBuf buffer, int value) {
         encode(buffer, ((value << 1) ^ (value >> 31)) & 0xFFFFFFFFL);
