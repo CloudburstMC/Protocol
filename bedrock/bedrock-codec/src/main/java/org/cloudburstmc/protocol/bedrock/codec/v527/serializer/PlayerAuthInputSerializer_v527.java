@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.PlayerAuthInputSerializer_v428;
 import org.cloudburstmc.protocol.bedrock.data.InputInteractionModel;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor
 public class PlayerAuthInputSerializer_v527 extends PlayerAuthInputSerializer_v428 {
@@ -14,11 +15,11 @@ public class PlayerAuthInputSerializer_v527 extends PlayerAuthInputSerializer_v4
 
     @Override
     protected void readInteractionModel(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        packet.setInputInteractionModel(VALUES[buffer.readIntLE()]);
+        packet.setInputInteractionModel(VALUES[VarInts.readUnsignedInt(buffer)]);
     }
 
     @Override
     protected void writeInteractionModel(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
-        buffer.writeIntLE(packet.getInputInteractionModel().ordinal());
+        VarInts.writeUnsignedInt(buffer, packet.getInputInteractionModel().ordinal());
     }
 }
