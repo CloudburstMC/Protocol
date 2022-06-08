@@ -1,10 +1,24 @@
 package org.cloudburstmc.protocol.common.util;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class VarInts {
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 64; i++) {
+            ByteBuf buffer = Unpooled.buffer(16);
+            long value = 1L << i;
+            writeLong(buffer, value);
+
+            long newValue = readLong(buffer);
+            if (value != newValue) {
+                System.out.println("Failed to encode/decode " + value + ": " + newValue);
+            }
+        }
+    }
 
     public static void writeInt(ByteBuf buffer, int value) {
         encode(buffer, ((value << 1) ^ (value >> 31)) & 0xFFFFFFFFL);
@@ -119,7 +133,7 @@ public class VarInts {
                     ((value >>> 28) & 0x7FL | 0x80L) << 24 |
                     ((value >>> 35) & 0x7FL | 0x80L) << 16 |
                     ((value >>> 42) & 0x7FL | 0x80L) << 8 |
-                    (value >>> 49);
+                    ((value >>> 49) & 0x7FL | 0x80L);
             buf.writeLong(w);
             buf.writeByte((byte) (value >>> 56));
         } else {
@@ -130,11 +144,11 @@ public class VarInts {
                     ((value >>> 28) & 0x7FL | 0x80L) << 24 |
                     ((value >>> 35) & 0x7FL | 0x80L) << 16 |
                     ((value >>> 42) & 0x7FL | 0x80L) << 8 |
-                    (value >>> 49);
-            int w2 = (int) (((value >>> 56) & 0x7FL | 0x80L) << 8 |
-                    (value >>> 63));
+                    ((value >>> 49) & 0x7FL | 0x80L);
+            long w2 = ((value >>> 56) & 0x7FL | 0x80L) << 8 |
+                    (value >>> 63);
             buf.writeLong(w);
-            buf.writeShort(w2);
+            buf.writeShort((int) w2);
         }
     }
 
