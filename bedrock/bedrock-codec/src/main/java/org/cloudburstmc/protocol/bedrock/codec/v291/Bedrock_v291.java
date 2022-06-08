@@ -187,7 +187,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.CONTAINER_TYPE, 44, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.CONTAINER_SIZE, 45, EntityDataFormat.INT)
             .insert(EntityDataTypes.CONTAINER_STRENGTH_MODIFIER, 46, EntityDataFormat.INT)
-            .insert(EntityDataTypes.BLOCK_TARGET_POS, 47, EntityDataFormat.VECTOR3F)
+            .insert(EntityDataTypes.BLOCK_TARGET_POS, 47, EntityDataFormat.VECTOR3I)
             .insert(EntityDataTypes.WITHER_INVULNERABLE_TICKS, 48, EntityDataFormat.INT)
             .insert(EntityDataTypes.WITHER_TARGET_A, 49, EntityDataFormat.LONG)
             .insert(EntityDataTypes.WITHER_TARGET_B, 50, EntityDataFormat.LONG)
