@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v527.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.InputInteractionModel;
 import com.nukkitx.protocol.bedrock.packet.PlayerAuthInputPacket;
@@ -17,11 +18,11 @@ public class PlayerAuthInputSerializer_v527 extends PlayerAuthInputSerializer_v4
 
     @Override
     protected void readInteractionModel(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet) {
-        packet.setInputInteractionModel(VALUES[buffer.readIntLE()]);
+        packet.setInputInteractionModel(VALUES[VarInts.readInt(buffer)]);
     }
 
     @Override
     protected void writeInteractionModel(ByteBuf buffer, BedrockPacketHelper helper, PlayerAuthInputPacket packet) {
-        buffer.writeIntLE(packet.getInputInteractionModel().ordinal());
+        VarInts.writeInt(buffer, packet.getInputInteractionModel().ordinal());
     }
 }
