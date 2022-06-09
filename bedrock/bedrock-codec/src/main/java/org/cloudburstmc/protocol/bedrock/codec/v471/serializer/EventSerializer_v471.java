@@ -66,7 +66,7 @@ public class EventSerializer_v471 extends EventSerializer_v389 {
 
     protected void writeCopperWaxedUnwaxed(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
         CopperWaxedOrUnwaxedEventData event = (CopperWaxedOrUnwaxedEventData) eventData;
-        VarInts.writeInt(buffer, event.getDefinition().getRuntimeId());
+        VarInts.writeInt(buffer, helper.getBlockDefinitions().checkMappedDefinition(event.getDefinition()).getRuntimeId());
     }
 
     protected CodeBuilderActionEventData readCodeBuilderAction(ByteBuf buffer, BedrockCodecHelper helper) {

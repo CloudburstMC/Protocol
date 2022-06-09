@@ -8,7 +8,12 @@ public class BlockDefinitionTransformer implements EntityDataTransformer<Integer
 
     @Override
     public Integer serialize(BedrockCodecHelper helper, EntityDataMap map, BlockDefinition value) {
-        return value.getRuntimeId();
+        if (helper.getBlockDefinitions() == null) {
+            return value.getRuntimeId();
+        }
+
+        // Make sure definition is present in known block registry
+        return helper.getBlockDefinitions().checkMappedDefinition(value).getRuntimeId();
     }
 
     @Override

@@ -7,6 +7,11 @@ public interface DefinitionRegistry<D extends Definition> {
     D getDefinition(String identifier);
     D getDefinition(int runtimeId);
 
+    default D checkMappedDefinition(D definition) {
+        D mappedDefinition = this.getDefinition(definition.getPersistentIdentifier());
+        return mappedDefinition == null ? definition : mappedDefinition;
+    }
+
     Builder<D> toBuilder();
 
     interface Builder<D extends Definition> {
