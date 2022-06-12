@@ -99,7 +99,7 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
     public Object put(EntityDataType<?> key, Object value) {
         checkNotNull(key, "type");
         checkNotNull(value, "value was null for %s", key);
-        checkArgument(key.isInstance(value), "value with type %s is not an instance of %s", value.getClass(), key);
+        checkArgument(key.isInstance(value), "value with type %s is not an instance of %s: %s", value.getClass(), key, EntityDataTypes.getNameIfPossible(key));
         if (key == FLAGS || key == FLAGS_2) {
             return this.putFlags((EnumSet<EntityFlag>) value);
         }

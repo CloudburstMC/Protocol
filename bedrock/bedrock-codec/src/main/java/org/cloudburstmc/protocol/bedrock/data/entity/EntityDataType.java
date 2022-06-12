@@ -1,11 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
-import lombok.ToString;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-@ToString
 public abstract class EntityDataType<T> {
 
     private final Type type;
@@ -25,5 +22,10 @@ public abstract class EntityDataType<T> {
 
     public String getTypeName() {
         return this.type.getTypeName();
+    }
+
+    @Override
+    public String toString() {
+        return "EntityDataType(type=" + this.getTypeName() + " name=" + EntityDataTypes.getNameIfPossible(this) + ")";
     }
 }

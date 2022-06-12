@@ -7,6 +7,7 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 
+import java.lang.reflect.Field;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -390,4 +391,15 @@ public class EntityDataTypes {
     public static final EntityDataType<Boolean> PLAYER_HAS_DIED = new EntityDataType<Boolean>() {
     };
 
+    public static String getNameIfPossible(EntityDataType<?> dataType) {
+        try {
+            for (Field field : EntityDataTypes.class.getFields()) {
+                if (dataType.equals(field.get(EntityDataTypes.class))) {
+                    return field.getName();
+                }
+            }
+        } catch (IllegalAccessException ignored) {
+        }
+        return "unknown";
+    }
 }
