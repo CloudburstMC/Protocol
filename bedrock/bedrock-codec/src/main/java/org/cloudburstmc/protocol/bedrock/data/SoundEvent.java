@@ -434,5 +434,7 @@ public enum SoundEvent {
     ITEM_THROWN,
     RECORD_5,
     CONVERT_TO_FROG,
+    MILK_DRINK,
+    RECORD_PLAYING,
     UNDEFINED
 }

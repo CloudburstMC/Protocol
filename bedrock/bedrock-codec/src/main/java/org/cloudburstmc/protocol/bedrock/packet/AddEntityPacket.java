@@ -4,7 +4,9 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.math.vector.Vector4f;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
@@ -25,7 +27,15 @@ public class AddEntityPacket implements BedrockPacket {
     private int entityType;
     private Vector3f position;
     private Vector3f motion;
-    private Vector3f rotation;
+    private Vector2f rotation;
+    /**
+     * @since v534
+     */
+    private float headRotation;
+    /**
+     * @since v534
+     */
+    private float bodyRotation;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

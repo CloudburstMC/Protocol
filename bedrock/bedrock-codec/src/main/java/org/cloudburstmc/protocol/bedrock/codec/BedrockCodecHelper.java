@@ -6,6 +6,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
@@ -172,6 +173,10 @@ public interface BedrockCodecHelper {
     ItemStackRequest readItemStackRequest(ByteBuf buffer);
 
     void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request);
+
+    void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+
+    void readPlayerAbilities(ByteBuf buf, PlayerAbilityHolder abilityHolder);
 
     <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function);
 

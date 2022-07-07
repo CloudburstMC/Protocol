@@ -22,7 +22,8 @@ public class AddEntitySerializer_v291 implements BedrockPacketSerializer<AddEnti
         VarInts.writeUnsignedInt(buffer, packet.getEntityType());
         helper.writeVector3f(buffer, packet.getPosition());
         helper.writeVector3f(buffer, packet.getMotion());
-        helper.writeVector3f(buffer, packet.getRotation());
+        helper.writeVector2f(buffer, packet.getRotation());
+        buffer.writeFloatLE(packet.getHeadRotation());
         helper.writeArray(buffer, packet.getAttributes(), this::writeAttribute);
         helper.writeEntityData(buffer, packet.getMetadata());
         helper.writeArray(buffer, packet.getEntityLinks(), helper::writeEntityLink);
@@ -35,7 +36,8 @@ public class AddEntitySerializer_v291 implements BedrockPacketSerializer<AddEnti
         packet.setEntityType(VarInts.readUnsignedInt(buffer));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setMotion(helper.readVector3f(buffer));
-        packet.setRotation(helper.readVector3f(buffer));
+        packet.setRotation(helper.readVector2f(buffer));
+        packet.setHeadRotation(buffer.readFloatLE());
         helper.readArray(buffer, packet.getAttributes(), this::readAttribute);
         helper.readEntityData(buffer, packet.getMetadata());
         helper.readArray(buffer, packet.getEntityLinks(), helper::readEntityLink);

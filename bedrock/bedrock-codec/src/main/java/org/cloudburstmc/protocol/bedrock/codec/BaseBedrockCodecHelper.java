@@ -18,6 +18,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
@@ -496,6 +497,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     protected void writeImage(ByteBuf buffer, ImageData image) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void readPlayerAbilities(ByteBuf buf, PlayerAbilityHolder abilityHolder) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
         throw new UnsupportedOperationException();
     }
 }

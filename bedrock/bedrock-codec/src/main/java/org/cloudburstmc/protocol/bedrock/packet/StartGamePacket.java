@@ -121,6 +121,10 @@ public class StartGamePacket implements BedrockPacket {
      * @since v527
      */
     private UUID worldTemplateId;
+    /**
+     * @since v534
+     */
+    private boolean worldEditor;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

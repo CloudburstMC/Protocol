@@ -740,4 +740,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ToastRequestPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(UpdateAbilitiesPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(UpdateAdventureSettingsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(DeathInfoPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(EditorNetworkPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

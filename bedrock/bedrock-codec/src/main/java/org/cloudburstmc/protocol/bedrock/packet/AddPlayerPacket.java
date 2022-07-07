@@ -5,7 +5,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
+import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -17,7 +21,7 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class AddPlayerPacket implements BedrockPacket {
+public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
     private final EntityDataMap metadata = new EntityDataMap();
     private final List<EntityLinkData> entityLinks = new ObjectArrayList<>();
     private UUID uuid;
@@ -34,9 +38,34 @@ public class AddPlayerPacket implements BedrockPacket {
     private int buildPlatform;
     private GameType gameType;
 
+    /**
+     * @since v534
+     */
+    private List<AbilityLayer> abilityLayers = new ObjectArrayList<>();
+
     public void setUniqueEntityId(long uniqueEntityId) {
         this.uniqueEntityId = uniqueEntityId;
         this.adventureSettings.setUniqueEntityId(uniqueEntityId);
+    }
+
+    @Override
+    public PlayerPermission getPlayerPermission() {
+        return this.adventureSettings.getPlayerPermission();
+    }
+
+    @Override
+    public void setPlayerPermission(PlayerPermission playerPermission) {
+        this.adventureSettings.setPlayerPermission(playerPermission);
+    }
+
+    @Override
+    public CommandPermission getCommandPermission() {
+        return this.adventureSettings.getCommandPermission();
+    }
+
+    @Override
+    public void setCommandPermission(CommandPermission commandPermission) {
+        this.adventureSettings.setCommandPermission(commandPermission);
     }
 
     @Override
