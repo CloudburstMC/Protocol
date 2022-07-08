@@ -174,10 +174,6 @@ public interface BedrockCodecHelper {
 
     void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request);
 
-    void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
-
-    void readPlayerAbilities(ByteBuf buf, PlayerAbilityHolder abilityHolder);
-
     <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function);
 
     <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer);

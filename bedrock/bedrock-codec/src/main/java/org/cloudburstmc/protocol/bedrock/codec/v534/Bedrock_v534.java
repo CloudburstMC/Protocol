@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSeriali
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
+import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.Bedrock_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
@@ -28,7 +29,7 @@ public class Bedrock_v534 extends Bedrock_v527 {
     public static final BedrockCodec CODEC = Bedrock_v527.CODEC.toBuilder()
             .protocolVersion(534)
             .minecraftVersion("1.19.10")
-            .helper(() -> new BedrockCodecHelper_v534(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v503(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v534.INSTANCE)
             .updateSerializer(AddEntityPacket.class, AddEntitySerializer_v534.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v534.INSTANCE)

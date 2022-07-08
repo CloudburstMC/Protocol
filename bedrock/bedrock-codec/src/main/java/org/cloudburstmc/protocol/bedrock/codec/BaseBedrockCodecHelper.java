@@ -499,14 +499,4 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     protected void writeImage(ByteBuf buffer, ImageData image) {
         throw new UnsupportedOperationException();
     }
-
-    @Override
-    public void readPlayerAbilities(ByteBuf buf, PlayerAbilityHolder abilityHolder) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
-        throw new UnsupportedOperationException();
-    }
 }
