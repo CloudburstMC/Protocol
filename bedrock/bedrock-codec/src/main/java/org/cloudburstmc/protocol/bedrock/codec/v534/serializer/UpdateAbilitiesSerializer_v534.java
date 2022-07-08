@@ -91,7 +91,7 @@ public class UpdateAbilitiesSerializer_v534 implements BedrockPacketSerializer<U
     private static int getAbilitiesNumber(Set<Ability> abilities) {
         int number = 0;
         for (Ability ability : abilities) {
-            number |= FLAGS_TO_BITS.getInt(abilities);
+            number |= FLAGS_TO_BITS.getInt(ability);
         }
         return number;
     }
