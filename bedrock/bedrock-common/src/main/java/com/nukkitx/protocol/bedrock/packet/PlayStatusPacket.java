@@ -57,6 +57,10 @@ public class PlayStatusPacket extends BedrockPacket {
         /**
          * Sent to a split screen player when the server is full
          */
-        FAILED_SERVER_FULL_SUB_CLIENT
+        FAILED_SERVER_FULL_SUB_CLIENT,
+
+        EDITOR_TO_VANILLA_MISMATCH,
+
+        VANILLA_TO_EDITOR_MISMATCH
     }
 }

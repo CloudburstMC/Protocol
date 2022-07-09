@@ -26,6 +26,10 @@ public class AddEntityPacket extends BedrockPacket {
     private Vector3f position;
     private Vector3f motion;
     private Vector3f rotation;
+    /**
+     * @since v534
+     */
+    private float bodyRotation;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
