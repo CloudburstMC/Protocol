@@ -61,6 +61,7 @@ public class StartGameSerializer_v534 extends StartGameSerializer_v527 {
         buffer.writeBoolean(packet.isNetherType());
         helper.writeString(buffer, packet.getEduSharedUriResource().getButtonName());
         helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
+        buffer.writeBoolean(packet.isForceExperimentalGameplay());
         if (packet.isForceExperimentalGameplay()) {
             buffer.writeBoolean(true); // optional boolean
         }
