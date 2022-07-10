@@ -51,7 +51,7 @@ public class ClientboundDebugRendererPacket extends BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CAMERA_SHAKE;
+        return BedrockPacketType.CLIENTBOUND_DEBUG_RENDERER;
     }
 
 }
