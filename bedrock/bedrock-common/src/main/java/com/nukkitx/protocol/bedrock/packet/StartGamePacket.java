@@ -115,6 +115,10 @@ public class StartGamePacket extends BedrockPacket {
      */
     private Object playerPropertyData;
     private UUID worldTemplateId;
+    /**
+     * @since v534
+     */
+    private boolean worldEditor;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

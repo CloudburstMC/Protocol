@@ -1,9 +1,8 @@
-package com.nukkitx.protocol.bedrock.beta;
+package com.nukkitx.protocol.bedrock.v534;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.packet.*;
 import com.nukkitx.protocol.bedrock.v291.serializer.*;
-import com.nukkitx.protocol.bedrock.v313.serializer.AddEntitySerializer_v313;
 import com.nukkitx.protocol.bedrock.v313.serializer.AvailableEntityIdentifiersSerializer_v313;
 import com.nukkitx.protocol.bedrock.v313.serializer.BiomeDefinitionListSerializer_v313;
 import com.nukkitx.protocol.bedrock.v313.serializer.NetworkChunkPublisherUpdateSerializer_v313;
@@ -20,7 +19,6 @@ import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
 import com.nukkitx.protocol.bedrock.v428.serializer.CameraShakeSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_v428;
-import com.nukkitx.protocol.bedrock.v431.serializer.PlayerAuthInputSerializer_v431;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
 import com.nukkitx.protocol.bedrock.v448.serializer.*;
 import com.nukkitx.protocol.bedrock.v465.serializer.*;
@@ -28,16 +26,16 @@ import com.nukkitx.protocol.bedrock.v471.serializer.EventSerializer_v471;
 import com.nukkitx.protocol.bedrock.v471.serializer.PhotoInfoRequestSerializer_v471;
 import com.nukkitx.protocol.bedrock.v486.serializer.*;
 import com.nukkitx.protocol.bedrock.v503.serializer.*;
-import com.nukkitx.protocol.bedrock.v527.BedrockPacketHelper_v527;
 import com.nukkitx.protocol.bedrock.v527.serializer.*;
+import com.nukkitx.protocol.bedrock.v534.serializer.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class BedrockBeta {
-    public static BedrockPacketCodec BETA_CODEC = BedrockPacketCodec.builder()
-            .protocolVersion(530)
-            .minecraftVersion("1.19.10.20")
-            .helper(BedrockPacketHelper_v527.INSTANCE)
+public class Bedrock_v534 {
+    public static BedrockPacketCodec V534_CODEC = BedrockPacketCodec.builder()
+            .protocolVersion(534)
+            .minecraftVersion("1.19.10")
+            .helper(BedrockPacketHelper_v534.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializer_v291.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializer_v291.INSTANCE, 2)
             .registerPacket(ServerToClientHandshakePacket.class, ServerToClientHandshakeSerializer_v291.INSTANCE, 3)
@@ -48,9 +46,9 @@ public class BedrockBeta {
             .registerPacket(ResourcePackClientResponsePacket.class, ResourcePackClientResponseSerializer_v291.INSTANCE, 8)
             .registerPacket(TextPacket.class, TextSerializer_v332.INSTANCE, 9)
             .registerPacket(SetTimePacket.class, SetTimeSerializer_v291.INSTANCE, 10)
-            .registerPacket(StartGamePacket.class, StartGameSerializer_v527.INSTANCE, 11)
-            .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v503.INSTANCE, 12)
-            .registerPacket(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE, 13)
+            .registerPacket(StartGamePacket.class, StartGameSerializer_v534.INSTANCE, 11)
+            .registerPacket(AddPlayerPacket.class, AddPlayerSerializer_v534.INSTANCE, 12)
+            .registerPacket(AddEntityPacket.class, AddEntitySerializer_v534.INSTANCE, 13)
             .registerPacket(RemoveEntityPacket.class, RemoveEntitySerializer_v291.INSTANCE, 14)
             .registerPacket(AddItemEntityPacket.class, AddItemEntitySerializer_v291.INSTANCE, 15)
             .registerPacket(TakeItemEntityPacket.class, TakeItemEntitySerializer_v291.INSTANCE, 17)
@@ -178,7 +176,7 @@ public class BedrockBeta {
             .registerPacket(AnvilDamagePacket.class, AnvilDamageSerializer_v388.INSTANCE, 141)
             .registerPacket(CompletedUsingItemPacket.class, CompletedUsingItemSerializer_v388.INSTANCE, 142)
             .registerPacket(NetworkSettingsPacket.class, NetworkSettingsSerializer_v388.INSTANCE, 143)
-            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v431.INSTANCE, 144)
+            .registerPacket(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v527.INSTANCE, 144)
             .registerPacket(CreativeContentPacket.class, CreativeContentSerializer_v407.INSTANCE, 145)
             .registerPacket(PlayerEnchantOptionsPacket.class, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
             .registerPacket(ItemStackRequestPacket.class, ItemStackRequestSerializer_v407.INSTANCE, 147)
@@ -221,5 +219,9 @@ public class BedrockBeta {
             .registerPacket(RequestAbilityPacket.class, RequestAbilitySerializer_v527.INSTANCE, 184)
             .registerPacket(RequestPermissionsPacket.class, RequestPermissionsSerializer_v527.INSTANCE, 185)
             .registerPacket(ToastRequestPacket.class, ToastRequestSerializer_v527.INSTANCE, 186)
+            .registerPacket(UpdateAbilitiesPacket.class, UpdateAbilitiesSerializer_v534.INSTANCE, 187)
+            .registerPacket(UpdateAdventureSettingsPacket.class, UpdateAdventureSettingsSerializer_v534.INSTANCE, 188)
+            .registerPacket(DeathInfoPacket.class, DeathInfoSerializer_v534.INSTANCE, 189)
+            .registerPacket(EditorNetworkPacket.class, EditorNetworkSerializer_v534.INSTANCE, 190)
             .build();
 }

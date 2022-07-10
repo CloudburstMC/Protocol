@@ -740,4 +740,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(ToastRequestPacket packet) {
         return false;
     }
+
+    default boolean handle(UpdateAbilitiesPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UpdateAdventureSettingsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(DeathInfoPacket packet) {
+        return false;
+    }
+
+    default boolean handle(EditorNetworkPacket packet) {
+        return false;
+    }
 }
