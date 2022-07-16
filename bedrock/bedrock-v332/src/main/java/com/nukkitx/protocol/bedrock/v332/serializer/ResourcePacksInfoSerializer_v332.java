@@ -15,16 +15,16 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePacksInfoPacket packet) {
         buffer.writeBoolean(packet.isForcedToAccept());
         buffer.writeBoolean(packet.isScriptingEnabled());
-        helper.writeArrayShortLE(buffer, packet.getBehaviorPackInfos(), this::writeEntry);
-        helper.writeArrayShortLE(buffer, packet.getResourcePackInfos(), this::writeEntry);
+        helper.writeArray(buffer, packet.getBehaviorPackInfos(), ByteBuf::writeShortLE, this::writeEntry);
+        helper.writeArray(buffer, packet.getResourcePackInfos(), ByteBuf::writeShortLE, this::writeEntry);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, ResourcePacksInfoPacket packet) {
         packet.setForcedToAccept(buffer.readBoolean());
         packet.setScriptingEnabled(buffer.readBoolean());
-        helper.readArrayShortLE(buffer, packet.getBehaviorPackInfos(), this::readEntry);
-        helper.readArrayShortLE(buffer, packet.getResourcePackInfos(), this::readEntry);
+        helper.readArray(buffer, packet.getBehaviorPackInfos(), ByteBuf::readUnsignedShortLE, this::readEntry);
+        helper.readArray(buffer, packet.getResourcePackInfos(), ByteBuf::readUnsignedShortLE, this::readEntry);
     }
 
     @Override

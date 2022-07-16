@@ -18,8 +18,7 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
         VarInts.writeInt(buffer, packet.getDimension());
         helper.writeVector3i(buffer, packet.getSubChunkPosition());
 
-        buffer.writeIntLE(packet.getPositionOffsets().size());
-        packet.getPositionOffsets().forEach(position -> this.writeSubChunkOffset(buffer, position));
+        helper.writeArray(buffer, packet.getPositionOffsets(), ByteBuf::writeIntLE, this::writeSubChunkOffset);
     }
 
     @Override
@@ -27,19 +26,16 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
         packet.setDimension(VarInts.readInt(buffer));
         packet.setSubChunkPosition(helper.readVector3i(buffer));
 
-        int requestCount = buffer.readIntLE(); // Unsigned but realistically, we're not going to read that many.
-        for (int i = 0; i < requestCount; i++) {
-            packet.getPositionOffsets().add(this.readSubChunkOffset(buffer));
-        }
+        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset);
     }
 
-    protected void writeSubChunkOffset(ByteBuf buffer, Vector3i offsetPosition) {
+    protected void writeSubChunkOffset(ByteBuf buffer, BedrockPacketHelper helper, Vector3i offsetPosition) {
         buffer.writeByte(offsetPosition.getX());
         buffer.writeByte(offsetPosition.getY());
         buffer.writeByte(offsetPosition.getZ());
     }
 
-    protected Vector3i readSubChunkOffset(ByteBuf buffer) {
+    protected Vector3i readSubChunkOffset(ByteBuf buffer, BedrockPacketHelper helper) {
         return Vector3i.from(buffer.readByte(), buffer.readByte(), buffer.readByte());
     }
 }

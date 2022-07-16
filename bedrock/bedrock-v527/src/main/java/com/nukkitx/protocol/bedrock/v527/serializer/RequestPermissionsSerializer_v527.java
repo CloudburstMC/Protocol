@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.v527.serializer;
 
+import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
@@ -17,14 +18,14 @@ public class RequestPermissionsSerializer_v527 implements BedrockPacketSerialize
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, RequestPermissionsPacket packet) {
         buffer.writeLongLE(packet.getUniqueEntityId());
-        buffer.writeByte(packet.getPermissions().ordinal());
+        VarInts.writeInt(buffer, packet.getPermissions().ordinal());
         buffer.writeShortLE(packet.getCustomPermissions());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, RequestPermissionsPacket packet) {
         packet.setUniqueEntityId(buffer.readLongLE());
-        packet.setPermissions(VALUES[buffer.readUnsignedByte()]);
+        packet.setPermissions(VALUES[VarInts.readInt(buffer)]);
         packet.setCustomPermissions(buffer.readUnsignedShortLE());
     }
 }

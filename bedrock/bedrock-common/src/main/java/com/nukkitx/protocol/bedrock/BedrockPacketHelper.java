@@ -38,10 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 import static java.util.Objects.requireNonNull;
 
@@ -422,18 +419,29 @@ public abstract class BedrockPacketHelper {
      */
 
     public <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockPacketHelper, T> function) {
-        int length = VarInts.readUnsignedInt(buffer);
+        readArray(buffer, array, VarInts::readUnsignedInt, function);
+    }
+
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToIntFunction<ByteBuf> lengthReader,
+                              BiFunction<ByteBuf, BedrockPacketHelper, T> function) {
+        int length = lengthReader.applyAsInt(buffer);
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer, this));
         }
     }
 
     public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
-        VarInts.writeUnsignedInt(buffer, array.size());
+        writeArray(buffer, array, VarInts::writeUnsignedInt, consumer);
+    }
+
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, ObjIntConsumer<ByteBuf> lengthWriter,
+                               TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
+        lengthWriter.accept(buffer, array.size());
         for (T val : array) {
             consumer.accept(buffer, this, val);
         }
     }
+
 
     public <T> void readArray(ByteBuf buffer, Collection<T> array, BedrockSession session,
                               TriFunction<ByteBuf, BedrockPacketHelper, BedrockSession, T> function) {
@@ -476,20 +484,6 @@ public abstract class BedrockPacketHelper {
         VarInts.writeUnsignedInt(buffer, array.length);
         for (T val : array) {
             consumer.accept(buffer, this, session, val);
-        }
-    }
-
-    public <T> void readArrayShortLE(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockPacketHelper, T> function) {
-        int length = buffer.readUnsignedShortLE();
-        for (int i = 0; i < length; i++) {
-            array.add(function.apply(buffer, this));
-        }
-    }
-
-    public <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockPacketHelper, T> consumer) {
-        buffer.writeShortLE(array.size());
-        for (T val : array) {
-            consumer.accept(buffer, this, val);
         }
     }
 

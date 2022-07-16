@@ -191,4 +191,5 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
     protected void writeSeed(ByteBuf buffer, long seed) {
         VarInts.writeInt(buffer, (int) seed);
     }
+
 }

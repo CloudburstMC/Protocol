@@ -75,6 +75,14 @@ public class StartGamePacket extends BedrockPacket {
      */
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
     private boolean forceExperimentalGameplay;
+    /**
+     * @since v542
+     */
+    private ChatRestrictionLevel chatRestrictionLevel;
+    /**
+     * @since v542
+     */
+    private boolean disablingPlayerInteractions;
     // Level settings end
     private String levelId;
     private String levelName;
@@ -119,6 +127,12 @@ public class StartGamePacket extends BedrockPacket {
      * @since v534
      */
     private boolean worldEditor;
+    /**
+     * Enables client side chunk generation for chunks outside the ticking radius.
+     *
+     * @since v542
+     */
+    private boolean clientSideGenerationEnabled;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {
