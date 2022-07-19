@@ -17,6 +17,7 @@ public class BedrockPacketHelper_v527 extends BedrockPacketHelper_v503 {
         this.addCommandParam(4, CommandParam.VALUE);
         this.addCommandParam(5, CommandParam.WILDCARD_INT);
         this.addCommandParam(6, CommandParam.OPERATOR);
+        this.addCommandParam(7, CommandParam.COMPARE_OPERATOR);
         this.addCommandParam(8, CommandParam.TARGET);
         this.addCommandParam(10, CommandParam.WILDCARD_TARGET);
 
@@ -28,6 +29,7 @@ public class BedrockPacketHelper_v527 extends BedrockPacketHelper_v503 {
         this.addCommandParam(51, CommandParam.MESSAGE);
         this.addCommandParam(53, CommandParam.TEXT);
         this.addCommandParam(57, CommandParam.JSON);
+        this.addCommandParam(67, CommandParam.BLOCK_STATES);
         this.addCommandParam(70, CommandParam.COMMAND);
     }
 
