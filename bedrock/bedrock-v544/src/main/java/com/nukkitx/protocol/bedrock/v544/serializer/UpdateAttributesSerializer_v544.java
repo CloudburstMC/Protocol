@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v544.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.data.AttributeData;
@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateAttributesSerializerBeta extends UpdateAttributesSerializer_v419 {
+public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_v419 {
 
-    public static final UpdateAttributesSerializerBeta INSTANCE = new UpdateAttributesSerializerBeta();
+    public static final UpdateAttributesSerializer_v544 INSTANCE = new UpdateAttributesSerializer_v544();
 
     @Override
     public void writeAttribute(ByteBuf buffer, BedrockPacketHelper helper, AttributeData attribute) {

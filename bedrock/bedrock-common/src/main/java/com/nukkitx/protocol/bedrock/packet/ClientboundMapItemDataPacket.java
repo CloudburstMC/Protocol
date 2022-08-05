@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.packet;
 
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.MapDecoration;
@@ -22,6 +23,7 @@ public class ClientboundMapItemDataPacket extends BedrockPacket {
     private long uniqueMapId;
     private int dimensionId;
     private boolean locked;
+    private Vector3i origin;
     private int scale;
     private int height;
     private int width;

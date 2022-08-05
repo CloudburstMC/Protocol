@@ -422,9 +422,9 @@ public abstract class BedrockPacketHelper {
         readArray(buffer, array, VarInts::readUnsignedInt, function);
     }
 
-    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToIntFunction<ByteBuf> lengthReader,
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader,
                               BiFunction<ByteBuf, BedrockPacketHelper, T> function) {
-        int length = lengthReader.applyAsInt(buffer);
+        long length = lengthReader.applyAsLong(buffer);
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer, this));
         }

@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v544.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FeatureRegistrySerializerBeta implements BedrockPacketSerializer<FeatureRegistryPacket> {
+public class FeatureRegistrySerializer_v544 implements BedrockPacketSerializer<FeatureRegistryPacket> {
 
-    public static final FeatureRegistrySerializerBeta INSTANCE = new FeatureRegistrySerializerBeta();
+    public static final FeatureRegistrySerializer_v544 INSTANCE = new FeatureRegistrySerializer_v544();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, FeatureRegistryPacket packet) {

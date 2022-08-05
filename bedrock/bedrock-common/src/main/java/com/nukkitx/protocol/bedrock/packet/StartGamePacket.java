@@ -76,13 +76,21 @@ public class StartGamePacket extends BedrockPacket {
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
     private boolean forceExperimentalGameplay;
     /**
-     * @since v542
+     * @since v544
      */
     private ChatRestrictionLevel chatRestrictionLevel;
     /**
-     * @since v542
+     * @since v544
      */
     private boolean disablingPlayerInteractions;
+    /**
+     * @since v544
+     */
+    private boolean disablingPersonas;
+    /**
+     * @since v544
+     */
+    private boolean disablingCustomSkins;
     // Level settings end
     private String levelId;
     private String levelName;

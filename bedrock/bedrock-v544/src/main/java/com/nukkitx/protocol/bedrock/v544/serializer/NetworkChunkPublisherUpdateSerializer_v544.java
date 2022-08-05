@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.beta.serializer;
+package com.nukkitx.protocol.bedrock.v544.serializer;
 
 import com.nukkitx.math.vector.Vector2i;
 import com.nukkitx.network.VarInts;
@@ -10,9 +10,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NetworkChunkPublisherUpdateSerializerBeta extends NetworkChunkPublisherUpdateSerializer_v313 {
+public class NetworkChunkPublisherUpdateSerializer_v544 extends NetworkChunkPublisherUpdateSerializer_v313 {
 
-    public static final NetworkChunkPublisherUpdateSerializerBeta INSTANCE = new NetworkChunkPublisherUpdateSerializerBeta();
+    public static final NetworkChunkPublisherUpdateSerializer_v544 INSTANCE = new NetworkChunkPublisherUpdateSerializer_v544();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, NetworkChunkPublisherUpdatePacket packet) {
