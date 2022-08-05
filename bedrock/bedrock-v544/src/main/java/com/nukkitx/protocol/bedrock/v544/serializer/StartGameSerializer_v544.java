@@ -68,8 +68,8 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         buffer.writeBoolean(packet.isFromWorldTemplate());
         buffer.writeBoolean(packet.isWorldTemplateOptionLocked());
         buffer.writeBoolean(packet.isOnlySpawningV1Villagers());
-        buffer.writeBoolean(packet.isDisablingPersonas());
-        buffer.writeBoolean(packet.isDisablingCustomSkins());
+        buffer.writeBoolean(packet.isDisablingPersonas()); // Added
+        buffer.writeBoolean(packet.isDisablingCustomSkins()); // Added
         helper.writeString(buffer, packet.getVanillaVersion());
         buffer.writeIntLE(packet.getLimitedWorldWidth());
         buffer.writeIntLE(packet.getLimitedWorldHeight());
@@ -80,8 +80,8 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         if (packet.isForceExperimentalGameplay()) {
             buffer.writeBoolean(true); // optional boolean
         }
-        buffer.writeByte(packet.getChatRestrictionLevel().ordinal());
-        buffer.writeBoolean(packet.isDisablingPlayerInteractions());
+        buffer.writeByte(packet.getChatRestrictionLevel().ordinal()); // Added
+        buffer.writeBoolean(packet.isDisablingPlayerInteractions()); // Added
     }
 
     @Override
@@ -123,8 +123,8 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         packet.setFromWorldTemplate(buffer.readBoolean());
         packet.setWorldTemplateOptionLocked(buffer.readBoolean());
         packet.setOnlySpawningV1Villagers(buffer.readBoolean());
-        packet.setDisablingPersonas(buffer.readBoolean());
-        packet.setDisablingCustomSkins(buffer.readBoolean());
+        packet.setDisablingPersonas(buffer.readBoolean()); // Added
+        packet.setDisablingCustomSkins(buffer.readBoolean()); // Added
         packet.setVanillaVersion(helper.readString(buffer));
         packet.setLimitedWorldWidth(buffer.readIntLE());
         packet.setLimitedWorldHeight(buffer.readIntLE());
@@ -133,7 +133,7 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         if (buffer.readBoolean()) { // optional boolean
             packet.setForceExperimentalGameplay(buffer.readBoolean());
         }
-        packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]);
-        packet.setDisablingPlayerInteractions(buffer.readBoolean());
+        packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]); // Added
+        packet.setDisablingPlayerInteractions(buffer.readBoolean()); // Added
     }
 }
