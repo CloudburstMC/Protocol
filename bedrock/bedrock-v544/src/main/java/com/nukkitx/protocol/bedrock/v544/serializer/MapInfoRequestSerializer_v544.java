@@ -1,7 +1,7 @@
 package com.nukkitx.protocol.bedrock.v544.serializer;
 
-import com.nukkitx.math.vector.Vector2i;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
+import com.nukkitx.protocol.bedrock.data.map.MapPixel;
 import com.nukkitx.protocol.bedrock.packet.MapInfoRequestPacket;
 import com.nukkitx.protocol.bedrock.v291.serializer.MapInfoRequestSerializer_v291;
 import io.netty.buffer.ByteBuf;
@@ -12,9 +12,9 @@ public class MapInfoRequestSerializer_v544 extends MapInfoRequestSerializer_v291
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, MapInfoRequestPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        helper.writeArray(buffer, packet.getRequestedPixels(), ByteBuf::writeIntLE, (buf, aHelper, pixel) -> {
-            buf.writeIntLE(pixel.getX());
-            buf.writeShortLE(pixel.getY());
+        helper.writeArray(buffer, packet.getPixels(), ByteBuf::writeIntLE, (buf, aHelper, pixel) -> {
+            buf.writeIntLE(pixel.getPixel());
+            buf.writeShortLE(pixel.getIndex());
         });
     }
 
@@ -22,10 +22,10 @@ public class MapInfoRequestSerializer_v544 extends MapInfoRequestSerializer_v291
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, MapInfoRequestPacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        helper.readArray(buffer, packet.getRequestedPixels(), ByteBuf::readUnsignedIntLE, (buf, aHelper) -> {
-            int x = buf.readIntLE();
-            int y = buf.readUnsignedShortLE();
-            return Vector2i.from(x, y);
+        helper.readArray(buffer, packet.getPixels(), ByteBuf::readUnsignedIntLE, (buf, aHelper) -> {
+            int pixel = buf.readIntLE();
+            int index = buf.readUnsignedShortLE();
+            return new MapPixel(pixel, index);
         });
     }
 }
