@@ -2,21 +2,26 @@ package org.cloudburstmc.protocol.bedrock.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeModifierData;
+
+import java.util.Collections;
+import java.util.List;
 
 @Value
 @AllArgsConstructor
 public class AttributeData {
-    private final String name;
-    private final float minimum;
-    private final float maximum;
-    private final float value;
-    private final float defaultValue;
+    String name;
+    float minimum;
+    float maximum;
+    float value;
+    float defaultValue;
+    List<AttributeModifierData> modifiers;
 
     public AttributeData(String name, float minimum, float maximum, float value) {
-        this.name = name;
-        this.minimum = minimum;
-        this.maximum = maximum;
-        this.value = value;
-        this.defaultValue = maximum;
+        this(name, minimum, maximum, value, maximum, Collections.emptyList());
+    }
+
+    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue) {
+        this(name, minimum, maximum, value, defaultValue, Collections.emptyList());
     }
 }

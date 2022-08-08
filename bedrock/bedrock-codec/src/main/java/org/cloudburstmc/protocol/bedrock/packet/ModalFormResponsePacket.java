@@ -3,7 +3,10 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.ModalFormCancelReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.Optional;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -11,6 +14,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ModalFormResponsePacket implements BedrockPacket {
     private int formId;
     private String formData;
+    /**
+     * The reason for why the form response was cancelled.
+     *
+     * @since 1.19.20
+     */
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private Optional<ModalFormCancelReason> cancelReason;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

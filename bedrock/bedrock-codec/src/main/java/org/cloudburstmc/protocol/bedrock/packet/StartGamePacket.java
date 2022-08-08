@@ -77,6 +77,22 @@ public class StartGamePacket implements BedrockPacket {
      */
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
     private OptionalBoolean forceExperimentalGameplay;
+    /**
+     * @since 1.19.20
+     */
+    private ChatRestrictionLevel chatRestrictionLevel;
+    /**
+     * @since 1.19.20
+     */
+    private boolean disablingPlayerInteractions;
+    /**
+     * @since 1.19.20
+     */
+    private boolean disablingPersonas;
+    /**
+     * @since 1.19.20
+     */
+    private boolean disablingCustomSkins;
     // Level settings end
     private String levelId;
     private String levelName;
@@ -125,6 +141,12 @@ public class StartGamePacket implements BedrockPacket {
      * @since v534
      */
     private boolean worldEditor;
+    /**
+     * Enables client side chunk generation
+     *
+     * @since 1.19.20
+     */
+    private boolean clientSideGenerationEnabled;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -18,7 +18,6 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
-import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
@@ -37,9 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.*;
 
 import static java.util.Objects.requireNonNull;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
@@ -184,16 +181,17 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
      */
 
     @Override
-    public <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
-        int length = VarInts.readUnsignedInt(buffer);
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader,
+                              BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+        long length = lengthReader.applyAsLong(buffer);
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer, this));
         }
     }
 
     @Override
-    public <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
-        VarInts.writeUnsignedInt(buffer, array.size());
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, ObjIntConsumer<ByteBuf> lengthWriter, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
+        lengthWriter.accept(buffer, array.size());
         for (T val : array) {
             consumer.accept(buffer, this, val);
         }

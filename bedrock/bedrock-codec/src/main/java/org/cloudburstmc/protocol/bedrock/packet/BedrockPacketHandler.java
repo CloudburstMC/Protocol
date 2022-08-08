@@ -756,4 +756,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(EditorNetworkPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(FeatureRegistryPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

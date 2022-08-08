@@ -20,7 +20,7 @@ public abstract class BlockDefinition implements Definition {
                 String value = states.get(stateName).toString();
                 properties.put(stateName, value);
             }
-            properties.forEach((name, state) -> builder.append("|" + name + "=" + state));
+            properties.forEach((name, state) -> builder.append("|").append(name).append("=").append(state));
         }
         return builder.toString();
     }
