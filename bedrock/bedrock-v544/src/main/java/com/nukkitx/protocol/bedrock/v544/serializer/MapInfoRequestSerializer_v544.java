@@ -5,8 +5,12 @@ import com.nukkitx.protocol.bedrock.data.map.MapPixel;
 import com.nukkitx.protocol.bedrock.packet.MapInfoRequestPacket;
 import com.nukkitx.protocol.bedrock.v291.serializer.MapInfoRequestSerializer_v291;
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MapInfoRequestSerializer_v544 extends MapInfoRequestSerializer_v291 {
+    public static final MapInfoRequestSerializer_v544 INSTANCE = new MapInfoRequestSerializer_v544();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, MapInfoRequestPacket packet) {
