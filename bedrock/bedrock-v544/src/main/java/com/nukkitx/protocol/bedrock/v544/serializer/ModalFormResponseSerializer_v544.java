@@ -6,11 +6,15 @@ import com.nukkitx.protocol.bedrock.data.ModalFormCancelReason;
 import com.nukkitx.protocol.bedrock.packet.ModalFormResponsePacket;
 import com.nukkitx.protocol.bedrock.v291.serializer.ModalFormResponseSerializer_v291;
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.Optional;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ModalFormResponseSerializer_v544 extends ModalFormResponseSerializer_v291 {
+    public static final ModalFormResponseSerializer_v544 INSTANCE = new ModalFormResponseSerializer_v544();
 
     protected static final ModalFormCancelReason[] VALUES = ModalFormCancelReason.values();
 
