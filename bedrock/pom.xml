@@ -39,5 +39,6 @@
         <module>bedrock-v527</module>
         <module>bedrock-v534</module>
         <module>bedrock-v544</module>
+        <module>bedrock-v545</module>
     </modules>
 </project>
