@@ -13,6 +13,7 @@ public class CommandParam {
     public static final CommandParam VALUE = new CommandParam(CommandParamType.VALUE);
     public static final CommandParam WILDCARD_INT = new CommandParam(CommandParamType.WILDCARD_INT);
     public static final CommandParam OPERATOR = new CommandParam(CommandParamType.OPERATOR);
+    public static final CommandParam COMPARE_OPERATOR = new CommandParam(CommandParamType.COMPARE_OPERATOR);
     public static final CommandParam TARGET = new CommandParam(CommandParamType.TARGET);
     public static final CommandParam WILDCARD_TARGET = new CommandParam(CommandParamType.WILDCARD_TARGET);
     public static final CommandParam FILE_PATH = new CommandParam(CommandParamType.FILE_PATH);
@@ -23,6 +24,7 @@ public class CommandParam {
     public static final CommandParam MESSAGE = new CommandParam(CommandParamType.MESSAGE);
     public static final CommandParam TEXT = new CommandParam(CommandParamType.TEXT);
     public static final CommandParam JSON = new CommandParam(CommandParamType.JSON);
+    public static final CommandParam BLOCK_STATES = new CommandParam(CommandParamType.BLOCK_STATES);
     public static final CommandParam COMMAND = new CommandParam(CommandParamType.COMMAND);
 
     private final CommandParamType paramType;
