@@ -6,8 +6,8 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Bedrock_v545 {
-    public static BedrockPacketCodec V545_CODEC = Bedrock_v544.V544_CODEC.toBuilder()
-        .protocolVersion(545)
-        .minecraftVersion("1.19.21")
-        .build();
+    public static final BedrockPacketCodec V545_CODEC = Bedrock_v544.V544_CODEC.toBuilder()
+            .protocolVersion(545)
+            .minecraftVersion("1.19.21")
+            .build();
 }

@@ -30,7 +30,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Bedrock_v465 {
-    public static BedrockPacketCodec V465_CODEC = BedrockPacketCodec.builder()
+    public static final BedrockPacketCodec V465_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(465)
             .minecraftVersion("1.17.30")
             .helper(BedrockPacketHelper_v465.INSTANCE)
