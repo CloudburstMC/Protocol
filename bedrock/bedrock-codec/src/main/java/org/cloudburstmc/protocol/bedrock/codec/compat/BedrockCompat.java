@@ -4,9 +4,11 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.DisconnectSerializerCompat;
 import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.LoginSerializerCompat;
 import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.PlayStatusSerializerCompat;
+import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.RequestNetworkSettingsSerializerCompat;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket;
+import org.cloudburstmc.protocol.bedrock.packet.RequestNetworkSettingsPacket;
 
 public class BedrockCompat {
     /**
@@ -17,6 +19,7 @@ public class BedrockCompat {
             .registerPacket(LoginPacket.class, LoginSerializerCompat.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializerCompat.INSTANCE, 2)
             .registerPacket(DisconnectPacket.class, DisconnectSerializerCompat.INSTANCE, 5)
+            .registerPacket(RequestNetworkSettingsPacket.class, RequestNetworkSettingsSerializerCompat.INSTANCE, 193)
             .protocolVersion(0)
             .minecraftVersion("0.0.0")
             .build();

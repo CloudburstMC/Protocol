@@ -168,10 +168,6 @@ public interface BedrockCodecHelper {
 
     void writeInventoryActions(ByteBuf buffer, List<InventoryActionData> actions, boolean hasNetworkIds);
 
-    ItemData readRecipeIngredient(ByteBuf buffer);
-
-    void writeRecipeIngredient(ByteBuf buffer, ItemData item);
-
     void readExperiments(ByteBuf buffer, List<ExperimentData> experiments);
 
     void writeExperiments(ByteBuf buffer, List<ExperimentData> experiments);

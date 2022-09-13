@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.CraftingDataSeria
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Collections;
@@ -21,11 +22,11 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
 
     @Override
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
-        List<ItemData> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, buf -> helper.readItem(buf));
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, buf -> ItemDescriptorWithCount.fromItem(helper.readItem(buf)));
 
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItem(buf));
+        helper.readArray(buffer, outputs, helper::readItem);
 
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
@@ -44,12 +45,12 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs.add(helper.readItem(buffer));
+            inputs.add(ItemDescriptorWithCount.fromItem(helper.readItem(buffer)));
         }
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItem(buf));
+        helper.readArray(buffer, outputs, helper::readItem);
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         return new CraftingData(type, width, height, -1, -1, inputs, outputs, uuid, craftingTag);

@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -75,19 +76,19 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
     }
 
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
-        List<ItemData> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, buf -> helper.readItem(buf));
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, buf -> ItemDescriptorWithCount.fromItem(helper.readItem(buf)));
 
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItem(buf));
+        helper.readArray(buffer, outputs, helper::readItem);
 
         UUID uuid = helper.readUuid(buffer);
         return new CraftingData(type, -1, -1, -1, -1, inputs, outputs, uuid, null);
     }
 
     protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingData data) {
-        helper.writeArray(buffer, data.getInputs(), (buf, item) -> helper.writeItem(buf, item));
-        helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item));
+        helper.writeArray(buffer, data.getInputs(), (buf, item) -> helper.writeItem(buf, item.toItem()));
+        helper.writeArray(buffer, data.getOutputs(), helper::writeItem);
         helper.writeUuid(buffer, data.getUuid());
     }
 
@@ -95,12 +96,12 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs.add(helper.readItem(buffer));
+            inputs.add(ItemDescriptorWithCount.fromItem(helper.readItem(buffer)));
         }
         List<ItemData> outputs = new ObjectArrayList<>();
-        helper.readArray(buffer, outputs, buf -> helper.readItem(buf));
+        helper.readArray(buffer, outputs, helper::readItem);
         UUID uuid = helper.readUuid(buffer);
         return new CraftingData(type, width, height, -1, -1, inputs, outputs, uuid, null);
     }
@@ -109,11 +110,11 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
         VarInts.writeInt(buffer, data.getWidth());
         VarInts.writeInt(buffer, data.getHeight());
         int count = data.getWidth() * data.getHeight();
-        List<ItemData> inputs = data.getInputs();
+        List<ItemDescriptorWithCount> inputs = data.getInputs();
         for (int i = 0; i < count; i++) {
-            helper.writeItem(buffer, inputs.get(i));
+            helper.writeItem(buffer, inputs.get(i).toItem());
         }
-        helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item));
+        helper.writeArray(buffer, data.getOutputs(), helper::writeItem);
         helper.writeUuid(buffer, data.getUuid());
     }
 

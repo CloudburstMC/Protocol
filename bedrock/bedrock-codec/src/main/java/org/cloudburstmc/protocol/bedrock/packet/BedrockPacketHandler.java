@@ -760,4 +760,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(FeatureRegistryPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ServerStatsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(RequestNetworkSettingsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(GameTestRequestPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(GameTestResultsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

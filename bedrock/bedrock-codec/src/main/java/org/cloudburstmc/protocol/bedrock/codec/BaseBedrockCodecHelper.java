@@ -20,7 +20,10 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
@@ -371,77 +374,6 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
                 VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
                 break;
         }
-    }
-
-    public ItemData readRecipeIngredient(ByteBuf buffer) {
-        int runtimeId = VarInts.readInt(buffer);
-        if (runtimeId == 0) {
-            // We don't need to read anything extra.
-            return ItemData.AIR;
-        }
-        ItemDefinition definition = this.itemDefinitions.getDefinition(runtimeId);
-
-        int meta = VarInts.readInt(buffer);
-        int count = VarInts.readInt(buffer);
-
-        return ItemData.builder()
-                .definition(definition)
-                .damage(meta)
-                .count(count)
-                .build();
-    }
-
-    public void writeRecipeIngredient(ByteBuf buffer, ItemData item) {
-        requireNonNull(item, "item is null");
-
-        VarInts.writeInt(buffer, item.getDefinition().getRuntimeId());
-
-        if (isAir(item.getDefinition())) {
-            return;
-        }
-
-        VarInts.writeInt(buffer, item.getDamage());
-        VarInts.writeInt(buffer, item.getCount());
-    }
-
-    public PotionMixData readPotionRecipe(ByteBuf buffer) {
-
-        return new PotionMixData(
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer)
-        );
-    }
-
-    public void writePotionRecipe(ByteBuf buffer, PotionMixData data) {
-        requireNonNull(data, "data is null");
-
-        VarInts.writeInt(buffer, data.getInputId());
-        VarInts.writeInt(buffer, data.getInputMeta());
-        VarInts.writeInt(buffer, data.getReagentId());
-        VarInts.writeInt(buffer, data.getReagentMeta());
-        VarInts.writeInt(buffer, data.getOutputId());
-        VarInts.writeInt(buffer, data.getOutputMeta());
-    }
-
-    public ContainerMixData readContainerChangeRecipe(ByteBuf buffer) {
-
-        return new ContainerMixData(
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer)
-        );
-    }
-
-    public void writeContainerChangeRecipe(ByteBuf buffer, ContainerMixData data) {
-        requireNonNull(data, "data is null");
-
-        VarInts.writeInt(buffer, data.getInputId());
-        VarInts.writeInt(buffer, data.getReagentId());
-        VarInts.writeInt(buffer, data.getOutputId());
     }
 
     public void readExperiments(ByteBuf buffer, List<ExperimentData> experiments) {

@@ -14,6 +14,10 @@ public class StructureBlockUpdatePacket implements BedrockPacket {
     private Vector3i blockPosition;
     private StructureEditorData editorData;
     private boolean powered;
+    /**
+     * @since v553
+     */
+    private boolean waterlogged;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

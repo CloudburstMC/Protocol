@@ -3,9 +3,12 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.annotation.Incompressible;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
+@Incompressible
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class NetworkSettingsPacket implements BedrockPacket {
@@ -13,6 +16,12 @@ public class NetworkSettingsPacket implements BedrockPacket {
      * The smallest amount of bytes that should be compressed by the client. 0-65535
      */
     private int compressionThreshold;
+    /**
+     * Set the compression type to be used on the connection.
+     *
+     * @since v551
+     */
+    private PacketCompressionAlgorithm compressionAlgorithm;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
