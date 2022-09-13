@@ -1,5 +1,6 @@
 package com.nukkitx.protocol.bedrock.data.inventory;
 
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -7,6 +8,7 @@ import lombok.Value;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Value
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class CraftingData {
     private final int height;
     private final int inputId;
     private final int inputDamage;
-    private final List<ItemData> inputs;
+    private final List<ItemDescriptorWithCount> inputDescriptors;
     private final List<ItemData> outputs;
     private final UUID uuid;
     private final String craftingTag;
@@ -26,19 +28,21 @@ public class CraftingData {
 
     // @Todo changed networkId to id to match rest of code
 
-    public CraftingData(CraftingDataType type, String recipeId, int width, int height, int inputId, int inputDamage, List<ItemData> inputs,
-                        List<ItemData> outputs, UUID uuid, String craftingTag, int priority) {
-        this(type, recipeId, width, height, inputId, inputDamage, inputs, outputs, uuid, craftingTag, priority, -1);
+    public CraftingData(CraftingDataType type, String recipeId, int width, int height, int inputId, int inputDamage,
+                        List<ItemDescriptorWithCount> inputDescriptors, List<ItemData> outputs, UUID uuid, String craftingTag,
+                        int priority) {
+        this(type, recipeId, width, height, inputId, inputDamage, inputDescriptors, outputs, uuid, craftingTag, priority, -1);
     }
 
-    public CraftingData(CraftingDataType type, int width, int height, int inputId, int inputDamage, List<ItemData> inputs,
-                        List<ItemData> outputs, UUID uuid, String craftingTag, int networkId) {
-        this(type, null, width, height, inputId, inputDamage, inputs, outputs, uuid, craftingTag, 0, networkId);
+    public CraftingData(CraftingDataType type, int width, int height, int inputId, int inputDamage,
+                        List<ItemDescriptorWithCount> inputDescriptors, List<ItemData> outputs, UUID uuid, String craftingTag,
+                        int networkId) {
+        this(type, null, width, height, inputId, inputDamage, inputDescriptors, outputs, uuid, craftingTag, 0, networkId);
     }
 
-    public CraftingData(CraftingDataType type, int width, int height, int inputId, int inputDamage, List<ItemData> inputs,
-                        List<ItemData> outputs, UUID uuid, String craftingTag) {
-        this(type, null, width, height, inputId, inputDamage, inputs, outputs, uuid, craftingTag, 0, -1);
+    public CraftingData(CraftingDataType type, int width, int height, int inputId, int inputDamage,
+                        List<ItemDescriptorWithCount> inputDescriptors, List<ItemData> outputs, UUID uuid, String craftingTag) {
+        this(type, null, width, height, inputId, inputDamage, inputDescriptors, outputs, uuid, craftingTag, 0, -1);
     }
 
     public static CraftingData fromFurnaceData(int inputId, int inputDamage, ItemData output, String craftingTag,
@@ -62,63 +66,63 @@ public class CraftingData {
                 null, new ObjectArrayList<>(Collections.singleton(input)), null, craftingTag, -1, -1);
     }
 
-    public static CraftingData fromShapeless(String recipeId, List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShapeless(String recipeId, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                              String craftingTag, int priority, int networkId) {
         return new CraftingData(CraftingDataType.SHAPELESS, recipeId, -1, -1, -1, -1,
                 inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
-    public static CraftingData fromShapeless(String recipeId, List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShapeless(String recipeId, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                              String craftingTag, int priority) {
         return new CraftingData(CraftingDataType.SHAPELESS, recipeId, -1, -1, -1, -1,
                 inputs, outputs, uuid, craftingTag, priority, -1);
     }
 
-    public static CraftingData fromShaped(String recipeId, int width, int height, List<ItemData> inputs,
+    public static CraftingData fromShaped(String recipeId, int width, int height, List<ItemDescriptorWithCount> inputs,
                                           List<ItemData> outputs, UUID uuid, String craftingTag, int priority,
                                           int networkId) {
         return new CraftingData(CraftingDataType.SHAPED, recipeId, width, height, -1, -1, inputs,
                 outputs, uuid, craftingTag, priority, networkId);
     }
 
-    public static CraftingData fromShaped(String recipeId, int width, int height, List<ItemData> inputs,
+    public static CraftingData fromShaped(String recipeId, int width, int height, List<ItemDescriptorWithCount> inputs,
                                           List<ItemData> outputs, UUID uuid, String craftingTag, int priority) {
         return new CraftingData(CraftingDataType.SHAPED, recipeId, width, height, -1, -1, inputs,
                 outputs, uuid, craftingTag, priority, -1);
     }
 
-    public static CraftingData fromShapelessChemistry(String recipeId, List<ItemData> inputs, List<ItemData> outputs,
+    public static CraftingData fromShapelessChemistry(String recipeId, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs,
                                                       UUID uuid, String craftingTag, int priority, int networkId) {
         return new CraftingData(CraftingDataType.SHAPELESS_CHEMISTRY, recipeId, -1, -1, -1,
                 -1, inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
-    public static CraftingData fromShapelessChemistry(String recipeId, List<ItemData> inputs, List<ItemData> outputs,
+    public static CraftingData fromShapelessChemistry(String recipeId, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs,
                                                       UUID uuid, String craftingTag, int priority) {
         return new CraftingData(CraftingDataType.SHAPELESS_CHEMISTRY, recipeId, -1, -1, -1,
                 -1, inputs, outputs, uuid, craftingTag, priority, -1);
     }
 
-    public static CraftingData fromShapedChemistry(String recipeId, int width, int height, List<ItemData> inputs,
+    public static CraftingData fromShapedChemistry(String recipeId, int width, int height, List<ItemDescriptorWithCount> inputs,
                                                    List<ItemData> outputs, UUID uuid, String craftingTag, int priority,
                                                    int networkId) {
         return new CraftingData(CraftingDataType.SHAPED_CHEMISTRY, recipeId, width, height, -1, -1,
                 inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
-    public static CraftingData fromShapedChemistry(String recipeId, int width, int height, List<ItemData> inputs,
+    public static CraftingData fromShapedChemistry(String recipeId, int width, int height, List<ItemDescriptorWithCount> inputs,
                                                    List<ItemData> outputs, UUID uuid, String craftingTag, int priority) {
         return new CraftingData(CraftingDataType.SHAPED_CHEMISTRY, recipeId, width, height, -1, -1,
                 inputs, outputs, uuid, craftingTag, priority, -1);
     }
 
-    public static CraftingData fromShulkerBox(String recipeId, List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShulkerBox(String recipeId, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                               String craftingTag, int priority, int networkId) {
         return new CraftingData(CraftingDataType.SHULKER_BOX, recipeId, -1, -1, -1, -1,
                 inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
-    public static CraftingData fromShulkerBox(String recipeId, List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShulkerBox(String recipeId, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                               String craftingTag, int priority) {
         return new CraftingData(CraftingDataType.SHULKER_BOX, recipeId, -1, -1, -1, -1,
                 inputs, outputs, uuid, craftingTag, priority, -1);
@@ -134,61 +138,68 @@ public class CraftingData {
                 null, null, uuid, null, -1, -1);
     }
 
-    public static CraftingData fromShapeless(List<ItemData> inputs, List<ItemData> outputs, UUID uuid, String craftingTag,
+    public static CraftingData fromShapeless(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid, String craftingTag,
                                              int networkId) {
         return new CraftingData(CraftingDataType.SHAPELESS, "", -1, -1, -1, -1, inputs, outputs,
                 uuid, craftingTag, 0, networkId);
     }
 
-    public static CraftingData fromShapeless(List<ItemData> inputs, List<ItemData> outputs, UUID uuid, String craftingTag) {
+    public static CraftingData fromShapeless(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid, String craftingTag) {
         return new CraftingData(CraftingDataType.SHAPELESS, "", -1, -1, -1, -1, inputs, outputs,
                 uuid, craftingTag, 0, -1);
     }
 
-    public static CraftingData fromShaped(int width, int height, List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShaped(int width, int height, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                           String craftingTag, int networkId) {
         return new CraftingData(CraftingDataType.SHAPED, "", width, height, -1, -1, inputs, outputs, uuid,
                 craftingTag, 0, networkId);
     }
 
-    public static CraftingData fromShaped(int width, int height, List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShaped(int width, int height, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                           String craftingTag) {
         return new CraftingData(CraftingDataType.SHAPED, "", width, height, -1, -1, inputs, outputs, uuid,
                 craftingTag, 0, -1);
     }
 
-    public static CraftingData fromShapelessChemistry(List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShapelessChemistry(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                                       String craftingTag, int networkId) {
         return new CraftingData(CraftingDataType.SHAPELESS_CHEMISTRY, "", -1, -1, -1, -1,
                 inputs, outputs, uuid, craftingTag, 0, networkId);
     }
 
-    public static CraftingData fromShapelessChemistry(List<ItemData> inputs, List<ItemData> outputs, UUID uuid,
+    public static CraftingData fromShapelessChemistry(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid,
                                                       String craftingTag) {
         return new CraftingData(CraftingDataType.SHAPELESS_CHEMISTRY, "", -1, -1, -1, -1,
                 inputs, outputs, uuid, craftingTag, 0, -1);
     }
 
-    public static CraftingData fromShapedChemistry(int width, int height, List<ItemData> inputs, List<ItemData> outputs,
+    public static CraftingData fromShapedChemistry(int width, int height, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs,
                                                    UUID uuid, String craftingTag, int networkId) {
         return new CraftingData(CraftingDataType.SHAPED_CHEMISTRY, "", width, height, -1, -1, inputs,
                 outputs, uuid, craftingTag, 0, networkId);
     }
 
-    public static CraftingData fromShapedChemistry(int width, int height, List<ItemData> inputs, List<ItemData> outputs,
+    public static CraftingData fromShapedChemistry(int width, int height, List<ItemDescriptorWithCount> inputs, List<ItemData> outputs,
                                                    UUID uuid, String craftingTag) {
         return new CraftingData(CraftingDataType.SHAPED_CHEMISTRY, "", width, height, -1, -1, inputs,
                 outputs, uuid, craftingTag, 0, -1);
     }
 
-    public static CraftingData fromShulkerBox(List<ItemData> inputs, List<ItemData> outputs, UUID uuid, String craftingTag,
+    public static CraftingData fromShulkerBox(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid, String craftingTag,
                                               int networkId) {
         return new CraftingData(CraftingDataType.SHULKER_BOX, "", -1, -1, -1, -1, inputs, outputs,
                 uuid, craftingTag, 0, networkId);
     }
 
-    public static CraftingData fromShulkerBox(List<ItemData> inputs, List<ItemData> outputs, UUID uuid, String craftingTag) {
+    public static CraftingData fromShulkerBox(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid, String craftingTag) {
         return new CraftingData(CraftingDataType.SHULKER_BOX, "", -1, -1, -1, -1, inputs, outputs,
                 uuid, craftingTag, 0, -1);
+    }
+
+    @Deprecated
+    public List<ItemData> getInputs() {
+        return inputDescriptors.stream()
+                .map(ItemDescriptorWithCount::toItem)
+                .collect(Collectors.toList());
     }
 }

@@ -12,6 +12,9 @@ import lombok.EqualsAndHashCode;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ * @deprecated Removed in 1.19.30 (553). Use {@link UpdateAbilitiesPacket} and {@link UpdateAdventureSettingsPacket} instead.
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
 public class AdventureSettingsPacket extends BedrockPacket {

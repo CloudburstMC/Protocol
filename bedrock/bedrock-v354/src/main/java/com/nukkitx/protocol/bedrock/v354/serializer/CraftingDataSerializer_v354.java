@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import com.nukkitx.protocol.bedrock.v291.serializer.CraftingDataSerializer_v291;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -22,8 +23,8 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
 
     @Override
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
-        List<ItemData> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, buf -> helper.readItem(buf, session));
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, buf -> ItemDescriptorWithCount.fromItem(helper.readItem(buf, session)));
 
         List<ItemData> outputs = new ObjectArrayList<>();
         helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));
@@ -45,9 +46,9 @@ public class CraftingDataSerializer_v354 extends CraftingDataSerializer_v291 {
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs.add(helper.readItem(buffer, session));
+            inputs.add(ItemDescriptorWithCount.fromItem(helper.readItem(buffer, session)));
         }
         List<ItemData> outputs = new ObjectArrayList<>();
         helper.readArray(buffer, outputs, buf -> helper.readItem(buf, session));

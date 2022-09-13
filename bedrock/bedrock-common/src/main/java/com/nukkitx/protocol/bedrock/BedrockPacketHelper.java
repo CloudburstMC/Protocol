@@ -12,7 +12,10 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
-import com.nukkitx.protocol.bedrock.data.inventory.*;
+import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequest;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
@@ -644,84 +647,6 @@ public abstract class BedrockPacketHelper {
                 VarInts.writeUnsignedInt(buffer, inventorySource.getFlag().ordinal());
                 break;
         }
-    }
-
-    public ItemData readRecipeIngredient(ByteBuf buffer) {
-        requireNonNull(buffer, "buffer is null");
-
-        int id = VarInts.readInt(buffer);
-
-        if (id == 0) {
-            // We don't need to read anything extra.
-            return ItemData.AIR;
-        }
-
-        int meta = VarInts.readInt(buffer);
-        int count = VarInts.readInt(buffer);
-
-        return ItemData.builder()
-                .id(id)
-                .damage(meta)
-                .count(count)
-                .build();
-    }
-
-    public void writeRecipeIngredient(ByteBuf buffer, ItemData item) {
-        requireNonNull(buffer, "buffer is null");
-        requireNonNull(item, "item is null");
-
-        VarInts.writeInt(buffer, item.getId());
-
-        if (item.getId() == 0) {
-            return;
-        }
-
-        VarInts.writeInt(buffer, item.getDamage());
-        VarInts.writeInt(buffer, item.getCount());
-    }
-
-    public PotionMixData readPotionRecipe(ByteBuf buffer) {
-        requireNonNull(buffer, "buffer is null");
-
-        return new PotionMixData(
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer)
-        );
-    }
-
-    public void writePotionRecipe(ByteBuf buffer, PotionMixData data) {
-        requireNonNull(buffer, "buffer is null");
-        requireNonNull(data, "data is null");
-
-        VarInts.writeInt(buffer, data.getInputId());
-        VarInts.writeInt(buffer, data.getInputMeta());
-        VarInts.writeInt(buffer, data.getReagentId());
-        VarInts.writeInt(buffer, data.getReagentMeta());
-        VarInts.writeInt(buffer, data.getOutputId());
-        VarInts.writeInt(buffer, data.getOutputMeta());
-    }
-
-    public ContainerMixData readContainerChangeRecipe(ByteBuf buffer) {
-        requireNonNull(buffer, "buffer is null");
-
-        return new ContainerMixData(
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer),
-                VarInts.readInt(buffer)
-        );
-    }
-
-    public void writeContainerChangeRecipe(ByteBuf buffer, ContainerMixData data) {
-        requireNonNull(buffer, "buffer is null");
-        requireNonNull(data, "data is null");
-
-        VarInts.writeInt(buffer, data.getInputId());
-        VarInts.writeInt(buffer, data.getReagentId());
-        VarInts.writeInt(buffer, data.getOutputId());
     }
 
     public CommandEnumConstraintData readCommandEnumConstraints(ByteBuf buffer, List<CommandEnumData> enums, List<String> enumValues) {
