@@ -11,7 +11,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class ItemDescriptorWithCount {
-    public static final ItemDescriptorWithCount AIR = new ItemDescriptorWithCount(new DefaultDescriptor(0, 0), 0) {
+    public static final ItemDescriptorWithCount EMPTY = new ItemDescriptorWithCount(InvalidDescriptor.INSTANCE, 0) {
         @Override
         public ItemData toItem() {
             return ItemData.AIR;
@@ -22,6 +22,9 @@ public class ItemDescriptorWithCount {
     private final int count;
 
     public ItemData toItem() {
+        if (descriptor == InvalidDescriptor.INSTANCE) {
+            return ItemData.AIR;
+        }
         return descriptor.toItem()
                 .count(count)
                 .build();
@@ -29,7 +32,7 @@ public class ItemDescriptorWithCount {
 
     public static ItemDescriptorWithCount fromItem(ItemData item) {
         if (item == ItemData.AIR) {
-            return AIR;
+            return EMPTY;
         }
         return new ItemDescriptorWithCount(new DefaultDescriptor(item.getId(), item.getDamage()), item.getCount());
     }

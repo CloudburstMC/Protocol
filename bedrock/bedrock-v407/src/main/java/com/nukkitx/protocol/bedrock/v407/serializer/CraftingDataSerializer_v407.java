@@ -201,7 +201,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
         if (id == 0) {
             // We don't need to read anything extra.
-            return ItemDescriptorWithCount.AIR;
+            return ItemDescriptorWithCount.EMPTY;
         }
 
         int meta = VarInts.readInt(buffer);
