@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v553.serializer;
+package com.nukkitx.protocol.bedrock.v554.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CraftingDataSerializer_v553 extends CraftingDataSerializer_v465 {
+public class CraftingDataSerializer_v554 extends CraftingDataSerializer_v465 {
 
-    public static final CraftingDataSerializer_v553 INSTANCE = new CraftingDataSerializer_v553();
+    public static final CraftingDataSerializer_v554 INSTANCE = new CraftingDataSerializer_v554();
 
     protected static final ItemDescriptorType[] TYPES = ItemDescriptorType.values();
 

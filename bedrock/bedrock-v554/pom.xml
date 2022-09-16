@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bedrock-v553</artifactId>
+    <artifactId>bedrock-v554</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

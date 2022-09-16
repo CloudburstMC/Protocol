@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v553.serializer;
+package com.nukkitx.protocol.bedrock.v554.serializer;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GameTestRequestSerializer_v553 implements BedrockPacketSerializer<GameTestRequestPacket> {
+public class GameTestRequestSerializer_v554 implements BedrockPacketSerializer<GameTestRequestPacket> {
 
-    public static final GameTestRequestSerializer_v553 INSTANCE = new GameTestRequestSerializer_v553();
+    public static final GameTestRequestSerializer_v554 INSTANCE = new GameTestRequestSerializer_v554();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, GameTestRequestPacket packet) {

@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v553;
+package com.nukkitx.protocol.bedrock.v554;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockSession;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BedrockPacketHelper_v553 extends BedrockPacketHelper_v534 {
+public class BedrockPacketHelper_v554 extends BedrockPacketHelper_v534 {
 
-    public static final BedrockPacketHelper_v553 INSTANCE = new BedrockPacketHelper_v553();
+    public static final BedrockPacketHelper_v554 INSTANCE = new BedrockPacketHelper_v554();
 
     private static final TextProcessingEventOrigin[] ORIGINS = TextProcessingEventOrigin.values();
 

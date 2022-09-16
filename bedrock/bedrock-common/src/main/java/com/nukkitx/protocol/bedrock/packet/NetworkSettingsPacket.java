@@ -22,6 +22,21 @@ public class NetworkSettingsPacket extends BedrockPacket {
      * @since v551
      */
     private PacketCompressionAlgorithm compressionAlgorithm;
+    /**
+     * Enable client throttling of players out of the threshold. Players out of the threshold will not be ticked on the
+     * client, reducing the performance hit on lower end devices when in densely populated areas.
+     *
+     * @since v554
+     */
+    private boolean clientThrottleEnabled;
+    /**
+     * @since v554
+     */
+    private int clientThrottleThreshold;
+    /**
+     * @since v554
+     */
+    private float clientThrottleScalar;
 
     @Override
     public boolean handle(BedrockPacketHandler handler) {

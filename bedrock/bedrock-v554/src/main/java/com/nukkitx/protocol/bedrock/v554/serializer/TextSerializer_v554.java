@@ -1,4 +1,4 @@
-package com.nukkitx.protocol.bedrock.v553.serializer;
+package com.nukkitx.protocol.bedrock.v554.serializer;
 
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.packet.TextPacket;
@@ -8,9 +8,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TextSerializer_v553 extends TextSerializer_v332 {
+public class TextSerializer_v554 extends TextSerializer_v332 {
 
-    public static final TextSerializer_v553 INSTANCE = new TextSerializer_v553();
+    public static final TextSerializer_v554 INSTANCE = new TextSerializer_v554();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, TextPacket packet) {
