@@ -1,11 +1,11 @@
-package org.cloudburstmc.protocol.bedrock.codec.v553.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v554.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.TextSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 
-public class TextSerializer_v553 extends TextSerializer_v332 {
+public class TextSerializer_v554 extends TextSerializer_v332 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {

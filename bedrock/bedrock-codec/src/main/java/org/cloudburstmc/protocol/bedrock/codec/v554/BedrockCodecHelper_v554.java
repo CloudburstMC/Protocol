@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v553;
+package org.cloudburstmc.protocol.bedrock.codec.v554;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -13,11 +13,11 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
-public class BedrockCodecHelper_v553 extends BedrockCodecHelper_v503 {
+public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v503 {
 
     private static final TextProcessingEventOrigin[] ORIGINS = TextProcessingEventOrigin.values();
 
-    public BedrockCodecHelper_v553(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
+    public BedrockCodecHelper_v554(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<StackRequestActionType> stackRequestActionTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes);
     }

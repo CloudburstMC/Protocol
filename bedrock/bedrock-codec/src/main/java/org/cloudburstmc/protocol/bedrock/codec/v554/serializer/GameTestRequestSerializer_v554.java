@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v553.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v554.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -6,7 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.GameTestRequestPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class GameTestRequestSerializer_v553 implements BedrockPacketSerializer<GameTestRequestPacket> {
+public class GameTestRequestSerializer_v554 implements BedrockPacketSerializer<GameTestRequestPacket> {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, GameTestRequestPacket packet) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v553.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v554.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -7,7 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class CraftingDataSerializer_v553 extends CraftingDataSerializer_v465 {
+public class CraftingDataSerializer_v554 extends CraftingDataSerializer_v465 {
 
     protected static final ItemDescriptorType[] TYPES = ItemDescriptorType.values();
 
