@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
-            <artifactId>bedrock-v544</artifactId>
+            <artifactId>bedrock-v545</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
