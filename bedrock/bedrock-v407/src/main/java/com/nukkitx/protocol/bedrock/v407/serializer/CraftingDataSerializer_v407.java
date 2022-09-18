@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.inventory.*;
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import com.nukkitx.protocol.bedrock.packet.CraftingDataPacket;
 import io.netty.buffer.ByteBuf;
@@ -213,6 +214,11 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
     protected void writeIngredient(ByteBuf buffer, BedrockPacketHelper helper, ItemDescriptorWithCount ingredient) {
         requireNonNull(buffer, "buffer is null");
         requireNonNull(ingredient, "ingredient is null");
+        if (ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
+            VarInts.writeInt(buffer, 0); // Item ID
+            return;
+        }
+
         checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "ingredient descriptor must be a DefaultDescriptor");
         DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
 
