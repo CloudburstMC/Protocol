@@ -54,7 +54,7 @@ pipeline {
                     steps {
                         rtMavenRun(
                                 pom: 'pom.xml',
-                                goals: 'javadoc:jar source:jar install',
+                                goals: 'clean javadoc:jar source:jar install',
                                 deployerId: "maven-deployer",
                                 resolverId: "maven-resolver"
                         )
@@ -73,7 +73,7 @@ pipeline {
                     steps {
                         rtMavenRun(
                                 pom: 'pom.xml',
-                                goals: 'javadoc:jar source:jar install',
+                                goals: 'clean javadoc:jar source:jar install',
                                 deployerId: "maven-deployer",
                                 resolverId: "maven-resolver"
                         )
