@@ -7,10 +7,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
+import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
+import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Set;
 
@@ -58,16 +60,16 @@ public class UpdateAbilitiesSerializer_v534 implements BedrockPacketSerializer<U
 
     public void writePlayerAbilities(ByteBuf buffer, BedrockCodecHelper helper, PlayerAbilityHolder abilityHolder) {
         buffer.writeLongLE(abilityHolder.getUniqueEntityId());
-        VarInts.writeUnsignedInt(buffer, abilityHolder.getPlayerPermission().ordinal());
-        VarInts.writeUnsignedInt(buffer, abilityHolder.getCommandPermission().ordinal());
+        buffer.writeByte(abilityHolder.getPlayerPermission().ordinal());
+        buffer.writeByte(abilityHolder.getCommandPermission().ordinal());
         helper.writeArray(buffer, abilityHolder.getAbilityLayers(), this::writeAbilityLayer);
     }
 
     public void readPlayerAbilities(ByteBuf buffer, BedrockCodecHelper helper, PlayerAbilityHolder abilityHolder) {
         abilityHolder.setUniqueEntityId(buffer.readLongLE());
-        abilityHolder.setPlayerPermission(PlayerPermission.values()[VarInts.readUnsignedInt(buffer)]);
-        abilityHolder.setCommandPermission(CommandPermission.values()[VarInts.readUnsignedInt(buffer)]);
-        helper.readArray(buffer, abilityHolder.getAbilityLayers(),this::readAbilityLayer);
+        abilityHolder.setPlayerPermission(PlayerPermission.values()[buffer.readUnsignedByte()]);
+        abilityHolder.setCommandPermission(CommandPermission.values()[buffer.readUnsignedByte()]);
+        helper.readArray(buffer, abilityHolder.getAbilityLayers(), this::readAbilityLayer);
     }
 
     private void writeAbilityLayer(ByteBuf buffer, AbilityLayer abilityLayer) {
@@ -80,7 +82,7 @@ public class UpdateAbilitiesSerializer_v534 implements BedrockPacketSerializer<U
 
     private AbilityLayer readAbilityLayer(ByteBuf buffer) {
         AbilityLayer abilityLayer = new AbilityLayer();
-        abilityLayer.setLayerType(AbilityLayer.Type.values()[buffer.readShortLE()]);
+        abilityLayer.setLayerType(AbilityLayer.Type.values()[buffer.readUnsignedShortLE()]);
         readAbilitiesFromNumber(buffer.readIntLE(), abilityLayer.getAbilitiesSet());
         readAbilitiesFromNumber(buffer.readIntLE(), abilityLayer.getAbilityValues());
         abilityLayer.setFlySpeed(buffer.readFloatLE());
