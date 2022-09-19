@@ -19,7 +19,7 @@ public class CraftingDataSerializer_v554 extends CraftingDataSerializer_v465 {
         switch (type) {
             case DEFAULT:
                 int itemId = buffer.readShortLE();
-                ItemDefinition definition = itemId == 0 ? ItemDefinition.EMPTY : helper.getItemDefinitions().getDefinition(itemId);
+                ItemDefinition definition = itemId == 0 ? ItemDefinition.AIR : helper.getItemDefinitions().getDefinition(itemId);
                 int auxValue = itemId != 0 ? buffer.readShortLE() : 0;
                 descriptor = new DefaultDescriptor(definition, auxValue);
                 break;

@@ -39,7 +39,7 @@ final class BaseItemData implements ItemData {
     }
 
     public boolean isValid() {
-        return !isNull() && definition != null && definition != ItemDefinition.EMPTY;
+        return !isNull() && definition != null && definition != ItemDefinition.AIR;
     }
 
     public boolean isNull() {

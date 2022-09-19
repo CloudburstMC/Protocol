@@ -7,7 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
  * Represents item data that is sent over the network.
  */
 public interface ItemData {
-    ItemData EMPTY = new BaseItemData(ItemDefinition.EMPTY, 0, 0, null, BaseItemData.EMPTY_ARRAY, BaseItemData.EMPTY_ARRAY, 0, 0, false, 0);
+    ItemData AIR = new BaseItemData(ItemDefinition.AIR, 0, 0, null, BaseItemData.EMPTY_ARRAY, BaseItemData.EMPTY_ARRAY, 0, 0, false, 0);
 
     /**
      * Gets the {@link ItemDefinition}.

@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -211,16 +212,15 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
     protected void writeIngredient(ByteBuf buffer, BedrockCodecHelper helper, ItemDescriptorWithCount ingredient) {
         requireNonNull(ingredient, "ingredient is null");
-        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Descriptor must be of type DefaultDescriptor");
-        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
-
-        boolean empty = descriptor.getItemId() == null || descriptor.getItemId().getRuntimeId() == 0;
-        VarInts.writeInt(buffer, empty ? 0 : descriptor.getItemId().getRuntimeId());
-
-        if (empty) {
+        if (ingredient == ItemDescriptorWithCount.EMPTY || ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
+            VarInts.writeInt(buffer, 0);
             return;
         }
 
+        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Descriptor must be of type DefaultDescriptor");
+        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
+
+        VarInts.writeInt(buffer, descriptor.getItemId().getRuntimeId());
         VarInts.writeInt(buffer, toAuxValue(descriptor.getAuxValue()));
         VarInts.writeInt(buffer, ingredient.getCount());
     }
@@ -264,10 +264,10 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
     }
 
     protected int fromAuxValue(int value) {
-        return (short) value;
+        return value == 0x7fff ? -1 : value;
     }
 
     protected int toAuxValue(int value) {
-        return ((short) value) & 0xFFFF;
+        return value == -1 ? 0x7fff : value;
     }
 }

@@ -19,7 +19,7 @@ public class ItemDescriptorWithCount {
 
     public ItemData toItem() {
         if (descriptor == InvalidDescriptor.INSTANCE) {
-            return ItemData.EMPTY;
+            return ItemData.AIR;
         }
         return descriptor.toItem()
                 .count(count)
@@ -27,7 +27,7 @@ public class ItemDescriptorWithCount {
     }
 
     public static ItemDescriptorWithCount fromItem(ItemData item) {
-        if (item == ItemData.EMPTY) {
+        if (item == ItemData.AIR) {
             return EMPTY;
         }
         return new ItemDescriptorWithCount(new DefaultDescriptor(item.getDefinition(), item.getDamage()), item.getCount());

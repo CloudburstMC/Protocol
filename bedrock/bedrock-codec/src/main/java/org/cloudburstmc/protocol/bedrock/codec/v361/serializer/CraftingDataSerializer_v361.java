@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -99,7 +100,12 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     }
 
     protected void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
-        requireNonNull(ingredient, "ItemData is null");
+        requireNonNull(ingredient, "ingredient is null");
+        if (ingredient == ItemDescriptorWithCount.EMPTY || ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
+            VarInts.writeInt(buffer, 0);
+            return;
+        }
+
         checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Descriptor must be of type DefaultDescriptor");
         DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
 
@@ -113,10 +119,10 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     }
 
     protected int fromAuxValue(int value) {
-        return (short) value;
+        return value == 0x7fff ? -1 : value;
     }
 
     protected int toAuxValue(int value) {
-        return ((short) value) & 0xFFFF;
+        return value == -1 ? 0x7fff : value;
     }
 }

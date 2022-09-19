@@ -76,7 +76,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         int runtimeId = VarInts.readInt(buffer);
         if (runtimeId == 0) {
             // We don't need to read anything extra.
-            return ItemData.EMPTY;
+            return ItemData.AIR;
         }
         ItemDefinition definition = this.itemDefinitions.getDefinition(runtimeId);
         int aux = VarInts.readInt(buffer);

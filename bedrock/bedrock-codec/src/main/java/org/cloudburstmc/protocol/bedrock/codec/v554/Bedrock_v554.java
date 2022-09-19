@@ -4,7 +4,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v544.Bedrock_v544;
 import org.cloudburstmc.protocol.bedrock.codec.v545.Bedrock_v545;
 import org.cloudburstmc.protocol.bedrock.codec.v554.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
@@ -18,7 +17,7 @@ public class Bedrock_v554 extends Bedrock_v545 {
             .insert(443, SoundEvent.UNDEFINED)
             .build();
 
-    public static final BedrockCodec CODEC = Bedrock_v544.CODEC.toBuilder()
+    public static final BedrockCodec CODEC = Bedrock_v545.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(554)
             .minecraftVersion("1.19.30")
