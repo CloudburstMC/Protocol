@@ -436,5 +436,6 @@ public enum SoundEvent {
     CONVERT_TO_FROG,
     MILK_DRINK,
     RECORD_PLAYING,
+    ENCHANTING_TABLE_USE,
     UNDEFINED
 }

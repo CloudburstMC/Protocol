@@ -4,9 +4,10 @@ import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockPacketSerializer;
 import com.nukkitx.protocol.bedrock.BedrockSession;
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
-import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.*;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import com.nukkitx.protocol.bedrock.packet.CraftingDataPacket;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -16,6 +17,9 @@ import lombok.NoArgsConstructor;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static com.nukkitx.network.util.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<CraftingDataPacket> {
@@ -48,10 +52,10 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         });
 
         // Potions
-        helper.writeArray(buffer, packet.getPotionMixData(), (buf, data) -> helper.writePotionRecipe(buf, data));
+        helper.writeArray(buffer, packet.getPotionMixData(), this::writePotionRecipe);
 
         // Potion Container Change
-        helper.writeArray(buffer, packet.getContainerMixData(), (buf, data) -> helper.writeContainerChangeRecipe(buf, data));
+        helper.writeArray(buffer, packet.getContainerMixData(), this::writeContainerChangeRecipe);
 
         buffer.writeBoolean(packet.isCleanRecipes());
     }
@@ -82,18 +86,18 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         });
 
         // Potions
-        helper.readArray(buffer, packet.getPotionMixData(), helper::readPotionRecipe);
+        helper.readArray(buffer, packet.getPotionMixData(), this::readPotionRecipe);
 
         // Potion Container Change
-        helper.readArray(buffer, packet.getContainerMixData(), helper::readContainerChangeRecipe);
+        helper.readArray(buffer, packet.getContainerMixData(), this::readContainerChangeRecipe);
 
         packet.setCleanRecipes(buffer.readBoolean());
     }
 
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
         String recipeId = helper.readString(buffer);
-        List<ItemData> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, helper::readRecipeIngredient);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
+        helper.readArray(buffer, inputs, this::readIngredient);
 
         List<ItemData> outputs = new ObjectArrayList<>();
         helper.readArray(buffer, outputs, buf -> helper.readItemInstance(buf, session));
@@ -102,12 +106,12 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
         int networkId = VarInts.readUnsignedInt(buffer);
-        return new CraftingData(type, recipeId,-1, -1, -1, -1, inputs, outputs, uuid, craftingTag, priority, networkId);
+        return new CraftingData(type, recipeId, -1, -1, -1, -1, inputs, outputs, uuid, craftingTag, priority, networkId);
     }
 
     protected void writeShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
         helper.writeString(buffer, data.getRecipeId());
-        helper.writeArray(buffer, data.getInputs(), helper::writeRecipeIngredient);
+        helper.writeArray(buffer, data.getInputDescriptors(), this::writeIngredient);
         helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItemInstance(buf, item, session));
 
         helper.writeUuid(buffer, data.getUuid());
@@ -121,9 +125,9 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs.add(helper.readRecipeIngredient(buffer));
+            inputs.add(readIngredient(buffer, helper));
         }
         List<ItemData> outputs = new ObjectArrayList<>();
         helper.readArray(buffer, outputs, buf -> helper.readItemInstance(buf, session));
@@ -139,9 +143,9 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         VarInts.writeInt(buffer, data.getWidth());
         VarInts.writeInt(buffer, data.getHeight());
         int count = data.getWidth() * data.getHeight();
-        List<ItemData> inputs = data.getInputs();
+        List<ItemDescriptorWithCount> inputs = data.getInputDescriptors();
         for (int i = 0; i < count; i++) {
-            helper.writeRecipeIngredient(buffer, inputs.get(i));
+            writeIngredient(buffer, helper, inputs.get(i));
         }
         helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItemInstance(buf, item, session));
         helper.writeUuid(buffer, data.getUuid());
@@ -189,5 +193,86 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
     protected void writeMultiRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data) {
         helper.writeUuid(buffer, data.getUuid());
         VarInts.writeUnsignedInt(buffer, data.getNetworkId());
+    }
+
+    protected ItemDescriptorWithCount readIngredient(ByteBuf buffer, BedrockPacketHelper helper) {
+        requireNonNull(buffer, "buffer is null");
+
+        int id = VarInts.readInt(buffer);
+
+        if (id == 0) {
+            // We don't need to read anything extra.
+            return ItemDescriptorWithCount.EMPTY;
+        }
+
+        int meta = VarInts.readInt(buffer);
+        int count = VarInts.readInt(buffer);
+
+        return new ItemDescriptorWithCount(new DefaultDescriptor(id, meta), count);
+    }
+
+    protected void writeIngredient(ByteBuf buffer, BedrockPacketHelper helper, ItemDescriptorWithCount ingredient) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(ingredient, "ingredient is null");
+        if (ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
+            VarInts.writeInt(buffer, 0); // Item ID
+            return;
+        }
+
+        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "ingredient descriptor must be a DefaultDescriptor");
+        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
+
+        VarInts.writeInt(buffer, descriptor.getItemId());
+
+        if (descriptor.getItemId() == 0) {
+            return;
+        }
+
+        VarInts.writeInt(buffer, descriptor.getAuxValue());
+        VarInts.writeInt(buffer, ingredient.getCount());
+    }
+
+    public PotionMixData readPotionRecipe(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        return new PotionMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writePotionRecipe(ByteBuf buffer, PotionMixData data) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getInputMeta());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getReagentMeta());
+        VarInts.writeInt(buffer, data.getOutputId());
+        VarInts.writeInt(buffer, data.getOutputMeta());
+    }
+
+    public ContainerMixData readContainerChangeRecipe(ByteBuf buffer) {
+        requireNonNull(buffer, "buffer is null");
+
+        return new ContainerMixData(
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer),
+                VarInts.readInt(buffer)
+        );
+    }
+
+    public void writeContainerChangeRecipe(ByteBuf buffer, ContainerMixData data) {
+        requireNonNull(buffer, "buffer is null");
+        requireNonNull(data, "data is null");
+
+        VarInts.writeInt(buffer, data.getInputId());
+        VarInts.writeInt(buffer, data.getReagentId());
+        VarInts.writeInt(buffer, data.getOutputId());
     }
 }

@@ -10,63 +10,13 @@ import com.nukkitx.protocol.bedrock.v313.serializer.NetworkChunkPublisherUpdateS
 import com.nukkitx.protocol.bedrock.v332.serializer.NetworkStackLatencySerializer_v332;
 import com.nukkitx.protocol.bedrock.v332.serializer.SpawnParticleEffectSerializer_v332;
 import com.nukkitx.protocol.bedrock.v332.serializer.TextSerializer_v332;
-import com.nukkitx.protocol.bedrock.v354.serializer.ClientboundMapItemDataSerializer_v354;
-import com.nukkitx.protocol.bedrock.v354.serializer.LecternUpdateSerializer_v354;
-import com.nukkitx.protocol.bedrock.v354.serializer.MapCreateLockedCopySerializer_v354;
-import com.nukkitx.protocol.bedrock.v354.serializer.OnScreenTextureAnimationSerializer_v354;
-import com.nukkitx.protocol.bedrock.v354.serializer.UpdateTradeSerializer_v354;
-import com.nukkitx.protocol.bedrock.v361.serializer.AddPaintingSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.ClientCacheBlobStatusSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.ClientCacheMissResponseSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.ClientCacheStatusSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.CommandBlockUpdateSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.LevelChunkSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.LevelEventGenericSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.ResourcePackDataInfoSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.StructureTemplateDataRequestSerializer_v361;
-import com.nukkitx.protocol.bedrock.v361.serializer.VideoStreamConnectSerializer_v361;
-import com.nukkitx.protocol.bedrock.v388.serializer.AddPlayerSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.AnvilDamageSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.CompletedUsingItemSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.EmoteSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.InteractSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.MultiplayerSettingsSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.NetworkSettingsSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.ResourcePackChunkDataSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.RespawnSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.SettingsCommandSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.StructureBlockUpdateSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.StructureTemplateDataResponseSerializer_v388;
-import com.nukkitx.protocol.bedrock.v388.serializer.TickSyncSerializer_v388;
+import com.nukkitx.protocol.bedrock.v354.serializer.*;
+import com.nukkitx.protocol.bedrock.v361.serializer.*;
+import com.nukkitx.protocol.bedrock.v388.serializer.*;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerListSerializer_v390;
 import com.nukkitx.protocol.bedrock.v390.serializer.PlayerSkinSerializer_v390;
-import com.nukkitx.protocol.bedrock.v407.serializer.CodeBuilderSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.CreativeContentSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.DebugInfoSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.EmoteListSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.InventoryContentSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.InventorySlotSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.InventoryTransactionSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.ItemStackRequestSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.LevelSoundEvent2Serializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.LevelSoundEventSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.PacketViolationWarningSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.PlayerArmorDamageSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.PlayerEnchantOptionsSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.PositionTrackingDBClientRequestSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.PositionTrackingDBServerBroadcastSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.SetSpawnPositionSerializer_v407;
-import com.nukkitx.protocol.bedrock.v407.serializer.UpdatePlayerGameTypeSerializer_v407;
-import com.nukkitx.protocol.bedrock.v419.serializer.ContainerCloseSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.CorrectPlayerMovePredictionSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.ItemComponentSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.MotionPredictionHintsSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.MoveEntityDeltaSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.MovePlayerSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.PlayerFogSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.ResourcePackStackSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.SetEntityDataSerializer_v419;
-import com.nukkitx.protocol.bedrock.v419.serializer.UpdateAttributesSerializer_v419;
+import com.nukkitx.protocol.bedrock.v407.serializer.*;
+import com.nukkitx.protocol.bedrock.v419.serializer.*;
 import com.nukkitx.protocol.bedrock.v422.serializer.FilterTextSerializer_v422;
 import com.nukkitx.protocol.bedrock.v428.serializer.CameraShakeSerializer_v428;
 import com.nukkitx.protocol.bedrock.v428.serializer.ClientboundDebugRendererSerializer_v428;
@@ -74,23 +24,8 @@ import com.nukkitx.protocol.bedrock.v428.serializer.ItemStackResponseSerializer_
 import com.nukkitx.protocol.bedrock.v431.serializer.PlayerAuthInputSerializer_v431;
 import com.nukkitx.protocol.bedrock.v440.serializer.RemoveVolumeEntitySerializer_v440;
 import com.nukkitx.protocol.bedrock.v440.serializer.SyncEntityPropertySerializer_v440;
-import com.nukkitx.protocol.bedrock.v448.serializer.AvailableCommandsSerializer_v448;
-import com.nukkitx.protocol.bedrock.v448.serializer.NpcDialogueSerializer_v448;
-import com.nukkitx.protocol.bedrock.v448.serializer.NpcRequestSerializer_v448;
-import com.nukkitx.protocol.bedrock.v448.serializer.ResourcePacksInfoSerializer_v448;
-import com.nukkitx.protocol.bedrock.v448.serializer.SetTitleSerializer_v448;
-import com.nukkitx.protocol.bedrock.v448.serializer.SimulationTypeSerializer_v448;
-import com.nukkitx.protocol.bedrock.v465.serializer.AddVolumeEntitySerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.AnimateEntitySerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.CraftingDataSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.CreatePhotoSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.EduUriResourceSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.EducationSettingsSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.EntityPickRequestSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.HurtArmorSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.PhotoTransferSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.StartGameSerializer_v465;
-import com.nukkitx.protocol.bedrock.v465.serializer.UpdateSubChunkBlocksSerializer_v465;
+import com.nukkitx.protocol.bedrock.v448.serializer.*;
+import com.nukkitx.protocol.bedrock.v465.serializer.*;
 import com.nukkitx.protocol.bedrock.v471.serializer.EventSerializer_v471;
 import com.nukkitx.protocol.bedrock.v471.serializer.PhotoInfoRequestSerializer_v471;
 import com.nukkitx.protocol.bedrock.v471.serializer.SubChunkRequestSerializer_v471;
@@ -99,7 +34,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Bedrock_v471 {
-    public static BedrockPacketCodec V471_CODEC = BedrockPacketCodec.builder()
+    public static final BedrockPacketCodec V471_CODEC = BedrockPacketCodec.builder()
             .protocolVersion(471)
             .minecraftVersion("1.17.40")
             .helper(BedrockPacketHelper_v471.INSTANCE)

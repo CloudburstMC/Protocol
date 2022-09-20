@@ -5,14 +5,21 @@ import com.nukkitx.natives.util.Natives;
 import com.nukkitx.network.SessionConnection;
 import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.protocol.MinecraftSession;
+import com.nukkitx.protocol.bedrock.annotation.Incompressible;
 import com.nukkitx.protocol.bedrock.annotation.NoEncryption;
 import com.nukkitx.protocol.bedrock.compat.BedrockCompat;
+import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.exception.PacketSerializeException;
 import com.nukkitx.protocol.bedrock.handler.BatchHandler;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.handler.DefaultBatchHandler;
 import com.nukkitx.protocol.bedrock.util.EncryptionUtils;
 import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializer;
+import com.nukkitx.protocol.bedrock.wrapper.BedrockWrapperSerializerV11;
+import com.nukkitx.protocol.bedrock.wrapper.compression.CompressionSerializer;
+import com.nukkitx.protocol.bedrock.wrapper.compression.NoCompression;
+import com.nukkitx.protocol.bedrock.wrapper.compression.SnappyCompression;
+import com.nukkitx.protocol.bedrock.wrapper.compression.ZlibCompression;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.EventLoop;
@@ -34,6 +41,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.zip.Deflater;
+
+import static java.util.Objects.requireNonNull;
 
 public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
@@ -78,7 +87,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void setPacketCodec(BedrockPacketCodec packetCodec) {
-        this.packetCodec = Objects.requireNonNull(packetCodec, "packetCodec");
+        this.packetCodec = requireNonNull(packetCodec, "packetCodec");
     }
 
     void checkForClosed() {
@@ -98,12 +107,13 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public void sendPacketImmediately(@Nonnull BedrockPacket packet) {
         this.checkPacket(packet);
 
-        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class), true);
+        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class),
+                true, packet.getClass().isAnnotationPresent(Incompressible.class));
     }
 
     private void checkPacket(BedrockPacket packet) {
         this.checkForClosed();
-        Objects.requireNonNull(packet, "packet");
+        requireNonNull(packet, "packet");
 
         if (log.isTraceEnabled() && this.logging) {
             String to = this.connection.getAddress().toString();
@@ -115,11 +125,20 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
-        this.sendWrapped(packets, encrypt, false);
+        this.sendWrapped(packets, encrypt, false, false);
     }
 
     public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate) {
+        this.sendWrapped(packets, encrypt, immediate, false);
+    }
+
+    public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt, boolean immediate, boolean incompressible) {
         ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
+        CompressionSerializer compression = null;
+        if (incompressible && this.wrapperSerializer instanceof BedrockWrapperSerializerV11) {
+            compression = ((BedrockWrapperSerializerV11) this.wrapperSerializer).getCompressionSerializer();
+            ((BedrockWrapperSerializerV11) this.wrapperSerializer).setCompressionSerializer(NoCompression.INSTANCE);
+        }
         try {
             this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
             this.sendWrapped(compressed, encrypt, immediate);
@@ -129,6 +148,9 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
             if (compressed != null) {
                 compressed.release();
             }
+            if (compression != null) {
+                ((BedrockWrapperSerializerV11) this.wrapperSerializer).setCompressionSerializer(compression);
+            }
         }
     }
 
@@ -137,7 +159,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt, boolean immediate) {
-        Objects.requireNonNull(compressed, "compressed");
+        requireNonNull(compressed, "compressed");
         try {
             ByteBuf finalPayload = ByteBufAllocator.DEFAULT.ioBuffer(1 + compressed.readableBytes() + 8);
             finalPayload.writeByte(0xfe); // Wrapped packet ID
@@ -201,7 +223,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     public synchronized void enableEncryption(@Nonnull SecretKey secretKey) {
         this.checkForClosed();
         log.debug("Encryption enabled.");
-        Objects.requireNonNull(secretKey, "secretKey");
+        requireNonNull(secretKey, "secretKey");
         if (!secretKey.getAlgorithm().equals("AES")) {
             throw new IllegalArgumentException("Invalid key algorithm");
         }
@@ -314,7 +336,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void setBatchHandler(BatchHandler batchHandler) {
-        this.batchHandler = Objects.requireNonNull(batchHandler, "batchHandler");
+        this.batchHandler = requireNonNull(batchHandler, "batchHandler");
     }
 
     public void setCompressionLevel(int compressionLevel) {
@@ -334,7 +356,7 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
     }
 
     public void addDisconnectHandler(Consumer<DisconnectReason> disconnectHandler) {
-        Objects.requireNonNull(disconnectHandler, "disconnectHandler");
+        requireNonNull(disconnectHandler, "disconnectHandler");
         this.disconnectHandlers.add(disconnectHandler);
     }
 
@@ -353,6 +375,26 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
 
     public SessionConnection<ByteBuf> getConnection() {
         return this.connection;
+    }
+
+    public void setCompression(PacketCompressionAlgorithm algorithm) {
+        requireNonNull(algorithm, "algorithm");
+        if (this.wrapperSerializer instanceof BedrockWrapperSerializerV11) {
+            CompressionSerializer serializer;
+            switch (algorithm) {
+                case ZLIB:
+                    serializer = new ZlibCompression();
+                    break;
+                case SNAPPY:
+                    serializer = new SnappyCompression();
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unsupported compression algorithm");
+            }
+            ((BedrockWrapperSerializerV11) this.wrapperSerializer).setCompressionSerializer(serializer);
+        } else {
+            throw new UnsupportedOperationException("Compression is not supported on this version of the protocol");
+        }
     }
 
 //    @ParametersAreNonnullByDefault

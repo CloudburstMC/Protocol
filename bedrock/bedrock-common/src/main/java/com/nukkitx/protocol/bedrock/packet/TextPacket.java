@@ -40,6 +40,10 @@ public class TextPacket extends BedrockPacket {
         WHISPER,
         ANNOUNCEMENT,
         OBJECT,
-        OBJECT_WHISPER
+        OBJECT_WHISPER,
+        /**
+         * @since v553
+         */
+        OBJECT_ANNOUNCEMENT
     }
 }

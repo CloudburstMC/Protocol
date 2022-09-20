@@ -45,10 +45,10 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
         });
 
         // Potions
-        helper.writeArray(buffer, packet.getPotionMixData(), helper::writePotionRecipe);
+        helper.writeArray(buffer, packet.getPotionMixData(), this::writePotionRecipe);
 
         // Potion Container Change
-        helper.writeArray(buffer, packet.getContainerMixData(), helper::writeContainerChangeRecipe);
+        helper.writeArray(buffer, packet.getContainerMixData(), this::writeContainerChangeRecipe);
 
         // Material Reducers
         helper.writeArray(buffer, packet.getMaterialReducers(), this::writeMaterialReducer);
@@ -82,10 +82,10 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
         });
 
         // Potions
-        helper.readArray(buffer, packet.getPotionMixData(), helper::readPotionRecipe);
+        helper.readArray(buffer, packet.getPotionMixData(), this::readPotionRecipe);
 
         // Potion Container Change
-        helper.readArray(buffer, packet.getContainerMixData(), helper::readContainerChangeRecipe);
+        helper.readArray(buffer, packet.getContainerMixData(), this::readContainerChangeRecipe);
 
         // Material Reducers
         helper.readArray(buffer, packet.getMaterialReducers(), this::readMaterialReducer);

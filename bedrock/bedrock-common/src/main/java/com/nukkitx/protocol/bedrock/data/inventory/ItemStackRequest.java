@@ -1,6 +1,7 @@
 package com.nukkitx.protocol.bedrock.data.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Value;
  * Item stack requests are either approved or rejected by the server using the ItemStackResponse packet.
  */
 @Value
+@RequiredArgsConstructor
 public class ItemStackRequest {
     /**
      * requestId is a unique ID for the request. This ID is used by the server to send a response for this
@@ -25,7 +27,17 @@ public class ItemStackRequest {
 
     /**
      * Used for the server to determine which strings should be filtered. Used in anvils to verify a renamed item.
+     *
      * @since v422
      */
     String[] filterStrings;
+
+    /**
+     * @since v552
+     */
+    TextProcessingEventOrigin textProcessingEventOrigin;
+
+    public ItemStackRequest(int requestId, StackRequestActionData[] actions, String[] filterStrings) {
+        this(requestId, actions, filterStrings, TextProcessingEventOrigin.BLOCK_ENTITY_DATA_TEXT);
+    }
 }

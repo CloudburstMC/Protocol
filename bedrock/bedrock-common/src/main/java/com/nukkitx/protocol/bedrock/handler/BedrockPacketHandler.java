@@ -760,4 +760,20 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(FeatureRegistryPacket packet) {
         return false;
     }
+
+    default boolean handle(ServerStatsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(RequestNetworkSettingsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(GameTestRequestPacket packet) {
+        return false;
+    }
+
+    default boolean handle(GameTestResultsPacket packet) {
+        return false;
+    }
 }

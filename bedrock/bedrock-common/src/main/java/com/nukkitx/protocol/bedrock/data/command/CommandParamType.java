@@ -6,6 +6,7 @@ public enum CommandParamType {
     VALUE,
     WILDCARD_INT,
     OPERATOR,
+    COMPARE_OPERATOR,
     TARGET,
     WILDCARD_TARGET,
     FILE_PATH,
@@ -16,5 +17,6 @@ public enum CommandParamType {
     MESSAGE,
     TEXT,
     JSON,
+    BLOCK_STATES,
     COMMAND
 }

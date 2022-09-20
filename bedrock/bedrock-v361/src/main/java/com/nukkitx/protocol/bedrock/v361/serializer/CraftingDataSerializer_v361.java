@@ -6,6 +6,8 @@ import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import com.nukkitx.protocol.bedrock.v354.serializer.CraftingDataSerializer_v354;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
+import static com.nukkitx.network.util.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +27,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     @Override
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataType type, BedrockSession session) {
         String recipeId = helper.readString(buffer);
-        List<ItemData> inputs = new ObjectArrayList<>();
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
         helper.readArray(buffer, inputs, this::readIngredient);
 
         List<ItemData> outputs = new ObjectArrayList<>();
@@ -40,7 +43,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
     @Override
     protected void writeShapelessRecipe(ByteBuf buffer, BedrockPacketHelper helper, CraftingData data, BedrockSession session) {
         helper.writeString(buffer, data.getRecipeId());
-        helper.writeArray(buffer, data.getInputs(), this::writeIngredient);
+        helper.writeArray(buffer, data.getInputDescriptors(), this::writeIngredient);
         helper.writeArray(buffer, data.getOutputs(), (buf, item) -> helper.writeItem(buf, item, session));
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getCraftingTag());
@@ -53,7 +56,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        List<ItemData> inputs = new ObjectArrayList<>(inputCount);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
             inputs.add(this.readIngredient(buffer));
         }
@@ -72,7 +75,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         VarInts.writeInt(buffer, data.getWidth());
         VarInts.writeInt(buffer, data.getHeight());
         int count = data.getWidth() * data.getHeight();
-        List<ItemData> inputs = data.getInputs();
+        List<ItemDescriptorWithCount> inputs = data.getInputDescriptors();
         for (int i = 0; i < count; i++) {
             this.writeIngredient(buffer, inputs.get(i));
         }
@@ -82,7 +85,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         VarInts.writeInt(buffer, data.getPriority());
     }
 
-    protected ItemData readIngredient(ByteBuf buffer) {
+    protected ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
         int id = VarInts.readInt(buffer);
         int auxValue = 0;
         int stackSize = 0;
@@ -93,24 +96,22 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
             stackSize = VarInts.readInt(buffer);
         }
 
-        return ItemData.builder()
-                .id(id)
-                .damage(auxValue)
-                .count(stackSize)
-                .build();
+        return new ItemDescriptorWithCount(new DefaultDescriptor(id, auxValue), stackSize);
     }
 
-    protected void writeIngredient(ByteBuf buffer, ItemData itemData) {
-        requireNonNull(itemData, "ItemData is null");
+    protected void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+        requireNonNull(ingredient, "ItemData is null");
+        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Ingredient must be a DefaultDescriptor");
+        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
 
-        int id = itemData.getId();
+        int id = descriptor.getItemId();
         VarInts.writeInt(buffer, id);
 
         if (id != 0) {
-            int damage = itemData.getDamage();
+            int damage = descriptor.getAuxValue();
             if (damage == -1) damage = 0x7fff;
             VarInts.writeInt(buffer, damage);
-            VarInts.writeInt(buffer, itemData.getCount());
+            VarInts.writeInt(buffer, ingredient.getCount());
         }
     }
 }
