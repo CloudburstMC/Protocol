@@ -25,7 +25,7 @@ public class SnappyCompression implements CompressionSerializer {
 
         try {
             long inputAddress = direct.memoryAddress() + direct.readerIndex();
-            long inputEndAddress = direct.memoryAddress() + direct.readableBytes();
+            long inputEndAddress = inputAddress + direct.readableBytes();
 
             output.ensureWritable(SnappyRawCompressor.maxCompressedLength(direct.readableBytes()));
 
@@ -34,7 +34,7 @@ public class SnappyCompression implements CompressionSerializer {
             byte[] outputArray = null;
             if (output.isDirect() && output.hasMemoryAddress()) {
                 outputAddress = output.memoryAddress() + output.writerIndex();
-                outputEndAddress = output.memoryAddress() + output.writableBytes();
+                outputEndAddress = outputAddress + output.writableBytes();
             } else if (output.hasArray()) {
                 outputArray = output.array();
                 outputAddress = ARRAY_BYTE_BASE_OFFSET + output.arrayOffset() + output.writerIndex();
@@ -64,7 +64,7 @@ public class SnappyCompression implements CompressionSerializer {
 
         try {
             long inputAddress = direct.memoryAddress() + direct.readerIndex();
-            long inputEndAddress = direct.memoryAddress() + direct.capacity(); // yes, use capacity only here
+            long inputEndAddress = inputAddress + direct.readableBytes();
             output.ensureWritable(SnappyRawDecompressor.getUncompressedLength(null, inputAddress, inputEndAddress));
 
             long outputAddress;
@@ -72,7 +72,7 @@ public class SnappyCompression implements CompressionSerializer {
             byte[] outputArray = null;
             if (output.isDirect() && output.hasMemoryAddress()) {
                 outputAddress = output.memoryAddress() + output.writerIndex();
-                outputEndAddress = output.memoryAddress() + output.writableBytes();
+                outputEndAddress = outputAddress + output.writableBytes();
             } else if (output.hasArray()) {
                 outputArray = output.array();
                 outputAddress = ARRAY_BYTE_BASE_OFFSET + output.arrayOffset() + output.writerIndex();
