@@ -10,5 +10,6 @@ public enum TextProcessingEventOrigin {
     BLOCK_ENTITY_DATA_TEXT,
     JOIN_EVENT_TEXT,
     LEAVE_EVENT_TEXT,
-    SLASH_COMMAND_TEXT
+    SLASH_COMMAND_TEXT,
+    CARTOGRAPHY_TEXT
 }
