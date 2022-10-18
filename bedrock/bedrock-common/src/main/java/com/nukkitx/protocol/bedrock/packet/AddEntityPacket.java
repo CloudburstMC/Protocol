@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.BedrockPacketType;
 import com.nukkitx.protocol.bedrock.data.AttributeData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
+import com.nukkitx.protocol.bedrock.data.entity.EntityProperties;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
@@ -30,6 +31,10 @@ public class AddEntityPacket extends BedrockPacket {
      * @since v534
      */
     private float bodyRotation;
+    /**
+     * @since v557
+     */
+    private final EntityProperties properties = new EntityProperties();
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

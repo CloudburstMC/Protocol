@@ -10,6 +10,7 @@ import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.data.command.CommandPermission;
 import com.nukkitx.protocol.bedrock.data.entity.EntityDataMap;
 import com.nukkitx.protocol.bedrock.data.entity.EntityLinkData;
+import com.nukkitx.protocol.bedrock.data.entity.EntityProperties;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -44,6 +45,10 @@ public class AddPlayerPacket extends BedrockPacket implements PlayerAbilityHolde
      * @since v534
      */
     private List<AbilityLayer> abilityLayers = new ObjectArrayList<>();
+    /**
+     * @since v557
+     */
+    private final EntityProperties properties = new EntityProperties();
 
     public void setUniqueEntityId(long uniqueEntityId) {
         this.uniqueEntityId = uniqueEntityId;

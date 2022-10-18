@@ -17,6 +17,10 @@ public class AbilityLayer {
         CACHE,
         BASE,
         SPECTATOR,
-        COMMANDS
+        COMMANDS,
+        /**
+         * @since v557
+         */
+        EDITOR
     }
 }

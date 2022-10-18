@@ -11,5 +11,6 @@ public enum TextProcessingEventOrigin {
     JOIN_EVENT_TEXT,
     LEAVE_EVENT_TEXT,
     SLASH_COMMAND_TEXT,
-    CARTOGRAPHY_TEXT
+    CARTOGRAPHY_TEXT,
+    SLASH_COMMAND_NON_CHAT
 }

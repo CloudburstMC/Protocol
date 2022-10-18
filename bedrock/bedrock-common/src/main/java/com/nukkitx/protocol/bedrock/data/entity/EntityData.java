@@ -155,6 +155,7 @@ public enum EntityData {
     DEFINE_PROPERTIES(null),
     /**
      * @since v428
+     * @deprecated v557
      */
     UPDATE_PROPERTIES(null),
     /**

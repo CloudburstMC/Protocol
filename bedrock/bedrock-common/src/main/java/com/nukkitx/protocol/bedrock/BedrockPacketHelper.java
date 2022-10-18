@@ -737,4 +737,12 @@ public abstract class BedrockPacketHelper {
             consumer.accept(buffer, object);
         }
     }
+
+    public void writeEntityProperties(ByteBuf buffer, EntityProperties properties) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void readEntityProperties(ByteBuf buffer, EntityProperties properties) {
+        throw new UnsupportedOperationException();
+    }
 }
