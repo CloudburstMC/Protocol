@@ -6,10 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
-import org.cloudburstmc.math.vector.Vector4f;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -36,6 +36,10 @@ public class AddEntityPacket implements BedrockPacket {
      * @since v534
      */
     private float bodyRotation;
+    /**
+     * @since v557
+     */
+    private final EntityProperties properties = new EntityProperties();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

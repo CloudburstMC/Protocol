@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -13,6 +14,10 @@ public class SetEntityDataPacket implements BedrockPacket {
     private final EntityDataMap metadata = new EntityDataMap();
     private long runtimeEntityId;
     private long tick;
+    /**
+     * @since v557
+     */
+    private final EntityProperties properties = new EntityProperties();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

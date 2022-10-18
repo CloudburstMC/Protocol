@@ -351,6 +351,8 @@ public class EntityDataTypes {
     };
     /**
      * Custom properties from the <pre>PropertyComponent</pre>.
+     *
+     * @deprecated v557
      */
     public static final EntityDataType<NbtMap> UPDATE_PROPERTIES = new EntityDataType<NbtMap>() {
     };

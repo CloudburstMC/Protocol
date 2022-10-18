@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -42,6 +43,10 @@ public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
      * @since v534
      */
     private List<AbilityLayer> abilityLayers = new ObjectArrayList<>();
+    /**
+     * @since v557
+     */
+    private final EntityProperties properties = new EntityProperties();
 
     public void setUniqueEntityId(long uniqueEntityId) {
         this.uniqueEntityId = uniqueEntityId;
