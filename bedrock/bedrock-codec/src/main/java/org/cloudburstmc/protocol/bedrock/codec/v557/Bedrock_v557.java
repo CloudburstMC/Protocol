@@ -5,7 +5,6 @@ import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
-import org.cloudburstmc.protocol.bedrock.codec.v554.BedrockCodecHelper_v554;
 import org.cloudburstmc.protocol.bedrock.codec.v554.Bedrock_v554;
 import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddEntitySerializer_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializer_v557;
@@ -33,7 +32,7 @@ public class Bedrock_v557 extends Bedrock_v554 {
             .raknetProtocolVersion(11)
             .protocolVersion(557)
             .minecraftVersion("1.19.40")
-            .helper(() -> new BedrockCodecHelper_v554(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v557(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(AddPlayerPacket.class, new AddPlayerSerializer_v557())
             .updateSerializer(AddEntityPacket.class, new AddEntitySerializer_v557())
             .updateSerializer(SetEntityDataPacket.class, new SetEntityDataSerializer_v557())
