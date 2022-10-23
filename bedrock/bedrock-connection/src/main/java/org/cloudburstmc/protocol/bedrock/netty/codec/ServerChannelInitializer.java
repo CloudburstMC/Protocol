@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.raknet.pipeline;
+package org.cloudburstmc.protocol.bedrock.netty.codec;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

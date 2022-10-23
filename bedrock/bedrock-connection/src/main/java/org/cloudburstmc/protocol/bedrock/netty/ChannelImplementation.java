@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.raknet;
+package org.cloudburstmc.protocol.bedrock.netty;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollDatagramChannel;

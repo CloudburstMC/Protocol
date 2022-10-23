@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock;
 
+import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
-import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import org.cloudburstmc.protocol.common.MinecraftServerSession;
 

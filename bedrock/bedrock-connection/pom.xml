@@ -23,9 +23,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.nukkitx.network</groupId>
-            <artifactId>raknet</artifactId>
-            <version>${network.version}</version>
+            <groupId>org.cloudburstmc.netty</groupId>
+            <artifactId>netty-transport-raknet</artifactId>
+            <version>0.0.1.Final-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

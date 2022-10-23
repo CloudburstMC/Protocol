@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.raknet;
+package org.cloudburstmc.protocol.bedrock.netty;
 
 import io.netty.channel.*;
 import io.netty.util.concurrent.ScheduledFuture;
@@ -7,7 +7,7 @@ import org.cloudburstmc.netty.channel.raknet.packet.EncapsulatedPacket;
 import org.cloudburstmc.netty.channel.raknet.packet.RakMessage;
 import org.cloudburstmc.netty.handler.codec.common.RakSessionCodec;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
-import org.cloudburstmc.protocol.bedrock.raknet.pipeline.SimpleEventHandler;
+import org.cloudburstmc.protocol.bedrock.netty.codec.SimpleEventHandler;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;

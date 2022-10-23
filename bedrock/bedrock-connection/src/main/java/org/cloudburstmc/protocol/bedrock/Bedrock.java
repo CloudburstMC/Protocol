@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
-import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
+import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
 import org.cloudburstmc.protocol.common.MinecraftInterface;
 
 import java.net.InetSocketAddress;

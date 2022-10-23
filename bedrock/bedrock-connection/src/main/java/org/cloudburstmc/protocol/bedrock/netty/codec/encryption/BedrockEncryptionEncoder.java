@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.raknet.pipeline.encryption;
+package org.cloudburstmc.protocol.bedrock.netty.codec.encryption;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;

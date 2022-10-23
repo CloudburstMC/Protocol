@@ -1,9 +1,9 @@
-package org.cloudburstmc.protocol.bedrock.raknet.pipeline;
+package org.cloudburstmc.protocol.bedrock.netty.codec;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import org.cloudburstmc.protocol.bedrock.BedrockServer;
-import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
+import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
 
 public class ServerChildChannelInitializer extends ChannelInitializer<Channel> {
     private final BedrockServer server;
