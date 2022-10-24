@@ -140,6 +140,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.FLAGS, 0, EntityDataFormat.LONG, new FlagTransformer(ENTITY_FLAGS, 0))
             .insert(EntityDataTypes.STRUCTURAL_INTEGRITY, 1, EntityDataFormat.INT)
             .insert(EntityDataTypes.VARIANT, 2, EntityDataFormat.INT)
+            .insert(EntityDataTypes.BLOCK, 2, EntityDataFormat.INT, new BlockDefinitionTransformer())
             .insert(EntityDataTypes.COLOR, 3, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.NAME, 4, EntityDataFormat.STRING)
             .insert(EntityDataTypes.OWNER_EID, 5, EntityDataFormat.LONG)
