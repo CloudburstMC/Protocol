@@ -13,7 +13,7 @@ import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.netty.ChannelImplementation;
 import org.cloudburstmc.protocol.bedrock.netty.Channels;
-import org.cloudburstmc.protocol.bedrock.netty.codec.ClientChannelInitializer;
+import org.cloudburstmc.protocol.bedrock.netty.ClientChannelInitializer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializers;
 

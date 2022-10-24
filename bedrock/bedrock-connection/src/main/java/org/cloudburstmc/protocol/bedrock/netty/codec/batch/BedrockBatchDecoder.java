@@ -9,6 +9,8 @@ import java.util.List;
 
 public class BedrockBatchDecoder extends MessageToMessageDecoder<ByteBuf> {
 
+    public static final String NAME = "bedrock-batch-decoder";
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
         while (in.isReadable()) {

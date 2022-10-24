@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.netty.codec;
+package org.cloudburstmc.protocol.bedrock.netty;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
