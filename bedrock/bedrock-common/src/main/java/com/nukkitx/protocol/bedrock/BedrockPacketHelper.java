@@ -16,6 +16,7 @@ import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
 import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
 import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequest;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
 import com.nukkitx.protocol.bedrock.data.skin.ImageData;
@@ -743,6 +744,14 @@ public abstract class BedrockPacketHelper {
     }
 
     public void readEntityProperties(ByteBuf buffer, EntityProperties properties) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected ItemDescriptorWithCount readIngredient(ByteBuf buffer, BedrockPacketHelper helper) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
         throw new UnsupportedOperationException();
     }
 }

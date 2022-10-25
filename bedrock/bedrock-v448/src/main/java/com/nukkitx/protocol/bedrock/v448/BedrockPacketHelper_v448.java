@@ -11,6 +11,8 @@ import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequ
 import com.nukkitx.protocol.bedrock.v440.BedrockPacketHelper_v440;
 import io.netty.buffer.ByteBuf;
 
+import java.util.Collections;
+
 public class BedrockPacketHelper_v448 extends BedrockPacketHelper_v440 {
     public static final BedrockPacketHelper_v448 INSTANCE = new BedrockPacketHelper_v448();
 
@@ -116,7 +118,7 @@ public class BedrockPacketHelper_v448 extends BedrockPacketHelper_v440 {
     protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockSession session) {
         if (type == StackRequestActionType.CRAFT_RECIPE_AUTO) {
            return new AutoCraftRecipeStackRequestActionData(
-                   VarInts.readUnsignedInt(byteBuf), byteBuf.readByte()
+                   VarInts.readUnsignedInt(byteBuf), byteBuf.readByte(), Collections.emptyList()
            );
         } else {
             return super.readRequestActionData(byteBuf, type, session);

@@ -1,6 +1,9 @@
 package com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions;
 
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import lombok.Value;
+
+import java.util.List;
 
 /**
  * AutoCraftRecipeStackRequestActionData is sent by the client similarly to the CraftRecipeStackRequestActionData. The
@@ -12,7 +15,8 @@ public class AutoCraftRecipeStackRequestActionData implements RecipeStackRequest
     /**
      * @since v448
      */
-    byte timesCrafted;
+    int timesCrafted;
+    List<ItemDescriptorWithCount> ingredients;
 
     @Override
     public StackRequestActionType getType() {

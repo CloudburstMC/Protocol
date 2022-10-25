@@ -16,6 +16,7 @@ import com.nukkitx.protocol.util.Int2ObjectBiMap;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType.*;
@@ -348,7 +349,7 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
                 );
             case CRAFT_RECIPE_AUTO:
                 return new AutoCraftRecipeStackRequestActionData(
-                        VarInts.readUnsignedInt(byteBuf), (byte) 0
+                        VarInts.readUnsignedInt(byteBuf), (byte) 0, Collections.emptyList()
                 );
             case CRAFT_CREATIVE:
                 return new CraftCreativeStackRequestActionData(

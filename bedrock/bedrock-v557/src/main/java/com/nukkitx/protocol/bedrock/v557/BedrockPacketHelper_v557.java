@@ -1,15 +1,23 @@
 package com.nukkitx.protocol.bedrock.v557;
 
 import com.nukkitx.network.VarInts;
+import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
 import com.nukkitx.protocol.bedrock.data.entity.EntityData;
 import com.nukkitx.protocol.bedrock.data.entity.EntityProperties;
 import com.nukkitx.protocol.bedrock.data.entity.FloatEntityProperty;
 import com.nukkitx.protocol.bedrock.data.entity.IntEntityProperty;
+import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.AutoCraftRecipeStackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
+import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.v554.BedrockPacketHelper_v554;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BedrockPacketHelper_v557 extends BedrockPacketHelper_v554 {
@@ -68,5 +76,32 @@ public class BedrockPacketHelper_v557 extends BedrockPacketHelper_v554 {
             VarInts.writeUnsignedInt(byteBuf, property.getIndex());
             byteBuf.writeFloatLE(property.getValue());
         });
+    }
+
+    @Override
+    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type, BedrockSession session) {
+        if (type == StackRequestActionType.CRAFT_RECIPE_AUTO) {
+            int recipeId = VarInts.readUnsignedInt(byteBuf);
+            int timesCrafted = byteBuf.readByte();
+            List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
+            readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, this::readIngredient);
+            return new AutoCraftRecipeStackRequestActionData(
+                    recipeId,
+                    timesCrafted,
+                    ingredients
+            );
+        } else {
+            return super.readRequestActionData(byteBuf, type, session);
+        }
+    }
+
+    @Override
+    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action, BedrockSession session) {
+        super.writeRequestActionData(byteBuf, action, session);
+        if (action.getType() == StackRequestActionType.CRAFT_RECIPE_AUTO) {
+            List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeStackRequestActionData) action).getIngredients();
+            byteBuf.writeByte(ingredients.size());
+            writeArray(byteBuf, ingredients, this::writeIngredient);
+        }
     }
 }
