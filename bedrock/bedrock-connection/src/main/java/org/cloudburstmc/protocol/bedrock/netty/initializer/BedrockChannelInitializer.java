@@ -37,7 +37,7 @@ public abstract class BedrockChannelInitializer extends ChannelInitializer<Chann
         this.postInitChannel(channel);
     }
 
-    public void preInitChannel(Channel channel) throws Exception {
+    protected void preInitChannel(Channel channel) throws Exception {
         channel.pipeline().addLast(FrameIdCodec.NAME, RAKNET_FRAME_CODEC);
 
         int rakVersion = channel.config().getOption(RakChannelOption.RAK_PROTOCOL_VERSION);
@@ -58,10 +58,10 @@ public abstract class BedrockChannelInitializer extends ChannelInitializer<Chann
         }
     }
 
-    public void postInitChannel(Channel channel) throws Exception {
+    protected void postInitChannel(Channel channel) throws Exception {
     }
 
-    public void initPacketCodec(Channel channel) throws Exception {
+    protected void initPacketCodec(Channel channel) throws Exception {
         int rakVersion = channel.config().getOption(RakChannelOption.RAK_PROTOCOL_VERSION);
 
         switch (rakVersion) {
@@ -81,9 +81,17 @@ public abstract class BedrockChannelInitializer extends ChannelInitializer<Chann
         }
     }
 
-    public BedrockPeer createPeer(Channel channel) {
+    protected BedrockPeer createPeer(Channel channel) {
         return new BedrockPeer(channel, this::createSession);
     }
 
-    public abstract BedrockSession createSession(BedrockPeer peer, int subClientId);
+    protected final BedrockSession createSession(BedrockPeer peer, int subClientId) {
+        BedrockSession session = this.createSession0(peer, subClientId);
+        this.initSession(session);
+        return session;
+    }
+
+    protected abstract BedrockSession createSession0(BedrockPeer peer, int subClientId);
+
+    protected abstract void initSession(BedrockSession session);
 }
