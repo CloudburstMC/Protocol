@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 
@@ -58,11 +59,18 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     }
 
     public final void setCodec(BedrockCodec codec) {
+        if (this.codec != BedrockCompat.COMPAT_CODEC) {
+            throw new IllegalStateException("Codec is already set");
+        }
         this.codec = codec;
         this.helper = codec.createHelper();
     }
 
     public final BedrockCodec getCodec() {
         return codec;
+    }
+
+    public BedrockCodecHelper getHelper() {
+        return helper;
     }
 }

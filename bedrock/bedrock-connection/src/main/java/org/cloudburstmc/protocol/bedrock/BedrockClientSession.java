@@ -1,13 +1,11 @@
 package org.cloudburstmc.protocol.bedrock;
 
 import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
-import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
-import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
 
 public class BedrockClientSession extends BedrockSession {
 
-    BedrockClientSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
-        super(peer, serializer);
+    BedrockClientSession(BedrockPeer peer) {
+        super(peer, 0);
     }
 
     @Override

@@ -1,87 +1,31 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import com.nukkitx.natives.sha256.Sha256;
-import com.nukkitx.natives.util.Natives;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.channel.EventLoop;
-import io.netty.util.internal.PlatformDependent;
+import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
-import org.cloudburstmc.protocol.bedrock.annotation.NoEncryption;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
-import org.cloudburstmc.protocol.bedrock.handler.BatchHandler;
-import org.cloudburstmc.protocol.bedrock.handler.DefaultBatchHandler;
-import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
-import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
-import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
-import org.cloudburstmc.protocol.common.MinecraftSession;
 
 import javax.annotation.Nonnull;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.security.auth.DestroyFailedException;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.security.GeneralSecurityException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Consumer;
-import java.util.zip.Deflater;
+import java.net.SocketAddress;
 
-public abstract class BedrockSession implements MinecraftSession<BedrockPacket> {
+public class BedrockSession {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
-    private static final ThreadLocal<Sha256> HASH_LOCAL;
 
-    protected BedrockPeer<?> peer;
-
-    private BedrockCodec packetCodec = BedrockCompat.COMPAT_CODEC;
-
-    // TODO: refactor
-    private final BedrockWrapperSerializer wrapperSerializer;
+    private final BedrockPeer peer;
+    private final int subClientId;
     private BedrockPacketHandler packetHandler;
-    private BatchHandler batchHandler = DefaultBatchHandler.INSTANCE;
+    private boolean logging;
 
-    private final Queue<BedrockPacket> queuedPackets = PlatformDependent.newMpscQueue();
-    private final Set<Consumer<RakDisconnectReason>> disconnectHandlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-    private final AtomicLong sentEncryptedPacketCount = new AtomicLong();
-    private Cipher encryptionCipher = null;
-    private Cipher decryptionCipher = null;
-    private SecretKey agreedKey;
-    private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
-
-    private volatile boolean closed = false;
-    private volatile boolean logging = true;
-
-    static {
-        // Required for Android API versions prior to 26.
-        HASH_LOCAL = new ThreadLocal<Sha256>() {
-            @Override
-            protected Sha256 initialValue() {
-                return Natives.SHA_256.get();
-            }
-        };
-    }
-
-    public BedrockSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
+    public BedrockSession(BedrockPeer peer, int subClientId) {
         this.peer = peer;
-        this.wrapperSerializer = serializer;
+        this.subClientId = subClientId;
     }
 
     public void setPacketHandler(@Nonnull BedrockPacketHandler packetHandler) {
         this.packetHandler = packetHandler;
-    }
-
-    public void setPacketCodec(BedrockPacketCodec packetCodec) {
-        this.packetCodec = Objects.requireNonNull(packetCodec, "packetCodec");
     }
 
     void checkForClosed() {
@@ -90,282 +34,61 @@ public abstract class BedrockSession implements MinecraftSession<BedrockPacket> 
         }
     }
 
-    @Override
     public void sendPacket(@Nonnull BedrockPacket packet) {
-        this.checkPacket(packet);
-
-        this.queuedPackets.add(packet);
+        this.peer.sendPacket(this.subClientId, 0, packet);
+        this.logOutbound(packet);
     }
 
-    @Override
     public void sendPacketImmediately(@Nonnull BedrockPacket packet) {
-        this.checkPacket(packet);
-
-        this.sendWrapped(Collections.singletonList(packet), !packet.getClass().isAnnotationPresent(NoEncryption.class));
+        this.peer.sendPacketImmediately(this.subClientId, 0, packet);
+        this.logOutbound(packet);
     }
 
-    private void checkPacket(BedrockPacket packet) {
-        this.checkForClosed();
-        Objects.requireNonNull(packet, "packet");
+    public BedrockPeer getPeer() {
+        return peer;
+    }
 
-        if (log.isTraceEnabled() && this.logging) {
-            String to = this.connection.getAddress().toString();
-            log.trace("Outbound {}: {}", to, packet);
+    public BedrockCodec getCodec() {
+        return this.peer.getCodec();
+    }
+
+    public void setCodec(BedrockCodec codec) {
+        ObjectUtil.checkNotNull(codec, "codec");
+        if (this.subClientId != 0) {
+            throw new IllegalStateException("The packet codec can only be set by the primary session");
         }
-
-        // Verify that the packet ID exists.
-        this.packetCodec.getId(packet);
+        this.peer.setCodec(codec);
     }
-
-    public void sendWrapped(Collection<BedrockPacket> packets, boolean encrypt) {
-        ByteBuf compressed = ByteBufAllocator.DEFAULT.ioBuffer();
-        try {
-            this.wrapperSerializer.serialize(compressed, this.packetCodec, packets, this.compressionLevel, this);
-            this.sendWrapped(compressed, encrypt);
-        } catch (Exception e) {
-            log.error("Unable to compress packets", e);
-        } finally {
-            if (compressed != null) {
-                compressed.release();
-            }
-        }
-    }
-
-    public synchronized void sendWrapped(ByteBuf compressed, boolean encrypt) {
-        Objects.requireNonNull(compressed, "compressed");
-        try {
-            ByteBuf finalPayload = ByteBufAllocator.DEFAULT.ioBuffer(1 + compressed.readableBytes() + 8);
-            finalPayload.writeByte(0xfe); // Wrapped packet ID
-            if (this.encryptionCipher != null && encrypt) {
-                ByteBuffer trailer = ByteBuffer.wrap(this.generateTrailer(compressed));
-
-                ByteBuffer outBuffer = finalPayload.internalNioBuffer(1, compressed.readableBytes() + 8);
-                ByteBuffer inBuffer = compressed.internalNioBuffer(compressed.readerIndex(), compressed.readableBytes());
-
-                this.encryptionCipher.update(inBuffer, outBuffer);
-                this.encryptionCipher.update(trailer, outBuffer);
-                finalPayload.writerIndex(finalPayload.writerIndex() + compressed.readableBytes() + 8);
-            } else {
-                finalPayload.writeBytes(compressed);
-            }
-            this.connection.send(finalPayload);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException("Unable to encrypt package", e);
-        }
-    }
-
-    public void tick() {
-        this.eventLoop.execute(this::onTick);
-    }
-
-    private void onTick() {
-        if (this.closed) {
-            return;
-        }
-
-        this.sendQueued();
-    }
-
-    private void sendQueued() {
-        BedrockPacket packet;
-        List<BedrockPacket> toBatch = new ObjectArrayList<>();
-        while ((packet = this.queuedPackets.poll()) != null) {
-            if (packet.getClass().isAnnotationPresent(NoEncryption.class)) {
-                // We hit a unencryptable packet. Send the current wrapper and then send the unencryptable packet.
-                if (!toBatch.isEmpty()) {
-                    this.sendWrapped(toBatch, true);
-                    toBatch = new ObjectArrayList<>();
-                }
-
-                this.sendPacketImmediately(packet);
-                continue;
-            }
-
-            toBatch.add(packet);
-        }
-
-        if (!toBatch.isEmpty()) {
-            this.sendWrapped(toBatch, true);
-        }
-    }
-
-    public synchronized void enableEncryption(@Nonnull SecretKey secretKey) {
-        this.checkForClosed();
-        log.debug("Encryption enabled.");
-        Objects.requireNonNull(secretKey, "secretKey");
-        if (!secretKey.getAlgorithm().equals("AES")) {
-            throw new IllegalArgumentException("Invalid key algorithm");
-        }
-        if (this.encryptionCipher != null || this.decryptionCipher != null) {
-            throw new IllegalStateException("Encryption has already been enabled");
-        }
-
-        this.agreedKey = secretKey;
-        boolean useGcm = this.packetCodec.getProtocolVersion() > 428;
-        this.encryptionCipher = EncryptionUtils.createCipher(useGcm, true, secretKey);
-        this.decryptionCipher = EncryptionUtils.createCipher(useGcm, false, secretKey);
-    }
-
-    private byte[] generateTrailer(ByteBuf buf) {
-        Sha256 hash = HASH_LOCAL.get();
-        ByteBuf counterBuf = ByteBufAllocator.DEFAULT.directBuffer(8);
-        try {
-            counterBuf.writeLongLE(this.sentEncryptedPacketCount.getAndIncrement());
-            ByteBuffer keyBuffer = ByteBuffer.wrap(this.agreedKey.getEncoded());
-
-            hash.update(counterBuf.internalNioBuffer(0, 8));
-            hash.update(buf.internalNioBuffer(buf.readerIndex(), buf.readableBytes()));
-            hash.update(keyBuffer);
-            byte[] digested = hash.digest();
-            return Arrays.copyOf(digested, 8);
-        } finally {
-            counterBuf.release();
-            hash.reset();
-        }
-    }
-
-    public boolean isEncrypted() {
-        return encryptionCipher != null;
-    }
-
-    public abstract void disconnect();
 
     public void close(RakDisconnectReason reason) {
         checkForClosed();
-        this.closed = true;
-        // Free native resources if required
-//        if (this.encryptionCipher != null) {
-//            this.encryptionCipher.free();
-//        }
-//        if (this.decryptionCipher != null) {
-//            this.decryptionCipher.free();
-//        }
+    }
 
-        // Destroy secret key
-        if (this.agreedKey != null && !this.agreedKey.isDestroyed()) {
-            try {
-                this.agreedKey.destroy();
-            } catch (DestroyFailedException e) {
-                // Ignore - throws exception by default
-            }
+    protected void onPacket(BedrockPacket packet) {
+        this.logInbound(packet);
+        if (packetHandler == null) {
+            log.warn("Received packet without a packet handler for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);
         }
-        for (Consumer<DisconnectReason> disconnectHandler : this.disconnectHandlers) {
-            disconnectHandler.accept(reason);
+        this.packetHandler.handlePacket(packet);
+    }
+
+    protected void logOutbound(BedrockPacket packet) {
+        if (log.isTraceEnabled() && this.logging) {
+            log.trace("Outbound {}{}: {}", this.getSocketAddress(), this.subClientId, packet);
         }
     }
 
-    public void onWrappedPacket(final ByteBuf batched) {
-        try {
-            if (this.isEncrypted()) {
-                // This method only supports contiguous buffers, not composite.
-                ByteBuffer inBuffer = batched.internalNioBuffer(batched.readerIndex(), batched.readableBytes());
-                ByteBuffer outBuffer = inBuffer.duplicate();
-                // Copy-safe so we can use the same buffer.
-                this.decryptionCipher.update(inBuffer, outBuffer);
-
-                // TODO: Maybe verify the checksum?
-
-                batched.writerIndex(batched.writerIndex() - 8);
-            }
-            batched.markReaderIndex();
-
-            if (batched.isReadable()) {
-                List<BedrockPacket> packets = new ObjectArrayList<>();
-                this.wrapperSerializer.deserialize(batched, this.packetCodec, packets, this);
-                this.batchHandler.handle(this, batched, packets);
-            }
-        } catch (GeneralSecurityException ignore) {
-        } catch (PacketSerializeException e) {
-            log.warn("Error whilst decoding packets", e);
+    protected void logInbound(BedrockPacket packet) {
+        if (log.isTraceEnabled() && this.logging) {
+            log.trace("Inbound {}{}: {}", this.getSocketAddress(), this.subClientId, packet);
         }
     }
 
-    public InetSocketAddress getAddress() {
-        return this.connection.getAddress();
+    public SocketAddress getSocketAddress() {
+        return peer.getSocketAddress();
     }
 
-    public InetSocketAddress getRealAddress() {
-        return this.connection.getRealAddress();
+    public boolean isSubClient() {
+        return this.subClientId != 0;
     }
-
-    public boolean isClosed() {
-        return this.connection.isClosed();
-    }
-
-    public BedrockPacketCodec getPacketCodec() {
-        return this.packetCodec;
-    }
-
-    public BedrockPacketHandler getPacketHandler() {
-        return this.packetHandler;
-    }
-
-    public BatchHandler getBatchHandler() {
-        return this.batchHandler;
-    }
-
-    public void setBatchHandler(BatchHandler batchHandler) {
-        this.batchHandler = Objects.requireNonNull(batchHandler, "batchHandler");
-    }
-
-    public void setCompressionLevel(int compressionLevel) {
-        this.compressionLevel = compressionLevel;
-    }
-
-    public int getCompressionLevel() {
-        return compressionLevel;
-    }
-
-    public boolean isLogging() {
-        return this.logging;
-    }
-
-    public void setLogging(boolean logging) {
-        this.logging = logging;
-    }
-
-    public void addDisconnectHandler(Consumer<DisconnectReason> disconnectHandler) {
-        Objects.requireNonNull(disconnectHandler, "disconnectHandler");
-        this.disconnectHandlers.add(disconnectHandler);
-    }
-
-    public AtomicInteger getHardcodedBlockingId() {
-        return this.hardcodedBlockingId;
-    }
-
-    @Override
-    public long getLatency() {
-        return this.connection.getPing();
-    }
-
-    public EventLoop getEventLoop() {
-        return this.eventLoop;
-    }
-
-    public SessionConnection<ByteBuf> getConnection() {
-        return this.connection;
-    }
-
-//    @ParametersAreNonnullByDefault
-//    abstract class BedrockSessionListener implements RakNetSessionListener {
-//
-//        @Override
-//        public void onEncapsulated(EncapsulatedPacket packet) {
-//            if (BedrockSession.this.connection.getState() != RakNetState.CONNECTED) {
-//                // We shouldn't be receiving packets till the connection is full established.
-//                return;
-//            }
-//            ByteBuf buffer = packet.getBuffer();
-//
-//            int packetId = buffer.readUnsignedByte();
-//            if (packetId == 0xfe /* Wrapper packet */) {
-//                BedrockSession.this.onWrappedPacket(buffer);
-//            }
-//        }
-//
-//        @Override
-//        public void onDirect(ByteBuf buf) {
-//            // We shouldn't be receiving direct datagram messages from the client whilst they are connected.
-//        }
-//    }
 }

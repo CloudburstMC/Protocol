@@ -1,17 +1,13 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import org.cloudburstmc.protocol.bedrock.netty.BedrockPeer;
-import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
-import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
-import org.cloudburstmc.protocol.common.MinecraftServerSession;
 
 import javax.annotation.Nullable;
 
-public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
+public class BedrockServerSession extends BedrockSession {
 
-    public BedrockServerSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
-        super(peer, serializer);
+    public BedrockServerSession(BedrockPeer peer) {
+        super(peer, 0);
     }
 
     @Override

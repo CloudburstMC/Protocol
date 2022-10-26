@@ -11,8 +11,8 @@ import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 @EqualsAndHashCode(callSuper = false)
 public class BedrockPacketWrapper extends AbstractReferenceCounted {
     private int packetId;
-    private int senderId;
-    private int clientId;
+    private int senderSubClientId;
+    private int targetSubClientId;
     private BedrockPacket packet;
     private ByteBuf packetBuffer;
 
