@@ -20,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionEncoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec;
+import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockSessionFactory;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
 
@@ -43,18 +44,20 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     private final Int2ObjectMap<BedrockSession> sessions = new Int2ObjectOpenHashMap<>();
     private final Queue<BedrockPacketWrapper> packetQueue = PlatformDependent.newMpscQueue();
     private final Channel channel;
+    private final BedrockSessionFactory sessionFactory;
     private ScheduledFuture<?> tickFuture;
     private boolean closed;
     private RakDisconnectReason disconnectReason;
     private BedrockCodec codec = BedrockCompat.COMPAT_CODEC;
 
-    public BedrockPeer(Channel channel) {
+    public BedrockPeer(Channel channel, BedrockSessionFactory sessionFactory) {
         this.channel = channel;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        ctx.pipeline().addLast("rak-session-clone-listener", new SimpleEventHandler<>(this::onRakNetDisconnect));
+
     }
 
     @Override
@@ -66,7 +69,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        this.sessions.put(0, new BedrockSession(this, 0));
+        this.sessions.put(0, this.sessionFactory.createSession(this, 0));
         this.tickFuture = this.channel.eventLoop().scheduleAtFixedRate(this::onTick, 50, 50, TimeUnit.MILLISECONDS);
     }
 
