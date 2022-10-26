@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.netty.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import org.cloudburstmc.netty.channel.raknet.RakReliability;
@@ -10,7 +10,7 @@ import org.cloudburstmc.netty.channel.raknet.packet.RakMessage;
 
 import java.util.List;
 
-@ChannelHandler.Sharable
+@Sharable
 public class FrameIdCodec extends MessageToMessageCodec<RakMessage, ByteBuf> {
 
     public static final String NAME = "frame-id-codec";

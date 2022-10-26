@@ -2,13 +2,13 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.batch;
 
 import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
 import java.util.List;
 
-@ChannelHandler.Sharable
+@Sharable
 public class BedrockBatchDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     public static final String NAME = "bedrock-batch-decoder";

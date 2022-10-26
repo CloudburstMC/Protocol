@@ -2,10 +2,8 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.packet;
 
 import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 
-@ChannelHandler.Sharable
 public class BedrockPacketCodec_v3 extends BedrockPacketCodec {
 
     @Override
