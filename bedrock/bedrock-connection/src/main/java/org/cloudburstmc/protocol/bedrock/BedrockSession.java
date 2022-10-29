@@ -152,6 +152,14 @@ public abstract class BedrockSession {
         this.logging = logging;
     }
 
+    public String getDisconnectReason() {
+        return disconnectReason;
+    }
+
+    public void setDisconnectReason(String disconnectReason) {
+        this.disconnectReason = disconnectReason;
+    }
+
     public final void disconnect() {
         disconnect("disconnect.disconnected");
     }
