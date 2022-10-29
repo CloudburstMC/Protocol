@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
@@ -15,8 +17,10 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
 
     public static final String NAME = "bedrock-packet-codec";
 
-    private BedrockCodec codec;
-    private BedrockCodecHelper helper;
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketCodec.class);
+
+    private BedrockCodec codec = BedrockCompat.CODEC;
+    private BedrockCodecHelper helper = codec.createHelper();
 
     @Override
     protected final void encode(ChannelHandlerContext ctx, BedrockPacketWrapper msg, List<Object> out) throws Exception {
@@ -40,11 +44,14 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     @Override
     protected final void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
         BedrockPacketWrapper wrapper = new BedrockPacketWrapper();
-        wrapper.setPacketBuffer(msg.slice());
+        wrapper.setPacketBuffer(msg.retainedSlice());
         try {
             decodeHeader(msg, wrapper);
             wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId()));
             out.add(wrapper.retain());
+        } catch (Throwable t) {
+            log.info("Failed to decode packet", t);
+            throw t;
         } finally {
             wrapper.release();
         }
@@ -59,8 +66,11 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     }
 
     public final void setCodec(BedrockCodec codec) {
-        if (this.codec != BedrockCompat.COMPAT_CODEC) {
+        if (this.codec != BedrockCompat.CODEC) {
             throw new IllegalStateException("Codec is already set");
+        }
+        if (codec == BedrockCompat.CODEC) {
+            throw new IllegalArgumentException("Cannot set codec to BedrockCompat");
         }
         this.codec = codec;
         this.helper = codec.createHelper();

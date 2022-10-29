@@ -23,7 +23,7 @@ public class ZlibCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf
         ByteBuf outBuf = ctx.alloc().ioBuffer(msg.readableBytes() << 3);
         try {
             zlib.deflate(msg, outBuf, level);
-            out.add(outBuf.release());
+            out.add(outBuf.retain());
         } finally {
             outBuf.release();
         }
