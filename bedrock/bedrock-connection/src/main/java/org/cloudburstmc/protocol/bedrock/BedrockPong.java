@@ -1,15 +1,14 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import com.nukkitx.network.raknet.RakNetPong;
-import lombok.AccessLevel;
+import io.netty.buffer.ByteBuf;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.nio.charset.StandardCharsets;
 import java.util.StringJoiner;
 
 @Data
+@Accessors(chain = true, fluent = true)
 public class BedrockPong {
     private String edition;
     private String motd;
@@ -17,8 +16,6 @@ public class BedrockPong {
     private String version;
     private int playerCount = -1;
     private int maximumPlayerCount = -1;
-    @Getter(AccessLevel.PACKAGE)
-    @Setter(AccessLevel.PACKAGE)
     private long serverId;
     private String subMotd;
     private String gameType;
@@ -27,8 +24,8 @@ public class BedrockPong {
     private int ipv6Port = -1;
     private String[] extras;
 
-    static BedrockPong fromRakNet(RakNetPong pong) {
-        String info = new String(pong.getUserData(), StandardCharsets.UTF_8);
+    static BedrockPong fromRakNet(ByteBuf pong) {
+        String info = pong.toString(StandardCharsets.UTF_8);
 
         BedrockPong bedrockPong = new BedrockPong();
 

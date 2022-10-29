@@ -16,6 +16,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequiredArgsConstructor
 public class BedrockEncryptionDecoder extends MessageToMessageDecoder<ByteBuf> {
 
+    public static final String NAME = "bedrock-encryption-decoder";
+
     private static final boolean VALIDATE = Boolean.getBoolean("cloudburst.validateEncryption");
 
     private final AtomicLong packetCounter = new AtomicLong();

@@ -7,7 +7,7 @@
     <groupId>org.cloudburstmc.protocol</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.9-SNAPSHOT</version>
+    <version>3.0.0.Beta1-SNAPSHOT</version>
     <name>Protocol Parent</name>
     <description>A protocol library for Minecraft</description>
     <url>https://github.com/CloudburstMC/Protocol</url>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
+            <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -95,13 +95,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.4.2</version>
+            <version>5.9.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.4.2</version>
+            <version>5.9.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

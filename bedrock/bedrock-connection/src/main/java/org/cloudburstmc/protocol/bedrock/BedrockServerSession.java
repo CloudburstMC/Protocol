@@ -6,17 +6,8 @@ import javax.annotation.Nullable;
 
 public class BedrockServerSession extends BedrockSession {
 
-    public BedrockServerSession(BedrockPeer peer) {
-        super(peer, 0);
-    }
-
-    @Override
-    public void disconnect() {
-        this.disconnect(null, true);
-    }
-
-    public void disconnect(@Nullable String reason) {
-        this.disconnect(reason, false);
+    public BedrockServerSession(BedrockPeer peer, int subClientId) {
+        super(peer, subClientId);
     }
 
     public void disconnect(@Nullable String reason, boolean hideReason) {
@@ -25,7 +16,7 @@ public class BedrockServerSession extends BedrockSession {
         DisconnectPacket packet = new DisconnectPacket();
         if (reason == null || hideReason) {
             packet.setMessageSkipped(true);
-            reason = "disconnect.disconnected";
+            reason = BedrockDisconnectReasons.DISCONNECTED;
         }
         packet.setKickMessage(reason);
         this.sendPacketImmediately(packet);

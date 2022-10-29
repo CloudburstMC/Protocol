@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ZlibCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf> {
 
-    public static final String NAME = "zlib-compression-codec";
+    public static final String NAME = "compression-codec";
 
     private static final int MAX_DECOMPRESSED_BYTES = Integer.getInteger("bedrock.maxDecompressedBytes", 1024 * 1024 * 10);
 

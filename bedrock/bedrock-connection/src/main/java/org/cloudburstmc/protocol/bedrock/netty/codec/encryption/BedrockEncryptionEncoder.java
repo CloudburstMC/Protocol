@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequiredArgsConstructor
 public class BedrockEncryptionEncoder extends MessageToMessageEncoder<ByteBuf> {
 
+    public static final String NAME = "bedrock-encryption-encoder";
+
     private static final FastThreadLocal<MessageDigest> DIGEST = new FastThreadLocal<MessageDigest>() {
         @Override
         protected MessageDigest initialValue() {

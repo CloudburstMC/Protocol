@@ -1,16 +1,13 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
-
 public class BedrockClientSession extends BedrockSession {
 
-    BedrockClientSession(BedrockPeer peer) {
-        super(peer, 0);
+    public BedrockClientSession(BedrockPeer peer, int subClientId) {
+        super(peer, subClientId);
     }
 
     @Override
-    public void disconnect() {
-        this.checkForClosed();
-        this.peer.getRakSessionCodec().disconnect(RakDisconnectReason.DISCONNECTED);
+    public void disconnect(String reason, boolean hideReason) {
+        this.close(reason);
     }
 }

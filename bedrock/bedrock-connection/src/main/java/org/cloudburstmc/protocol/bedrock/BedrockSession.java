@@ -3,21 +3,24 @@ package org.cloudburstmc.protocol.bedrock;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
 
 import javax.annotation.Nonnull;
 import java.net.SocketAddress;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class BedrockSession {
+public abstract class BedrockSession {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockSession.class);
 
-    private final BedrockPeer peer;
-    private final int subClientId;
-    private BedrockPacketHandler packetHandler;
-    private boolean logging;
+    private final AtomicBoolean closed = new AtomicBoolean();
+    protected final BedrockPeer peer;
+    protected final int subClientId;
+    protected BedrockPacketHandler packetHandler;
+    protected boolean logging;
+    protected String disconnectReason = BedrockDisconnectReasons.UNKNOWN;
 
     public BedrockSession(BedrockPeer peer, int subClientId) {
         this.peer = peer;
@@ -28,9 +31,9 @@ public class BedrockSession {
         this.packetHandler = packetHandler;
     }
 
-    void checkForClosed() {
-        if (this.closed) {
-            throw new IllegalStateException("Connection has been closed");
+    protected void checkForClosed() {
+        if (this.closed.get()) {
+            throw new IllegalStateException("Session has been closed");
         }
     }
 
@@ -60,8 +63,35 @@ public class BedrockSession {
         this.peer.setCodec(codec);
     }
 
-    public void close(RakDisconnectReason reason) {
+    public void setCompression(PacketCompressionAlgorithm algorithm) {
+        if (isSubClient()) {
+            throw new IllegalStateException("The compression algorithm can only be set by the primary session");
+        }
+        this.peer.setCompression(algorithm);
+    }
+
+    public void close(String reason) {
         checkForClosed();
+
+        if (isSubClient()) {
+            // FIXME: Do sub-clients send a server-bound DisconnectPacket?
+        } else {
+            // Primary sub-client controls the connection
+            this.peer.close(reason);
+        }
+    }
+
+    protected void onClose() {
+        if (!this.closed.compareAndSet(false, true)) {
+            return;
+        }
+
+        if (this.packetHandler != null) try {
+            this.packetHandler.onDisconnect(this.disconnectReason);
+        } catch (Exception e) {
+            log.error("Exception thrown while handling disconnect", e);
+        }
+        this.peer.removeSession(this);
     }
 
     protected void onPacket(BedrockPacket packet) {
@@ -91,4 +121,14 @@ public class BedrockSession {
     public boolean isSubClient() {
         return this.subClientId != 0;
     }
+
+    public final void disconnect() {
+        disconnect("disconnect.disconnected");
+    }
+
+    public final void disconnect(String reason) {
+        this.disconnect(reason, false);
+    }
+
+    public abstract void disconnect(String reason, boolean hideReason);
 }
