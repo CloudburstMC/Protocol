@@ -5,16 +5,20 @@ import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
 
     public static final String NAME = "bedrock-batch-encoder";
 
-    private final List<ByteBuf> messages = new ObjectArrayList<>();
+    private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockBatchEncoder.class);
+
+    private final Queue<ByteBuf> messages = new ArrayDeque<>();
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
@@ -24,7 +28,7 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
         }
 
         // Accumulate messages to batch
-        messages.add((ByteBuf) msg);
+        messages.add(((ByteBuf) msg).slice());
     }
 
     @Override
@@ -36,11 +40,14 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
 
         CompositeByteBuf buf = ctx.alloc().compositeDirectBuffer(messages.size() * 2);
         try {
-            for (ByteBuf message : messages) {
+            ByteBuf message;
+            while ((message = messages.poll()) != null) try {
                 ByteBuf header = ctx.alloc().ioBuffer(5);
-                org.cloudburstmc.protocol.common.util.VarInts.writeUnsignedInt(buf, message.readableBytes());
+                VarInts.writeUnsignedInt(header, message.readableBytes());
                 buf.addComponent(true, header);
                 buf.addComponent(true, message.retain());
+            } finally {
+                message.release();
             }
             ctx.write(buf.retain());
         } finally {
@@ -52,10 +59,9 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        Iterator<ByteBuf> iterator = messages.iterator();
-        while (iterator.hasNext()) {
-            iterator.next().release();
-            iterator.remove();
+        ByteBuf message;
+        while ((message = messages.poll()) != null) {
+            message.release();
         }
         super.handlerRemoved(ctx);
     }

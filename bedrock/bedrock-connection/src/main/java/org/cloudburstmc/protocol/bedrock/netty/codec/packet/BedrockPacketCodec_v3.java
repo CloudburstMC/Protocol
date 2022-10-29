@@ -1,8 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.netty.codec.packet;
 
-import com.nukkitx.network.VarInts;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
+import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockPacketCodec_v3 extends BedrockPacketCodec {
 

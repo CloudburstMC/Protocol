@@ -24,8 +24,14 @@ public class FrameIdCodec extends MessageToMessageCodec<RakMessage, ByteBuf> {
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
         CompositeByteBuf buf = ctx.alloc().compositeDirectBuffer(2);
-        buf.addComponent(true, ctx.alloc().ioBuffer(1).writeByte(frameId));
-        buf.addComponent(true, msg.retain());
+        try {
+            buf.addComponent(true, ctx.alloc().ioBuffer(1).writeByte(frameId));
+            buf.addComponent(true, msg.retainedSlice());
+
+            out.add(buf.retain());
+        } finally {
+            buf.release();
+        }
     }
 
     @Override
