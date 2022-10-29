@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.BedrockSession;
 import org.cloudburstmc.protocol.bedrock.netty.codec.FrameIdCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchEncoder;
+import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.compression.ZlibCompressionCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec_v1;
@@ -45,10 +46,10 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
             case 7:
             case 8:
             case 9:
-                channel.pipeline().addLast(ZlibCompressionCodec.NAME, new ZlibCompressionCodec(Zlib.DEFAULT));
+                channel.pipeline().addLast(CompressionCodec.NAME, new ZlibCompressionCodec(Zlib.DEFAULT));
                 break;
             case 10: // Zlib Raw
-                channel.pipeline().addLast(ZlibCompressionCodec.NAME, new ZlibCompressionCodec(Zlib.RAW));
+                channel.pipeline().addLast(CompressionCodec.NAME, new ZlibCompressionCodec(Zlib.RAW));
                 break;
             case 11: // No compression on initial packet request
                 break;

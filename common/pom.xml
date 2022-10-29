@@ -13,12 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.nukkitx.network</groupId>
-            <artifactId>common</artifactId>
-            <version>${network.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.nukkitx</groupId>
             <artifactId>natives</artifactId>
             <version>1.0.2</version>

@@ -19,6 +19,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v428.Bedrock_v428;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
+import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.compression.SnappyCompressionCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.compression.ZlibCompressionCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionDecoder;
@@ -131,7 +132,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     public void setCompression(PacketCompressionAlgorithm algorithm) {
         Objects.requireNonNull(algorithm, "algorithm");
-        ChannelHandler handler = this.channel.pipeline().get(ZlibCompressionCodec.NAME);
+        ChannelHandler handler = this.channel.pipeline().get(CompressionCodec.NAME);
         if (handler != null) {
             throw new IllegalArgumentException("Compression is already set");
         }
@@ -146,7 +147,15 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
             default:
                 throw new UnsupportedOperationException("Unsupported compression algorithm: " + algorithm);
         }
-        this.channel.pipeline().addBefore(BedrockBatchDecoder.NAME, ZlibCompressionCodec.NAME, compressionHandler);
+        this.channel.pipeline().addBefore(BedrockBatchDecoder.NAME, CompressionCodec.NAME, compressionHandler);
+    }
+
+    public void setCompressionLevel(int level) {
+        ChannelHandler handler = this.channel.pipeline().get(CompressionCodec.NAME);
+        if (handler == null) {
+            throw new IllegalArgumentException("Peer has no compression!");
+        }
+        ((CompressionCodec) handler).setLevel(level);
     }
 
     public BedrockCodec getCodec() {
