@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.common.util.Zlib;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ZlibCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf> {
+public class ZlibCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf> implements CompressionCodec {
 
     public static final String NAME = "compression-codec";
 
@@ -32,6 +32,11 @@ public class ZlibCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
         out.add(zlib.inflate(msg, MAX_DECOMPRESSED_BYTES));
+    }
+
+    @Override
+    public int getLevel() {
+        return level;
     }
 
     public void setLevel(int level) {
