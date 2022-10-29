@@ -7,7 +7,7 @@
     <groupId>org.cloudburstmc.protocol</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0.Beta1-SNAPSHOT</version>
+    <version>3.0.0.Beta2-SNAPSHOT</version>
     <name>Protocol Parent</name>
     <description>A protocol library for Minecraft</description>
     <url>https://github.com/CloudburstMC/Protocol</url>

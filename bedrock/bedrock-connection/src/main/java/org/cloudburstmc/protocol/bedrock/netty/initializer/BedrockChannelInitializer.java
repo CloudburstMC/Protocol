@@ -15,12 +15,11 @@ import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec_v
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec_v3;
 import org.cloudburstmc.protocol.common.util.Zlib;
 
-public abstract class BedrockChannelInitializer extends ChannelInitializer<Channel> {
+public abstract class BedrockChannelInitializer<T extends BedrockSession> extends ChannelInitializer<Channel> {
 
     public static final int RAKNET_MINECRAFT_ID = 0xFE;
     private static final FrameIdCodec RAKNET_FRAME_CODEC = new FrameIdCodec(RAKNET_MINECRAFT_ID);
     private static final BedrockBatchDecoder BATCH_DECODER = new BedrockBatchDecoder();
-
 
     @Override
     protected final void initChannel(Channel channel) throws Exception {
@@ -85,13 +84,13 @@ public abstract class BedrockChannelInitializer extends ChannelInitializer<Chann
         return new BedrockPeer(channel, this::createSession);
     }
 
-    protected final BedrockSession createSession(BedrockPeer peer, int subClientId) {
-        BedrockSession session = this.createSession0(peer, subClientId);
+    protected final T createSession(BedrockPeer peer, int subClientId) {
+        T session = this.createSession0(peer, subClientId);
         this.initSession(session);
         return session;
     }
 
-    protected abstract BedrockSession createSession0(BedrockPeer peer, int subClientId);
+    protected abstract T createSession0(BedrockPeer peer, int subClientId);
 
-    protected abstract void initSession(BedrockSession session);
+    protected abstract void initSession(T session);
 }

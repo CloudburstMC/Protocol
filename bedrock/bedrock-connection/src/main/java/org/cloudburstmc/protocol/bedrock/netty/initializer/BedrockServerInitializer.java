@@ -4,9 +4,10 @@ import org.cloudburstmc.protocol.bedrock.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
 
-public abstract class BedrockServerInitializer extends BedrockChannelInitializer {
+public abstract class BedrockServerInitializer extends BedrockChannelInitializer<BedrockServerSession> {
+
     @Override
-    public BedrockSession createSession0(BedrockPeer peer, int subClientId) {
+    public BedrockServerSession createSession0(BedrockPeer peer, int subClientId) {
         return new BedrockServerSession(peer, subClientId);
     }
 }
