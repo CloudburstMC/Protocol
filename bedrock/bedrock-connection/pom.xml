@@ -5,11 +5,11 @@
     <parent>
         <artifactId>bedrock-parent</artifactId>
         <groupId>org.cloudburstmc.protocol</groupId>
-        <version>3.0.9-SNAPSHOT</version>
+        <version>3.0.0.Beta1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bedrock-common</artifactId>
+    <artifactId>bedrock-connection</artifactId>
 
     <dependencies>
         <dependency>
@@ -23,9 +23,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.nukkitx.network</groupId>
-            <artifactId>raknet</artifactId>
-            <version>${network.version}</version>
+            <groupId>org.cloudburstmc.netty</groupId>
+            <artifactId>netty-transport-raknet</artifactId>
+            <version>0.0.1.Final-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

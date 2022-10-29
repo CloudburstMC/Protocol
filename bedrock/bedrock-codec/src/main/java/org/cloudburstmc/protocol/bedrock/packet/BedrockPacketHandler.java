@@ -5,6 +5,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 public interface BedrockPacketHandler extends PacketHandler {
 
+    default PacketSignal handlePacket(BedrockPacket packet) {
+        return packet.handle(this);
+    }
+
+    default void onDisconnect(String reason) {
+    }
+
     default PacketSignal handle(AdventureSettingsPacket packet) {
         return PacketSignal.UNHANDLED;
     }

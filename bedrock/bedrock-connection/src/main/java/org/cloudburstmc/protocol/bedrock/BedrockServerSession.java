@@ -1,26 +1,13 @@
 package org.cloudburstmc.protocol.bedrock;
 
-import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
-import org.cloudburstmc.protocol.bedrock.raknet.BedrockPeer;
-import org.cloudburstmc.protocol.bedrock.wrapper.BedrockWrapperSerializer;
-import org.cloudburstmc.protocol.common.MinecraftServerSession;
 
 import javax.annotation.Nullable;
 
-public class BedrockServerSession extends BedrockSession implements MinecraftServerSession<BedrockPacket> {
+public class BedrockServerSession extends BedrockSession {
 
-    public BedrockServerSession(BedrockPeer<?> peer, BedrockWrapperSerializer serializer) {
-        super(peer, serializer);
-    }
-
-    @Override
-    public void disconnect() {
-        this.disconnect(null, true);
-    }
-
-    public void disconnect(@Nullable String reason) {
-        this.disconnect(reason, false);
+    public BedrockServerSession(BedrockPeer peer, int subClientId) {
+        super(peer, subClientId);
     }
 
     public void disconnect(@Nullable String reason, boolean hideReason) {
@@ -29,7 +16,7 @@ public class BedrockServerSession extends BedrockSession implements MinecraftSer
         DisconnectPacket packet = new DisconnectPacket();
         if (reason == null || hideReason) {
             packet.setMessageSkipped(true);
-            reason = "disconnect.disconnected";
+            reason = BedrockDisconnectReasons.DISCONNECTED;
         }
         packet.setKickMessage(reason);
         this.sendPacketImmediately(packet);

@@ -14,7 +14,7 @@ public class BedrockCompat {
     /**
      * This is for servers when figuring out the protocol of a client joining.
      */
-    public static BedrockCodec COMPAT_CODEC = BedrockCodec.builder()
+    public static BedrockCodec CODEC = BedrockCodec.builder()
             .helper(() -> NoopBedrockCodecHelper.INSTANCE)
             .registerPacket(LoginPacket.class, LoginSerializerCompat.INSTANCE, 1)
             .registerPacket(PlayStatusPacket.class, PlayStatusSerializerCompat.INSTANCE, 2)
