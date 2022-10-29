@@ -14,6 +14,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v428.Bedrock_v428;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
@@ -150,6 +151,10 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     public BedrockCodec getCodec() {
         return this.channel.pipeline().get(BedrockPacketCodec.class).getCodec();
+    }
+
+    public BedrockCodecHelper getCodecHelper() {
+        return this.channel.pipeline().get(BedrockPacketCodec.class).getHelper();
     }
 
     public void setCodec(BedrockCodec codec) {

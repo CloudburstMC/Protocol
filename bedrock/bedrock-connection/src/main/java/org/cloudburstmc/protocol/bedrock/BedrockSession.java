@@ -7,8 +7,10 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
+import org.cloudburstmc.protocol.common.PacketSignal;
 
 import javax.annotation.Nonnull;
+import javax.crypto.SecretKey;
 import java.net.SocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -25,6 +27,10 @@ public abstract class BedrockSession {
     public BedrockSession(BedrockPeer peer, int subClientId) {
         this.peer = peer;
         this.subClientId = subClientId;
+    }
+
+    public BedrockPacketHandler getPacketHandler() {
+        return packetHandler;
     }
 
     public void setPacketHandler(@Nonnull BedrockPacketHandler packetHandler) {
@@ -70,6 +76,13 @@ public abstract class BedrockSession {
         this.peer.setCompression(algorithm);
     }
 
+    public void enableEncryption(SecretKey key) {
+        if (isSubClient()) {
+            throw new IllegalStateException("Encryption can only be enabled by the primary session");
+        }
+        this.peer.enableEncryption(key);
+    }
+
     public void close(String reason) {
         checkForClosed();
 
@@ -99,7 +112,9 @@ public abstract class BedrockSession {
         if (packetHandler == null) {
             log.warn("Received packet without a packet handler for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);
         }
-        this.packetHandler.handlePacket(packet);
+        if (this.packetHandler.handlePacket(packet) == PacketSignal.UNHANDLED) {
+            log.warn("Unhandled packet for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);
+        }
     }
 
     protected void logOutbound(BedrockPacket packet) {
@@ -120,6 +135,14 @@ public abstract class BedrockSession {
 
     public boolean isSubClient() {
         return this.subClientId != 0;
+    }
+
+    public boolean isLogging() {
+        return logging;
+    }
+
+    public void setLogging(boolean logging) {
+        this.logging = logging;
     }
 
     public final void disconnect() {

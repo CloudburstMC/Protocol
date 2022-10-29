@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -89,7 +90,7 @@ public class BedrockPong {
         return bedrockPong;
     }
 
-    byte[] toRakNet() {
+    public ByteBuf toByteBuf() {
         StringJoiner joiner = new StringJoiner(";", "", ";")
                 .add(this.edition)
                 .add(toString(this.motd))
@@ -108,7 +109,7 @@ public class BedrockPong {
                 joiner.add(extra);
             }
         }
-        return joiner.toString().getBytes(StandardCharsets.UTF_8);
+        return Unpooled.wrappedBuffer(joiner.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static String toString(String string) {
