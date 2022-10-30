@@ -90,7 +90,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
                 .canPlace(canPlace)
                 .canBreak(canBreak)
                 .blockingTicks(blockingTicks)
-                .blockRuntimeId(blockRuntimeId)
+                .blockDefinition(this.blockDefinitions.getDefinition(blockRuntimeId))
                 .build();
     }
 
@@ -159,7 +159,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
                 .canPlace(canPlace)
                 .canBreak(canBreak)
                 .blockingTicks(blockingTicks)
-                .blockRuntimeId(blockRuntimeId)
+                .blockDefinition(this.blockDefinitions.getDefinition(blockRuntimeId))
                 .usingNetId(hasNetId)
                 .netId(netId)
                 .build();
@@ -186,7 +186,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
         // Write damage and count
         buffer.writeShortLE(item.getCount());
         VarInts.writeUnsignedInt(buffer, item.getDamage());
-        VarInts.writeInt(buffer, item.getBlockRuntimeId());
+        VarInts.writeInt(buffer, item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
 
         ByteBuf userDataBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         try (LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream(userDataBuf);
@@ -246,7 +246,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             VarInts.writeInt(buffer, item.getNetId());
         }
 
-        VarInts.writeInt(buffer, item.getBlockRuntimeId());
+        VarInts.writeInt(buffer, item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
 
         ByteBuf userDataBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         try (LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream(userDataBuf);

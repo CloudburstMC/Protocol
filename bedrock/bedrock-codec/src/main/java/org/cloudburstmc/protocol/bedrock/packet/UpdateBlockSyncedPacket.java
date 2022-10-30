@@ -25,7 +25,7 @@ public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
                 ", entityBlockSyncType=" + this.entityBlockSyncType +
                 ", flags=" + this.flags +
                 ", blockPosition=" + this.blockPosition +
-                ", runtimeId=" + this.runtimeId +
+                ", definition=" + this.definition +
                 ", dataLayer=" + this.dataLayer +
                 ")";
     }

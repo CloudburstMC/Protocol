@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.inventory;
 import com.nukkitx.nbt.NbtMap;
 import lombok.Data;
 import lombok.experimental.NonFinal;
+import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 
 import javax.annotation.concurrent.Immutable;
@@ -20,12 +21,12 @@ final class BaseItemData implements ItemData {
     private final String[] canPlace;
     private final String[] canBreak;
     private final long blockingTicks;
-    private final int blockRuntimeId;
+    private final BlockDefinition blockDefinition;
     @NonFinal
     private boolean usingNetId;
     private int netId;
 
-    BaseItemData(ItemDefinition definition, int damage, int count, NbtMap tag, String[] canPlace, String[] canBreak, long blockingTicks, int blockRuntimeId, boolean hasNetId, int netId) {
+    BaseItemData(ItemDefinition definition, int damage, int count, NbtMap tag, String[] canPlace, String[] canBreak, long blockingTicks, BlockDefinition blockDefinition, boolean hasNetId, int netId) {
         this.definition = definition;
         this.damage = damage;
         this.count = count;
@@ -33,7 +34,7 @@ final class BaseItemData implements ItemData {
         this.canPlace = canPlace == null ? EMPTY_ARRAY : canPlace;
         this.canBreak = canBreak == null ? EMPTY_ARRAY : canBreak;
         this.blockingTicks = blockingTicks;
-        this.blockRuntimeId = blockRuntimeId;
+        this.blockDefinition = blockDefinition;
         this.netId = netId;
         this.usingNetId = hasNetId;
     }
@@ -49,13 +50,13 @@ final class BaseItemData implements ItemData {
     @Override
     public int hashCode() {
         return Objects.hash(definition, damage, count, tag, Arrays.hashCode(canPlace), Arrays.hashCode(canBreak), blockingTicks,
-                blockRuntimeId);
+                blockDefinition);
     }
 
     public boolean equals(ItemData other, boolean checkAmount, boolean checkMetadata, boolean checkUserdata) {
         return definition == other.getDefinition() &&
                 (!checkAmount || count == other.getCount()) &&
-                (!checkMetadata || (damage == other.getDamage() && blockRuntimeId == other.getBlockingTicks())) &&
+                (!checkMetadata || (damage == other.getDamage() && blockingTicks == other.getBlockingTicks())) &&
                 (!checkUserdata || (Objects.equals(tag, other.getTag()) && Arrays.equals(canPlace, other.getCanPlace()) && Arrays.equals(canBreak, other.getCanBreak())));
     }
 

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class UpdateBlockPacket implements BedrockPacket {
 
     final Set<Flag> flags = EnumSet.noneOf(Flag.class);
     Vector3i blockPosition;
-    int runtimeId;
+    BlockDefinition definition;
     int dataLayer;
 
     @Override

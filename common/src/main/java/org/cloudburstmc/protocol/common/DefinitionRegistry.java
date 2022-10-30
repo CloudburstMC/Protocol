@@ -5,6 +5,7 @@ import java.util.Collection;
 public interface DefinitionRegistry<D extends Definition> {
 
     D getDefinition(String identifier);
+
     D getDefinition(int runtimeId);
 
     default D checkMappedDefinition(D definition) {
@@ -23,7 +24,9 @@ public interface DefinitionRegistry<D extends Definition> {
         }
 
         Builder<D> add(D definition);
+
         Builder<D> remove(D definition);
+
         DefinitionRegistry<D> build();
     }
 }

@@ -1,19 +1,24 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory;
 
 import com.nukkitx.nbt.NbtMap;
+import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Represents item data that is sent over the network.
  */
 public interface ItemData {
-    ItemData AIR = new BaseItemData(ItemDefinition.AIR, 0, 0, null, BaseItemData.EMPTY_ARRAY, BaseItemData.EMPTY_ARRAY, 0, 0, false, 0);
+    ItemData AIR = new BaseItemData(ItemDefinition.AIR, 0, 0, null, BaseItemData.EMPTY_ARRAY, BaseItemData.EMPTY_ARRAY, 0, null, false, 0);
 
     /**
      * Gets the {@link ItemDefinition}.
      *
      * @return the item definition
      */
+    @Nonnull
     ItemDefinition getDefinition();
 
     /**
@@ -35,6 +40,7 @@ public interface ItemData {
      *
      * @return the item NBT
      */
+    @Nullable
     NbtMap getTag();
 
     /**
@@ -59,12 +65,13 @@ public interface ItemData {
     long getBlockingTicks();
 
     /**
-     * Gets the block runtime id of this item,
+     * Gets the block definition of this item,
      * if applicable.
      *
-     * @return the block runtime id of this item
+     * @return the block definition of this item
      */
-    int getBlockRuntimeId();
+    @Nullable
+    BlockDefinition getBlockDefinition();
 
     /**
      * Gets whether this item is using a net id.
@@ -140,7 +147,7 @@ public interface ItemData {
         private String[] canPlace;
         private String[] canBreak;
         private long blockingTicks;
-        private int blockRuntimeId;
+        private BlockDefinition blockDefinition;
         private boolean usingNetId;
         private int netId;
 
@@ -155,12 +162,12 @@ public interface ItemData {
             this.canPlace = data.getCanPlace();
             this.canBreak = data.getCanBreak();
             this.blockingTicks = data.getBlockingTicks();
-            this.blockRuntimeId = data.getBlockRuntimeId();
+            this.blockDefinition = data.getBlockDefinition();
             this.usingNetId = data.isUsingNetId();
             this.netId = data.getNetId();
         }
 
-        public Builder definition(ItemDefinition definition) {
+        public Builder definition(@Nonnull ItemDefinition definition) {
             this.definition = definition;
             return this;
         }
@@ -195,8 +202,8 @@ public interface ItemData {
             return this;
         }
 
-        public Builder blockRuntimeId(int blockRuntimeId) {
-            this.blockRuntimeId = blockRuntimeId;
+        public Builder blockDefinition(@Nullable BlockDefinition blockDefinition) {
+            this.blockDefinition = blockDefinition;
             return this;
         }
 
@@ -211,7 +218,7 @@ public interface ItemData {
         }
 
         public ItemData build() {
-            return new BaseItemData(definition, damage, count, tag, canPlace, canBreak, blockingTicks, blockRuntimeId, usingNetId, netId);
+            return new BaseItemData(definition, damage, count, tag, canPlace, canBreak, blockingTicks, blockDefinition, usingNetId, netId);
         }
     }
 }

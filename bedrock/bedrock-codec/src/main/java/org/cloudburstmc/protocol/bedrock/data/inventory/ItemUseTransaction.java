@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public class ItemUseTransaction {
     private ItemData itemInHand;
     private Vector3f playerPosition;
     private Vector3f clickPosition;
-    private int blockRuntimeId;
+    private BlockDefinition blockDefinition;
 }

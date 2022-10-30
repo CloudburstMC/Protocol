@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nukkitx.network.util.Preconditions;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
@@ -21,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.data.event.PortalBuiltEventData;
 import org.cloudburstmc.protocol.bedrock.data.event.PortalUsedEventData;
 import org.cloudburstmc.protocol.bedrock.data.event.SlashCommandExecutedEventData;
 import org.cloudburstmc.protocol.bedrock.packet.EventPacket;
+import org.cloudburstmc.protocol.common.util.Preconditions;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.VarInts;
 

@@ -20,7 +20,7 @@ public class UpdateBlockSerializer_v291 implements BedrockPacketSerializer<Updat
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateBlockPacket packet) {
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
-        VarInts.writeUnsignedInt(buffer, packet.getRuntimeId());
+        VarInts.writeUnsignedInt(buffer, packet.getDefinition().getRuntimeId());
         int flagValue = 0;
         for (Flag flag : packet.getFlags()) {
             flagValue |= (1 << flag.ordinal());
@@ -32,7 +32,7 @@ public class UpdateBlockSerializer_v291 implements BedrockPacketSerializer<Updat
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, UpdateBlockPacket packet) {
         packet.setBlockPosition(helper.readBlockPosition(buffer));
-        packet.setRuntimeId(VarInts.readUnsignedInt(buffer));
+        packet.setDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
         int flagValue = VarInts.readUnsignedInt(buffer);
         Set<Flag> flags = packet.getFlags();
         for (Flag flag : Flag.values()) {

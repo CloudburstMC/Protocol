@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetItemSlotData;
@@ -37,13 +38,13 @@ public class InventoryTransactionPacket implements BedrockPacket {
      */
     private boolean usingNetIds;
     /**
-     * Runtime ID of block being picked.
+     * Block definition of block being picked.
      * ItemUseInventoryTransaction only
      *
-     * @param blockRuntimeId runtime ID of block
-     * @return runtime ID of block
+     * @param blockDefinition block definition of block
+     * @return block definition of block
      */
-    private int blockRuntimeId;
+    private BlockDefinition blockDefinition;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

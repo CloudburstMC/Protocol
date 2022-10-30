@@ -93,13 +93,13 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
     public void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
         super.readItemUse(buffer, packet);
 
-        packet.setBlockRuntimeId(VarInts.readUnsignedInt(buffer));
+        packet.setBlockDefinition(this.blockDefinitions.getDefinition(VarInts.readUnsignedInt(buffer)));
     }
 
     @Override
     public void writeItemUse(ByteBuf buffer, InventoryTransactionPacket packet) {
         super.writeItemUse(buffer, packet);
 
-        VarInts.writeUnsignedInt(buffer, packet.getBlockRuntimeId());
+        VarInts.writeUnsignedInt(buffer, packet.getBlockDefinition().getRuntimeId());
     }
 }
