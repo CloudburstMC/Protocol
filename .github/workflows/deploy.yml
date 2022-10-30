@@ -31,4 +31,5 @@ jobs:
           MAVEN_DEPLOY_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          MAVEN_DEPLOY_URL: ${{ inputs.deploy-url }}
         run: gradle publish
