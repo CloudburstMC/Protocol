@@ -8,7 +8,7 @@ jobs:
   deploy:
     uses: CloudburstMC/Protocol/.github/workflows/deploy.yml@3.0
     with:
-      deploy-url: "https://repo.opencollab.dev/repository/maven-snapshots/"
+      deploy-url: "https://repo.opencollab.dev/repository/maven-deploy-snapshot/"
     secrets:
       DEPLOY_USERNAME: ${{ secrets.OPENCOLLAB_USERNAME }}
       DEPLOY_PASSWORD: ${{ secrets.OPENCOLLAB_PASSWORD }}
