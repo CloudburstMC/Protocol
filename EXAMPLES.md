@@ -38,7 +38,7 @@ BedrockPong pong = new BedrockPong()
 
 new ServerBootstrap()
         .channelFactory(RakChannelFactory.server(NioDatagramChannel.class))
-        .option(RakChannelOption.RAK_ADVERTISEMENT, pong().toByteBuf())
+        .option(RakChannelOption.RAK_ADVERTISEMENT, pong.toByteBuf())
         .group(new NioEventLoopGroup())
         .childHandler(new BedrockServerInitializer() {
             @Override
