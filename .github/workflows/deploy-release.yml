@@ -1,0 +1,16 @@
+name: Deploy Release
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  deploy:
+    uses: CloudburstMC/Protocol/.github/workflows/deploy.yml@3.0
+    with:
+      deploy-url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+    secrets:
+      DEPLOY_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      DEPLOY_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      PGP_SECRET: ${{ secrets.MAVEN_CENTRAL_SECRET }}
+      PGP_PASSPHRASE: ${{ secrets.MAVEN_CENTRAL_PASSPHRASE }}
