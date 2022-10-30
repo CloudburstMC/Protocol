@@ -1,9 +1,9 @@
 package org.cloudburstmc.protocol.common;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.net.InetSocketAddress;
 
-@ParametersAreNonnullByDefault
 public interface MinecraftSession<T extends MinecraftPacket> {
 
     boolean isClosed();
@@ -16,9 +16,9 @@ public interface MinecraftSession<T extends MinecraftPacket> {
         return getAddress();
     }
 
-    void sendPacket(T packet);
+    void sendPacket(@NonNull T packet);
 
-    void sendPacketImmediately(T packet);
+    void sendPacketImmediately(@NonNull T packet);
 
     long getLatency();
 }

@@ -14,7 +14,7 @@
 
 package org.cloudburstmc.protocol.common.util;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked

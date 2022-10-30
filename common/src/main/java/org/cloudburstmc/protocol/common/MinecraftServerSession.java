@@ -1,6 +1,6 @@
 package org.cloudburstmc.protocol.common;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface MinecraftServerSession<T extends MinecraftPacket> extends MinecraftSession<T> {
 

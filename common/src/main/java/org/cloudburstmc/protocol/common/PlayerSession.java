@@ -1,6 +1,6 @@
 package org.cloudburstmc.protocol.common;
 
-import javax.annotation.Nonnull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface PlayerSession {
 
@@ -8,5 +8,5 @@ public interface PlayerSession {
 
     void close();
 
-    void onDisconnect(@Nonnull String reason);
+    void onDisconnect(@NonNull String reason);
 }
