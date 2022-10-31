@@ -282,8 +282,3 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,intellij+all,windows,linux,macos,git,eclipse,netbeans
-
-# Slim down required Gradle files
-gradlew
-gradlew.bat
-gradle/wrapper/gradle-wrapper.jar
