@@ -16,6 +16,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
@@ -184,4 +185,8 @@ public interface BedrockCodecHelper {
     void readEntityProperties(ByteBuf buffer, EntityProperties properties);
 
     void writeEntityProperties(ByteBuf buffer, EntityProperties properties);
+
+    ItemDescriptorWithCount readIngredient(ByteBuf buffer);
+
+    void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient);
 }

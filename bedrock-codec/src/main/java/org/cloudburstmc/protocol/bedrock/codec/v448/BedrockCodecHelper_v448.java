@@ -9,6 +9,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.Stac
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import java.util.Collections;
+
 public class BedrockCodecHelper_v448 extends BedrockCodecHelper_v440 {
     public BedrockCodecHelper_v448(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
                                    TypeMap<StackRequestActionType> stackRequestActionTypes) {
@@ -19,7 +21,7 @@ public class BedrockCodecHelper_v448 extends BedrockCodecHelper_v440 {
     protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type) {
         if (type == StackRequestActionType.CRAFT_RECIPE_AUTO) {
             return new AutoCraftRecipeStackRequestActionData(
-                    VarInts.readUnsignedInt(byteBuf), byteBuf.readByte()
+                    VarInts.readUnsignedInt(byteBuf), byteBuf.readByte(), Collections.emptyList()
             );
         } else {
             return super.readRequestActionData(byteBuf, type);

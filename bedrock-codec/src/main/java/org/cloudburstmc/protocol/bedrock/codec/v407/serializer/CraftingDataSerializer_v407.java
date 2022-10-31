@@ -6,10 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -18,8 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.Objects.requireNonNull;
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -98,7 +93,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
         String recipeId = helper.readString(buffer);
         List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
-        helper.readArray(buffer, inputs, this::readIngredient);
+        helper.readArray(buffer, inputs, helper::readIngredient);
 
         List<ItemData> outputs = new ObjectArrayList<>();
         helper.readArray(buffer, outputs, helper::readItemInstance);
@@ -112,7 +107,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
 
     protected void writeShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingData data) {
         helper.writeString(buffer, data.getRecipeId());
-        helper.writeArray(buffer, data.getInputs(), this::writeIngredient);
+        helper.writeArray(buffer, data.getInputs(), helper::writeIngredient);
         helper.writeArray(buffer, data.getOutputs(), helper::writeItemInstance);
 
         helper.writeUuid(buffer, data.getUuid());
@@ -128,7 +123,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         int inputCount = width * height;
         List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
         for (int i = 0; i < inputCount; i++) {
-            inputs.add(this.readIngredient(buffer, helper));
+            inputs.add(helper.readIngredient(buffer));
         }
         List<ItemData> outputs = new ObjectArrayList<>();
         helper.readArray(buffer, outputs, helper::readItemInstance);
@@ -146,7 +141,7 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         int count = data.getWidth() * data.getHeight();
         List<ItemDescriptorWithCount> inputs = data.getInputs();
         for (int i = 0; i < count; i++) {
-            this.writeIngredient(buffer, helper, inputs.get(i));
+            helper.writeIngredient(buffer, inputs.get(i));
         }
         helper.writeArray(buffer, data.getOutputs(), helper::writeItemInstance);
         helper.writeUuid(buffer, data.getUuid());
@@ -196,35 +191,6 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         VarInts.writeUnsignedInt(buffer, data.getNetworkId());
     }
 
-    protected ItemDescriptorWithCount readIngredient(ByteBuf buffer, BedrockCodecHelper helper) {
-        int runtimeId = VarInts.readInt(buffer);
-        if (runtimeId == 0) {
-            // We don't need to read anything extra.
-            return ItemDescriptorWithCount.EMPTY;
-        }
-        ItemDefinition definition = helper.getItemDefinitions().getDefinition(runtimeId);
-
-        int meta = fromAuxValue(VarInts.readInt(buffer));
-        int count = VarInts.readInt(buffer);
-
-        return new ItemDescriptorWithCount(new DefaultDescriptor(definition, meta), count);
-    }
-
-    protected void writeIngredient(ByteBuf buffer, BedrockCodecHelper helper, ItemDescriptorWithCount ingredient) {
-        requireNonNull(ingredient, "ingredient is null");
-        if (ingredient == ItemDescriptorWithCount.EMPTY || ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
-            VarInts.writeInt(buffer, 0);
-            return;
-        }
-
-        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Descriptor must be of type DefaultDescriptor");
-        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
-
-        VarInts.writeInt(buffer, descriptor.getItemId().getRuntimeId());
-        VarInts.writeInt(buffer, toAuxValue(descriptor.getAuxValue()));
-        VarInts.writeInt(buffer, ingredient.getCount());
-    }
-
     protected PotionMixData readPotionRecipe(ByteBuf buffer) {
         return new PotionMixData(
                 VarInts.readInt(buffer),
@@ -261,13 +227,5 @@ public class CraftingDataSerializer_v407 implements BedrockPacketSerializer<Craf
         VarInts.writeInt(buffer, data.getInputId());
         VarInts.writeInt(buffer, data.getReagentId());
         VarInts.writeInt(buffer, data.getOutputId());
-    }
-
-    protected int fromAuxValue(int value) {
-        return value == 0x7fff ? -1 : value;
-    }
-
-    protected int toAuxValue(int value) {
-        return value == -1 ? 0x7fff : value;
     }
 }

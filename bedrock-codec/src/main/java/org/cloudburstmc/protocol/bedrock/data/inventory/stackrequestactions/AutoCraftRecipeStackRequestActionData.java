@@ -1,6 +1,9 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
+
+import java.util.List;
 
 /**
  * AutoCraftRecipeStackRequestActionData is sent by the client similarly to the CraftRecipeStackRequestActionData. The
@@ -13,6 +16,11 @@ public class AutoCraftRecipeStackRequestActionData implements RecipeStackRequest
      * @since v448
      */
     byte timesCrafted;
+
+    /**
+     * @since v557
+     */
+    List<ItemDescriptorWithCount> ingredients;
 
     @Override
     public StackRequestActionType getType() {

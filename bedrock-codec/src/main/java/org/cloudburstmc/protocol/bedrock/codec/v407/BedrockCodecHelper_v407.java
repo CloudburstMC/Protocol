@@ -3,15 +3,22 @@ package org.cloudburstmc.protocol.bedrock.codec.v407;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v390.BedrockCodecHelper_v390;
+import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
+import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
@@ -220,7 +227,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 );
             case CRAFT_RECIPE_AUTO:
                 return new AutoCraftRecipeStackRequestActionData(
-                        VarInts.readUnsignedInt(byteBuf), (byte) 0
+                        VarInts.readUnsignedInt(byteBuf), (byte) 0, Collections.emptyList()
                 );
             case CRAFT_CREATIVE:
                 return new CraftCreativeStackRequestActionData(
@@ -250,5 +257,44 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         buffer.writeByte(data.getContainer().ordinal());
         buffer.writeByte(data.getSlot());
         VarInts.writeInt(buffer, data.getStackNetworkId());
+    }
+
+    @Override
+    public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
+        int runtimeId = VarInts.readInt(buffer);
+        if (runtimeId == 0) {
+            // We don't need to read anything extra.
+            return ItemDescriptorWithCount.EMPTY;
+        }
+        ItemDefinition definition = this.getItemDefinitions().getDefinition(runtimeId);
+
+        int meta = fromAuxValue(VarInts.readInt(buffer));
+        int count = VarInts.readInt(buffer);
+
+        return new ItemDescriptorWithCount(new DefaultDescriptor(definition, meta), count);
+    }
+
+    @Override
+    public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+        requireNonNull(ingredient, "ingredient is null");
+        if (ingredient == ItemDescriptorWithCount.EMPTY || ingredient.getDescriptor() == InvalidDescriptor.INSTANCE) {
+            VarInts.writeInt(buffer, 0);
+            return;
+        }
+
+        checkArgument(ingredient.getDescriptor() instanceof DefaultDescriptor, "Descriptor must be of type DefaultDescriptor");
+        DefaultDescriptor descriptor = (DefaultDescriptor) ingredient.getDescriptor();
+
+        VarInts.writeInt(buffer, descriptor.getItemId().getRuntimeId());
+        VarInts.writeInt(buffer, toAuxValue(descriptor.getAuxValue()));
+        VarInts.writeInt(buffer, ingredient.getCount());
+    }
+
+    protected int fromAuxValue(int value) {
+        return value == 0x7fff ? -1 : value;
+    }
+
+    protected int toAuxValue(int value) {
+        return value == -1 ? 0x7fff : value;
     }
 }

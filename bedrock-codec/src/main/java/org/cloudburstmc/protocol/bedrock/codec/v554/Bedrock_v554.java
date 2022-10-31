@@ -23,7 +23,6 @@ public class Bedrock_v554 extends Bedrock_v545 {
             .minecraftVersion("1.19.30")
             .helper(() -> new BedrockCodecHelper_v554(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
             .updateSerializer(TextPacket.class, new TextSerializer_v554())
-            .updateSerializer(CraftingDataPacket.class, new CraftingDataSerializer_v554())
             .updateSerializer(NetworkSettingsPacket.class, new NetworkSettingsSerializer_v554())
             .updateSerializer(StructureBlockUpdatePacket.class, new StructureBlockUpdateSerializer_v554())
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
