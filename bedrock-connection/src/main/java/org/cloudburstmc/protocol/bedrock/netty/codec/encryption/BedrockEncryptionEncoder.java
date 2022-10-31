@@ -43,9 +43,10 @@ public class BedrockEncryptionEncoder extends MessageToMessageEncoder<ByteBuf> {
             ByteBuffer inBuffer = in.nioBuffer();
             ByteBuffer outBuffer = buf.nioBuffer(0, in.readableBytes() + 8);
 
-            this.cipher.update(inBuffer, outBuffer);
-            this.cipher.update(trailer, outBuffer);
+            int index = this.cipher.update(inBuffer, outBuffer);
+            index += this.cipher.update(trailer, outBuffer);
 
+            buf.writerIndex(index);
             out.add(buf.retain());
         } finally {
             buf.release();
