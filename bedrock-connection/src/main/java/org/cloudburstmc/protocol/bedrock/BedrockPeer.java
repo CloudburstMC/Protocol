@@ -47,12 +47,12 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPeer.class);
 
-    private final Int2ObjectMap<BedrockSession> sessions = new Int2ObjectOpenHashMap<>();
-    private final Queue<BedrockPacketWrapper> packetQueue = PlatformDependent.newMpscQueue();
-    private final Channel channel;
-    private final BedrockSessionFactory sessionFactory;
-    private ScheduledFuture<?> tickFuture;
-    private AtomicBoolean closed = new AtomicBoolean();
+    protected final Int2ObjectMap<BedrockSession> sessions = new Int2ObjectOpenHashMap<>();
+    protected final Queue<BedrockPacketWrapper> packetQueue = PlatformDependent.newMpscQueue();
+    protected final Channel channel;
+    protected final BedrockSessionFactory sessionFactory;
+    protected ScheduledFuture<?> tickFuture;
+    protected AtomicBoolean closed = new AtomicBoolean();
 
     public BedrockPeer(Channel channel, BedrockSessionFactory sessionFactory) {
         this.channel = channel;
@@ -61,8 +61,12 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     protected void onBedrockPacket(BedrockPacketWrapper wrapper) {
         int targetId = wrapper.getTargetSubClientId();
-        BedrockSession session = this.sessions.computeIfAbsent(targetId, id -> this.sessionFactory.createSession(this, id));
+        BedrockSession session = this.sessions.computeIfAbsent(targetId, this::onSessionCreated);
         session.onPacket(wrapper.getPacket());
+    }
+
+    protected BedrockSession onSessionCreated(int sessionId) {
+        return this.sessionFactory.createSession(this, sessionId);
     }
 
     protected void checkForClosed() {
@@ -203,6 +207,10 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     public SocketAddress getSocketAddress() {
         return this.channel.remoteAddress();
+    }
+
+    public Channel getChannel() {
+        return this.channel;
     }
 
     /*
