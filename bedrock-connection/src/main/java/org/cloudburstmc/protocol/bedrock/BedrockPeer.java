@@ -79,7 +79,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         this.sessions.remove(session.subClientId, session);
     }
 
-    private void onTick() {
+    protected void onTick() {
         if (!this.packetQueue.isEmpty()) {
             BedrockPacketWrapper packet;
             while ((packet = this.packetQueue.poll()) != null) {
@@ -123,7 +123,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
             throw new IllegalStateException("Encryption is already enabled");
         }
 
-        int protocolVersion = this.channel.pipeline().get(BedrockPacketCodec.class).getCodec().getProtocolVersion();
+        int protocolVersion = this.getCodec().getProtocolVersion();
         boolean useCtr = protocolVersion >= Bedrock_v428.CODEC.getProtocolVersion();
 
         this.channel.pipeline().addBefore(BedrockBatchDecoder.NAME, BedrockEncryptionEncoder.NAME,
@@ -160,6 +160,14 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
             throw new IllegalArgumentException("Peer has no compression!");
         }
         ((CompressionCodec) handler).setLevel(level);
+    }
+
+    public PacketCompressionAlgorithm getCompression() {
+        ChannelHandler handler = this.channel.pipeline().get(CompressionCodec.NAME);
+        if (!(handler instanceof CompressionCodec)) {
+            return null;
+        }
+        return ((CompressionCodec) handler).getAlgorithm();
     }
 
     public BedrockCodec getCodec() {

@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
 import lombok.RequiredArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.common.util.Zlib;
 
 import java.util.List;
@@ -41,5 +42,10 @@ public class ZlibCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    @Override
+    public PacketCompressionAlgorithm getAlgorithm() {
+        return PacketCompressionAlgorithm.ZLIB;
     }
 }

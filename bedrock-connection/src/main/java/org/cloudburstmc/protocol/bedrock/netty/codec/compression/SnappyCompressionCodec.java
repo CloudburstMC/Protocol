@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.compression;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 
 import java.util.List;
 
@@ -28,5 +29,10 @@ public class SnappyCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteB
     @Override
     public void setLevel(int level) {
         // no-op
+    }
+
+    @Override
+    public PacketCompressionAlgorithm getAlgorithm() {
+        return PacketCompressionAlgorithm.SNAPPY;
     }
 }

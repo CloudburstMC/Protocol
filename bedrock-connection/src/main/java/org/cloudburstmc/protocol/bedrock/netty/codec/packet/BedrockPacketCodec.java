@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.UnknownPacket;
 
 import java.util.List;
 
@@ -64,6 +65,9 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     public abstract void decodeHeader(ByteBuf buf, BedrockPacketWrapper msg);
 
     public final int getPacketId(BedrockPacket packet) {
+        if (packet instanceof UnknownPacket) {
+            return ((UnknownPacket) packet).getPacketId();
+        }
         return this.codec.getPacketDefinition(packet.getClass()).getId();
     }
 
