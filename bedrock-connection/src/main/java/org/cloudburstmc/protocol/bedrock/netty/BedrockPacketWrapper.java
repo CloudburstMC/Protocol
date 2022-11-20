@@ -22,13 +22,14 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
 
     @Override
     protected void deallocate() {
-        ReferenceCountUtil.release(packetBuffer);
+        ReferenceCountUtil.release(this.packet);
+        ReferenceCountUtil.release(this.packetBuffer);
     }
 
     @Override
     public BedrockPacketWrapper touch(Object hint) {
-        ReferenceCountUtil.release(packet);
-        ReferenceCountUtil.release(packetBuffer);
+        ReferenceCountUtil.touch(this.packet);
+        ReferenceCountUtil.touch(this.packetBuffer);
         return this;
     }
 }
