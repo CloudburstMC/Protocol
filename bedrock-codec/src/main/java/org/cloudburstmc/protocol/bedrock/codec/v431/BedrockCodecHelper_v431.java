@@ -9,6 +9,7 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v428.BedrockCodecHelper_v428;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -28,8 +29,8 @@ import static java.util.Objects.requireNonNull;
 public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
     public BedrockCodecHelper_v431(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes);
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override

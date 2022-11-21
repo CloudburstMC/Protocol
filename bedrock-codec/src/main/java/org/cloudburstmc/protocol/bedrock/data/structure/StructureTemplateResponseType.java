@@ -3,7 +3,11 @@ package org.cloudburstmc.protocol.bedrock.data.structure;
 public enum StructureTemplateResponseType {
     NONE,
     EXPORT,
-    QUERY;
+    QUERY,
+    /**
+     * @since v560
+     */
+    IMPORT;
 
     private static final StructureTemplateResponseType[] VALUES = StructureTemplateResponseType.values();
 

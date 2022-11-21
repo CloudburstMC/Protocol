@@ -21,10 +21,7 @@ import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
 import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
@@ -449,6 +446,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ContainerSlotType readContainerSlotType(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType) {
         throw new UnsupportedOperationException();
     }
 }

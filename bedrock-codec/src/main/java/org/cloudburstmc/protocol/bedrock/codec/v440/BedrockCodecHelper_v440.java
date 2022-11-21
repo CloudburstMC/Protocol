@@ -6,6 +6,7 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v431.BedrockCodecHelper_v431;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureAnimationMode;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureMirror;
@@ -17,9 +18,9 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v440 extends BedrockCodecHelper_v431 {
 
-    public BedrockCodecHelper_v440(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes);
+    public BedrockCodecHelper_v440(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes,
+                                   TypeMap<ContainerSlotType> containerSlotTypes) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override

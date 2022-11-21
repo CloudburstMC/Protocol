@@ -13,6 +13,7 @@ import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
@@ -189,4 +190,8 @@ public interface BedrockCodecHelper {
     ItemDescriptorWithCount readIngredient(ByteBuf buffer);
 
     void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient);
+
+    void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType);
+
+    ContainerSlotType readContainerSlotType(ByteBuf buffer);
 }

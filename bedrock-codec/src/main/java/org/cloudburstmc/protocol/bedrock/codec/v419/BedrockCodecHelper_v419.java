@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v407.BedrockCodecHelper_v407;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimatedTextureType;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
@@ -18,8 +19,8 @@ public class BedrockCodecHelper_v419 extends BedrockCodecHelper_v407 {
     protected static final AnimationExpressionType[] EXPRESSION_TYPES = AnimationExpressionType.values();
 
     public BedrockCodecHelper_v419(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes);
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override

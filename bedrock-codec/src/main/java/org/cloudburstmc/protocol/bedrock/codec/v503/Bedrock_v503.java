@@ -104,7 +104,7 @@ public class Bedrock_v503 extends Bedrock_v486 {
     public static final BedrockCodec CODEC = Bedrock_v486.CODEC.toBuilder()
             .protocolVersion(503)
             .minecraftVersion("1.18.30")
-            .helper(() -> new BedrockCodecHelper_v503(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v503(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v503())
             .updateSerializer(AddPlayerPacket.class, new AddPlayerSerializer_v503())
             .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))

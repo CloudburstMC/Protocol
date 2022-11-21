@@ -783,4 +783,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(GameTestResultsPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(UpdateClientInputLocksPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

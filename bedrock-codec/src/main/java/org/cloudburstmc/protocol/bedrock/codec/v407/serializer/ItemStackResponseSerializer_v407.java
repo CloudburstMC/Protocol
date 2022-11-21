@@ -31,8 +31,7 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
                 return;
 
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
-                buf2.writeByte(containerEntry.getContainer().ordinal());
-
+                helper.writeContainerSlotType(buf2, containerEntry.getContainer());
                 helper.writeArray(buf2, containerEntry.getItems(), this::writeItemEntry);
             });
         });
@@ -50,7 +49,7 @@ public class ItemStackResponseSerializer_v407 implements BedrockPacketSerializer
 
             List<ContainerEntry> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
-                ContainerSlotType container = ContainerSlotType.values()[buf2.readByte()];
+                ContainerSlotType container = helper.readContainerSlotType(buf2);
 
                 List<ItemEntry> itemEntries = new ArrayList<>();
                 helper.readArray(buf2, itemEntries, byteBuf -> this.readItemEntry(byteBuf, helper));

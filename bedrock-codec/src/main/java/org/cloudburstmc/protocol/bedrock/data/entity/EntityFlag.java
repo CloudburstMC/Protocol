@@ -107,5 +107,8 @@ public enum EntityFlag {
     EMERGING,
     SNIFFING,
     DIGGING,
-    SONIC_BOOM
+    SONIC_BOOM,
+    CAN_DASH,
+    HAS_DASH_COOLDOWN,
+    PUSH_TOWARDS_CLOSEST_SPACE
 }

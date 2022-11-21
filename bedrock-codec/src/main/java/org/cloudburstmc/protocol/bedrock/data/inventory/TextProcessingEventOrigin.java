@@ -12,5 +12,13 @@ public enum TextProcessingEventOrigin {
     LEAVE_EVENT_TEXT,
     SLASH_COMMAND_TEXT,
     CARTOGRAPHY_TEXT,
-    SLASH_COMMAND_NON_CHAT
+    SLASH_COMMAND_NON_CHAT,
+    /**
+     * @since v560
+     */
+    SCOREBOARD_TEXT,
+    /**
+     * @since v560
+     */
+    TICKING_AREA_TEXT
 }

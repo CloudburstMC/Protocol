@@ -24,11 +24,13 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
     protected final TypeMap<StackRequestActionType> stackRequestActionTypes;
+    protected final TypeMap<ContainerSlotType> containerSlotTypes;
 
     public BedrockCodecHelper_v407(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes) {
+                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes);
         this.stackRequestActionTypes = stackRequestActionTypes;
+        this.containerSlotTypes = containerSlotTypes;
     }
 
     @Override
@@ -247,16 +249,26 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
     protected StackRequestSlotInfoData readStackRequestSlotInfo(ByteBuf buffer) {
         return new StackRequestSlotInfoData(
-                ContainerSlotType.values()[buffer.readByte()],
+                this.readContainerSlotType(buffer),
                 buffer.readByte(),
                 VarInts.readInt(buffer)
         );
     }
 
     protected void writeStackRequestSlotInfo(ByteBuf buffer, StackRequestSlotInfoData data) {
-        buffer.writeByte(data.getContainer().ordinal());
+        this.writeContainerSlotType(buffer, data.getContainer());
         buffer.writeByte(data.getSlot());
         VarInts.writeInt(buffer, data.getStackNetworkId());
+    }
+
+    @Override
+    public ContainerSlotType readContainerSlotType(ByteBuf buffer) {
+        return this.containerSlotTypes.getType(buffer.readByte());
+    }
+
+    @Override
+    public void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType) {
+        buffer.writeByte(this.containerSlotTypes.getId(slotType));
     }
 
     @Override

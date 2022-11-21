@@ -44,7 +44,7 @@ public class Bedrock_v486 extends Bedrock_v475 {
     public static final BedrockCodec CODEC = Bedrock_v475.CODEC.toBuilder()
             .protocolVersion(486)
             .minecraftVersion("1.18.10")
-            .helper(() -> new BedrockCodecHelper_v465(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES))
+            .helper(() -> new BedrockCodecHelper_v465(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v486.INSTANCE)
             .updateSerializer(BossEventPacket.class, BossEventSerializer_v486.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
