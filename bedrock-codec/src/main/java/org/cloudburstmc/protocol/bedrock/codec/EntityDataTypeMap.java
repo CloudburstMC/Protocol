@@ -38,7 +38,7 @@ public class EntityDataTypeMap {
 
     public Builder toBuilder() {
         Builder builder = new Builder(copy(this.idDefinitions));
-        builder.typeDefinitionMap.putAll(this.typeDefinitionMap);
+        this.typeDefinitionMap.forEach((type, def) -> builder.typeDefinitionMap.put(type, def.copy()));
         return builder;
     }
 
@@ -54,6 +54,10 @@ public class EntityDataTypeMap {
         final EntityDataType<T> type;
         EntityDataTransformer<?, T> transformer;
         final EntityDataFormat format;
+
+        private Definition<T> copy() {
+            return new Definition<>(this.id, this.type, this.transformer, this.format);
+        }
     }
 
     private static int powerOfTwoCeiling(int value) {
@@ -76,7 +80,9 @@ public class EntityDataTypeMap {
                 if (array[i][i2] == null) continue;
                 int length = array[i][i2].length;
                 copy[i][i2] = new Definition[length];
-                System.arraycopy(array[i][i2], 0, copy[i][i2], 0, length);
+                for (int index = 0; index < copy[i][i2].length; index++) {
+                    copy[i][i2][index] = array[i][i2][index].copy();
+                }
             }
         }
         return copy;
