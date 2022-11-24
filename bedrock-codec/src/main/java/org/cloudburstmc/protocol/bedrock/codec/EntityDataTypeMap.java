@@ -235,6 +235,11 @@ public class EntityDataTypeMap {
 
             definition.transformer = transformer;
 
+            iterateIndex(definition.getId(), def -> {
+                if (def.getFormat() == definition.getFormat()) {
+                    ((Definition<T>) def).transformer = transformer;
+                }
+            });
             return this;
         }
 
