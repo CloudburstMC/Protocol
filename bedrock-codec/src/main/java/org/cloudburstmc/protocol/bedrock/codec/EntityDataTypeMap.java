@@ -205,7 +205,13 @@ public class EntityDataTypeMap {
                 int index = startIndex + delta + i;
                 Definition<?>[][] formats = this.types[index];
                 if (formats == null) continue;
-                iterateIndex(index, definition -> definition.id = index);
+                iterateIndex(index, definition -> {
+                    definition.id = index;
+                    Definition<?> def = this.typeDefinitionMap.get(definition.type);
+                    if (def != null) {
+                        def.id = index;
+                    }
+                });
             }
             return this;
         }
