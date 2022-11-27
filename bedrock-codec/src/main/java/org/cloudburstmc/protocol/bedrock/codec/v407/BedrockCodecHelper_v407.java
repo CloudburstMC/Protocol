@@ -5,11 +5,16 @@ import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v390.BedrockCodecHelper_v390;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.DefaultDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.InvalidDescriptor;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -23,11 +28,11 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
 
-    protected final TypeMap<StackRequestActionType> stackRequestActionTypes;
+    protected final TypeMap<ItemStackRequestActionType> stackRequestActionTypes;
     protected final TypeMap<ContainerSlotType> containerSlotTypes;
 
     public BedrockCodecHelper_v407(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes);
         this.stackRequestActionTypes = stackRequestActionTypes;
         this.containerSlotTypes = containerSlotTypes;
@@ -105,13 +110,13 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     @Override
     public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
         int requestId = VarInts.readInt(buffer);
-        List<StackRequestActionData> actions = new ArrayList<>();
+        List<ItemStackRequestAction> actions = new ArrayList<>();
 
         this.readArray(buffer, actions, byteBuf -> {
-            StackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
+            ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
             return readRequestActionData(byteBuf, type);
         });
-        return new ItemStackRequest(requestId, actions.toArray(new StackRequestActionData[0]), new String[0]);
+        return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), new String[0]);
     }
 
     @Override
@@ -119,143 +124,143 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         VarInts.writeInt(buffer, request.getRequestId());
 
         this.writeArray(buffer, request.getActions(), (byteBuf, action) -> {
-            StackRequestActionType type = action.getType();
+            ItemStackRequestActionType type = action.getType();
             byteBuf.writeByte(this.stackRequestActionTypes.getId(type));
             writeRequestActionData(byteBuf, action);
         });
     }
 
-    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action) {
+    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
         switch (action.getType()) {
             case TAKE:
             case PLACE:
-                byteBuf.writeByte(((TransferStackRequestActionData) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((TransferStackRequestActionData) action).getSource());
-                writeStackRequestSlotInfo(byteBuf, ((TransferStackRequestActionData) action).getDestination());
+                byteBuf.writeByte(((TransferItemStackRequestAction) action).getCount());
+                writeStackRequestSlotInfo(byteBuf, ((TransferItemStackRequestAction) action).getSource());
+                writeStackRequestSlotInfo(byteBuf, ((TransferItemStackRequestAction) action).getDestination());
                 break;
             case SWAP:
-                writeStackRequestSlotInfo(byteBuf, ((SwapStackRequestActionData) action).getSource());
-                writeStackRequestSlotInfo(byteBuf, ((SwapStackRequestActionData) action).getDestination());
+                writeStackRequestSlotInfo(byteBuf, ((SwapAction) action).getSource());
+                writeStackRequestSlotInfo(byteBuf, ((SwapAction) action).getDestination());
                 break;
             case DROP:
-                byteBuf.writeByte(((DropStackRequestActionData) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((DropStackRequestActionData) action).getSource());
-                byteBuf.writeBoolean(((DropStackRequestActionData) action).isRandomly());
+                byteBuf.writeByte(((DropAction) action).getCount());
+                writeStackRequestSlotInfo(byteBuf, ((DropAction) action).getSource());
+                byteBuf.writeBoolean(((DropAction) action).isRandomly());
                 break;
             case DESTROY:
-                byteBuf.writeByte(((DestroyStackRequestActionData) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((DestroyStackRequestActionData) action).getSource());
+                byteBuf.writeByte(((DestroyAction) action).getCount());
+                writeStackRequestSlotInfo(byteBuf, ((DestroyAction) action).getSource());
                 break;
             case CONSUME:
-                byteBuf.writeByte(((ConsumeStackRequestActionData) action).getCount());
-                writeStackRequestSlotInfo(byteBuf, ((ConsumeStackRequestActionData) action).getSource());
+                byteBuf.writeByte(((ConsumeAction) action).getCount());
+                writeStackRequestSlotInfo(byteBuf, ((ConsumeAction) action).getSource());
                 break;
             case CREATE:
-                byteBuf.writeByte(((CreateStackRequestActionData) action).getSlot());
+                byteBuf.writeByte(((CreateAction) action).getSlot());
                 break;
             case LAB_TABLE_COMBINE:
                 break;
             case BEACON_PAYMENT:
-                VarInts.writeInt(byteBuf, ((BeaconPaymentStackRequestActionData) action).getPrimaryEffect());
-                VarInts.writeInt(byteBuf, ((BeaconPaymentStackRequestActionData) action).getSecondaryEffect());
+                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getPrimaryEffect());
+                VarInts.writeInt(byteBuf, ((BeaconPaymentAction) action).getSecondaryEffect());
                 break;
             case CRAFT_RECIPE:
             case CRAFT_RECIPE_AUTO:
-                VarInts.writeUnsignedInt(byteBuf, ((RecipeStackRequestActionData) action).getRecipeNetworkId());
+                VarInts.writeUnsignedInt(byteBuf, ((RecipeItemStackRequestAction) action).getRecipeNetworkId());
                 break;
             case CRAFT_CREATIVE:
-                VarInts.writeUnsignedInt(byteBuf, ((CraftCreativeStackRequestActionData) action).getCreativeItemNetworkId());
+                VarInts.writeUnsignedInt(byteBuf, ((CraftCreativeAction) action).getCreativeItemNetworkId());
                 break;
             case CRAFT_NON_IMPLEMENTED_DEPRECATED:
                 break;
             case CRAFT_RESULTS_DEPRECATED:
-                this.writeArray(byteBuf, ((CraftResultsDeprecatedStackRequestActionData) action).getResultItems(), (buf2, item) -> this.writeItem(buf2, item));
-                byteBuf.writeByte(((CraftResultsDeprecatedStackRequestActionData) action).getTimesCrafted());
+                this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItems(), (buf2, item) -> this.writeItem(buf2, item));
+                byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getTimesCrafted());
                 break;
             default:
                 throw new UnsupportedOperationException("Unhandled stack request action type: " + action.getType());
         }
     }
 
-    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type) {
+    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         switch (type) {
             case TAKE:
-                return new TakeStackRequestActionData(
-                        byteBuf.readByte(),
+                return new TakeAction(
+                        byteBuf.readUnsignedByte(),
                         readStackRequestSlotInfo(byteBuf),
                         readStackRequestSlotInfo(byteBuf)
                 );
             case PLACE:
-                return new PlaceStackRequestActionData(
-                        byteBuf.readByte(),
+                return new PlaceAction(
+                        byteBuf.readUnsignedByte(),
                         readStackRequestSlotInfo(byteBuf),
                         readStackRequestSlotInfo(byteBuf)
                 );
             case SWAP:
-                return new SwapStackRequestActionData(
+                return new SwapAction(
                         readStackRequestSlotInfo(byteBuf),
                         readStackRequestSlotInfo(byteBuf)
                 );
             case DROP:
-                return new DropStackRequestActionData(
-                        byteBuf.readByte(),
+                return new DropAction(
+                        byteBuf.readUnsignedByte(),
                         readStackRequestSlotInfo(byteBuf),
                         byteBuf.readBoolean()
                 );
             case DESTROY:
-                return new DestroyStackRequestActionData(
-                        byteBuf.readByte(),
+                return new DestroyAction(
+                        byteBuf.readUnsignedByte(),
                         readStackRequestSlotInfo(byteBuf)
                 );
             case CONSUME:
-                return new ConsumeStackRequestActionData(
-                        byteBuf.readByte(),
+                return new ConsumeAction(
+                        byteBuf.readUnsignedByte(),
                         readStackRequestSlotInfo(byteBuf)
                 );
             case CREATE:
-                return new CreateStackRequestActionData(
-                        byteBuf.readByte()
+                return new CreateAction(
+                        byteBuf.readUnsignedByte()
                 );
             case LAB_TABLE_COMBINE:
-                return new LabTableCombineRequestActionData();
+                return new LabTableCombineAction();
             case BEACON_PAYMENT:
-                return new BeaconPaymentStackRequestActionData(
+                return new BeaconPaymentAction(
                         VarInts.readInt(byteBuf),
                         VarInts.readInt(byteBuf)
                 );
             case CRAFT_RECIPE:
-                return new CraftRecipeStackRequestActionData(
+                return new CraftRecipeAction(
                         VarInts.readUnsignedInt(byteBuf)
                 );
             case CRAFT_RECIPE_AUTO:
-                return new AutoCraftRecipeStackRequestActionData(
-                        VarInts.readUnsignedInt(byteBuf), (byte) 0, Collections.emptyList()
+                return new AutoCraftRecipeAction(
+                        VarInts.readUnsignedInt(byteBuf), 0, Collections.emptyList()
                 );
             case CRAFT_CREATIVE:
-                return new CraftCreativeStackRequestActionData(
+                return new CraftCreativeAction(
                         VarInts.readUnsignedInt(byteBuf)
                 );
             case CRAFT_NON_IMPLEMENTED_DEPRECATED:
-                return new CraftNonImplementedStackRequestActionData();
+                return new CraftNonImplementedAction();
             case CRAFT_RESULTS_DEPRECATED:
-                return new CraftResultsDeprecatedStackRequestActionData(
+                return new CraftResultsDeprecatedAction(
                         this.readArray(byteBuf, new ItemData[0], this::readItem),
-                        byteBuf.readByte()
+                        byteBuf.readUnsignedByte()
                 );
             default:
                 throw new UnsupportedOperationException("Unhandled stack request action type: " + type);
         }
     }
 
-    protected StackRequestSlotInfoData readStackRequestSlotInfo(ByteBuf buffer) {
-        return new StackRequestSlotInfoData(
+    protected ItemStackRequestSlotData readStackRequestSlotInfo(ByteBuf buffer) {
+        return new ItemStackRequestSlotData(
                 this.readContainerSlotType(buffer),
-                buffer.readByte(),
+                buffer.readUnsignedByte(),
                 VarInts.readInt(buffer)
         );
     }
 
-    protected void writeStackRequestSlotInfo(ByteBuf buffer, StackRequestSlotInfoData data) {
+    protected void writeStackRequestSlotInfo(ByteBuf buffer, ItemStackRequestSlotData data) {
         this.writeContainerSlotType(buffer, data.getContainer());
         buffer.writeByte(data.getSlot());
         VarInts.writeInt(buffer, data.getStackNetworkId());

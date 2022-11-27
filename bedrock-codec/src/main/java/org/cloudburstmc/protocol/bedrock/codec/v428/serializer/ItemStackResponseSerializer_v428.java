@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v428.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v422.serializer.ItemStackResponseSerializer_v422;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemEntry;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class ItemStackResponseSerializer_v428 extends ItemStackResponseSerializer_v422 {
@@ -11,18 +11,18 @@ public class ItemStackResponseSerializer_v428 extends ItemStackResponseSerialize
     public static final ItemStackResponseSerializer_v428 INSTANCE = new ItemStackResponseSerializer_v428();
 
     @Override
-    protected ItemEntry readItemEntry(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new ItemEntry(
-                buffer.readByte(),
-                buffer.readByte(),
-                buffer.readByte(),
+    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new ItemStackResponseSlot(
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
                 VarInts.readInt(buffer),
                 helper.readString(buffer),
                 VarInts.readInt(buffer));
     }
 
     @Override
-    protected void writeItemEntry(ByteBuf buffer, BedrockCodecHelper helper, ItemEntry itemEntry) {
+    protected void writeItemEntry(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponseSlot itemEntry) {
         super.writeItemEntry(buffer, helper, itemEntry);
         VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
     }

@@ -2,16 +2,15 @@ package org.cloudburstmc.protocol.bedrock.codec.v554;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -23,17 +22,17 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v503 {
     protected static final ItemDescriptorType[] DESCRIPTOR_TYPES = ItemDescriptorType.values();
 
     public BedrockCodecHelper_v554(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override
     public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
         int requestId = VarInts.readInt(buffer);
-        List<StackRequestActionData> actions = new ObjectArrayList<>();
+        List<ItemStackRequestAction> actions = new ObjectArrayList<>();
 
         this.readArray(buffer, actions, byteBuf -> {
-            StackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
+            ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
             return readRequestActionData(byteBuf, type);
         });
         List<String> filteredStrings = new ObjectArrayList<>();
@@ -41,7 +40,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v503 {
 
         int originVal = buffer.readIntLE();
         TextProcessingEventOrigin origin = originVal == -1 ? null : ORIGINS[originVal]; // new for v552
-        return new ItemStackRequest(requestId, actions.toArray(new StackRequestActionData[0]), filteredStrings.toArray(new String[0]), origin);
+        return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), filteredStrings.toArray(new String[0]), origin);
     }
 
     @Override

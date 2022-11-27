@@ -5,8 +5,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.InventoryTransactionSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetItemSlotData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.TransactionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransactionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.LegacySetItemSlotData;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -26,7 +26,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
             });
         }
 
-        TransactionType transactionType = packet.getTransactionType();
+        InventoryTransactionType transactionType = packet.getTransactionType();
         VarInts.writeUnsignedInt(buffer, transactionType.ordinal());
 
         helper.writeInventoryActions(buffer, packet.getActions(), packet.isUsingNetIds());
@@ -57,7 +57,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
             });
         }
 
-        TransactionType transactionType = TransactionType.values()[VarInts.readUnsignedInt(buffer)];
+        InventoryTransactionType transactionType = InventoryTransactionType.values()[VarInts.readUnsignedInt(buffer)];
         packet.setTransactionType(transactionType);
 
         packet.setUsingNetIds(helper.readInventoryActions(buffer, packet.getActions()));

@@ -10,12 +10,12 @@ import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v428.BedrockCodecHelper_v428;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.CraftResultsDeprecatedStackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftResultsDeprecatedAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufInputStream;
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
     public BedrockCodecHelper_v431(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
@@ -314,11 +314,11 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
     }
 
     @Override
-    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type) {
-        if (type == StackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
-            return new CraftResultsDeprecatedStackRequestActionData(
+    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
+        if (type == ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
+            return new CraftResultsDeprecatedAction(
                     this.readArray(byteBuf, new ItemData[0], this::readItemInstance),
-                    byteBuf.readByte()
+                    byteBuf.readUnsignedByte()
             );
         } else {
             return super.readRequestActionData(byteBuf, type);
@@ -326,10 +326,10 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action) {
-        if (action.getType() == StackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
-            this.writeArray(byteBuf, ((CraftResultsDeprecatedStackRequestActionData) action).getResultItems(), this::writeItemInstance);
-            byteBuf.writeByte(((CraftResultsDeprecatedStackRequestActionData) action).getTimesCrafted());
+    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
+        if (action.getType() == ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED) {
+            this.writeArray(byteBuf, ((CraftResultsDeprecatedAction) action).getResultItems(), this::writeItemInstance);
+            byteBuf.writeByte(((CraftResultsDeprecatedAction) action).getTimesCrafted());
         } else {
             super.writeRequestActionData(byteBuf, action);
         }

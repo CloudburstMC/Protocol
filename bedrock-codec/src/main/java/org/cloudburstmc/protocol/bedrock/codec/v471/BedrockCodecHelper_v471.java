@@ -4,42 +4,42 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.CraftGrindstoneStackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.CraftLoomStackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftGrindstoneAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftLoomAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
 
     public BedrockCodecHelper_v471(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override
-    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type) {
+    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         switch (type) {
             case CRAFT_REPAIR_AND_DISENCHANT:
-                return new CraftGrindstoneStackRequestActionData(VarInts.readUnsignedInt(byteBuf), VarInts.readInt(byteBuf));
+                return new CraftGrindstoneAction(VarInts.readUnsignedInt(byteBuf), VarInts.readInt(byteBuf));
             case CRAFT_LOOM:
-                return new CraftLoomStackRequestActionData(this.readString(byteBuf));
+                return new CraftLoomAction(this.readString(byteBuf));
             default:
                 return super.readRequestActionData(byteBuf, type);
         }
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action) {
+    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
         switch (action.getType()) {
             case CRAFT_REPAIR_AND_DISENCHANT:
-                CraftGrindstoneStackRequestActionData actionData = (CraftGrindstoneStackRequestActionData) action;
+                CraftGrindstoneAction actionData = (CraftGrindstoneAction) action;
                 VarInts.writeUnsignedInt(byteBuf, actionData.getRecipeNetworkId());
                 VarInts.writeInt(byteBuf, actionData.getRepairCost());
                 return;
             case CRAFT_LOOM:
-                this.writeString(byteBuf, ((CraftLoomStackRequestActionData) action).getPatternId());
+                this.writeString(byteBuf, ((CraftLoomAction) action).getPatternId());
                 return;
             default:
                 super.writeRequestActionData(byteBuf, action);

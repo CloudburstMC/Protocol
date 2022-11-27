@@ -9,9 +9,9 @@ import org.cloudburstmc.protocol.bedrock.data.entity.FloatEntityProperty;
 import org.cloudburstmc.protocol.bedrock.data.entity.IntEntityProperty;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.AutoCraftRecipeStackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.AutoCraftRecipeAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
 
     public BedrockCodecHelper_v557(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<StackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
@@ -51,13 +51,13 @@ public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
     }
 
     @Override
-    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type) {
-        if (type == StackRequestActionType.CRAFT_RECIPE_AUTO) {
+    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
+        if (type == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
             int recipeId = VarInts.readUnsignedInt(byteBuf);
-            byte timesCrafted = byteBuf.readByte();
+            int timesCrafted = byteBuf.readUnsignedByte();
             List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
             readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, (buf, helper) -> helper.readIngredient(buf));
-            return new AutoCraftRecipeStackRequestActionData(
+            return new AutoCraftRecipeAction(
                     recipeId,
                     timesCrafted,
                     ingredients
@@ -68,10 +68,10 @@ public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action) {
+    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
         super.writeRequestActionData(byteBuf, action);
-        if (action.getType() == StackRequestActionType.CRAFT_RECIPE_AUTO) {
-            List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeStackRequestActionData) action).getIngredients();
+        if (action.getType() == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
+            List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
             byteBuf.writeByte(ingredients.size());
             writeArray(byteBuf, ingredients, this::writeIngredient);
         }

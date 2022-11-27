@@ -18,7 +18,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
@@ -102,21 +102,21 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .insert(317, SoundEvent.UNDEFINED)
             .build();
 
-    protected static final TypeMap<StackRequestActionType> ITEM_STACK_REQUEST_TYPES = TypeMap.builder(StackRequestActionType.class)
-            .insert(0, StackRequestActionType.TAKE)
-            .insert(1, StackRequestActionType.PLACE)
-            .insert(2, StackRequestActionType.SWAP)
-            .insert(3, StackRequestActionType.DROP)
-            .insert(4, StackRequestActionType.DESTROY)
-            .insert(5, StackRequestActionType.CONSUME)
-            .insert(6, StackRequestActionType.CREATE)
-            .insert(7, StackRequestActionType.LAB_TABLE_COMBINE)
-            .insert(8, StackRequestActionType.BEACON_PAYMENT)
-            .insert(9, StackRequestActionType.CRAFT_RECIPE)
-            .insert(10, StackRequestActionType.CRAFT_RECIPE_AUTO)
-            .insert(11, StackRequestActionType.CRAFT_CREATIVE)
-            .insert(12, StackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED)
-            .insert(13, StackRequestActionType.CRAFT_RESULTS_DEPRECATED)
+    protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = TypeMap.builder(ItemStackRequestActionType.class)
+            .insert(0, ItemStackRequestActionType.TAKE)
+            .insert(1, ItemStackRequestActionType.PLACE)
+            .insert(2, ItemStackRequestActionType.SWAP)
+            .insert(3, ItemStackRequestActionType.DROP)
+            .insert(4, ItemStackRequestActionType.DESTROY)
+            .insert(5, ItemStackRequestActionType.CONSUME)
+            .insert(6, ItemStackRequestActionType.CREATE)
+            .insert(7, ItemStackRequestActionType.LAB_TABLE_COMBINE)
+            .insert(8, ItemStackRequestActionType.BEACON_PAYMENT)
+            .insert(9, ItemStackRequestActionType.CRAFT_RECIPE)
+            .insert(10, ItemStackRequestActionType.CRAFT_RECIPE_AUTO)
+            .insert(11, ItemStackRequestActionType.CRAFT_CREATIVE)
+            .insert(12, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED)
+            .insert(13, ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED)
             .build();
 
     protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = TypeMap.builder(ContainerSlotType.class)
