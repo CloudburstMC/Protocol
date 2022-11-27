@@ -3,7 +3,11 @@ package org.cloudburstmc.protocol.bedrock.codec.v419.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.ItemStackResponseSerializer_v407;
-import org.cloudburstmc.protocol.bedrock.data.inventory.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseStatus;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -21,7 +25,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
             buf.writeByte(response.getResult().ordinal());
             VarInts.writeInt(buffer, response.getRequestId());
 
-            if (response.getResult() != ResponseStatus.OK)
+            if (response.getResult() != ItemStackResponseStatus.OK)
                 return;
 
             helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
@@ -35,19 +39,19 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {
         List<ItemStackResponse> entries = packet.getEntries();
         helper.readArray(buffer, entries, buf -> {
-            ResponseStatus result = ResponseStatus.values()[buf.readByte()];
+            ItemStackResponseStatus result = ItemStackResponseStatus.values()[buf.readByte()];
             int requestId = VarInts.readInt(buf);
 
-            if (result != ResponseStatus.OK)
+            if (result != ItemStackResponseStatus.OK)
                 return new ItemStackResponse(result, requestId, Collections.emptyList());
 
-            List<ContainerEntry> containerEntries = new ArrayList<>();
+            List<ItemStackResponseContainer> containerEntries = new ArrayList<>();
             helper.readArray(buf, containerEntries, buf2 -> {
                 ContainerSlotType container = helper.readContainerSlotType(buf2);
 
-                List<ItemEntry> itemEntries = new ArrayList<>();
+                List<ItemStackResponseSlot> itemEntries = new ArrayList<>();
                 helper.readArray(buf2, itemEntries, byteBuf -> this.readItemEntry(buf2, helper));
-                return new ContainerEntry(container, itemEntries);
+                return new ItemStackResponseContainer(container, itemEntries);
             });
             return new ItemStackResponse(result, requestId, containerEntries);
         });

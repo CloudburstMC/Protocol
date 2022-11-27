@@ -7,10 +7,10 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.LegacySetItemSlotData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.TransactionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransactionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.LegacySetItemSlotData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class InventoryTransactionPacket implements BedrockPacket {
     private int legacyRequestId;
     private final List<LegacySetItemSlotData> legacySlots = new ObjectArrayList<>();
     private final List<InventoryActionData> actions = new ObjectArrayList<>();
-    private TransactionType transactionType;
+    private InventoryTransactionType transactionType;
     private int actionType;
     private long runtimeEntityId;
     private Vector3i blockPosition;

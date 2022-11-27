@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -28,10 +28,10 @@ public class Bedrock_v486 extends Bedrock_v475 {
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<StackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v475.ITEM_STACK_REQUEST_TYPES.toBuilder()
+    protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v475.ITEM_STACK_REQUEST_TYPES.toBuilder()
             .shift(7, 2)
-            .insert(7, StackRequestActionType.PLACE_IN_ITEM_CONTAINER)
-            .insert(8, StackRequestActionType.TAKE_FROM_ITEM_CONTAINER)
+            .insert(7, ItemStackRequestActionType.PLACE_IN_ITEM_CONTAINER)
+            .insert(8, ItemStackRequestActionType.TAKE_FROM_ITEM_CONTAINER)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v475.SOUND_EVENTS.toBuilder()

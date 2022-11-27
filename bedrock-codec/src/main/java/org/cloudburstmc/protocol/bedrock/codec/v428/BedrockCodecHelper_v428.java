@@ -5,9 +5,9 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v422.BedrockCodecHelper_v422;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.MineBlockStackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.MineBlockAction;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -18,16 +18,16 @@ import static java.util.Objects.requireNonNull;
 
 public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
 
-    public BedrockCodecHelper_v428(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<StackRequestActionType> stackRequestActionTypes,
+    public BedrockCodecHelper_v428(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
                                    TypeMap<ContainerSlotType> containerSlotTypes) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
     }
 
     @Override
-    protected StackRequestActionData readRequestActionData(ByteBuf byteBuf, StackRequestActionType type) {
-        StackRequestActionData action;
-        if (type == StackRequestActionType.MINE_BLOCK) {
-            action = new MineBlockStackRequestActionData(VarInts.readInt(byteBuf), VarInts.readInt(byteBuf), VarInts.readInt(byteBuf));
+    protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
+        ItemStackRequestAction action;
+        if (type == ItemStackRequestActionType.MINE_BLOCK) {
+            action = new MineBlockAction(VarInts.readInt(byteBuf), VarInts.readInt(byteBuf), VarInts.readInt(byteBuf));
         } else {
             action = super.readRequestActionData(byteBuf, type);
         }
@@ -35,11 +35,11 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
     }
 
     @Override
-    protected void writeRequestActionData(ByteBuf byteBuf, StackRequestActionData action) {
-        if (action.getType() == StackRequestActionType.MINE_BLOCK) {
-            VarInts.writeInt(byteBuf, ((MineBlockStackRequestActionData) action).getHotbarSlot());
-            VarInts.writeInt(byteBuf, ((MineBlockStackRequestActionData) action).getPredictedDurability());
-            VarInts.writeInt(byteBuf, ((MineBlockStackRequestActionData) action).getStackNetworkId());
+    protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
+        if (action.getType() == ItemStackRequestActionType.MINE_BLOCK) {
+            VarInts.writeInt(byteBuf, ((MineBlockAction) action).getHotbarSlot());
+            VarInts.writeInt(byteBuf, ((MineBlockAction) action).getPredictedDurability());
+            VarInts.writeInt(byteBuf, ((MineBlockAction) action).getStackNetworkId());
         } else {
             super.writeRequestActionData(byteBuf, action);
         }

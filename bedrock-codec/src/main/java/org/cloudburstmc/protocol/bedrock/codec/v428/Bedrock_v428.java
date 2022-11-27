@@ -18,7 +18,7 @@ import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
-import org.cloudburstmc.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -70,9 +70,9 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .insert(332, SoundEvent.UNDEFINED)
             .build();
 
-    protected static final TypeMap<StackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v422.ITEM_STACK_REQUEST_TYPES.toBuilder()
+    protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_TYPES = Bedrock_v422.ITEM_STACK_REQUEST_TYPES.toBuilder()
             .shift(9, 1)
-            .insert(9, StackRequestActionType.MINE_BLOCK)
+            .insert(9, ItemStackRequestActionType.MINE_BLOCK)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v422.CODEC.toBuilder()

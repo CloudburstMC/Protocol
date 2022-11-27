@@ -7,8 +7,8 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemStackRequest;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemUseTransaction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTransaction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.EnumSet;

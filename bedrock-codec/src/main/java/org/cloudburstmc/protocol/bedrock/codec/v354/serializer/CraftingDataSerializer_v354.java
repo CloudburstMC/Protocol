@@ -6,9 +6,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.CraftingDataSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingData;
-import org.cloudburstmc.protocol.bedrock.data.inventory.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingData;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
