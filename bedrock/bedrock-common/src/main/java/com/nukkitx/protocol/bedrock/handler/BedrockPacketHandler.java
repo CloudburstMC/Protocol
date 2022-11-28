@@ -776,4 +776,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(GameTestResultsPacket packet) {
         return false;
     }
+
+    default boolean handle(UpdateClientInputLocksPacket packet) {
+        return false;
+    }
 }
