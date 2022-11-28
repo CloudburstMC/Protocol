@@ -22,6 +22,7 @@ public enum ContainerSlotType {
     RECIPE_SEARCH,
     RECIPE_SEARCH_BAR,
     RECIPE_EQUIPMENT,
+    RECIPE_BOOK,
     ENCHANTING_INPUT,
     ENCHANTING_LAPIS,
     FURNACE_FUEL,
@@ -60,6 +61,5 @@ public enum ContainerSlotType {
     CARTOGRAPHY_RESULT,
     BARREL,
     CURSOR,
-    CREATIVE_OUTPUT,
-    RECIPE_BOOK
+    CREATIVE_OUTPUT
 }

@@ -47,6 +47,7 @@ public enum EntityFlag {
     CHARGING,
     WASD_CONTROLLED,
     CAN_POWER_JUMP,
+    CAN_DASH,
     LINGERING,
     HAS_COLLISION,
     HAS_GRAVITY,
@@ -111,6 +112,6 @@ public enum EntityFlag {
      * @since v526
      */
     SONIC_BOOM,
-    CAN_DASH,
     HAS_DASH_COOLDOWN,
-    PUSH_TOWARDS_CLOSEST_SPACE}
+    PUSH_TOWARDS_CLOSEST_SPACE
+}
