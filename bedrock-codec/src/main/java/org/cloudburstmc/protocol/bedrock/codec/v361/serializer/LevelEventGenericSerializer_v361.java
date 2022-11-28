@@ -1,26 +1,29 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361.serializer;
 
 import io.netty.buffer.ByteBuf;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.packet.LevelEventGenericPacket;
+import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class LevelEventGenericSerializer_v361 implements BedrockPacketSerializer<LevelEventGenericPacket> {
-    public static final LevelEventGenericSerializer_v361 INSTANCE = new LevelEventGenericSerializer_v361();
+
+    private final TypeMap<LevelEventType> typeMap;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelEventGenericPacket packet) {
-        VarInts.writeInt(buffer, packet.getEventId());
+        VarInts.writeInt(buffer, typeMap.getId(packet.getType()));
         helper.writeTag(buffer, packet.getTag());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LevelEventGenericPacket packet) {
-        packet.setEventId(VarInts.readInt(buffer));
+        int eventId = VarInts.readInt(buffer);
+        packet.setType(typeMap.getType(eventId));
         packet.setTag(helper.readTag(buffer, Object.class));
     }
 }
