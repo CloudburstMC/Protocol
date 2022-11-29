@@ -116,7 +116,6 @@ import com.nukkitx.protocol.bedrock.v554.serializer.RequestNetworkSettingsSerial
 import com.nukkitx.protocol.bedrock.v554.serializer.ServerStatsSerializer_v554;
 import com.nukkitx.protocol.bedrock.v554.serializer.StructureBlockUpdateSerializer_v554;
 import com.nukkitx.protocol.bedrock.v554.serializer.TextSerializer_v554;
-import com.nukkitx.protocol.bedrock.v557.BedrockPacketHelper_v557;
 import com.nukkitx.protocol.bedrock.v557.serializer.AddEntitySerializer_v557;
 import com.nukkitx.protocol.bedrock.v557.serializer.AddPlayerSerializer_v557;
 import com.nukkitx.protocol.bedrock.v557.serializer.SetEntityDataSerializer_v557;

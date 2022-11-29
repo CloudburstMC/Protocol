@@ -81,12 +81,7 @@ public class BedrockPacketHelper_v560 extends BedrockPacketHelper_v557 {
     protected void registerEntityFlags() {
         super.registerEntityFlags();
 
-        this.addEntityFlag(41, EntityFlag.CAN_DASH); // v560
-        this.addEntityFlag(42, EntityFlag.IDLING);
-        this.addEntityFlag(43, EntityFlag.CASTING);
-        this.addEntityFlag(44, EntityFlag.CHARGING);
-        this.addEntityFlag(45, EntityFlag.WASD_CONTROLLED);
-        this.addEntityFlag(46, EntityFlag.CAN_POWER_JUMP);
+        this.addEntityFlag(46, EntityFlag.CAN_DASH); // v560
         this.addEntityFlag(47, EntityFlag.LINGERING);
         this.addEntityFlag(49, EntityFlag.HAS_COLLISION);
         this.addEntityFlag(49, EntityFlag.HAS_GRAVITY);
