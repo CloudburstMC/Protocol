@@ -60,5 +60,6 @@ public enum ContainerSlotType {
     CARTOGRAPHY_RESULT,
     BARREL,
     CURSOR,
-    CREATIVE_OUTPUT
+    CREATIVE_OUTPUT,
+    RECIPE_BOOK
 }

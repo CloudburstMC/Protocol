@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.v407;
 
 import com.nukkitx.network.VarInts;
 import com.nukkitx.network.util.Preconditions;
+import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockSession;
 import com.nukkitx.protocol.bedrock.data.LevelEventType;
 import com.nukkitx.protocol.bedrock.data.SoundEvent;
@@ -121,6 +122,80 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
         this.addSoundEvent(314, SoundEvent.RECORD_PIGSTEP);
         this.addSoundEvent(315, SoundEvent.LINK_COMPASS_TO_LODESTONE);
         this.addSoundEvent(316, SoundEvent.USE_SMITHING_TABLE);
+    }
+
+    @Override
+    protected void registerContainerSlotTypes() {
+        this.containerSlotTypes.put(0, ContainerSlotType.ANVIL_INPUT);
+        this.containerSlotTypes.put(1, ContainerSlotType.ANVIL_MATERIAL);
+        this.containerSlotTypes.put(2, ContainerSlotType.ANVIL_RESULT);
+        this.containerSlotTypes.put(3, ContainerSlotType.SMITHING_TABLE_INPUT);
+        this.containerSlotTypes.put(4, ContainerSlotType.SMITHING_TABLE_MATERIAL);
+        this.containerSlotTypes.put(5, ContainerSlotType.SMITHING_TABLE_RESULT);
+        this.containerSlotTypes.put(6, ContainerSlotType.ARMOR);
+        this.containerSlotTypes.put(7, ContainerSlotType.CONTAINER);
+        this.containerSlotTypes.put(8, ContainerSlotType.BEACON_PAYMENT);
+        this.containerSlotTypes.put(9, ContainerSlotType.BREWING_INPUT);
+        this.containerSlotTypes.put(10, ContainerSlotType.BREWING_RESULT);
+        this.containerSlotTypes.put(11, ContainerSlotType.BREWING_FUEL);
+        this.containerSlotTypes.put(12, ContainerSlotType.HOTBAR_AND_INVENTORY);
+        this.containerSlotTypes.put(13, ContainerSlotType.CRAFTING_INPUT);
+        this.containerSlotTypes.put(14, ContainerSlotType.CRAFTING_OUTPUT);
+        this.containerSlotTypes.put(15, ContainerSlotType.RECIPE_CONSTRUCTION);
+        this.containerSlotTypes.put(16, ContainerSlotType.RECIPE_NATURE);
+        this.containerSlotTypes.put(17, ContainerSlotType.RECIPE_ITEMS);
+        this.containerSlotTypes.put(18, ContainerSlotType.RECIPE_SEARCH);
+        this.containerSlotTypes.put(19, ContainerSlotType.RECIPE_SEARCH_BAR);
+        this.containerSlotTypes.put(20, ContainerSlotType.RECIPE_EQUIPMENT);
+        this.containerSlotTypes.put(21, ContainerSlotType.ENCHANTING_INPUT);
+        this.containerSlotTypes.put(22, ContainerSlotType.ENCHANTING_LAPIS);
+        this.containerSlotTypes.put(23, ContainerSlotType.FURNACE_FUEL);
+        this.containerSlotTypes.put(24, ContainerSlotType.FURNACE_INGREDIENT);
+        this.containerSlotTypes.put(25, ContainerSlotType.FURNACE_OUTPUT);
+        this.containerSlotTypes.put(26, ContainerSlotType.HORSE_EQUIP);
+        this.containerSlotTypes.put(27, ContainerSlotType.HOTBAR);
+        this.containerSlotTypes.put(28, ContainerSlotType.INVENTORY);
+        this.containerSlotTypes.put(29, ContainerSlotType.SHULKER);
+        this.containerSlotTypes.put(30, ContainerSlotType.TRADE_INGREDIENT1);
+        this.containerSlotTypes.put(31, ContainerSlotType.TRADE_INGREDIENT2);
+        this.containerSlotTypes.put(32, ContainerSlotType.TRADE_RESULT);
+        this.containerSlotTypes.put(33, ContainerSlotType.OFFHAND);
+        this.containerSlotTypes.put(34, ContainerSlotType.COMPCREATE_INPUT);
+        this.containerSlotTypes.put(35, ContainerSlotType.COMPCREATE_OUTPUT);
+        this.containerSlotTypes.put(36, ContainerSlotType.ELEMCONSTRUCT_OUTPUT);
+        this.containerSlotTypes.put(37, ContainerSlotType.MATREDUCE_INPUT);
+        this.containerSlotTypes.put(38, ContainerSlotType.MATREDUCE_OUTPUT);
+        this.containerSlotTypes.put(39, ContainerSlotType.LABTABLE_INPUT);
+        this.containerSlotTypes.put(40, ContainerSlotType.LOOM_INPUT);
+        this.containerSlotTypes.put(41, ContainerSlotType.LOOM_DYE);
+        this.containerSlotTypes.put(42, ContainerSlotType.LOOM_MATERIAL);
+        this.containerSlotTypes.put(43, ContainerSlotType.LOOM_RESULT);
+        this.containerSlotTypes.put(44, ContainerSlotType.BLAST_FURNACE_INGREDIENT);
+        this.containerSlotTypes.put(45, ContainerSlotType.SMOKER_INGREDIENT);
+        this.containerSlotTypes.put(46, ContainerSlotType.TRADE2_INGREDIENT1);
+        this.containerSlotTypes.put(47, ContainerSlotType.TRADE2_INGREDIENT2);
+        this.containerSlotTypes.put(48, ContainerSlotType.TRADE2_RESULT);
+        this.containerSlotTypes.put(49, ContainerSlotType.GRINDSTONE_INPUT);
+        this.containerSlotTypes.put(50, ContainerSlotType.GRINDSTONE_ADDITIONAL);
+        this.containerSlotTypes.put(51, ContainerSlotType.GRINDSTONE_RESULT);
+        this.containerSlotTypes.put(52, ContainerSlotType.STONECUTTER_INPUT);
+        this.containerSlotTypes.put(53, ContainerSlotType.STONECUTTER_RESULT);
+        this.containerSlotTypes.put(54, ContainerSlotType.CARTOGRAPHY_INPUT);
+        this.containerSlotTypes.put(55, ContainerSlotType.CARTOGRAPHY_ADDITIONAL);
+        this.containerSlotTypes.put(56, ContainerSlotType.CARTOGRAPHY_RESULT);
+        this.containerSlotTypes.put(57, ContainerSlotType.BARREL);
+        this.containerSlotTypes.put(58, ContainerSlotType.CURSOR);
+        this.containerSlotTypes.put(59, ContainerSlotType.CREATIVE_OUTPUT);
+    }
+
+    @Override
+    public ContainerSlotType readContainerSlotType(ByteBuf buffer) {
+        return this.containerSlotTypes.get(buffer.readByte());
+    }
+
+    @Override
+    public void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType) {
+        buffer.writeByte(this.containerSlotTypes.get(slotType));
     }
 
     @Override
@@ -369,14 +444,14 @@ public class BedrockPacketHelper_v407 extends BedrockPacketHelper_v390 {
 
     protected StackRequestSlotInfoData readStackRequestSlotInfo(ByteBuf buffer) {
         return new StackRequestSlotInfoData(
-                ContainerSlotType.values()[buffer.readByte()],
+                readContainerSlotType(buffer),
                 buffer.readByte(),
                 VarInts.readInt(buffer)
         );
     }
 
     protected void writeStackRequestSlotInfo(ByteBuf buffer, StackRequestSlotInfoData data) {
-        buffer.writeByte(data.getContainer().ordinal());
+        writeContainerSlotType(buffer, data.getContainer());
         buffer.writeByte(data.getSlot());
         VarInts.writeInt(buffer, data.getStackNetworkId());
     }

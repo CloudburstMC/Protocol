@@ -681,6 +681,11 @@ public class BedrockPacketHelper_v291 extends BedrockPacketHelper {
     }
 
     @Override
+    protected void registerContainerSlotTypes() {
+        // NOOP
+    }
+
+    @Override
     public EntityLinkData readEntityLink(ByteBuf buffer) {
         Preconditions.checkNotNull(buffer, "buffer");
 

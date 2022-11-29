@@ -42,5 +42,6 @@
         <module>bedrock-v545</module>
         <module>bedrock-v554</module>
         <module>bedrock-v557</module>
+        <module>bedrock-v560</module>
     </modules>
 </project>
