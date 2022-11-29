@@ -131,6 +131,7 @@ public class BedrockPacketHelper_v560 extends BedrockPacketHelper_v557 {
         this.addEntityFlag(93, EntityFlag.CELEBRATING);
         this.addEntityFlag(94, EntityFlag.ADMIRING);
         this.addEntityFlag(95, EntityFlag.CELEBRATING_SPECIAL);
+        this.addEntityFlag(96, EntityFlag.OUT_OF_CONTROL);
         this.addEntityFlag(97, EntityFlag.RAM_ATTACK);
         this.addEntityFlag(98, EntityFlag.PLAYING_DEAD);
         this.addEntityFlag(99, EntityFlag.IN_ASCENDABLE_BLOCK);
