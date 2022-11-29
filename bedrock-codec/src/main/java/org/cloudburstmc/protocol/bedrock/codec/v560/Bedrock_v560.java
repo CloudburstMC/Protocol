@@ -61,6 +61,6 @@ public class Bedrock_v560 extends Bedrock_v557 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(UpdateClientInputLocksPacket.class, new UpdateClientInputLocksSerializer_v560(), 169)
+            .registerPacket(UpdateClientInputLocksPacket.class, new UpdateClientInputLocksSerializer_v560(), 196)
             .build();
 }
