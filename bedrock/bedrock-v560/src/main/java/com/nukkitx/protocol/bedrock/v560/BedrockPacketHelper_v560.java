@@ -83,7 +83,7 @@ public class BedrockPacketHelper_v560 extends BedrockPacketHelper_v557 {
 
         this.addEntityFlag(46, EntityFlag.CAN_DASH); // v560
         this.addEntityFlag(47, EntityFlag.LINGERING);
-        this.addEntityFlag(49, EntityFlag.HAS_COLLISION);
+        this.addEntityFlag(48, EntityFlag.HAS_COLLISION);
         this.addEntityFlag(49, EntityFlag.HAS_GRAVITY);
         this.addEntityFlag(50, EntityFlag.FIRE_IMMUNE);
         this.addEntityFlag(51, EntityFlag.DANCING);
