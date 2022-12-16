@@ -7,3 +7,9 @@ dependencies {
     api(libs.nbt)
     api(libs.lmbda)
 }
+
+tasks.jar {
+    manifest {
+        attributes("Automatic-Module-Name" to "org.cloudburstmc.protocol.bedrock.codec")
+    }
+}
