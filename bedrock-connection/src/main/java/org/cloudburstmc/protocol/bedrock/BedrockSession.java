@@ -169,4 +169,8 @@ public abstract class BedrockSession {
     }
 
     public abstract void disconnect(String reason, boolean hideReason);
+
+    public boolean isConnected() {
+        return !this.closed.get();
+    }
 }
