@@ -16,7 +16,7 @@ netty-buffer = { group = "io.netty", name = "netty-buffer", version.ref = "netty
 netty-transport-raknet = { group = "org.cloudburstmc.netty", name = "netty-transport-raknet", version = "0.0.1.Final-SNAPSHOT" }
 
 jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version = "9.10.1" }
-natives = { group = "com.nukkitx", name = "natives", version = "1.0.2" }
+natives = { group = "com.nukkitx", name = "natives", version = "1.0.3" }
 math = { group = "org.cloudburstmc.math", name = "immutable", version = "2.0-SNAPSHOT" }
 nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.0.Final" }
 lmbda = { group = "org.lanternpowered", name = "lmbda", version = "2.0.0" }
