@@ -36,6 +36,7 @@ public class ContainerId {
      * @deprecated From 1.16 (407) and onwards, the creative menu is handled from
      * {@link org.cloudburstmc.protocol.bedrock.packet.CreativeContentPacket}
      */
+    @Deprecated
     public static final int CREATIVE = 121;
     public static final int HOTBAR = 122;
     public static final int FIXED_INVENTORY = 123;

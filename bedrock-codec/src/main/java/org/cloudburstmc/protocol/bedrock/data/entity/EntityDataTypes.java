@@ -213,6 +213,7 @@ public class EntityDataTypes {
      *
      * @deprecated unused AFAIK
      */
+    @Deprecated
     public static final EntityDataType<Integer> CAREER = new EntityDataType<Integer>() {
     };
     public static final EntityDataType<Boolean> COMMAND_BLOCK_ENABLED = new EntityDataType<Boolean>() {
@@ -354,6 +355,7 @@ public class EntityDataTypes {
      *
      * @deprecated v557
      */
+    @Deprecated
     public static final EntityDataType<NbtMap> UPDATE_PROPERTIES = new EntityDataType<NbtMap>() {
     };
     public static final EntityDataType<Float> FREEZING_EFFECT_STRENGTH = new EntityDataType<Float>() {

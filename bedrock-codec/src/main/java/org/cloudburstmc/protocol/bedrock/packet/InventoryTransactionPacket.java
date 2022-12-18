@@ -36,6 +36,7 @@ public class InventoryTransactionPacket implements BedrockPacket {
      * @since v407
      * @deprecated v431
      */
+    @Deprecated
     private boolean usingNetIds;
     /**
      * Block definition of block being picked.
