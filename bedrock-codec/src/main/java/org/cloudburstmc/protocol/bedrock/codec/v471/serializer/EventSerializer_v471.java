@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v389.serializer.EventSerializer_v
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.event.*;
+import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class EventSerializer_v471 extends EventSerializer_v389 {
@@ -58,7 +59,7 @@ public class EventSerializer_v471 extends EventSerializer_v389 {
 
     protected void writeCopperWaxedUnwaxed(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
         CopperWaxedOrUnwaxedEventData event = (CopperWaxedOrUnwaxedEventData) eventData;
-        VarInts.writeInt(buffer, helper.getBlockDefinitions().checkMappedDefinition(event.getDefinition()).getRuntimeId());
+        VarInts.writeInt(buffer, DefinitionUtils.checkDefinition(helper.getBlockDefinitions(), event.getDefinition()).getRuntimeId());
     }
 
     protected CodeBuilderActionEventData readCodeBuilderAction(ByteBuf buffer, BedrockCodecHelper helper) {

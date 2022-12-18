@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.transformer;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
+import org.cloudburstmc.protocol.common.util.DefinitionUtils;
 
 public class BlockDefinitionTransformer implements EntityDataTransformer<Integer, BlockDefinition> {
 
@@ -13,7 +14,7 @@ public class BlockDefinitionTransformer implements EntityDataTransformer<Integer
         }
 
         // Make sure definition is present in known block registry
-        return helper.getBlockDefinitions().checkMappedDefinition(value).getRuntimeId();
+        return DefinitionUtils.checkDefinition(helper.getBlockDefinitions(), value).getRuntimeId();
     }
 
     @Override

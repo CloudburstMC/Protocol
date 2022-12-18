@@ -1,12 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.data.defintions;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.cloudburstmc.nbt.NbtMap;
 
+import java.util.TreeMap;
+
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class SimpleBlockDefinition extends BlockDefinition {
+public class SimpleBlockDefinition implements BlockDefinition {
     private final String identifier;
     private final int runtimeId;
     private final NbtMap state;
@@ -14,10 +14,21 @@ public class SimpleBlockDefinition extends BlockDefinition {
     // Cache identifier as this implementation is immutable
     private transient String persistentIdentifier;
 
-    @Override
     public String getPersistentIdentifier() {
         if (this.persistentIdentifier == null) {
-            this.persistentIdentifier = super.getPersistentIdentifier();
+            // This is not most performant solution,
+            // but will make sure the identifier is always equal for the block state
+            StringBuilder builder = new StringBuilder(this.getIdentifier());
+            if (!this.getState().isEmpty()) {
+                TreeMap<String, String> properties = new TreeMap<>();
+                NbtMap states = getState().getCompound("states");
+                for (String stateName : states.keySet()) {
+                    String value = states.get(stateName).toString();
+                    properties.put(stateName, value);
+                }
+                properties.forEach((name, state) -> builder.append("|").append(name).append("=").append(state));
+            }
+            this.persistentIdentifier = builder.toString();
         }
         return this.persistentIdentifier;
     }
