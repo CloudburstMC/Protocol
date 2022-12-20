@@ -238,8 +238,10 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        this.tickFuture.cancel(false);
-        this.tickFuture = null;
+        if (this.tickFuture != null) {
+            this.tickFuture.cancel(false);
+            this.tickFuture = null;
+        }
         this.onClose();
     }
 
