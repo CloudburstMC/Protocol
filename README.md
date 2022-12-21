@@ -142,6 +142,7 @@ server.bind().join();
 | bedrock-v545 |       1.19.21       |
 | bedrock-v554 |       1.19.31       |
 | bedrock-v557 |       1.19.40       |
+| bedrock-v560 |  1.19.50 - 1.19.51  |
 
 ##### Repository:
 
