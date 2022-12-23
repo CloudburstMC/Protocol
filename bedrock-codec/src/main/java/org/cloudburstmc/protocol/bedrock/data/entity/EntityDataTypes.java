@@ -64,7 +64,7 @@ public class EntityDataTypes {
     };
     public static final EntityDataType<BlockDefinition> DISPLAY_BLOCK_STATE = new EntityDataType<BlockDefinition>() {
     };
-    public static final EntityDataType<Vector3i> DISPLAY_OFFSET = new EntityDataType<Vector3i>() {
+    public static final EntityDataType<Integer> DISPLAY_OFFSET = new EntityDataType<Integer>() {
     };
     public static final EntityDataType<Byte> CUSTOM_DISPLAY = new EntityDataType<Byte>() {
     };

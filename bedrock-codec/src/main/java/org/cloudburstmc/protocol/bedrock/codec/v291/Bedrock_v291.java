@@ -158,7 +158,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.DISPLAY_FIREWORK, 16, EntityDataFormat.NBT)
             .insert(EntityDataTypes.HORSE_FLAGS, 16, EntityDataFormat.INT)
             .insert(EntityDataTypes.WITHER_SKULL_DANGEROUS, 16, EntityDataFormat.BYTE)
-            .insert(EntityDataTypes.DISPLAY_OFFSET, 17, EntityDataFormat.VECTOR3I)
+            .insert(EntityDataTypes.DISPLAY_OFFSET, 17, EntityDataFormat.INT)
             .insert(EntityDataTypes.CUSTOM_DISPLAY, 18, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.HORSE_TYPE, 19, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.OLD_SWELL, 20, EntityDataFormat.INT)
