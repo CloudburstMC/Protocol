@@ -118,8 +118,7 @@ public abstract class BedrockSession {
         this.logInbound(packet);
         if (packetHandler == null) {
             log.warn("Received packet without a packet handler for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);
-        }
-        if (this.packetHandler.handlePacket(packet) == PacketSignal.UNHANDLED) {
+        } else if (this.packetHandler.handlePacket(packet) == PacketSignal.UNHANDLED) {
             log.warn("Unhandled packet for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);
         }
     }
