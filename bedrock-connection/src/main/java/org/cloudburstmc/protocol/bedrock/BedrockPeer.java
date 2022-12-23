@@ -19,6 +19,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v428.Bedrock_v428;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
+import org.cloudburstmc.protocol.bedrock.netty.codec.FrameIdCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.compression.SnappyCompressionCodec;
@@ -126,9 +127,9 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         int protocolVersion = this.getCodec().getProtocolVersion();
         boolean useCtr = protocolVersion >= Bedrock_v428.CODEC.getProtocolVersion();
 
-        this.channel.pipeline().addBefore(BedrockBatchDecoder.NAME, BedrockEncryptionEncoder.NAME,
+        this.channel.pipeline().addAfter(FrameIdCodec.NAME, BedrockEncryptionEncoder.NAME,
                 new BedrockEncryptionEncoder(secretKey, EncryptionUtils.createCipher(useCtr, true, secretKey)));
-        this.channel.pipeline().addBefore(BedrockEncryptionEncoder.NAME, BedrockEncryptionDecoder.NAME,
+        this.channel.pipeline().addAfter(FrameIdCodec.NAME, BedrockEncryptionDecoder.NAME,
                 new BedrockEncryptionDecoder(secretKey, EncryptionUtils.createCipher(useCtr, false, secretKey)));
 
         log.debug("Encryption enabled for {}", getSocketAddress());
