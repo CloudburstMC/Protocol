@@ -10,7 +10,7 @@ import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.StartGameSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.defintions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -88,7 +88,7 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
         helper.readArray(buffer, packet.getItemDefinitions(), (buf, packetHelper) -> {
             String identifier = packetHelper.readString(buf);
             short id = buf.readShortLE();
-            return new ItemDefinition(identifier, id, false);
+            return new SimpleItemDefinition(identifier, id, false);
         });
 
         packet.setMultiplayerCorrelationId(helper.readString(buffer));
