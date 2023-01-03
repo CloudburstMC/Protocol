@@ -14,7 +14,6 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
-import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 import java.util.List;
 import java.util.UUID;
@@ -76,7 +75,7 @@ public class StartGamePacket implements BedrockPacket {
      * @since v465
      */
     private EduSharedUriResource eduSharedUriResource = EduSharedUriResource.EMPTY;
-    private OptionalBoolean forceExperimentalGameplay;
+    private boolean forceExperimentalGameplay;
     /**
      * @since 1.19.20
      */

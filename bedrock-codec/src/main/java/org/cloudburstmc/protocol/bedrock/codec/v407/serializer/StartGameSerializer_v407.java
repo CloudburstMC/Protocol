@@ -10,7 +10,6 @@ import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
 import org.cloudburstmc.protocol.bedrock.data.SpawnBiomeType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
-import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -74,8 +73,7 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         buffer.writeIntLE(packet.getLimitedWorldWidth());
         buffer.writeIntLE(packet.getLimitedWorldHeight());
         buffer.writeBoolean(packet.isNetherType());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
-                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
+        buffer.writeBoolean(packet.isForceExperimentalGameplay());
     }
 
     @Override
@@ -118,6 +116,6 @@ public class StartGameSerializer_v407 extends StartGameSerializer_v388 {
         packet.setLimitedWorldWidth(buffer.readIntLE());
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
-        packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        packet.setForceExperimentalGameplay(buffer.readBoolean());
     }
 }
