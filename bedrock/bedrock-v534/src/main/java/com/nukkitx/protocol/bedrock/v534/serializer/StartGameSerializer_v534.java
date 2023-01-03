@@ -62,9 +62,6 @@ public class StartGameSerializer_v534 extends StartGameSerializer_v527 {
         helper.writeString(buffer, packet.getEduSharedUriResource().getButtonName());
         helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
         buffer.writeBoolean(packet.isForceExperimentalGameplay());
-        if (packet.isForceExperimentalGameplay()) {
-            buffer.writeBoolean(true); // optional boolean
-        }
     }
 
     @Override
@@ -111,8 +108,6 @@ public class StartGameSerializer_v534 extends StartGameSerializer_v527 {
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
         packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
-        if (buffer.readBoolean()) { // optional boolean
-            packet.setForceExperimentalGameplay(buffer.readBoolean());
-        }
+        packet.setForceExperimentalGameplay(buffer.readBoolean());
     }
 }

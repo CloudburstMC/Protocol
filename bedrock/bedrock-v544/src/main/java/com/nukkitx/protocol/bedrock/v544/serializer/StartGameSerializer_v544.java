@@ -77,9 +77,6 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         helper.writeString(buffer, packet.getEduSharedUriResource().getButtonName());
         helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
         buffer.writeBoolean(packet.isForceExperimentalGameplay());
-        if (packet.isForceExperimentalGameplay()) {
-            buffer.writeBoolean(true); // optional boolean
-        }
         buffer.writeByte(packet.getChatRestrictionLevel().ordinal()); // Added
         buffer.writeBoolean(packet.isDisablingPlayerInteractions()); // Added
     }
@@ -130,9 +127,7 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
         packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
-        if (buffer.readBoolean()) { // optional boolean
-            packet.setForceExperimentalGameplay(buffer.readBoolean());
-        }
+        packet.setForceExperimentalGameplay(buffer.readBoolean());
         packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]); // Added
         packet.setDisablingPlayerInteractions(buffer.readBoolean()); // Added
     }
