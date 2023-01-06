@@ -15,12 +15,12 @@ public class UpdateSoftEnumSerializer_v291 implements BedrockPacketSerializer<Up
     @Override
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, UpdateSoftEnumPacket packet) {
         helper.writeCommandEnum(buffer, packet.getSoftEnum());
-        buffer.writeIntLE(packet.getType().ordinal());
+        buffer.writeByte(packet.getType().ordinal());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockPacketHelper helper, UpdateSoftEnumPacket packet) {
         packet.setSoftEnum(helper.readCommandEnum(buffer, true));
-        packet.setType(SoftEnumUpdateType.values()[buffer.readIntLE()]);
+        packet.setType(SoftEnumUpdateType.values()[buffer.readByte()]);
     }
 }
