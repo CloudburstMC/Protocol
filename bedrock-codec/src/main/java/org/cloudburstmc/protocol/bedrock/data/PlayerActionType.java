@@ -43,4 +43,8 @@ public enum PlayerActionType {
      * @since v527
      */
     STOP_ITEM_USE_ON,
+    /**
+     * @since v567
+     */
+    HANDLED_TELEPORT,
 }

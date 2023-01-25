@@ -38,7 +38,7 @@ public class Bedrock_v560 extends Bedrock_v557 {
             .insert(21, ContainerSlotType.RECIPE_BOOK)
             .build();
 
-    public static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v557.SOUND_EVENTS.toBuilder()
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v557.SOUND_EVENTS.toBuilder()
             .remove(448) // UNDEFINED
             .insert(448, SoundEvent.PRESSURE_PLATE_CLICK_OFF)
             .insert(449, SoundEvent.PRESSURE_PLATE_CLICK_ON)

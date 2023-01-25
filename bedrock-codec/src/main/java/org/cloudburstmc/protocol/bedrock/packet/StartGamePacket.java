@@ -147,6 +147,10 @@ public class StartGamePacket implements BedrockPacket {
      * @since 1.19.20
      */
     private boolean clientSideGenerationEnabled;
+    /**
+     * @since v567
+     */
+    private boolean emoteChatMuted;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
