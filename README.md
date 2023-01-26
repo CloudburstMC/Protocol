@@ -142,6 +142,8 @@ server.bind().join();
 | bedrock-v545 |       1.19.21       |
 | bedrock-v554 |       1.19.31       |
 | bedrock-v557 |       1.19.40       |
+| bedrock-v560 |       1.19.50       |
+| bedrock-v567 |       1.19.60       |
 
 ##### Repository:
 
@@ -166,7 +168,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.9.15-SNAPSHOT</version>
+            <version>2.9.16-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
