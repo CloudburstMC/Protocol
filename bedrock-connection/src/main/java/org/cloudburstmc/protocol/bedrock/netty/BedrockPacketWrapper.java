@@ -17,8 +17,17 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
     private int packetId;
     private int senderSubClientId;
     private int targetSubClientId;
+    private int headerLength;
     private BedrockPacket packet;
     private ByteBuf packetBuffer;
+
+    public BedrockPacketWrapper(int packetId, int senderSubClientId, int targetSubClientId, BedrockPacket packet, ByteBuf packetBuffer) {
+        this.packetId = packetId;
+        this.senderSubClientId = senderSubClientId;
+        this.targetSubClientId = targetSubClientId;
+        this.packet = packet;
+        this.packetBuffer = packetBuffer;
+    }
 
     @Override
     protected void deallocate() {

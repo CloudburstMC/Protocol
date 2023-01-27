@@ -29,6 +29,6 @@ public class BedrockDisconnectReasons {
     }
 
     public static String getReason(RakDisconnectReason reason) {
-        return FROM_RAKNET.getOrDefault(reason, UNKNOWN);
+        return FROM_RAKNET.getOrDefault(reason, reason.name());
     }
 }
