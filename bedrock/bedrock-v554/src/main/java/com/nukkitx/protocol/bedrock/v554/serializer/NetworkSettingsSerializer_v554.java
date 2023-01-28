@@ -31,7 +31,7 @@ public class NetworkSettingsSerializer_v554 extends NetworkSettingsSerializer_v3
 
         packet.setCompressionAlgorithm(ALGORITHMS[buffer.readUnsignedShortLE()]);
         packet.setClientThrottleEnabled(buffer.readBoolean());
-        packet.setCompressionThreshold(buffer.readUnsignedByte());
+        packet.setClientThrottleThreshold(buffer.readUnsignedByte());
         packet.setClientThrottleScalar(buffer.readFloatLE());
     }
 }
