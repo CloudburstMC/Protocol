@@ -146,7 +146,7 @@ public class BedrockPacketHelper_v440 extends BedrockPacketHelper_v431 {
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
         this.writeString(buffer, settings.getPaletteName());
-        buffer.writeBoolean(settings.isIgnoringBlocks());
+        buffer.writeBoolean(settings.isIgnoringEntities());
         buffer.writeBoolean(settings.isIgnoringBlocks());
         this.writeBlockPosition(buffer, settings.getSize());
         this.writeBlockPosition(buffer, settings.getOffset());
