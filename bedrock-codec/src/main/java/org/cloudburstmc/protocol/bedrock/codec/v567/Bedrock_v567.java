@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v557.BedrockCodecHelper_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v560.Bedrock_v560;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.ClientCheatAbilitySerializer_v567;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CommandRequestSerializer_v567;
+import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.CraftingDataSerializer_v567;
 import org.cloudburstmc.protocol.bedrock.codec.v567.serializer.StartGameSerializer_v567;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -34,6 +35,7 @@ public class Bedrock_v567 extends Bedrock_v560 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
+            .updateSerializer(CraftingDataPacket.class, new CraftingDataSerializer_v567())
             .registerPacket(ClientCheatAbilityPacket.class, new ClientCheatAbilitySerializer_v567(), 197)
             .build();
 }

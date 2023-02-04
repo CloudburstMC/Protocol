@@ -8,7 +8,11 @@ public enum CraftingDataType {
     MULTI,
     SHULKER_BOX,
     SHAPELESS_CHEMISTRY,
-    SHAPED_CHEMISTRY;
+    SHAPED_CHEMISTRY,
+    /**
+     * @since v567
+     */
+    SMITHING_TRANSFORM;
 
     private static final CraftingDataType[] VALUES = values();
 
