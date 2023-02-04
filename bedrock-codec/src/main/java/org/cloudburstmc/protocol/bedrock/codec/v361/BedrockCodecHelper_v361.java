@@ -161,7 +161,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
     @Override
     public void writeStructureSettings(ByteBuf buffer, StructureSettings settings) {
         this.writeString(buffer, settings.getPaletteName());
-        buffer.writeBoolean(settings.isIgnoringBlocks());
+        buffer.writeBoolean(settings.isIgnoringEntities());
         buffer.writeBoolean(settings.isIgnoringBlocks());
         this.writeBlockPosition(buffer, settings.getSize());
         this.writeBlockPosition(buffer, settings.getOffset());
