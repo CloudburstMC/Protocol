@@ -21,58 +21,60 @@ import java.util.UUID;
 public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<CraftingDataPacket> {
     public static final CraftingDataSerializer_v291 INSTANCE = new CraftingDataSerializer_v291();
 
-    protected static final ItemData[] EMPTY_ARRAY = {};
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
-            VarInts.writeInt(buf, craftingData.getType().ordinal());
-            switch (craftingData.getType()) {
-                case SHAPELESS:
-                case SHAPELESS_CHEMISTRY:
-                case SHULKER_BOX:
-                    this.writeShapelessRecipe(buf, helper, craftingData);
-                    break;
-                case SHAPED:
-                case SHAPED_CHEMISTRY:
-                    this.writeShapedRecipe(buf, helper, craftingData);
-                    break;
-                case FURNACE:
-                case FURNACE_DATA:
-                    this.writeFurnaceRecipe(buf, helper, craftingData);
-                    break;
-                case MULTI:
-                    this.writeMultiRecipe(buf, helper, craftingData);
-                    break;
-            }
-        });
+        helper.writeArray(buffer, packet.getCraftingData(), this::writeEntry);
         buffer.writeBoolean(packet.isCleanRecipes());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.readArray(buffer, packet.getCraftingData(), buf -> {
-            int typeInt = VarInts.readInt(buf);
-            CraftingDataType type = CraftingDataType.byId(typeInt);
-
-            switch (type) {
-                case SHAPELESS:
-                case SHAPELESS_CHEMISTRY:
-                case SHULKER_BOX:
-                    return this.readShapelessRecipe(buf, helper, type);
-                case SHAPED:
-                case SHAPED_CHEMISTRY:
-                    return this.readShapedRecipe(buf, helper, type);
-                case FURNACE:
-                case FURNACE_DATA:
-                    return this.readFurnaceRecipe(buf, helper, type);
-                case MULTI:
-                    return this.readMultiRecipe(buf, helper, type);
-                default:
-                    throw new IllegalArgumentException("Unhandled crafting data type: " + type);
-            }
-        });
+        helper.readArray(buffer, packet.getCraftingData(), this::readEntry);
         packet.setCleanRecipes(buffer.readBoolean());
+    }
+
+    protected CraftingData readEntry(ByteBuf buffer, BedrockCodecHelper helper) {
+        int typeInt = VarInts.readInt(buffer);
+        CraftingDataType type = CraftingDataType.byId(typeInt);
+
+        switch (type) {
+            case SHAPELESS:
+            case SHAPELESS_CHEMISTRY:
+            case SHULKER_BOX:
+                return this.readShapelessRecipe(buffer, helper, type);
+            case SHAPED:
+            case SHAPED_CHEMISTRY:
+                return this.readShapedRecipe(buffer, helper, type);
+            case FURNACE:
+            case FURNACE_DATA:
+                return this.readFurnaceRecipe(buffer, helper, type);
+            case MULTI:
+                return this.readMultiRecipe(buffer, helper, type);
+            default:
+                throw new IllegalArgumentException("Unhandled crafting data type: " + type);
+        }
+    }
+
+    protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, CraftingData craftingData) {
+        VarInts.writeInt(buffer, craftingData.getType().ordinal());
+        switch (craftingData.getType()) {
+            case SHAPELESS:
+            case SHAPELESS_CHEMISTRY:
+            case SHULKER_BOX:
+                this.writeShapelessRecipe(buffer, helper, craftingData);
+                break;
+            case SHAPED:
+            case SHAPED_CHEMISTRY:
+                this.writeShapedRecipe(buffer, helper, craftingData);
+                break;
+            case FURNACE:
+            case FURNACE_DATA:
+                this.writeFurnaceRecipe(buffer, helper, craftingData);
+                break;
+            case MULTI:
+                this.writeMultiRecipe(buffer, helper, craftingData);
+                break;
+        }
     }
 
     protected CraftingData readShapelessRecipe(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {

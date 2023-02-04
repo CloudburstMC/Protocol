@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.CraftingDataSerializer_v407;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
-import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.MaterialReducer;
 import org.cloudburstmc.protocol.bedrock.packet.CraftingDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -19,75 +18,22 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
-            VarInts.writeInt(buf, craftingData.getType().ordinal());
-            switch (craftingData.getType()) {
-                case SHAPELESS:
-                case SHAPELESS_CHEMISTRY:
-                case SHULKER_BOX:
-                    this.writeShapelessRecipe(buf, helper, craftingData);
-                    break;
-                case SHAPED:
-                case SHAPED_CHEMISTRY:
-                    this.writeShapedRecipe(buf, helper, craftingData);
-                    break;
-                case FURNACE:
-                    this.writeFurnaceRecipe(buf, helper, craftingData);
-                    break;
-                case FURNACE_DATA:
-                    this.writeFurnaceDataRecipe(buf, helper, craftingData);
-                    break;
-                case MULTI:
-                    this.writeMultiRecipe(buf, helper, craftingData);
-                    break;
-            }
-        });
+        helper.writeArray(buffer, packet.getCraftingData(), this::writeEntry);
+        helper.writeArray(buffer, packet.getPotionMixData(), this::writePotionMixData);
+        helper.writeArray(buffer, packet.getContainerMixData(), this::writeContainerMixData);
 
-        // Potions
-        helper.writeArray(buffer, packet.getPotionMixData(), this::writePotionRecipe);
-
-        // Potion Container Change
-        helper.writeArray(buffer, packet.getContainerMixData(), this::writeContainerMixRecipe);
-
-        // Material Reducers
-        helper.writeArray(buffer, packet.getMaterialReducers(), this::writeMaterialReducer);
+        helper.writeArray(buffer, packet.getMaterialReducers(), this::writeMaterialReducer); // Addition
 
         buffer.writeBoolean(packet.isCleanRecipes());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataPacket packet) {
-        helper.readArray(buffer, packet.getCraftingData(), buf -> {
-            int typeInt = VarInts.readInt(buf);
-            CraftingDataType type = CraftingDataType.byId(typeInt);
+        helper.readArray(buffer, packet.getCraftingData(), this::readEntry);
+        helper.readArray(buffer, packet.getPotionMixData(), this::readPotionMixData);
+        helper.readArray(buffer, packet.getContainerMixData(), this::readContainerMixData);
 
-            switch (type) {
-                case SHAPELESS:
-                case SHAPELESS_CHEMISTRY:
-                case SHULKER_BOX:
-                    return this.readShapelessRecipe(buf, helper, type);
-                case SHAPED:
-                case SHAPED_CHEMISTRY:
-                    return this.readShapedRecipe(buf, helper, type);
-                case FURNACE:
-                    return this.readFurnaceRecipe(buf, helper, type);
-                case FURNACE_DATA:
-                    return this.readFurnaceDataRecipe(buf, helper, type);
-                case MULTI:
-                    return this.readMultiRecipe(buf, helper, type);
-                default:
-                    throw new IllegalArgumentException("Unhandled crafting data type: " + type);
-            }
-        });
-
-        // Potions
-        helper.readArray(buffer, packet.getPotionMixData(), this::readPotionRecipe);
-
-        // Potion Container Change
-        helper.readArray(buffer, packet.getContainerMixData(), this::readContainerMixRecipe);
-
-        // Material Reducers
-        helper.readArray(buffer, packet.getMaterialReducers(), this::readMaterialReducer);
+        helper.readArray(buffer, packet.getMaterialReducers(), this::readMaterialReducer); // Addition
 
         packet.setCleanRecipes(buffer.readBoolean());
     }
