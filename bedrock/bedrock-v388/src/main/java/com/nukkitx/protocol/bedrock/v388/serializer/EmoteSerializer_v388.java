@@ -30,8 +30,10 @@ public class EmoteSerializer_v388 implements BedrockPacketSerializer<EmotePacket
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setEmoteId(helper.readString(buffer));
         int flags = buffer.readUnsignedByte();
-        if ((flags & 0b1) != 0) {
-            packet.getFlags().add(EmoteFlag.SERVER_SIDE);
+        for (EmoteFlag flag : EmoteFlag.values()) {
+            if ((flags & (1L << flag.ordinal())) != 0) {
+                packet.getFlags().add(flag);
+            }
         }
     }
 }

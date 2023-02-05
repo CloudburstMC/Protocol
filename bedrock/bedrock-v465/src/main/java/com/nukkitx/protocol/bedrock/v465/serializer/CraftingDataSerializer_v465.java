@@ -3,6 +3,7 @@ package com.nukkitx.protocol.bedrock.v465.serializer;
 import com.nukkitx.network.VarInts;
 import com.nukkitx.protocol.bedrock.BedrockPacketHelper;
 import com.nukkitx.protocol.bedrock.BedrockSession;
+import com.nukkitx.protocol.bedrock.data.inventory.CraftingData;
 import com.nukkitx.protocol.bedrock.data.inventory.CraftingDataType;
 import com.nukkitx.protocol.bedrock.data.inventory.MaterialReducer;
 import com.nukkitx.protocol.bedrock.packet.CraftingDataPacket;
@@ -22,26 +23,7 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
     public void serialize(ByteBuf buffer, BedrockPacketHelper helper, CraftingDataPacket packet, BedrockSession session) {
         helper.writeArray(buffer, packet.getCraftingData(), (buf, craftingData) -> {
             VarInts.writeInt(buf, craftingData.getType().ordinal());
-            switch (craftingData.getType()) {
-                case SHAPELESS:
-                case SHAPELESS_CHEMISTRY:
-                case SHULKER_BOX:
-                    this.writeShapelessRecipe(buf, helper, craftingData, session);
-                    break;
-                case SHAPED:
-                case SHAPED_CHEMISTRY:
-                    this.writeShapedRecipe(buf, helper, craftingData, session);
-                    break;
-                case FURNACE:
-                    this.writeFurnaceRecipe(buf, helper, craftingData, session);
-                    break;
-                case FURNACE_DATA:
-                    this.writeFurnaceDataRecipe(buf, helper, craftingData, session);
-                    break;
-                case MULTI:
-                    this.writeMultiRecipe(buf, helper, craftingData);
-                    break;
-            }
+            writeEntry(buf, helper, session, craftingData);
         });
 
         // Potions
@@ -62,23 +44,7 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
             int typeInt = VarInts.readInt(buf);
             CraftingDataType type = CraftingDataType.byId(typeInt);
 
-            switch (type) {
-                case SHAPELESS:
-                case SHAPELESS_CHEMISTRY:
-                case SHULKER_BOX:
-                    return this.readShapelessRecipe(buf, helper, type, session);
-                case SHAPED:
-                case SHAPED_CHEMISTRY:
-                    return this.readShapedRecipe(buf, helper, type, session);
-                case FURNACE:
-                    return this.readFurnaceRecipe(buf, helper, type, session);
-                case FURNACE_DATA:
-                    return this.readFurnaceDataRecipe(buf, helper, type, session);
-                case MULTI:
-                    return this.readMultiRecipe(buf, helper, type);
-                default:
-                    throw new IllegalArgumentException("Unhandled crafting data type: " + type);
-            }
+            return readEntry(buf, helper, session, type);
         });
 
         // Potions
@@ -91,6 +57,51 @@ public class CraftingDataSerializer_v465 extends CraftingDataSerializer_v407 {
         helper.readArray(buffer, packet.getMaterialReducers(), this::readMaterialReducer);
 
         packet.setCleanRecipes(buffer.readBoolean());
+    }
+
+    protected void writeEntry(ByteBuf buf, BedrockPacketHelper helper, BedrockSession session, CraftingData craftingData) {
+        switch (craftingData.getType()) {
+            case SHAPELESS:
+            case SHAPELESS_CHEMISTRY:
+            case SHULKER_BOX:
+                this.writeShapelessRecipe(buf, helper, craftingData, session);
+                break;
+            case SHAPED:
+            case SHAPED_CHEMISTRY:
+                this.writeShapedRecipe(buf, helper, craftingData, session);
+                break;
+            case FURNACE:
+                this.writeFurnaceRecipe(buf, helper, craftingData, session);
+                break;
+            case FURNACE_DATA:
+                this.writeFurnaceDataRecipe(buf, helper, craftingData, session);
+                break;
+            case MULTI:
+                this.writeMultiRecipe(buf, helper, craftingData);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid crafting data type: " + craftingData.getType());
+        }
+    }
+
+    protected CraftingData readEntry(ByteBuf buf, BedrockPacketHelper helper, BedrockSession session, CraftingDataType type) {
+        switch (type) {
+            case SHAPELESS:
+            case SHAPELESS_CHEMISTRY:
+            case SHULKER_BOX:
+                return this.readShapelessRecipe(buf, helper, type, session);
+            case SHAPED:
+            case SHAPED_CHEMISTRY:
+                return this.readShapedRecipe(buf, helper, type, session);
+            case FURNACE:
+                return this.readFurnaceRecipe(buf, helper, type, session);
+            case FURNACE_DATA:
+                return this.readFurnaceDataRecipe(buf, helper, type, session);
+            case MULTI:
+                return this.readMultiRecipe(buf, helper, type);
+            default:
+                throw new IllegalArgumentException("Unhandled crafting data type: " + type);
+        }
     }
 
     protected void writeMaterialReducer(ByteBuf buffer, BedrockPacketHelper helper, MaterialReducer reducer) {

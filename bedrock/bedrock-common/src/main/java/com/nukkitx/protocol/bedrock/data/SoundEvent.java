@@ -453,5 +453,12 @@ public enum SoundEvent {
     TRAPDOOR_CLOSE,
     FENCE_GATE_OPEN,
     FENCE_GATE_CLOSE,
+    /**
+     * @since v567
+     */
+    INSERT,
+    PICKUP,
+    INSERT_ENCHANTED,
+    PICKUP_ENCHANTED,
     UNDEFINED
 }

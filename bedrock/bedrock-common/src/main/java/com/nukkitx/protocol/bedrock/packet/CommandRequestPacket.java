@@ -13,6 +13,10 @@ public class CommandRequestPacket extends BedrockPacket {
     private String command;
     private CommandOriginData commandOriginData;
     private boolean internal;
+    /**
+     * @since v567
+     */
+    private int version;
 
     @Override
     public final boolean handle(BedrockPacketHandler handler) {

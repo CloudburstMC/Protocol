@@ -2,6 +2,7 @@ package com.nukkitx.protocol.bedrock.data.inventory;
 
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectImmutableList;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -194,6 +195,11 @@ public class CraftingData {
     public static CraftingData fromShulkerBox(List<ItemDescriptorWithCount> inputs, List<ItemData> outputs, UUID uuid, String craftingTag) {
         return new CraftingData(CraftingDataType.SHULKER_BOX, "", -1, -1, -1, -1, inputs, outputs,
                 uuid, craftingTag, 0, -1);
+    }
+
+    public static CraftingData fromSmithingTransform(String id, ItemDescriptorWithCount base, ItemDescriptorWithCount addition, ItemData result, String craftingTag, int networkId) {
+        return new CraftingData(CraftingDataType.SMITHING_TRANSFORM, id, -1, -1, -1, -1,
+                ObjectImmutableList.of(base, addition), Collections.singletonList(result), null, craftingTag, -1, networkId);
     }
 
     @Deprecated

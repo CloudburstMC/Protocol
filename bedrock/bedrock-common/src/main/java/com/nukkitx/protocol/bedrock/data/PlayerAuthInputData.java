@@ -37,5 +37,9 @@ public enum PlayerAuthInputData {
     STOP_GLIDING,
     PERFORM_ITEM_INTERACTION,
     PERFORM_BLOCK_ACTIONS,
-    PERFORM_ITEM_STACK_REQUEST
+    PERFORM_ITEM_STACK_REQUEST,
+    /**
+     * @since v567
+     */
+    HANDLE_TELEPORT
 }
