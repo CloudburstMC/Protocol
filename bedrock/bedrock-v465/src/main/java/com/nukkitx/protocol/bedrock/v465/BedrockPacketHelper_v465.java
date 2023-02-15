@@ -98,7 +98,7 @@ public class BedrockPacketHelper_v465 extends BedrockPacketHelper_v448 {
         boolean primaryUser = buffer.readBoolean();
 
         return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, animationData, geometryDataEngineVersion,
-                premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+                premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors, true);
     }
 
     @SuppressWarnings("DuplicatedCode")
