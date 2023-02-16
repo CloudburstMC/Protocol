@@ -64,7 +64,7 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
     <dependency>
         <groupId>org.cloudburstmc.protocol</groupId>
         <artifactId>bedrock-connection</artifactId>
-        <version>3.0.9-SNAPSHOT</version>
+        <version>3.0.0.Beta1-SNAPSHOT</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
