@@ -14,6 +14,8 @@ import org.cloudburstmc.protocol.bedrock.packet.UnknownPacket;
 
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, BedrockPacketWrapper> {
 
     public static final String NAME = "bedrock-packet-codec";
@@ -74,13 +76,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     }
 
     public final void setCodec(BedrockCodec codec) {
-        if (this.codec != BedrockCompat.CODEC) {
-            throw new IllegalStateException("Codec is already set");
-        }
-        if (codec == BedrockCompat.CODEC) {
-            throw new IllegalArgumentException("Cannot set codec to BedrockCompat");
-        }
-        this.codec = codec;
+        this.codec = requireNonNull(codec, "Codec cannot be null");
         this.helper = codec.createHelper();
     }
 
