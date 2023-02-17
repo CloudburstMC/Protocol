@@ -168,7 +168,7 @@ server.bind().join();
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v(VERSION)</artifactId>
-            <version>2.9.16-SNAPSHOT</version>
+            <version>2.9.17-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
