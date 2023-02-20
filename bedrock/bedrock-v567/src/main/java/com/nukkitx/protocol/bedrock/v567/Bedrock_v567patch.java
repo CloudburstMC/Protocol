@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Bedrock_v567patch {
     public static final BedrockPacketCodec BEDROCK_V567PATCH = Bedrock_v567.V567_CODEC.toBuilder()
+            .minecraftVersion("1.19.62")
             .helper(BedrockPacketHelper_v567patch.INSTANCE)
             .build();
 }
