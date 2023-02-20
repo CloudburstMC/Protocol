@@ -1,5 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.netty.codec.encryption;
 
+import com.nukkitx.natives.sha256.Sha256;
+import com.nukkitx.natives.util.Natives;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import java.nio.ByteBuffer;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -20,11 +21,11 @@ public class BedrockEncryptionEncoder extends MessageToMessageEncoder<ByteBuf> {
 
     public static final String NAME = "bedrock-encryption-encoder";
 
-    private static final FastThreadLocal<MessageDigest> DIGEST = new FastThreadLocal<MessageDigest>() {
+    private static final FastThreadLocal<Sha256> DIGEST = new FastThreadLocal<Sha256>() {
         @Override
-        protected MessageDigest initialValue() {
+        protected Sha256 initialValue() {
             try {
-                return MessageDigest.getInstance("SHA-256");
+                return Natives.SHA_256.get();
             } catch (Exception e) {
                 throw new AssertionError(e);
             }
@@ -54,7 +55,7 @@ public class BedrockEncryptionEncoder extends MessageToMessageEncoder<ByteBuf> {
     }
 
     static byte[] generateTrailer(ByteBuf buf, SecretKey key, AtomicLong counter) {
-        MessageDigest digest = DIGEST.get();
+        Sha256 digest = DIGEST.get();
         ByteBuf counterBuf = ByteBufAllocator.DEFAULT.directBuffer(8);
         try {
             counterBuf.writeLongLE(counter.getAndIncrement());
