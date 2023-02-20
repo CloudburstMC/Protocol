@@ -5,7 +5,6 @@ dependencies {
     api(libs.fastutil.long.`object`.maps)
     api(libs.jose.jwt)
     api(libs.nbt)
-    api(libs.lmbda)
 }
 
 tasks.jar {
