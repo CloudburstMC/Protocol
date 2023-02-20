@@ -11,7 +11,7 @@ new Bootstrap()
             protected void initSession(BedrockClientSession session) {
                 // Connection established
                 // Make sure to set the packet codec version you wish to use before sending out packets
-                session.setPacketCodec(Bedrock_v389.CODEC);
+                session.setCodec(Bedrock_v389.CODEC);
                 // Remember to set a packet handler so you receive incoming packets
                 session.setPacketHandler(new FooBarPacketHandler());
                 // Now send packets...
@@ -45,7 +45,7 @@ new ServerBootstrap()
             protected void initSession(BedrockServerSession session) {
                 // Connection established
                 // Make sure to set the packet codec version you wish to use before sending out packets
-                session.setPacketCodec(Bedrock_v389.CODEC);
+                session.setCodec(Bedrock_v389.CODEC);
                 // Remember to set a packet handler so you receive incoming packets
                 session.setPacketHandler(new FooBarPacketHandler());
                 // By default, the server will use a compatible codec that will read any LoginPacket.
