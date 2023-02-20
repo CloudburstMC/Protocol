@@ -12,8 +12,6 @@ import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.JSONValue;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.nukkitx.natives.aes.AesFactory;
-import com.nukkitx.natives.util.Natives;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
@@ -41,7 +39,6 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 public class EncryptionUtils {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(EncryptionUtils.class);
 
-    private static final AesFactory AES_FACTORY;
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final String MOJANG_PUBLIC_KEY_BASE64 =
@@ -53,14 +50,6 @@ public class EncryptionUtils {
         // Since Java 8u231, secp384r1 is deprecated and will throw an exception.
         String namedGroups = System.getProperty("jdk.tls.namedGroups");
         System.setProperty("jdk.tls.namedGroups", namedGroups == null || namedGroups.isEmpty() ? "secp384r1" : ", secp384r1");
-
-        AesFactory aesFactory;
-        try {
-            aesFactory = Natives.AES_CFB8.get();
-        } catch (NullPointerException | IllegalStateException e) {
-            aesFactory = null;
-        }
-        AES_FACTORY = aesFactory;
 
         try {
             KEY_PAIR_GEN = KeyPairGenerator.getInstance("EC");
@@ -219,15 +208,6 @@ public class EncryptionUtils {
         byte[] token = new byte[16];
         SECURE_RANDOM.nextBytes(token);
         return token;
-    }
-
-    /**
-     * Check whether java supports the encryption required to authenticate sessions.
-     *
-     * @return can use encryption
-     */
-    public static boolean canUseEncryption() {
-        return AES_FACTORY != null;
     }
 
     /**
