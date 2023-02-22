@@ -17,7 +17,7 @@ new Bootstrap()
                 // Now send packets...
             }
         })
-        .bind(new InetSocketAddress("example.com", 19132))
+        .connect(new InetSocketAddress("example.com", 19132))
         .syncUninterruptibly();
 ```
 
