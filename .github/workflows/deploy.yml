@@ -24,12 +24,16 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      - uses: gradle/gradle-build-action@v2
-      - name: Publish
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
+          arguments: "publish"
         env:
           MAVEN_DEPLOY_USERNAME: ${{ secrets.DEPLOY_USERNAME }}
           MAVEN_DEPLOY_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           MAVEN_DEPLOY_URL: ${{ inputs.deploy-url }}
-        run: gradle publish
