@@ -24,5 +24,5 @@ lmbda = { group = "org.lanternpowered", name = "lmbda", version = "2.0.0" }
 snappy = { group = "io.airlift", name = "aircompressor", version = "0.21" }
 
 [plugins]
-checkerframework = { id = "org.checkerframework", version = "0.6.18" }
-lombok = { id = "io.freefair.lombok", version = "6.5.1" }
+checkerframework = { id = "org.checkerframework", version = "0.6.24" }
+lombok = { id = "io.freefair.lombok", version = "6.6.3" }
