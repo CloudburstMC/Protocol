@@ -10,7 +10,7 @@ jobs:
     with:
       deploy-url: "https://repo.opencollab.dev/maven-snapshots/"
     secrets:
-      DEPLOY_USERNAME: ${{ vars.OPENCOLLAB_USERNAME }}
+      DEPLOY_USERNAME: ${{ secrets.OPENCOLLAB_USERNAME }}
       DEPLOY_PASSWORD: ${{ secrets.OPENCOLLAB_PASSWORD }}
       PGP_SECRET: ${{ secrets.MAVEN_CENTRAL_SECRET }}
       PGP_PASSPHRASE: ${{ secrets.MAVEN_CENTRAL_PASSPHRASE }}
