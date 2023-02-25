@@ -87,13 +87,13 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
     }
 
     protected void writeSyncedPlayerMovementSettings(ByteBuf buffer, StartGamePacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
+        VarInts.writeInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
         VarInts.writeInt(buffer, packet.getRewindHistorySize());
         buffer.writeBoolean(packet.isServerAuthoritativeBlockBreaking());
     }
 
     protected void readSyncedPlayerMovementSettings(ByteBuf buffer, StartGamePacket packet) {
-        packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readUnsignedInt(buffer)]);
+        packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readInt(buffer)]);
         packet.setRewindHistorySize(VarInts.readInt(buffer));
         packet.setServerAuthoritativeBlockBreaking(buffer.readBoolean());
     }
