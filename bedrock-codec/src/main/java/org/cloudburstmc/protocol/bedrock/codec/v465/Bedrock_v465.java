@@ -72,8 +72,8 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .updateSerializer(EducationSettingsPacket.class, EducationSettingsSerializer_v465.INSTANCE)
             .updateSerializer(HurtArmorPacket.class, HurtArmorSerializer_v465.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v465.INSTANCE)
-            .registerPacket(EduUriResourcePacket.class, EduUriResourceSerializer_v465.INSTANCE, 170)
-            .registerPacket(CreatePhotoPacket.class, CreatePhotoSerializer_v465.INSTANCE, 171)
-            .registerPacket(UpdateSubChunkBlocksPacket.class, UpdateSubChunkBlocksSerializer_v465.INSTANCE, 172)
+            .registerPacket(EduUriResourcePacket::new, EduUriResourceSerializer_v465.INSTANCE, 170)
+            .registerPacket(CreatePhotoPacket::new, CreatePhotoSerializer_v465.INSTANCE, 171)
+            .registerPacket(UpdateSubChunkBlocksPacket::new, UpdateSubChunkBlocksSerializer_v465.INSTANCE, 172)
             .build();
 }

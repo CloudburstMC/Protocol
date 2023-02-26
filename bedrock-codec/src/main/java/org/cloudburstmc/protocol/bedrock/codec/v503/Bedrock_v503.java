@@ -117,9 +117,9 @@ public class Bedrock_v503 extends Bedrock_v486 {
             .updateSerializer(SpawnParticleEffectPacket.class, new SpawnParticleEffectSerializer_v503())
             .updateSerializer(AddVolumeEntityPacket.class, new AddVolumeEntitySerializer_v503())
             .updateSerializer(RemoveVolumeEntityPacket.class, new RemoveVolumeEntitySerializer_v503())
-            .registerPacket(TickingAreasLoadStatusPacket.class, new TickingAreasLoadStatusSerializer_v503(), 179)
-            .registerPacket(DimensionDataPacket.class, new DimensionDataSerializer_v503(), 180)
-            .registerPacket(AgentActionEventPacket.class, new AgentActionEventSerializer_v503(), 181)
-            .registerPacket(ChangeMobPropertyPacket.class, new ChangeMobPropertySerializer_v503(), 182)
+            .registerPacket(TickingAreasLoadStatusPacket::new, new TickingAreasLoadStatusSerializer_v503(), 179)
+            .registerPacket(DimensionDataPacket::new, new DimensionDataSerializer_v503(), 180)
+            .registerPacket(AgentActionEventPacket::new, new AgentActionEventSerializer_v503(), 181)
+            .registerPacket(ChangeMobPropertyPacket::new, new ChangeMobPropertySerializer_v503(), 182)
             .build();
 }

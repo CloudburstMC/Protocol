@@ -12,11 +12,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.UnknownPacket;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.lang.RuntimeException;
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -124,23 +119,13 @@ public final class BedrockCodec {
         private String minecraftVersion = null;
         private Supplier<BedrockCodecHelper> helperFactory;
 
-        public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, BedrockPacketSerializer<T> serializer, @NonNegative int id) {
+        public <T extends BedrockPacket> Builder registerPacket(Supplier<T> factory, BedrockPacketSerializer<T> serializer, @NonNegative int id) {
+            Class<? extends BedrockPacket> packetClass = factory.get().getClass();
+
             checkArgument(id >= 0, "id cannot be negative");
             checkArgument(!packets.containsKey(packetClass), "Packet class already registered");
 
-            Constructor<T> constructor;
-            try {
-                constructor = packetClass.getDeclaredConstructor();
-            } catch (Throwable t) {
-                throw new RuntimeException(t);
-            }
-            BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, () -> {
-                try {
-                    return constructor.newInstance();
-                } catch (Throwable t) {
-                    throw new RuntimeException(t);
-                }
-            }, serializer);
+            BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, factory, serializer);
 
             packets.put(packetClass, info);
 

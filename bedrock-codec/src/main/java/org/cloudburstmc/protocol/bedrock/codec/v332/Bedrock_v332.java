@@ -48,6 +48,6 @@ public class Bedrock_v332 extends Bedrock_v313 {
             .updateSerializer(SpawnParticleEffectPacket.class, SpawnParticleEffectSerializer_v332.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v291(COMMAND_PARAMS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
-            .registerPacket(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS), 123)
+            .registerPacket(LevelSoundEventPacket::new, new LevelSoundEventSerializer_v332(SOUND_EVENTS), 123)
             .build();
 }

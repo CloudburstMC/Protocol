@@ -90,8 +90,8 @@ public class Bedrock_v440 extends Bedrock_v431 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
-            .registerPacket(SyncEntityPropertyPacket.class, SyncEntityPropertySerializer_v440.INSTANCE, 165)
-            .registerPacket(AddVolumeEntityPacket.class, AddVolumeEntitySerializer_v440.INSTANCE, 166)
-            .registerPacket(RemoveVolumeEntityPacket.class, RemoveVolumeEntitySerializer_v440.INSTANCE, 167)
+            .registerPacket(SyncEntityPropertyPacket::new, SyncEntityPropertySerializer_v440.INSTANCE, 165)
+            .registerPacket(AddVolumeEntityPacket::new, AddVolumeEntitySerializer_v440.INSTANCE, 166)
+            .registerPacket(RemoveVolumeEntityPacket::new, RemoveVolumeEntitySerializer_v440.INSTANCE, 167)
             .build();
 }

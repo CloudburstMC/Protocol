@@ -74,14 +74,14 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v361.INSTANCE)
             .updateSerializer(VideoStreamConnectPacket.class, VideoStreamConnectSerializer_v361.INSTANCE)
-            .registerPacket(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS), 124)
+            .registerPacket(LevelEventGenericPacket::new, new LevelEventGenericSerializer_v361(LEVEL_EVENTS), 124)
             // AddEntityPacket 127
             // RemoveEntityPacket 128
-            .registerPacket(ClientCacheStatusPacket.class, ClientCacheStatusSerializer_v361.INSTANCE, 129)
-            .registerPacket(StructureTemplateDataRequestPacket.class, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132)
-            .registerPacket(StructureTemplateDataResponsePacket.class, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133)
-            .registerPacket(UpdateBlockPropertiesPacket.class, UpdateBlockPropertiesSerializer_v361.INSTANCE, 134)
-            .registerPacket(ClientCacheBlobStatusPacket.class, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
-            .registerPacket(ClientCacheMissResponsePacket.class, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
+            .registerPacket(ClientCacheStatusPacket::new, ClientCacheStatusSerializer_v361.INSTANCE, 129)
+            .registerPacket(StructureTemplateDataRequestPacket::new, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132)
+            .registerPacket(StructureTemplateDataResponsePacket::new, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133)
+            .registerPacket(UpdateBlockPropertiesPacket::new, UpdateBlockPropertiesSerializer_v361.INSTANCE, 134)
+            .registerPacket(ClientCacheBlobStatusPacket::new, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
+            .registerPacket(ClientCacheMissResponsePacket::new, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
             .build();
 }

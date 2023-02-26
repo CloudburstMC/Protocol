@@ -28,10 +28,10 @@ public class Bedrock_v554 extends Bedrock_v545 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(ServerStatsPacket.class, new ServerStatsSerializer_v554(), 192)
-            .registerPacket(RequestNetworkSettingsPacket.class, new RequestNetworkSettingsSerializer_v554(), 193)
-            .registerPacket(GameTestRequestPacket.class, new GameTestRequestSerializer_v554(), 194)
-            .registerPacket(GameTestResultsPacket.class, new GameTestResultsSerializer_v554(), 195)
+            .registerPacket(ServerStatsPacket::new, new ServerStatsSerializer_v554(), 192)
+            .registerPacket(RequestNetworkSettingsPacket::new, new RequestNetworkSettingsSerializer_v554(), 193)
+            .registerPacket(GameTestRequestPacket::new, new GameTestRequestSerializer_v554(), 194)
+            .registerPacket(GameTestResultsPacket::new, new GameTestResultsSerializer_v554(), 195)
             .build();
 
 }
