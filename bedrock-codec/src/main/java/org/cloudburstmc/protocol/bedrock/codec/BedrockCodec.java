@@ -16,6 +16,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.RuntimeException;
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -123,14 +124,19 @@ public final class BedrockCodec {
         private String minecraftVersion = null;
         private Supplier<BedrockCodecHelper> helperFactory;
 
-        @SuppressWarnings("rawtypes")
         public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, BedrockPacketSerializer<T> serializer, @NonNegative int id) {
             checkArgument(id >= 0, "id cannot be negative");
             checkArgument(!packets.containsKey(packetClass), "Packet class already registered");
 
+            Constructor<T> constructor;
+            try {
+                constructor = packetClass.getDeclaredConstructor();
+            } catch (Throwable t) {
+                throw new RuntimeException(t);
+            }
             BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, () -> {
                 try {
-                    return packetClass.newInstance();
+                    return constructor.newInstance();
                 } catch (Throwable t) {
                     throw new RuntimeException(t);
                 }
