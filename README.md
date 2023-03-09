@@ -39,6 +39,22 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 | Bedrock_v422 | 1.16.200 - 1.16.201 |
 | Bedrock_v428 |      1.16.210       |
 | Bedrock_v431 |      1.16.220       |
+| Bedrock_v440 |       1.17.0        |
+| Bedrock_v448 |       1.17.10       |
+| Bedrock_v465 |       1.17.30       |
+| Bedrock_v471 |       1.17.40       |
+| Bedrock_v475 |       1.18.0        |
+| Bedrock_v486 |       1.18.10       |
+| Bedrock_v503 |       1.18.30       |
+| Bedrock_v527 |       1.19.0        |
+| Bedrock_v534 |       1.19.10       |
+| Bedrock_v544 |       1.19.20       |
+| Bedrock_v545 |       1.19.21       |
+| Bedrock_v554 |       1.19.30       |
+| Bedrock_v557 |       1.19.40       |
+| Bedrock_v560 |       1.19.50       |
+| Bedrock_v567 |       1.19.60       |
+| Bedrock_v568 |       1.19.63       |
 
 ##### Repository:
 
