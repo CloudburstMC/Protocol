@@ -791,4 +791,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ClientCheatAbilityPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(CameraPresetsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(CameraInstructionPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(UnlockedRecipesPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

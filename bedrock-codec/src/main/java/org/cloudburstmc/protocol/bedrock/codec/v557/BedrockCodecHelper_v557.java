@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v554.BedrockCodecHelper_v554;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
 import org.cloudburstmc.protocol.bedrock.data.entity.FloatEntityProperty;
 import org.cloudburstmc.protocol.bedrock.data.entity.IntEntityProperty;
@@ -20,8 +21,8 @@ import java.util.List;
 public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
 
     public BedrockCodecHelper_v557(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities);
     }
 
     @Override

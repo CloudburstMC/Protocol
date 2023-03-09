@@ -9,6 +9,6 @@ public class Bedrock_v568 extends Bedrock_v567 {
             .raknetProtocolVersion(11)
             .protocolVersion(568)
             .minecraftVersion("1.19.63")
-            .helper(() -> new BedrockCodecHelper_v568(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v568(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
             .build();
 }

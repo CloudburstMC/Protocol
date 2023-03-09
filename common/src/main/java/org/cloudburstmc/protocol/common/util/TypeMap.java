@@ -11,6 +11,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.function.BiConsumer;
+
 import static org.cloudburstmc.protocol.common.util.Preconditions.*;
 
 public final class TypeMap<T> {
@@ -40,6 +42,10 @@ public final class TypeMap<T> {
         Builder<T> builder = new Builder<>(type);
         this.toObject.forEach(builder::insert);
         return builder;
+    }
+
+    public void forEach(BiConsumer<Integer, T> consumer) {
+        this.toObject.forEach(consumer);
     }
 
     public static <T> Builder<T> builder(Class<T> typeClass) {

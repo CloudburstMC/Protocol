@@ -15,10 +15,12 @@ public enum TextProcessingEventOrigin {
     SLASH_COMMAND_NON_CHAT,
     /**
      * @since v560
+     * @deprecated since v575
      */
     SCOREBOARD_TEXT,
     /**
      * @since v560
+     * @deprecated since v575
      */
     TICKING_AREA_TEXT
 }

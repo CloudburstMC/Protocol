@@ -85,5 +85,9 @@ public enum ParticleType implements LevelEventType {
     CANDLE_FLAME,
     SHRIEK,
     SCULK_SOUL,
-    SONIC_EXPLOSION
+    SONIC_EXPLOSION,
+    /**
+     * @since v575
+     */
+    BRUSH_DUST
 }

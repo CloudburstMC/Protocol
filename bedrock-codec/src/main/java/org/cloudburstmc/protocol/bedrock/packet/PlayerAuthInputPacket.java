@@ -50,6 +50,10 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      * @since v527
      */
     private InputInteractionModel inputInteractionModel;
+    /**
+     * @since 575
+     */
+    private Vector2f analogMoveVector;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

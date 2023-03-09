@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.Bedrock_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -25,10 +26,31 @@ public class Bedrock_v534 extends Bedrock_v527 {
             .insert(442, SoundEvent.UNDEFINED)
             .build();
 
+    protected static final TypeMap<Ability> PLAYER_ABILITIES = TypeMap.builder(Ability.class)
+            .insert(0, Ability.BUILD)
+            .insert(1, Ability.MINE)
+            .insert(2, Ability.DOORS_AND_SWITCHES)
+            .insert(3, Ability.OPEN_CONTAINERS)
+            .insert(4, Ability.ATTACK_PLAYERS)
+            .insert(5, Ability.ATTACK_MOBS)
+            .insert(6, Ability.OPERATOR_COMMANDS)
+            .insert(7, Ability.TELEPORT)
+            .insert(8, Ability.INVULNERABLE)
+            .insert(9, Ability.FLYING)
+            .insert(10, Ability.MAY_FLY)
+            .insert(11, Ability.INSTABUILD)
+            .insert(12, Ability.LIGHTNING)
+            .insert(13, Ability.FLY_SPEED)
+            .insert(14, Ability.WALK_SPEED)
+            .insert(15, Ability.MUTED)
+            .insert(16, Ability.WORLD_BUILDER)
+            .insert(17, Ability.NO_CLIP)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v527.CODEC.toBuilder()
             .protocolVersion(534)
             .minecraftVersion("1.19.10")
-            .helper(() -> new BedrockCodecHelper_v503(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .helper(() -> new BedrockCodecHelper_v534(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v534.INSTANCE)
             .updateSerializer(AddEntityPacket.class, AddEntitySerializer_v534.INSTANCE)
             .updateSerializer(AddPlayerPacket.class, AddPlayerSerializer_v534.INSTANCE)

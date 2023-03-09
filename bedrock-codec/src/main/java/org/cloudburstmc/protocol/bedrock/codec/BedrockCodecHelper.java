@@ -4,8 +4,10 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
+import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOriginData;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
@@ -194,4 +196,8 @@ public interface BedrockCodecHelper {
     void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType);
 
     ContainerSlotType readContainerSlotType(ByteBuf buffer);
+
+    void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+
+    void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
 }

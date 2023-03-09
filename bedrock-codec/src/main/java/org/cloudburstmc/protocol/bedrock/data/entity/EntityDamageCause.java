@@ -30,7 +30,9 @@ public enum EntityDamageCause {
     TEMPERATURE,
     FREEZING,
     STALACTITE,
-    STALAGMITE;
+    STALAGMITE,
+    CAMPFIRE,
+    SOUL_CAMPFIRE;
 
     private static final EntityDamageCause[] VALUES = EntityDamageCause.values();
 

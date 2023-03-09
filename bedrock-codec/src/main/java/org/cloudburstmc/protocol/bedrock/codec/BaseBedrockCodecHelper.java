@@ -17,7 +17,9 @@ import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtUtils;
+import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
+import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
@@ -460,6 +462,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public void writeContainerSlotType(ByteBuf buffer, ContainerSlotType slotType) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
         throw new UnsupportedOperationException();
     }
 }

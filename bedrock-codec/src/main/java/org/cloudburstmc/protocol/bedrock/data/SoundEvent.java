@@ -469,5 +469,21 @@ public enum SoundEvent {
      * @since v567
      */
     PICKUP_ENCHANTED,
+    /**
+     * @since v575
+     */
+    BRUSH,
+    /**
+     * @since v575
+     */
+    BRUSH_COMPLETED,
+    /**
+     * @since v575
+     */
+    SHATTER_DECORATED_POT,
+    /**
+     * @since v575
+     */
+    BREAK_DECORATED_POD,
     UNDEFINED
 }

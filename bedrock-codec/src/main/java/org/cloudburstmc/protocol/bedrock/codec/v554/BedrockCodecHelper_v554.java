@@ -3,7 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v554;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
-import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
+import org.cloudburstmc.protocol.bedrock.codec.v534.BedrockCodecHelper_v534;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
@@ -16,14 +17,14 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
 
-public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v503 {
+public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
 
     private static final TextProcessingEventOrigin[] ORIGINS = TextProcessingEventOrigin.values();
     protected static final ItemDescriptorType[] DESCRIPTOR_TYPES = ItemDescriptorType.values();
 
     public BedrockCodecHelper_v554(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes);
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities);
     }
 
     @Override

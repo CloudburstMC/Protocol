@@ -41,5 +41,9 @@ public enum PlayerAuthInputData {
     /**
      * @since v567
      */
-    HANDLE_TELEPORT
+    HANDLE_TELEPORT,
+    /**
+     * @since v575
+     */
+    EMOTING
 }
