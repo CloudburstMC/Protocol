@@ -54,7 +54,11 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
     @Override
     public ItemDescriptorWithCount readIngredient(ByteBuf buffer) {
         ItemDescriptorType type = DESCRIPTOR_TYPES[buffer.readUnsignedByte()];
+        ItemDescriptor descriptor = this.readItemDescriptor(buffer, type);
+        return new ItemDescriptorWithCount(descriptor, VarInts.readInt(buffer));
+    }
 
+    protected ItemDescriptor readItemDescriptor(ByteBuf buffer, ItemDescriptorType type) {
         ItemDescriptor descriptor;
         switch (type) {
             case DEFAULT:
@@ -76,18 +80,20 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
                 descriptor = InvalidDescriptor.INSTANCE;
                 break;
         }
-
-        return new ItemDescriptorWithCount(descriptor, VarInts.readInt(buffer));
+        return descriptor;
     }
 
     @Override
     public void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
-        ItemDescriptorType type = ingredient.getDescriptor().getType();
-        buffer.writeByte(type.ordinal());
+        buffer.writeByte(ingredient.getDescriptor().getType().ordinal());
+        this.writeItemDescriptor(buffer, ingredient.getDescriptor());
+        VarInts.writeInt(buffer, ingredient.getCount());
+    }
 
-        switch (type) {
+    protected void writeItemDescriptor(ByteBuf buffer, ItemDescriptor descriptor) {
+        switch (descriptor.getType()) {
             case DEFAULT:
-                DefaultDescriptor defaultDescriptor = (DefaultDescriptor) ingredient.getDescriptor();
+                DefaultDescriptor defaultDescriptor = (DefaultDescriptor) descriptor;
                 boolean empty = defaultDescriptor.getItemId() == null || defaultDescriptor.getItemId().getRuntimeId() == 0;
                 buffer.writeShortLE(empty ? 0 : defaultDescriptor.getItemId().getRuntimeId());
                 if (!empty) {
@@ -95,20 +101,19 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
                 }
                 break;
             case MOLANG:
-                MolangDescriptor molangDescriptor = (MolangDescriptor) ingredient.getDescriptor();
+                MolangDescriptor molangDescriptor = (MolangDescriptor) descriptor;
                 this.writeString(buffer, molangDescriptor.getTagExpression());
                 buffer.writeByte(molangDescriptor.getMolangVersion());
                 break;
             case ITEM_TAG:
-                ItemTagDescriptor tagDescriptor = (ItemTagDescriptor) ingredient.getDescriptor();
+                ItemTagDescriptor tagDescriptor = (ItemTagDescriptor) descriptor;
                 this.writeString(buffer, tagDescriptor.getItemTag());
                 break;
             case DEFERRED:
-                DeferredDescriptor deferredDescriptor = (DeferredDescriptor) ingredient.getDescriptor();
+                DeferredDescriptor deferredDescriptor = (DeferredDescriptor) descriptor;
                 this.writeString(buffer, deferredDescriptor.getFullName());
                 buffer.writeShortLE(deferredDescriptor.getAuxValue());
                 break;
         }
-        VarInts.writeInt(buffer, ingredient.getCount());
     }
 }
