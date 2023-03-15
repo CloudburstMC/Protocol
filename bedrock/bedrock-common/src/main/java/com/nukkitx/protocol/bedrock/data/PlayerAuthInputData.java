@@ -39,7 +39,11 @@ public enum PlayerAuthInputData {
     PERFORM_BLOCK_ACTIONS,
     PERFORM_ITEM_STACK_REQUEST,
     /**
-     * @since v567
+     * @since v575
      */
-    HANDLE_TELEPORT
+    HANDLE_TELEPORT,
+    /**
+     * @since v575
+     */
+    EMOTING
 }

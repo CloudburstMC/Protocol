@@ -2,28 +2,26 @@ package com.nukkitx.protocol.bedrock.packet;
 
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class CommandRequestPacket extends BedrockPacket {
-    private String command;
-    private CommandOriginData commandOriginData;
-    private boolean internal;
-    /**
-     * @since v575
-     */
-    private int version;
+public class UnlockedRecipesPacket extends BedrockPacket {
+    private boolean unlockedNotification;
+    private final List<String> unlockedRecipes = new ObjectArrayList<>();
 
     @Override
-    public final boolean handle(BedrockPacketHandler handler) {
+    public boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.COMMAND_REQUEST;
+        return BedrockPacketType.UNLOCKED_RECIPES;
     }
 }

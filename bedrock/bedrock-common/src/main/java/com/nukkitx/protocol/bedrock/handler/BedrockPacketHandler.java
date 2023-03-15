@@ -784,4 +784,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default boolean handle(ClientCheatAbilityPacket packet) {
         return false;
     }
+
+    default boolean handle(CameraPresetsPacket packet) {
+        return false;
+    }
+
+    default boolean handle(CameraInstructionPacket packet) {
+        return false;
+    }
+
+    default boolean handle(UnlockedRecipesPacket packet) {
+        return false;
+    }
 }

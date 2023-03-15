@@ -7,26 +7,12 @@ import com.nukkitx.nbt.NbtList;
 import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.AuthoritativeMovementMode;
-import com.nukkitx.protocol.bedrock.data.BlockPropertyData;
-import com.nukkitx.protocol.bedrock.data.ChatRestrictionLevel;
-import com.nukkitx.protocol.bedrock.data.EduSharedUriResource;
-import com.nukkitx.protocol.bedrock.data.ExperimentData;
-import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
-import com.nukkitx.protocol.bedrock.data.GameRuleData;
-import com.nukkitx.protocol.bedrock.data.GameType;
-import com.nukkitx.protocol.bedrock.data.PlayerPermission;
-import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
-import com.nukkitx.protocol.bedrock.data.SyncedPlayerMovementSettings;
+import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -156,7 +142,7 @@ public class StartGamePacket extends BedrockPacket {
      */
     private boolean clientSideGenerationEnabled;
     /**
-     * @since v567
+     * @since v575
      */
     private boolean emoteChatMuted;
 

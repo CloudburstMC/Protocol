@@ -12,11 +12,7 @@ import com.nukkitx.network.util.Preconditions;
 import com.nukkitx.protocol.bedrock.data.*;
 import com.nukkitx.protocol.bedrock.data.command.*;
 import com.nukkitx.protocol.bedrock.data.entity.*;
-import com.nukkitx.protocol.bedrock.data.inventory.ContainerSlotType;
-import com.nukkitx.protocol.bedrock.data.inventory.InventoryActionData;
-import com.nukkitx.protocol.bedrock.data.inventory.InventorySource;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
-import com.nukkitx.protocol.bedrock.data.inventory.ItemStackRequest;
+import com.nukkitx.protocol.bedrock.data.inventory.*;
 import com.nukkitx.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import com.nukkitx.protocol.bedrock.data.inventory.stackrequestactions.StackRequestActionType;
 import com.nukkitx.protocol.bedrock.data.skin.AnimationData;
@@ -182,7 +178,7 @@ public abstract class BedrockPacketHelper {
     public final void removeCommandParam(CommandParam type) {
         this.commandParams.remove(type);
     }
-    
+
     public final void addResourcePackType(int index, ResourcePackType resourcePackType) {
         this.resourcePackTypes.put(index, resourcePackType);
     }
@@ -680,7 +676,7 @@ public abstract class BedrockPacketHelper {
      * Return true if the item id has a blockingTicks attached.
      * Only a shield should return true
      *
-     * @param id ID of item
+     * @param id      ID of item
      * @param session BedrockSession which holds correct blockingId
      * @return true if reading/writing blockingTicks
      */
@@ -692,6 +688,7 @@ public abstract class BedrockPacketHelper {
     /**
      * In case of identifier being different in any version,
      * helper can be used to return correct identifier.
+     *
      * @return item identifier of shield.
      */
     public String getBlockingItemIdentifier() {
@@ -766,5 +763,11 @@ public abstract class BedrockPacketHelper {
 
     protected void writeIngredient(ByteBuf buffer, ItemDescriptorWithCount ingredient) {
         throw new UnsupportedOperationException();
+    }
+
+    public void writePlayerAbilities(ByteBuf buffer, BedrockPacketHelper helper, PlayerAbilityHolder abilityHolder) {
+    }
+
+    public void readPlayerAbilities(ByteBuf buffer, BedrockPacketHelper helper, PlayerAbilityHolder abilityHolder) {
     }
 }

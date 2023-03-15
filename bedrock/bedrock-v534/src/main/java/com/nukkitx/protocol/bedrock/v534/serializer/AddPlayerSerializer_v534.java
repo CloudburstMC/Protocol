@@ -25,7 +25,7 @@ public class AddPlayerSerializer_v534 extends AddPlayerSerializer_v503 {
         helper.writeItem(buffer, packet.getHand(), session);
         VarInts.writeInt(buffer, packet.getGameType().ordinal());
         helper.writeEntityData(buffer, packet.getMetadata());
-        UpdateAbilitiesSerializer_v534.INSTANCE.writePlayerAbilities(buffer, helper, packet);
+        helper.writePlayerAbilities(buffer, helper, packet);
         helper.writeArray(buffer, packet.getEntityLinks(), helper::writeEntityLink);
         helper.writeString(buffer, packet.getDeviceId());
         buffer.writeIntLE(packet.getBuildPlatform());
@@ -43,7 +43,7 @@ public class AddPlayerSerializer_v534 extends AddPlayerSerializer_v503 {
         packet.setHand(helper.readItem(buffer, session));
         packet.setGameType(VALUES[VarInts.readInt(buffer)]);
         helper.readEntityData(buffer, packet.getMetadata());
-        UpdateAbilitiesSerializer_v534.INSTANCE.readPlayerAbilities(buffer, helper, packet);
+        helper.readPlayerAbilities(buffer, helper, packet);
         helper.readArray(buffer, packet.getEntityLinks(), helper::readEntityLink);
         packet.setDeviceId(helper.readString(buffer));
         packet.setBuildPlatform(buffer.readIntLE());

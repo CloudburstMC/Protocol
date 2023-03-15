@@ -454,11 +454,27 @@ public enum SoundEvent {
     FENCE_GATE_OPEN,
     FENCE_GATE_CLOSE,
     /**
-     * @since v567
+     * @since v575
      */
     INSERT,
     PICKUP,
     INSERT_ENCHANTED,
     PICKUP_ENCHANTED,
+    /**
+     * @since v575
+     */
+    BRUSH,
+    /**
+     * @since v575
+     */
+    BRUSH_COMPLETED,
+    /**
+     * @since v575
+     */
+    SHATTER_DECORATED_POT,
+    /**
+     * @since v575
+     */
+    BREAK_DECORATED_POD,
     UNDEFINED
 }

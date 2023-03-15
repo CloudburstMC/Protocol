@@ -33,6 +33,10 @@ public class PlayerAuthInputPacket extends BedrockPacket {
     private long tick;
     private Vector3f delta;
     /**
+     * @since 575
+     */
+    private Vector2f analogMoveVector;
+    /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_INTERACTION} in order for this to not be null.
      *
      * @since v428
@@ -40,6 +44,7 @@ public class PlayerAuthInputPacket extends BedrockPacket {
     private ItemUseTransaction itemUseTransaction;
     /**
      * {@link #inputData} must contain {@link PlayerAuthInputData#PERFORM_ITEM_STACK_REQUEST} in order for this to not be null.
+     *
      * @since v428
      */
     private ItemStackRequest itemStackRequest;

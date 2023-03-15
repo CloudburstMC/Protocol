@@ -1,29 +1,24 @@
 package com.nukkitx.protocol.bedrock.packet;
 
+import com.nukkitx.nbt.NbtMap;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockPacketType;
-import com.nukkitx.protocol.bedrock.data.command.CommandOriginData;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true, callSuper = false)
-public class CommandRequestPacket extends BedrockPacket {
-    private String command;
-    private CommandOriginData commandOriginData;
-    private boolean internal;
-    /**
-     * @since v575
-     */
-    private int version;
+public class CameraPresetsPacket extends BedrockPacket {
+    private NbtMap data;
 
     @Override
-    public final boolean handle(BedrockPacketHandler handler) {
+    public boolean handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.COMMAND_REQUEST;
+        return BedrockPacketType.CAMERA_PRESETS;
     }
 }
