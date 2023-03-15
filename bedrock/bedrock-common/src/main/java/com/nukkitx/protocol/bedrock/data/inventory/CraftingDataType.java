@@ -10,7 +10,7 @@ public enum CraftingDataType {
     SHAPELESS_CHEMISTRY,
     SHAPED_CHEMISTRY,
     /**
-     * @since v575
+     * @since v567
      */
     SMITHING_TRANSFORM;
 

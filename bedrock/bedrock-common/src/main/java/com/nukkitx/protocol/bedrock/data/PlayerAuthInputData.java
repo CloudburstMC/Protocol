@@ -39,7 +39,7 @@ public enum PlayerAuthInputData {
     PERFORM_BLOCK_ACTIONS,
     PERFORM_ITEM_STACK_REQUEST,
     /**
-     * @since v575
+     * @since v567
      */
     HANDLE_TELEPORT,
     /**

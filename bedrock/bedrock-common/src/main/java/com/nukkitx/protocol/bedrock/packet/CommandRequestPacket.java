@@ -14,7 +14,7 @@ public class CommandRequestPacket extends BedrockPacket {
     private CommandOriginData commandOriginData;
     private boolean internal;
     /**
-     * @since v575
+     * @since v567
      */
     private int version;
 

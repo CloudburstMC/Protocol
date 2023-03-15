@@ -454,7 +454,7 @@ public enum SoundEvent {
     FENCE_GATE_OPEN,
     FENCE_GATE_CLOSE,
     /**
-     * @since v575
+     * @since v567
      */
     INSERT,
     PICKUP,

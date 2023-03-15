@@ -142,7 +142,7 @@ public class StartGamePacket extends BedrockPacket {
      */
     private boolean clientSideGenerationEnabled;
     /**
-     * @since v575
+     * @since v567
      */
     private boolean emoteChatMuted;
 
