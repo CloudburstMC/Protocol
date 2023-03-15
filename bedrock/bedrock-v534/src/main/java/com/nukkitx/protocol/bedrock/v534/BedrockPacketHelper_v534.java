@@ -26,10 +26,10 @@ public class BedrockPacketHelper_v534 extends BedrockPacketHelper_v527 {
     private final Object2IntMap<Ability> abilityFlagsToBits;
 
     public BedrockPacketHelper_v534() {
+        this.registerAbilities();
         Object2IntMap<Ability> flags = new Object2IntOpenHashMap<>();
         playerAbilities.forEach((index, flag) -> flags.put(flag, 1 << index));
         this.abilityFlagsToBits = Object2IntMaps.unmodifiable(flags);
-        this.registerAbilities();
     }
 
     @Override
