@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -125,7 +126,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
         for (int i = 0; i < count; i++) {
             CommandEnumData enumData = enums.get(buffer.readIntLE());
             String key = enumValues.get(buffer.readIntLE());
-            Set<CommandEnumConstraint> constraints = enumData.getValues().get(key);
+            Set<CommandEnumConstraint> constraints = enumData.getValues().getOrDefault(key, EnumSet.noneOf(CommandEnumConstraint.class));
             helper.readArray(buffer, constraints, buf -> CONSTRAINTS[buf.readUnsignedByte()]);
         }
     }
