@@ -32,7 +32,7 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
         this.readers.put(EventDataType.PLAYER_DIED, this::readPlayerDied);
         this.readers.put(EventDataType.BOSS_KILLED, this::readBossKilled);
         this.readers.put(EventDataType.AGENT_COMMAND, this::readAgentCommand);
-        this.readers.put(EventDataType.AGENT_CREATED, (b, h) -> AgentCreatedEventData.INSTANCE);
+        this.readers.put(EventDataType.AGENT_CREATED, (buf, helper) -> AgentCreatedEventData.INSTANCE);
         this.readers.put(EventDataType.PATTERN_REMOVED, this::readPatternRemoved);
         this.readers.put(EventDataType.SLASH_COMMAND_EXECUTED, this::readSlashCommandExecuted);
         this.readers.put(EventDataType.FISH_BUCKETED, this::readFishBucketed);
@@ -46,7 +46,7 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
         this.writers.put(EventDataType.PLAYER_DIED, this::writePlayerDied);
         this.writers.put(EventDataType.BOSS_KILLED, this::writeBossKilled);
         this.writers.put(EventDataType.AGENT_COMMAND, this::writeAgentCommand);
-        this.writers.put(EventDataType.AGENT_CREATED, (b, h, e) -> {
+        this.writers.put(EventDataType.AGENT_CREATED, (buf, helper, data) -> {
         });
         this.writers.put(EventDataType.PATTERN_REMOVED, this::writePatternRemoved);
         this.writers.put(EventDataType.SLASH_COMMAND_EXECUTED, this::writeSlashCommandExecuted);
@@ -85,7 +85,7 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
             throw new UnsupportedOperationException("Unknown event type " + type);
         }
 
-        function.apply(buffer, helper);
+        packet.setEventData(function.apply(buffer, helper));
     }
 
     protected AchievementAwardedEventData readAchievementAwarded(ByteBuf buffer, BedrockCodecHelper helper) {
