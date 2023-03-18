@@ -36,7 +36,7 @@ public class Bedrock_v503 extends Bedrock_v486 {
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v486.ENTITY_DATA.toBuilder()
             .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
-            .insert(EntityDataTypes.MOVEMENT_SOUND_DISTANCE_OFFSET, 125, EntityDataFormat.INT)
+            .insert(EntityDataTypes.MOVEMENT_SOUND_DISTANCE_OFFSET, 125, EntityDataFormat.FLOAT)
             .insert(EntityDataTypes.HEARTBEAT_INTERVAL_TICKS, 126, EntityDataFormat.INT)
             .insert(EntityDataTypes.HEARTBEAT_SOUND_EVENT, 127, EntityDataFormat.INT)
             .build();

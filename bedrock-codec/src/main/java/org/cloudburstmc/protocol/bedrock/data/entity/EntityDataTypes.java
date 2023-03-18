@@ -241,7 +241,7 @@ public class EntityDataTypes {
     /**
      * @since v503
      */
-    public static final EntityDataType<?> MOVEMENT_SOUND_DISTANCE_OFFSET = new EntityDataType<>(Object.class, "MOVEMENT_SOUND_DISTANCE_OFFSET");
+    public static final EntityDataType<Float> MOVEMENT_SOUND_DISTANCE_OFFSET = new EntityDataType<>(Float.class, "MOVEMENT_SOUND_DISTANCE_OFFSET");
     /**
      * @since v503
      */
