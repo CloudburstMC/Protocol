@@ -215,8 +215,6 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                                   List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postfixes) {
         helper.writeString(buffer, param.getName());
 
-        helper.writeString(buffer, param.getName());
-
         int symbol;
         if (param.getPostfix() != null) {
             symbol = postfixes.indexOf(param.getPostfix()) | ARG_FLAG_POSTFIX;
@@ -252,7 +250,12 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             } else if ((symbol & ARG_FLAG_ENUM) != 0) {
                 param.setEnumData(enums.get(symbol & ~(ARG_FLAG_ENUM | ARG_FLAG_VALID)));
             } else {
-                param.setType(paramTypeMap.getType(symbol & ~ARG_FLAG_VALID));
+                int parameterTypeId = symbol & ~ARG_FLAG_VALID;
+                CommandParam type = paramTypeMap.getType(parameterTypeId);
+                if (type == null) {
+                    throw new IllegalArgumentException("Unknown parameter type: " + parameterTypeId);
+                }
+                param.setType(type);
             }
         } else {
             throw new IllegalStateException("No param type specified: " + param.getName());
