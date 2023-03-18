@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
@@ -18,6 +20,8 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 @RequiredArgsConstructor
 public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer<AvailableCommandsPacket> {
+
+    protected static final InternalLogger log = InternalLoggerFactory.getInstance(AvailableCommandsSerializer_v291.class);
 
     protected static final int ARG_FLAG_VALID = 0x100000;
     protected static final int ARG_FLAG_ENUM = 0x200000;
@@ -253,7 +257,8 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 int parameterTypeId = symbol & ~ARG_FLAG_VALID;
                 CommandParam type = paramTypeMap.getType(parameterTypeId);
                 if (type == null) {
-                    throw new IllegalArgumentException("Unknown parameter type: " + parameterTypeId);
+                    log.debug("Unknown parameter type: " + parameterTypeId);
+                    type = new CommandParam(parameterTypeId);
                 }
                 param.setType(type);
             }
