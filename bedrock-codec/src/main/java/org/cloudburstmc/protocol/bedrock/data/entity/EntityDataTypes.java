@@ -1,6 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
-import lombok.experimental.FieldNameConstants;
 import lombok.experimental.UtilityClass;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
@@ -12,7 +11,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 @UtilityClass
-@FieldNameConstants(innerTypeName = "Fields")
 public class EntityDataTypes {
 
     public static final EntityDataType<EnumSet<EntityFlag>> FLAGS = new EntityDataType<EnumSet<EntityFlag>>(EnumSet.class, "FLAGS") {
