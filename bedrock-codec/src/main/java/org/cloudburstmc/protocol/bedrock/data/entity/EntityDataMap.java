@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.cloudburstmc.nbt.NbtUtils;
 
 import java.util.*;
 
@@ -100,7 +101,7 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
     public Object put(EntityDataType<?> key, Object value) {
         checkNotNull(key, "type");
         checkNotNull(value, "value was null for %s", key);
-        checkArgument(key.isInstance(value), "value with type %s is not an instance of %s: %s", value.getClass(), key, EntityDataTypes.getNameIfPossible(key));
+        checkArgument(key.isInstance(value), "value with type %s is not an instance of %s", value.getClass(), key);
         if (key == FLAGS || key == FLAGS_2) {
             return this.putFlags((EnumSet<EntityFlag>) value);
         }
@@ -166,8 +167,8 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
             Entry<EntityDataType<?>, Object> e = i.next();
             EntityDataType<?> key = e.getKey();
             if (key == FLAGS_2) continue; // We don't want this to be visible.
-            Object value = e.getValue();
-            sb.append(key.toString()).append('=').append(value.toString());
+            String stringVal = NbtUtils.toString(e.getValue());
+            sb.append(key.toString()).append('=').append(stringVal);
             if (!i.hasNext())
                 return sb.append('}').toString();
             sb.append(',').append(' ');

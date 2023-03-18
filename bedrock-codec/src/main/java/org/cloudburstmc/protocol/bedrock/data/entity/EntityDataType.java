@@ -1,23 +1,17 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+public class EntityDataType<T> {
 
-public abstract class EntityDataType<T> {
+    private final String name;
+    private final Class<?> type;
 
-    private final Type type;
-
-    public EntityDataType() {
-        this.type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    public EntityDataType(Class<? super T> type, String name) {
+        this.name = name;
+        this.type = type;
     }
 
     public boolean isInstance(Object value) {
-        if (type instanceof Class) {
-            return ((Class<?>) type).isInstance(value);
-        } else if (type instanceof ParameterizedType) {
-            return ((Class<?>) ((ParameterizedType) type).getRawType()).isInstance(value);
-        }
-        return false;
+        return type.isInstance(value);
     }
 
     public String getTypeName() {
@@ -26,6 +20,6 @@ public abstract class EntityDataType<T> {
 
     @Override
     public String toString() {
-        return "EntityDataType(type=" + this.getTypeName() + " name=" + EntityDataTypes.getNameIfPossible(this) + ")";
+        return name;
     }
 }
