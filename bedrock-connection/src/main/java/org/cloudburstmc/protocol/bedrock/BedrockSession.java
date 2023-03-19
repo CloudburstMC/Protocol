@@ -6,6 +6,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacketHandler;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -114,7 +115,8 @@ public abstract class BedrockSession {
         this.peer.removeSession(this);
     }
 
-    protected void onPacket(BedrockPacket packet) {
+    protected void onPacket(BedrockPacketWrapper wrapper) {
+        BedrockPacket packet = wrapper.getPacket();
         this.logInbound(packet);
         if (packetHandler == null) {
             log.warn("Received packet without a packet handler for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);

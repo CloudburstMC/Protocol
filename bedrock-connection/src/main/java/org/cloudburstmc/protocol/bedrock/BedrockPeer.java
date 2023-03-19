@@ -63,7 +63,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     protected void onBedrockPacket(BedrockPacketWrapper wrapper) {
         int targetId = wrapper.getTargetSubClientId();
         BedrockSession session = this.sessions.computeIfAbsent(targetId, this::onSessionCreated);
-        session.onPacket(wrapper.getPacket());
+        session.onPacket(wrapper);
     }
 
     protected BedrockSession onSessionCreated(int sessionId) {
