@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.cloudburstmc.math.vector.Vector3i;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class SubChunkData extends AbstractReferenceCounted {
     private Vector3i position;
     private ByteBuf data;
