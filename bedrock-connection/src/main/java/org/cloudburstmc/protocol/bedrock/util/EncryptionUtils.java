@@ -7,7 +7,6 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.jwk.Curve;
-import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jose.shaded.json.JSONValue;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -34,6 +33,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
@@ -125,13 +125,10 @@ public class EncryptionUtils {
      * @throws InvalidKeySpecException  invalid EC key provided
      * @throws NoSuchAlgorithmException runtime does not support EC spec
      */
-    public static boolean verifyChain(JSONArray chain) throws JOSEException, ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public static boolean verifyChain(List<SignedJWT> chain) throws JOSEException, ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
         ECPublicKey lastKey = null;
         boolean validChain = false;
-        for (Object node : chain) {
-            checkArgument(node instanceof String, "Chain node is not a string");
-            JWSObject jwt = JWSObject.parse((String) node);
-
+        for (SignedJWT jwt : chain) {
             if (lastKey == null) {
                 validChain = verifyJwt(jwt, MOJANG_PUBLIC_KEY);
             } else {
