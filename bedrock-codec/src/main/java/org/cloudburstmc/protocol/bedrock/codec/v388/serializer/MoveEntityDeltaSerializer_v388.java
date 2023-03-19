@@ -24,9 +24,13 @@ public class MoveEntityDeltaSerializer_v388 extends MoveEntityDeltaSerializer_v2
         int flagsIndex = buffer.writerIndex();
         buffer.writeShortLE(0); // flags
 
-        int flags = 0;
-        for (Flag flag : packet.getFlags()) {
-            flags |= 1 << flag.ordinal();
+        // For some reason, the bitflags are preset to 0xFFFF and removed if not used.
+        int flags = 0xFFFF;
+        for (Flag flag : FLAGS) {
+            if (!packet.getFlags().contains(flag)) {
+                flags &= ~(1 << flag.ordinal());
+                continue;
+            }
 
             TriConsumer<ByteBuf, BedrockCodecHelper, MoveEntityDeltaPacket> writer = this.writers.get(flag);
             if (writer != null) {
@@ -35,10 +39,7 @@ public class MoveEntityDeltaSerializer_v388 extends MoveEntityDeltaSerializer_v2
         }
 
         // Go back to flags and set them
-        int currentIndex = buffer.writerIndex();
-        buffer.writerIndex(flagsIndex);
-        buffer.writeShortLE(flags);
-        buffer.writerIndex(currentIndex);
+        buffer.setShortLE(flagsIndex, flags);
     }
 
     @Override
