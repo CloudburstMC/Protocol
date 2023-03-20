@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.AvailableCommandsSerializer_v340;
 import org.cloudburstmc.protocol.bedrock.data.command.*;
 import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
+import org.cloudburstmc.protocol.common.util.LongKeys;
 import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -13,6 +14,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerializer_v340 {
 
@@ -20,18 +22,6 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
 
     public AvailableCommandsSerializer_v388(TypeMap<CommandParam> paramTypeMap) {
         super(paramTypeMap);
-    }
-
-    protected static long key(int enumIndex, int valueIndex) {
-        return (((long) enumIndex) << 32) | (valueIndex & 0xffffffffL);
-    }
-
-    protected static int getEnumIndex(long key) {
-        return (int) (key >> 32);
-    }
-
-    protected static int getValueIndex(long key) {
-        return (int) key;
     }
 
     @Override
@@ -62,7 +52,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                                 enumValues.add(key);
                                 if (!constraints.isEmpty()) {
                                     int valueIndex = enumValues.indexOf(key);
-                                    enumConstraints.add(LongObjectPair.of(key(enumIndex, valueIndex), constraints));
+                                    enumConstraints.add(LongObjectPair.of(LongKeys.key(enumIndex, valueIndex), constraints));
                                 }
                             });
                         }
@@ -96,7 +86,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
         SequencedHashSet<String> postFixes = new SequencedHashSet<>();
         SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
         SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
-        Set<Runnable> delayedTasks = new HashSet<>();
+        Set<Consumer<List<CommandEnumData>>> softEnumParameters = new HashSet<>();
 
         helper.readArray(buffer, enumValues, helper::readString);
         helper.readArray(buffer, postFixes, helper::readString);
@@ -104,18 +94,18 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
         this.readEnums(buffer, helper, enumValues, enums);
 
         helper.readArray(buffer, packet.getCommands(), (buf, aHelper) ->
-                this.readCommand(buf, aHelper, enums, softEnums, postFixes, delayedTasks));
+                this.readCommand(buf, aHelper, enums, postFixes, softEnumParameters));
 
         helper.readArray(buffer, softEnums, buf -> helper.readCommandEnum(buffer, true));
 
         this.readConstraints(buffer, helper, enums, enumValues);
 
-        delayedTasks.forEach(Runnable::run);
+        softEnumParameters.forEach(consumer -> consumer.accept(softEnums));
     }
 
     protected void writeEnumConstraint(ByteBuf buffer, BedrockCodecHelper helper, LongObjectPair<Set<CommandEnumConstraint>> pair) {
-        buffer.writeIntLE(getValueIndex(pair.keyLong()));
-        buffer.writeIntLE(getEnumIndex(pair.keyLong()));
+        buffer.writeIntLE(LongKeys.high(pair.keyLong()));
+        buffer.writeIntLE(LongKeys.low(pair.keyLong()));
         helper.writeArray(buffer, pair.value(), (buf, constraint) -> buf.writeByte(constraint.ordinal()));
     }
 

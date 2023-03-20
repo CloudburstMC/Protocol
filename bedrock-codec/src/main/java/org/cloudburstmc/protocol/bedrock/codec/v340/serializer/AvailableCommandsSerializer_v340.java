@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class AvailableCommandsSerializer_v340 extends AvailableCommandsSerializer_v291 {
 
@@ -19,7 +20,8 @@ public class AvailableCommandsSerializer_v340 extends AvailableCommandsSerialize
     }
 
     @Override
-    protected void writeParameter(ByteBuf buffer, BedrockCodecHelper helper, CommandParamData param, List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postFixes) {
+    protected void writeParameter(ByteBuf buffer, BedrockCodecHelper helper, CommandParamData param,
+                                  List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postFixes) {
         super.writeParameter(buffer, helper, param, enums, softEnums, postFixes);
 
         byte options = 0;
@@ -30,8 +32,9 @@ public class AvailableCommandsSerializer_v340 extends AvailableCommandsSerialize
     }
 
     @Override
-    protected CommandParamData readParameter(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums, List<CommandEnumData> softEnums, List<String> postfixes, Set<Runnable> delayedTasks) {
-        CommandParamData param = super.readParameter(buffer, helper, enums, softEnums, postfixes, delayedTasks);
+    protected CommandParamData readParameter(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums,
+                                             List<String> postfixes, Set<Consumer<List<CommandEnumData>>> softEnumParameters) {
+        CommandParamData param = super.readParameter(buffer, helper, enums, postfixes, softEnumParameters);
 
         Set<CommandParamOption> options = param.getOptions();
         int optionsBits = buffer.readUnsignedByte();

@@ -30,7 +30,6 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -121,11 +120,10 @@ public class EncryptionUtils {
      * @param chain array of JWS objects
      * @return chain validity
      * @throws JOSEException            invalid JWS algorithm used
-     * @throws ParseException           invalid JWS object
      * @throws InvalidKeySpecException  invalid EC key provided
      * @throws NoSuchAlgorithmException runtime does not support EC spec
      */
-    public static boolean verifyChain(List<SignedJWT> chain) throws JOSEException, ParseException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public static boolean verifyChain(List<SignedJWT> chain) throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException {
         ECPublicKey lastKey = null;
         boolean validChain = false;
         for (SignedJWT jwt : chain) {

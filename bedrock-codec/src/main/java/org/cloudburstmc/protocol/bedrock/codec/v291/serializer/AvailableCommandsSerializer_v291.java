@@ -13,6 +13,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 import java.util.function.ToIntFunction;
 
@@ -92,7 +93,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         SequencedHashSet<String> postFixes = new SequencedHashSet<>();
         SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
         SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
-        Set<Runnable> delayedTasks = new HashSet<>();
+        Set<Consumer<List<CommandEnumData>>> softEnumParameters = new HashSet<>();
 
         helper.readArray(buffer, enumValues, helper::readString);
         helper.readArray(buffer, postFixes, helper::readString);
@@ -100,11 +101,11 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         this.readEnums(buffer, helper, enumValues, enums);
 
         helper.readArray(buffer, packet.getCommands(), (buf, aHelper) ->
-                this.readCommand(buf, aHelper, enums, softEnums, postFixes, delayedTasks));
+                this.readCommand(buf, aHelper, enums, postFixes, softEnumParameters));
 
         helper.readArray(buffer, softEnums, buf -> helper.readCommandEnum(buffer, true));
 
-        delayedTasks.forEach(Runnable::run);
+        softEnumParameters.forEach(consumer -> consumer.accept(softEnums));
     }
 
     protected void writeEnums(ByteBuf buffer, BedrockCodecHelper helper, List<String> values, List<CommandEnumData> enums) {
@@ -178,7 +179,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
     }
 
     protected CommandData readCommand(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums,
-                                      List<CommandEnumData> softEnums, List<String> postfixes, Set<Runnable> delayedTasks) {
+                                      List<String> postfixes, Set<Consumer<List<CommandEnumData>>> softEnumParameters) {
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
         Set<CommandData.Flag> flags = this.readFlags(buffer);
@@ -189,7 +190,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         for (int i = 0; i < overloads.length; i++) {
             overloads[i] = new CommandParamData[VarInts.readUnsignedInt(buffer)];
             for (int i2 = 0; i2 < overloads[i].length; i2++) {
-                overloads[i][i2] = readParameter(buffer, helper, enums, softEnums, postfixes, delayedTasks);
+                overloads[i][i2] = readParameter(buffer, helper, enums, postfixes, softEnumParameters);
             }
         }
         return new CommandData(name, description, flags, permissions, aliases, overloads);
@@ -239,8 +240,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
     }
 
     protected CommandParamData readParameter(ByteBuf buffer, BedrockCodecHelper helper, List<CommandEnumData> enums,
-                                             List<CommandEnumData> softEnums, List<String> postfixes,
-                                             Set<Runnable> delayedTasks) {
+                                             List<String> postfixes, Set<Consumer<List<CommandEnumData>>> softEnumParameters) {
         CommandParamData param = new CommandParamData();
 
         param.setName(helper.readString(buffer));
@@ -250,7 +250,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
             param.setPostfix(postfixes.get(symbol & ~ARG_FLAG_POSTFIX));
         } else if ((symbol & ARG_FLAG_VALID) != 0) {
             if ((symbol & ARG_FLAG_SOFT_ENUM) != 0) {
-                delayedTasks.add(() -> param.setEnumData(softEnums.get(symbol & ~(ARG_FLAG_SOFT_ENUM | ARG_FLAG_VALID))));
+                softEnumParameters.add((softEnums) -> param.setEnumData(softEnums.get(symbol & ~(ARG_FLAG_SOFT_ENUM | ARG_FLAG_VALID))));
             } else if ((symbol & ARG_FLAG_ENUM) != 0) {
                 param.setEnumData(enums.get(symbol & ~(ARG_FLAG_ENUM | ARG_FLAG_VALID)));
             } else {
