@@ -257,8 +257,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 int parameterTypeId = symbol & ~ARG_FLAG_VALID;
                 CommandParam type = paramTypeMap.getType(parameterTypeId);
                 if (type == null) {
-                    log.debug("Unknown parameter type: " + parameterTypeId);
-                    type = new CommandParam(parameterTypeId);
+                    throw new IllegalStateException("Invalid parameter type: " + parameterTypeId);
                 }
                 param.setType(type);
             }

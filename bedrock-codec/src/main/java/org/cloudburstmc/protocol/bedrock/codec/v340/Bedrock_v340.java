@@ -21,7 +21,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 public class Bedrock_v340 extends Bedrock_v332 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v332.COMMAND_PARAMS.toBuilder()
-            .shift(28, -1)
+            .shift(15, -1)
             .build();
 
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v332.ENTITY_FLAGS.toBuilder()
