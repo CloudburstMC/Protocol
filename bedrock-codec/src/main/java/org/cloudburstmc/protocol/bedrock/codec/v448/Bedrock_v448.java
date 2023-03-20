@@ -64,7 +64,7 @@ public class Bedrock_v448 extends Bedrock_v440 {
             .updateSerializer(NpcRequestPacket.class, NpcRequestSerializer_v448.INSTANCE)
             .updateSerializer(SetTitlePacket.class, SetTitleSerializer_v448.INSTANCE)
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v448.INSTANCE)
-            .registerPacket(SimulationTypePacket.class, SimulationTypeSerializer_v448.INSTANCE, 168)
-            .registerPacket(NpcDialoguePacket.class, NpcDialogueSerializer_v448.INSTANCE, 169)
+            .registerPacket(SimulationTypePacket::new, SimulationTypeSerializer_v448.INSTANCE, 168)
+            .registerPacket(NpcDialoguePacket::new, NpcDialogueSerializer_v448.INSTANCE, 169)
             .build();
 }

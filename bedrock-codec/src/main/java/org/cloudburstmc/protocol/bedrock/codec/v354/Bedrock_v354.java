@@ -78,7 +78,7 @@ public class Bedrock_v354 extends Bedrock_v340 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(MapCreateLockedCopyPacket.class, MapCreateLockedCopySerializer_v354.INSTANCE, 126)
-            .registerPacket(OnScreenTextureAnimationPacket.class, OnScreenTextureAnimationSerializer_v354.INSTANCE, 127)
+            .registerPacket(MapCreateLockedCopyPacket::new, MapCreateLockedCopySerializer_v354.INSTANCE, 126)
+            .registerPacket(OnScreenTextureAnimationPacket::new, OnScreenTextureAnimationSerializer_v354.INSTANCE, 127)
             .build();
 }

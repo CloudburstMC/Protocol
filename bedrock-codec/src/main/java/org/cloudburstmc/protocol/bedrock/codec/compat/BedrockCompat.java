@@ -16,10 +16,10 @@ public class BedrockCompat {
      */
     public static BedrockCodec CODEC = BedrockCodec.builder()
             .helper(() -> NoopBedrockCodecHelper.INSTANCE)
-            .registerPacket(LoginPacket.class, LoginSerializerCompat.INSTANCE, 1)
-            .registerPacket(PlayStatusPacket.class, PlayStatusSerializerCompat.INSTANCE, 2)
-            .registerPacket(DisconnectPacket.class, DisconnectSerializerCompat.INSTANCE, 5)
-            .registerPacket(RequestNetworkSettingsPacket.class, RequestNetworkSettingsSerializerCompat.INSTANCE, 193)
+            .registerPacket(LoginPacket::new, LoginSerializerCompat.INSTANCE, 1)
+            .registerPacket(PlayStatusPacket::new, PlayStatusSerializerCompat.INSTANCE, 2)
+            .registerPacket(DisconnectPacket::new, DisconnectSerializerCompat.INSTANCE, 5)
+            .registerPacket(RequestNetworkSettingsPacket::new, RequestNetworkSettingsSerializerCompat.INSTANCE, 193)
             .protocolVersion(0)
             .minecraftVersion("0.0.0")
             .build();

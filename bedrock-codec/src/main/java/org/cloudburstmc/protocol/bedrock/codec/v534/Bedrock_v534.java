@@ -58,9 +58,9 @@ public class Bedrock_v534 extends Bedrock_v527 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(UpdateAbilitiesPacket.class, UpdateAbilitiesSerializer_v534.INSTANCE, 187)
-            .registerPacket(UpdateAdventureSettingsPacket.class, UpdateAdventureSettingsSerializer_v534.INSTANCE, 188)
-            .registerPacket(DeathInfoPacket.class, DeathInfoSerializer_v534.INSTANCE, 189)
-            .registerPacket(EditorNetworkPacket.class, EditorNetworkSerializer_v534.INSTANCE, 190)
+            .registerPacket(UpdateAbilitiesPacket::new, UpdateAbilitiesSerializer_v534.INSTANCE, 187)
+            .registerPacket(UpdateAdventureSettingsPacket::new, UpdateAdventureSettingsSerializer_v534.INSTANCE, 188)
+            .registerPacket(DeathInfoPacket::new, DeathInfoSerializer_v534.INSTANCE, 189)
+            .registerPacket(EditorNetworkPacket::new, EditorNetworkSerializer_v534.INSTANCE, 190)
             .build();
 }

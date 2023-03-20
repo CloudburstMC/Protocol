@@ -77,9 +77,9 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527())
             .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v527())
-            .registerPacket(LessonProgressPacket.class, new LessonProgressSerializer_v527(), 183)
-            .registerPacket(RequestAbilityPacket.class, new RequestAbilitySerializer_v527(), 184)
-            .registerPacket(RequestPermissionsPacket.class, new RequestPermissionsSerializer_v527(), 185)
-            .registerPacket(ToastRequestPacket.class, new ToastRequestSerializer_v527(), 186)
+            .registerPacket(LessonProgressPacket::new, new LessonProgressSerializer_v527(), 183)
+            .registerPacket(RequestAbilityPacket::new, new RequestAbilitySerializer_v527(), 184)
+            .registerPacket(RequestPermissionsPacket::new, new RequestPermissionsSerializer_v527(), 185)
+            .registerPacket(ToastRequestPacket::new, new ToastRequestSerializer_v527(), 186)
             .build();
 }

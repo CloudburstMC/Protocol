@@ -41,11 +41,11 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v388(COMMAND_PARAMS))
-            .registerPacket(MotionPredictionHintsPacket.class, MotionPredictionHintsSerializer_v419.INSTANCE, 157)
-            .registerPacket(AnimateEntityPacket.class, AnimateEntitySerializer_v419.INSTANCE, 158)
-            .registerPacket(CameraShakePacket.class, CameraShakeSerializer_v419.INSTANCE, 159)
-            .registerPacket(PlayerFogPacket.class, PlayerFogSerializer_v419.INSTANCE, 160)
-            .registerPacket(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
-            .registerPacket(ItemComponentPacket.class, ItemComponentSerializer_v419.INSTANCE, 162)
+            .registerPacket(MotionPredictionHintsPacket::new, MotionPredictionHintsSerializer_v419.INSTANCE, 157)
+            .registerPacket(AnimateEntityPacket::new, AnimateEntitySerializer_v419.INSTANCE, 158)
+            .registerPacket(CameraShakePacket::new, CameraShakeSerializer_v419.INSTANCE, 159)
+            .registerPacket(PlayerFogPacket::new, PlayerFogSerializer_v419.INSTANCE, 160)
+            .registerPacket(CorrectPlayerMovePredictionPacket::new, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
+            .registerPacket(ItemComponentPacket::new, ItemComponentSerializer_v419.INSTANCE, 162)
             .build();
 }

@@ -60,8 +60,8 @@ public class Bedrock_v471 extends Bedrock_v465 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(PhotoInfoRequestPacket.class, PhotoInfoRequestSerializer_v471.INSTANCE, 173)
-            .registerPacket(SubChunkPacket.class, SubChunkSerializer_v471.INSTANCE, 174)
-            .registerPacket(SubChunkRequestPacket.class, SubChunkRequestSerializer_v471.INSTANCE, 175)
+            .registerPacket(PhotoInfoRequestPacket::new, PhotoInfoRequestSerializer_v471.INSTANCE, 173)
+            .registerPacket(SubChunkPacket::new, SubChunkSerializer_v471.INSTANCE, 174)
+            .registerPacket(SubChunkRequestPacket::new, SubChunkRequestSerializer_v471.INSTANCE, 175)
             .build();
 }

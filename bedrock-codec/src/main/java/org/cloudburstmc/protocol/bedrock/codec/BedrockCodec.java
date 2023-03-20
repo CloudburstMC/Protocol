@@ -11,12 +11,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.UnknownPacket;
-import org.lanternpowered.lmbda.LambdaFactory;
-import org.lanternpowered.lmbda.MethodHandlesExtensions;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -124,21 +119,13 @@ public final class BedrockCodec {
         private String minecraftVersion = null;
         private Supplier<BedrockCodecHelper> helperFactory;
 
-        @SuppressWarnings("rawtypes")
-        public <T extends BedrockPacket> Builder registerPacket(Class<T> packetClass, BedrockPacketSerializer<T> serializer, @NonNegative int id) {
+        public <T extends BedrockPacket> Builder registerPacket(Supplier<T> factory, BedrockPacketSerializer<T> serializer, @NonNegative int id) {
+            Class<? extends BedrockPacket> packetClass = factory.get().getClass();
+
             checkArgument(id >= 0, "id cannot be negative");
             checkArgument(!packets.containsKey(packetClass), "Packet class already registered");
 
-            Supplier<Object> factory;
-            try {
-                MethodHandles.Lookup lookup = MethodHandlesExtensions.privateLookupIn(packetClass, MethodHandles.lookup());
-                MethodHandle handle = lookup.findConstructor(packetClass, MethodType.methodType(void.class));
-                factory = LambdaFactory.createSupplier(handle);
-            } catch (NoSuchMethodException | IllegalAccessException e) {
-                throw new IllegalArgumentException("Unable to find suitable constructor for packet factory", e);
-            }
-
-            BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, (Supplier) factory, serializer);
+            BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, factory, serializer);
 
             packets.put(packetClass, info);
 
