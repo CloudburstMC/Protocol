@@ -52,16 +52,31 @@ public final class BedrockCodec {
             packet = definition.getFactory().get();
             serializer = (BedrockPacketSerializer) definition.getSerializer();
         }
-
+        int readIndex = buf.readerIndex();
+        boolean hasFailure = false;
         try {
             serializer.deserialize(buf, helper, packet);
         } catch (Exception e) {
-            throw new PacketSerializeException("Error whilst deserializing " + packet, e);
+            // throw new PacketSerializeException("Error whilst deserializing " + packet, e);
+            log.error("Error whilst deserializing " + packet, e);
+            hasFailure = true;
         }
 
-        if (log.isDebugEnabled() && buf.isReadable()) {
-            log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
+        if (buf.isReadable()) {
+            if (log.isDebugEnabled()) {
+                log.debug(packet.getClass().getSimpleName() + " still has " + buf.readableBytes() + " bytes to read!");
+            }
+            hasFailure = true;
         }
+
+        if (hasFailure) {
+            buf.readerIndex(readIndex);
+            UnknownPacket unknownPacket = new UnknownPacket();
+            unknownPacket.setPacketId(id);
+            unknownPacket.deserialize(buf, helper, unknownPacket);
+            packet = unknownPacket;
+        }
+
         return packet;
     }
 
