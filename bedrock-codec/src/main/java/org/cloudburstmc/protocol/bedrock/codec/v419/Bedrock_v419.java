@@ -15,8 +15,8 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 public class Bedrock_v419 extends Bedrock_v408 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v408.COMMAND_PARAMS.toBuilder()
-            .shift(14, 1) // From FILE_PATH, move up 1
-            .shift(30, 1) // From STRING, move up 1
+            .shift(7, 1)
+            .shift(30, 1)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v408.SOUND_EVENTS.toBuilder()

@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1S
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommandsSerializer_v448;
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v503.Bedrock_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.*;
@@ -14,6 +15,7 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
@@ -40,6 +42,12 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .insert(EntityDataTypes.PLAYER_LAST_DEATH_POS, 128, EntityDataFormat.VECTOR3I)
             .insert(EntityDataTypes.PLAYER_LAST_DEATH_DIMENSION, 129, EntityDataFormat.INT)
             .insert(EntityDataTypes.PLAYER_HAS_DIED, 130, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
+            .build();
+
+    protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v503.COMMAND_PARAMS.toBuilder()
+            .shift(7, 1)
+            .insert(7, CommandParam.COMPARE_OPERATOR)
+            .insert(23, CommandParam.INT_RANGE)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v503.LEVEL_EVENTS.toBuilder()
@@ -70,6 +78,7 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .minecraftVersion("1.19.0")
             .helper(() -> new BedrockCodecHelper_v503(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v527())
+            .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

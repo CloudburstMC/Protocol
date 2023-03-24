@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.Bedrock_v291;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.AvailableCommandsSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
@@ -13,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
@@ -50,6 +52,10 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .insert(52, ParticleType.BUBBLE_COLUMN_UP)
             .insert(53, ParticleType.BUBBLE_COLUMN_DOWN)
             .insert(54, ParticleType.SNEEZE)
+            .build();
+
+    protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v291.COMMAND_PARAMS.toBuilder()
+            .shift(24, 2)
             .build();
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v291.ENTITY_DATA.toBuilder()
@@ -100,6 +106,7 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v313.INSTANCE)
             .updateSerializer(AddEntityPacket.class, AddEntitySerializer_v313.INSTANCE)
             .updateSerializer(UpdateTradePacket.class, UpdateTradeSerializer_v313.INSTANCE)
+            .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v291(COMMAND_PARAMS))
             .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))

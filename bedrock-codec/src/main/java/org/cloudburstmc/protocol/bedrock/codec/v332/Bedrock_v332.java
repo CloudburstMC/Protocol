@@ -17,8 +17,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 public class Bedrock_v332 extends Bedrock_v313 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v313.COMMAND_PARAMS.toBuilder()
-            .update(14, 15, CommandParam.FILE_PATH)
-            .update(18, 19, CommandParam.INT_RANGE)
+            .insert(15, CommandParam.FILE_PATH)
             .shift(26, 2)
             .build();
 

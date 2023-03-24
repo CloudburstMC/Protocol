@@ -48,11 +48,10 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v361.COMMAND_PARAMS.toBuilder()
-            .remove(18) // Removed INT_RANGE
-            .shift(27, 2) // Move STRING up to 29
-            .shift(31, 7) // Move POSITION up to 38
+            .shift(27, 2)
+            .shift(31, 7)
             .insert(37, CommandParam.BLOCK_POSITION)
-            .shift(46, 1) // Move JSON up to 47
+            .shift(46, 1)
             .build();
 
     protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v361.ENTITY_EVENTS.toBuilder()

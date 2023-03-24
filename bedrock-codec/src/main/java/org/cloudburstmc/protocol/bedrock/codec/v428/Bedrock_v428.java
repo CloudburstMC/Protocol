@@ -51,6 +51,7 @@ public class Bedrock_v428 extends Bedrock_v422 {
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v422.COMMAND_PARAMS.toBuilder()
             .shift(2, 1)
             .shift(57, 6)
+            .insert(60, CommandParam.BLOCK_STATES)
             .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v422.SOUND_EVENTS.toBuilder()
