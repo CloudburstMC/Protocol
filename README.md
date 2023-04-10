@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/license-apache%202.0-blue.svg)](LICENSE)
 [![Build Status](https://ci.opencollab.dev/job/NukkitX/job/Protocol/job/master/badge/icon)](https://ci.opencollab.dev/job/NukkitX/job/Protocol/job/master/)
 [![Discord](https://img.shields.io/discord/393465748535640064.svg)](https://discord.gg/seCw62a)
+[![Version](https://repo.opencollab.dev/api/badge/latest/maven-snapshots/org/cloudburstmc/protocol/bedrock-codec)](https://repo.opencollab.dev/#/maven-snapshots/org/cloudburstmc/protocol)
 
 ### Introduction
 
