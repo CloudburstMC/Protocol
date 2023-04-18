@@ -188,7 +188,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         for (BedrockSession session : this.sessions.values()) {
             session.disconnectReason = reason;
         }
-        this.channel.close();
+        this.channel.disconnect();
     }
 
     protected void onClose() {
