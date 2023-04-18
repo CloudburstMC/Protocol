@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -17,11 +16,6 @@ public class Bedrock_v582 extends Bedrock_v575 {
 
     protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v575.CONTAINER_SLOT_TYPES.toBuilder()
             .insert(61, ContainerSlotType.SMITHING_TABLE_TEMPLATE)
-            .build();
-
-    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v575.PARTICLE_TYPES
-            .toBuilder()
-            .insert(85, ParticleType.BRUSH_DUST)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v575.LEVEL_EVENTS.toBuilder()
