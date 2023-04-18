@@ -803,4 +803,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(UnlockedRecipesPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(CompressedBiomeDefinitionListPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(TrimDataPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(OpenSignPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

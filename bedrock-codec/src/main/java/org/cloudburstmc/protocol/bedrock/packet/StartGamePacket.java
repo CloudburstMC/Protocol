@@ -151,6 +151,21 @@ public class StartGamePacket implements BedrockPacket {
      * @since v567
      */
     private boolean emoteChatMuted;
+    /**
+     * Whether block runtime IDs should be replaced by 32-bit integer hashes of the NBT block state.
+     * Unlike runtime IDs, this hashes should be persistent across versions and should make support for data-driven/custom blocks easier.
+     *
+     * @since v582
+     */
+    private boolean blockNetworkIdsHashed;
+    /**
+     * @since v582
+     */
+    private boolean createdInEditor;
+    /**
+     * @since v582
+     */
+    private boolean exportedFromEditor;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
