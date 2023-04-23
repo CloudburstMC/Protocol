@@ -232,7 +232,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         } else if (param.getType() != null) {
             symbol = this.paramTypeMap.getId(param.getType()) | ARG_FLAG_VALID;
         } else {
-            throw new IllegalStateException("No param type specified: " + param);
+            symbol = 0;
         }
 
         buffer.writeIntLE(symbol);
@@ -261,8 +261,6 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 }
                 param.setType(type);
             }
-        } else {
-            throw new IllegalStateException("No param type specified: " + param.getName());
         }
 
         param.setOptional(buffer.readBoolean());
