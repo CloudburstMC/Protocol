@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescripto
 public class SmithingTransformRecipeData implements TaggedCraftingData, IdentifiableRecipeData, NetworkRecipeData {
 
     private final String id;
+    private final ItemDescriptorWithCount template;
     private final ItemDescriptorWithCount base;
     private final ItemDescriptorWithCount addition;
     private final ItemData result;
@@ -23,8 +24,16 @@ public class SmithingTransformRecipeData implements TaggedCraftingData, Identifi
         return CraftingDataType.SMITHING_TRANSFORM;
     }
 
+    public static SmithingTransformRecipeData of(String id, ItemDescriptorWithCount template, ItemDescriptorWithCount base,
+                                                 ItemDescriptorWithCount addition, ItemData result, String tag, int netId) {
+        return new SmithingTransformRecipeData(id, template, base, addition, result, tag, netId);
+    }
+
+    /**
+     * Pre-1.19.80
+     */
     public static SmithingTransformRecipeData of(String id, ItemDescriptorWithCount base,
                                                  ItemDescriptorWithCount addition, ItemData result, String tag, int netId) {
-        return new SmithingTransformRecipeData(id, base, addition, result, tag, netId);
+        return new SmithingTransformRecipeData(id, null, base, addition, result, tag, netId);
     }
 }

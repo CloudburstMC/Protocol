@@ -88,4 +88,30 @@ public class CraftingDataSerializer_v582 extends CraftingDataSerializer_v567 {
         helper.writeString(buffer, data.getTag());
         VarInts.writeUnsignedInt(buffer, data.getNetId());
     }
+
+    @Override
+    protected SmithingTransformRecipeData readSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
+                                                                      CraftingDataType type) {
+        return SmithingTransformRecipeData.of(
+                helper.readString(buffer), // ID
+                helper.readIngredient(buffer), // Template - new for 1.19.80
+                helper.readIngredient(buffer), // Base
+                helper.readIngredient(buffer), // Addition
+                helper.readItemInstance(buffer), // Result
+                helper.readString(buffer), // Tag
+                VarInts.readUnsignedInt(buffer) // Net ID
+        );
+    }
+
+    @Override
+    protected void writeSmithingTransformRecipe(ByteBuf buffer, BedrockCodecHelper helper,
+                                                SmithingTransformRecipeData data) {
+        helper.writeString(buffer, data.getId());
+        helper.writeIngredient(buffer, data.getTemplate());
+        helper.writeIngredient(buffer, data.getBase());
+        helper.writeIngredient(buffer, data.getAddition());
+        helper.writeItemInstance(buffer, data.getResult());
+        helper.writeString(buffer, data.getTag());
+        VarInts.writeUnsignedInt(buffer, data.getNetId());
+    }
 }
