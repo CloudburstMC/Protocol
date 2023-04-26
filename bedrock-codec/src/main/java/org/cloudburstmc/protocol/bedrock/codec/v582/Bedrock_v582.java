@@ -3,14 +3,19 @@ package org.cloudburstmc.protocol.bedrock.codec.v582;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
+import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommandsSerializer_v448;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
+
+import java.util.List;
+import java.util.TreeMap;
 
 public class Bedrock_v582 extends Bedrock_v575 {
 
@@ -32,6 +37,13 @@ public class Bedrock_v582 extends Bedrock_v575 {
             .insert(9810, LevelEvent.JUMP_PREVENTED)
             .build();
 
+    protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v575.COMMAND_PARAMS.toBuilder()
+            .shift(38, 5)
+            .shift(56, -1) // MESSAGE is 55
+            .shift(57, 1) // TEXT is 58
+            .shift(72, -1) // BLOCK_STATES is 71
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v575.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(582)
@@ -42,6 +54,7 @@ public class Bedrock_v582 extends Bedrock_v575 {
             .updateSerializer(CraftingDataPacket.class, new CraftingDataSerializer_v582())
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
+            .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
             .registerPacket(CompressedBiomeDefinitionListPacket::new, CompressedBiomeDefinitionListSerializer_v582.INSTANCE, 301)
             .registerPacket(TrimDataPacket::new, TrimDataSerializer_v582.INSTANCE, 302)
             .registerPacket(OpenSignPacket::new, OpenSignSerializer_v582.INSTANCE, 303)
