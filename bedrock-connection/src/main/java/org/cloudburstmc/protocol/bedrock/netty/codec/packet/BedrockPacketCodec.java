@@ -29,7 +29,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     protected final void encode(ChannelHandlerContext ctx, BedrockPacketWrapper msg, List<Object> out) throws Exception {
         if (msg.getPacketBuffer() != null) {
             // We have a pre-encoded packet buffer, just use that.
-            out.add(msg.retain());
+            out.add(msg.getPacketBuffer().retain());
         } else {
             ByteBuf buf = ctx.alloc().buffer(128);
             try {

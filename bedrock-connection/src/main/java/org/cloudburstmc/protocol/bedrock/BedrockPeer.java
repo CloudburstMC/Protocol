@@ -104,12 +104,10 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     public void sendPacket(int senderClientId, int targetClientId, BedrockPacket packet) {
-        ReferenceCountUtil.retain(packet);
         this.packetQueue.add(new BedrockPacketWrapper(0, senderClientId, targetClientId, packet, null));
     }
 
     public void sendPacketImmediately(int senderClientId, int targetClientId, BedrockPacket packet) {
-        ReferenceCountUtil.retain(packet);
         this.channel.writeAndFlush(new BedrockPacketWrapper(0, senderClientId, targetClientId, packet, null));
     }
 
