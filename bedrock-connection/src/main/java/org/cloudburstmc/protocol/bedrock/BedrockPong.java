@@ -25,7 +25,7 @@ public class BedrockPong {
     private int ipv6Port = -1;
     private String[] extras;
 
-    static BedrockPong fromRakNet(ByteBuf pong) {
+    public static BedrockPong fromRakNet(ByteBuf pong) {
         String info = pong.toString(StandardCharsets.UTF_8);
 
         BedrockPong bedrockPong = new BedrockPong();
