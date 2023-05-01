@@ -11,6 +11,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.*;
@@ -73,6 +76,16 @@ public final class TypeMap<T> {
         value |= value >> 16;
         value++;
         return value;
+    }
+
+    public String prettyPrint() {
+        TreeMap<Integer, T> map = new TreeMap<>(this.toObject);
+
+        StringJoiner joiner = new StringJoiner("\n");
+        for (Map.Entry<Integer, T> entry : map.entrySet()) {
+            joiner.add(entry.getKey() + " => " + entry.getValue());
+        }
+        return joiner.toString();
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
