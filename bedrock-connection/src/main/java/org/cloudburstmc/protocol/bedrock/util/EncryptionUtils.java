@@ -7,12 +7,10 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.jwk.Curve;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.JSONValue;
+import com.nimbusds.jose.shaded.gson.Gson;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import lombok.experimental.UtilityClass;
 
 import javax.crypto.Cipher;
@@ -32,17 +30,14 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
-
 @UtilityClass
 public class EncryptionUtils {
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(EncryptionUtils.class);
-
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final String MOJANG_PUBLIC_KEY_BASE64 =
             "MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE8ELkixyLcwlZryUQcu1TvPOmI2B7vX83ndnWRUaXm74wFfa5f/lwQNTfrLVHa2PmenpGI6JhIMUJaWZrjmMj90NoKNFSNBuKdm8rYiXsfaz3K36x/1U26HpG0ZxK/V1V";
     private static final KeyPairGenerator KEY_PAIR_GEN;
+    private static final Gson GSON = new Gson();
 
     static {
         // DO NOT REMOVE THIS
@@ -126,12 +121,13 @@ public class EncryptionUtils {
                 break;
             }
 
-            Object payload = JSONValue.parse(jwt.getPayload().toString());
-            checkArgument(payload instanceof JSONObject, "Payload is not a object");
-
-            Object identityPublicKey = ((JSONObject) payload).get("identityPublicKey");
-            checkArgument(identityPublicKey instanceof String, "identityPublicKey node is missing in chain");
-            lastKey = generateKey((String) identityPublicKey);
+            try {
+                JsonObject payload = GSON.fromJson(jwt.getPayload().toString(), JsonObject.class);
+                String identityPublicKey = payload.get("identityPublicKey").getAsString();
+                lastKey = generateKey(identityPublicKey);
+            } catch (Exception exception) {
+                throw new IllegalStateException("Invalid chain element");
+            }
         }
         return validChain;
     }

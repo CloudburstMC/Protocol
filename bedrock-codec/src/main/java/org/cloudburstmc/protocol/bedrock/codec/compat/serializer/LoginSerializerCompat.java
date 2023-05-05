@@ -1,8 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.compat.serializer;
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.JSONValue;
+import com.nimbusds.jose.shaded.gson.*;
 import com.nimbusds.jwt.SignedJWT;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AsciiString;
@@ -16,11 +14,12 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 
-import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginSerializerCompat implements BedrockPacketSerializer<LoginPacket> {
     public static final LoginSerializerCompat INSTANCE = new LoginSerializerCompat();
+    private final Gson gson = new Gson();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LoginPacket packet) {
@@ -33,15 +32,23 @@ public class LoginSerializerCompat implements BedrockPacketSerializer<LoginPacke
 
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
-        Object json = JSONValue.parse(readString(jwt).array());
-        checkArgument(json instanceof JSONObject && ((JSONObject) json).containsKey("chain"), "Invalid login chain");
-        Object chain = ((JSONObject) json).get("chain");
-        checkArgument(chain instanceof JSONArray, "Expected JSON array for login chain");
+        JsonArray chain;
+        try {
+            JsonObject json = gson.fromJson(readString(jwt).toString(), JsonObject.class);
+            chain = checkNotNull(json.getAsJsonArray("chain"));
+        } catch (JsonSyntaxException | ClassCastException | NullPointerException exception) {
+            throw new IllegalStateException("Expected JSON array for login chain");
+        }
 
         try {
-            for (Object node : (JSONArray) chain) {
-                checkArgument(node instanceof String, "Expected String in login chain");
-                packet.getChain().add(SignedJWT.parse((String) node));
+            for (JsonElement node : chain) {
+                String chainNode;
+                try {
+                    chainNode = node.getAsString();
+                } catch (ClassCastException | IllegalStateException exception) {
+                    throw new IllegalStateException("Expected String in login chain");
+                }
+                packet.getChain().add(SignedJWT.parse(chainNode));
             }
         } catch (ParseException e) {
             throw new IllegalArgumentException("Unable to decode JWT in login chain", e);

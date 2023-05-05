@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.skin;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.JSONValue;
+import com.nimbusds.jose.shaded.gson.Gson;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.*;
 
@@ -15,6 +15,7 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SerializedSkin {
+    private static final Gson GSON = new Gson();
     private static final int PIXEL_SIZE = 4;
 
     public static final int SINGLE_SKIN_SIZE = 64 * 32 * PIXEL_SIZE;
@@ -139,14 +140,14 @@ public class SerializedSkin {
     }
 
     private static String convertLegacyGeometryName(String geometryName) {
-        return "{\"geometry\" : {\"default\" : \"" + JSONValue.escape(geometryName) + "\"}}";
+        return "{\"geometry\" : {\"default\" : \"" + GSON.toJson(geometryName) + "\"}}";
     }
 
     private static String convertSkinPatchToLegacy(String skinResourcePatch) {
         checkArgument(validateSkinResourcePatch(skinResourcePatch), "Invalid skin resource patch");
-        JSONObject object = (JSONObject) JSONValue.parse(skinResourcePatch);
-        JSONObject geometry = (JSONObject) object.get("geometry");
-        return (String) geometry.get("default");
+        JsonObject object = GSON.fromJson(skinResourcePatch, JsonObject.class);
+        JsonObject geometry = object.getAsJsonObject("geometry");
+        return geometry.get("default").getAsString();
     }
 
     private boolean isValidResourcePatch() {
@@ -155,10 +156,11 @@ public class SerializedSkin {
 
     private static boolean validateSkinResourcePatch(String skinResourcePatch) {
         try {
-            JSONObject object = (JSONObject) JSONValue.parse(skinResourcePatch);
-            JSONObject geometry = (JSONObject) object.get("geometry");
-            return geometry.containsKey("default") && geometry.get("default") instanceof String;
-        } catch (ClassCastException | NullPointerException e) {
+            JsonObject object = GSON.fromJson(skinResourcePatch, JsonObject.class);
+            JsonObject geometry = object.getAsJsonObject("geometry");
+            geometry.get("default").getAsString();
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }

@@ -2,6 +2,7 @@
 checkerframework = "3.26.0"
 fastutil = "8.5.3"
 netty = "4.1.84.Final"
+jose-jwt = "9.31"
 
 [libraries]
 checker-qual = { group = "org.checkerframework", name = "checker-qual", version.ref = "checkerframework" }
@@ -15,7 +16,7 @@ fastutil-object-int-maps = { group = "com.nukkitx.fastutil", name = "fastutil-ob
 netty-buffer = { group = "io.netty", name = "netty-buffer", version.ref = "netty" }
 netty-transport-raknet = { group = "org.cloudburstmc.netty", name = "netty-transport-raknet", version = "1.0.0.CR1-SNAPSHOT" }
 
-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version = "9.10.1" }
+jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "jose-jwt" }
 natives = { group = "com.nukkitx", name = "natives", version = "1.0.3" }
 math = { group = "org.cloudburstmc.math", name = "immutable", version = "2.0-SNAPSHOT" }
 nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.0.Final" }

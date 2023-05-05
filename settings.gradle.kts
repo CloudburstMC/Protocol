@@ -16,6 +16,6 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "protocol"
+rootProject.name = "protocol-parent"
 
 include("bedrock-codec", "bedrock-connection", "common")
