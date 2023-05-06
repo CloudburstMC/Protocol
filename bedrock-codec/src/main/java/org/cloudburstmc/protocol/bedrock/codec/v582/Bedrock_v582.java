@@ -14,9 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
-import java.util.List;
-import java.util.TreeMap;
-
 public class Bedrock_v582 extends Bedrock_v575 {
 
     protected static final TypeMap<ContainerSlotType> CONTAINER_SLOT_TYPES = Bedrock_v575.CONTAINER_SLOT_TYPES.toBuilder()
@@ -38,10 +35,12 @@ public class Bedrock_v582 extends Bedrock_v575 {
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v575.COMMAND_PARAMS.toBuilder()
-            .shift(38, 5)
-            .shift(56, -1) // MESSAGE is 55
-            .shift(57, 1) // TEXT is 58
-            .shift(72, -1) // BLOCK_STATES is 71
+            .shift(32, 5)
+            .insert(32, CommandParam.PERMISSION)
+            .insert(33, CommandParam.PERMISSIONS)
+            .insert(34, CommandParam.PERMISSION_SELECTOR)
+            .insert(35, CommandParam.PERMISSION_ELEMENT)
+            .insert(36, CommandParam.PERMISSION_ELEMENTS)
             .build();
 
     public static final BedrockCodec CODEC = Bedrock_v575.CODEC.toBuilder()
