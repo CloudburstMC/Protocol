@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v361;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.LecternUpdateSerializer_v340;
+import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.VideoStreamConnectSerializer_v340;
 import org.cloudburstmc.protocol.bedrock.codec.v354.Bedrock_v354;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
@@ -65,6 +67,8 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .minecraftVersion("1.12.0")
             .helper(() -> new BedrockCodecHelper_v361(ENTITY_DATA, GAME_RULE_TYPES))
             .deregisterPacket(AddHangingEntityPacket.class)
+            .deregisterPacket(LecternUpdatePacket.class)
+            .deregisterPacket(VideoStreamConnectPacket.class)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v361.INSTANCE)
             .updateSerializer(AddPaintingPacket.class, AddPaintingSerializer_v361.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))                                  
@@ -73,8 +77,9 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .updateSerializer(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v361.INSTANCE)
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v361.INSTANCE)
-            .updateSerializer(VideoStreamConnectPacket.class, VideoStreamConnectSerializer_v361.INSTANCE)
             .registerPacket(LevelEventGenericPacket::new, new LevelEventGenericSerializer_v361(LEVEL_EVENTS), 124)
+            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v340.INSTANCE, 125)
+            .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v361.INSTANCE, 126)
             // AddEntityPacket 127
             // RemoveEntityPacket 128
             .registerPacket(ClientCacheStatusPacket::new, ClientCacheStatusSerializer_v361.INSTANCE, 129)

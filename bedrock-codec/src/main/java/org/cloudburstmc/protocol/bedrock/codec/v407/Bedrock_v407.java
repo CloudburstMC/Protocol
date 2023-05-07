@@ -187,6 +187,7 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .protocolVersion(407)
             .minecraftVersion("1.16.0")
             .helper(() -> new BedrockCodecHelper_v407(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
+            .deregisterPacket(VideoStreamConnectPacket.class)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v407.INSTANCE)
             .updateSerializer(InventoryTransactionPacket.class, InventoryTransactionSerializer_v407.INSTANCE)
             .updateSerializer(HurtArmorPacket.class, HurtArmorSerializer_v407.INSTANCE)
