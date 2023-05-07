@@ -3,9 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v361;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.LecternUpdateSerializer_v340;
-import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.VideoStreamConnectSerializer_v340;
 import org.cloudburstmc.protocol.bedrock.codec.v354.Bedrock_v354;
+import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.LecternUpdateSerializer_v354;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
@@ -78,7 +77,7 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v361.INSTANCE)
             .registerPacket(LevelEventGenericPacket::new, new LevelEventGenericSerializer_v361(LEVEL_EVENTS), 124)
-            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v340.INSTANCE, 125)
+            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v354.INSTANCE, 125)
             .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v361.INSTANCE, 126)
             // AddEntityPacket 127
             // RemoveEntityPacket 128
