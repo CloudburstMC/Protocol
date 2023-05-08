@@ -16,6 +16,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NBTOutputStream;
+import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
@@ -292,6 +293,24 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     public void writeTagLE(ByteBuf buffer, Object tag) {
         try (NBTOutputStream writer = NbtUtils.createWriterLE(new ByteBufOutputStream(buffer))) {
             writer.writeTag(tag);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public <T> T readTagValue(ByteBuf buffer, NbtType<T> type) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
+            return reader.readValue(type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void writeTagValue(ByteBuf buffer, Object tag) {
+        try (NBTOutputStream writer = NbtUtils.createNetworkWriter(new ByteBufOutputStream(buffer))) {
+            writer.writeValue(tag);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

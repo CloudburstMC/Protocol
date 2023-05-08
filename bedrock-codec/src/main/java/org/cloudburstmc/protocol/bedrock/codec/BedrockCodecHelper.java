@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
+import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
@@ -164,6 +165,10 @@ public interface BedrockCodecHelper {
     <T> T readTagLE(ByteBuf buffer, Class<T> expected);
 
     void writeTagLE(ByteBuf buffer, Object tag);
+
+    <T> T readTagValue(ByteBuf buffer, NbtType<T> type);
+
+    void writeTagValue(ByteBuf buffer, Object tag);
 
     void readItemUse(ByteBuf buffer, InventoryTransactionPacket packet);
 
