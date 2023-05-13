@@ -20,7 +20,7 @@ public class SmithingTrimRecipeData implements TaggedCraftingData, IdentifiableR
 
     @Override
     public CraftingDataType getType() {
-        return CraftingDataType.SMITHING_TRANSFORM;
+        return CraftingDataType.SMITHING_TRIM;
     }
 
     public static SmithingTrimRecipeData of(String id, ItemDescriptorWithCount base, ItemDescriptorWithCount addition,
