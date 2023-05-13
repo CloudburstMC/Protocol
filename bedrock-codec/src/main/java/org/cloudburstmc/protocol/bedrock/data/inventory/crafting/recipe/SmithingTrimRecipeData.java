@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe;
 
 import lombok.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 
