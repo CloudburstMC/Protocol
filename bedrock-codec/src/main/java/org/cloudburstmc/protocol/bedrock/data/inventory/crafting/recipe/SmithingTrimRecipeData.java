@@ -1,7 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe;
 
 import lombok.*;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 
@@ -20,7 +19,7 @@ public class SmithingTrimRecipeData implements TaggedCraftingData, IdentifiableR
 
     @Override
     public CraftingDataType getType() {
-        return CraftingDataType.SMITHING_TRANSFORM;
+        return CraftingDataType.SMITHING_TRIM;
     }
 
     public static SmithingTrimRecipeData of(String id, ItemDescriptorWithCount base, ItemDescriptorWithCount addition,
