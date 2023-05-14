@@ -2,7 +2,7 @@ package org.cloudburstmc.protocol.bedrock.data;
 
 import lombok.Value;
 import org.cloudburstmc.math.vector.Vector3i;
-import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
 @Value
 public class BlockChangeEntry {

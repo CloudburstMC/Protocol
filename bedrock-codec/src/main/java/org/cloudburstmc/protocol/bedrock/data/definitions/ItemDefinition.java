@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data.defintions;
+package org.cloudburstmc.protocol.bedrock.data.definitions;
 
 import org.cloudburstmc.protocol.common.Definition;
 

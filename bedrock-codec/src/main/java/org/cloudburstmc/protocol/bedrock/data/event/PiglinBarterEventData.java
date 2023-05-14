@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
-import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 
 @Data
 public class PiglinBarterEventData implements EventData {

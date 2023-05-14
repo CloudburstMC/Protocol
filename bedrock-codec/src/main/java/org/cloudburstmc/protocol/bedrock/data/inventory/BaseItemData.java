@@ -3,8 +3,8 @@ package org.cloudburstmc.protocol.bedrock.data.inventory;
 import lombok.Data;
 import lombok.experimental.NonFinal;
 import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
-import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 
 import java.util.Arrays;
 import java.util.Objects;

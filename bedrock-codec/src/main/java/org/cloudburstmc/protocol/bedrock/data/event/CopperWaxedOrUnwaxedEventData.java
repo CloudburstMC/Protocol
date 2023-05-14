@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.event;
 
 import lombok.Data;
-import org.cloudburstmc.protocol.bedrock.data.defintions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
 @Data
 public class CopperWaxedOrUnwaxedEventData implements EventData {

@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v544.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.defintions.FeatureDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.FeatureDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.FeatureRegistryPacket;
 
 public class FeatureRegistrySerializer_v544 implements BedrockPacketSerializer<FeatureRegistryPacket> {

@@ -1,7 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory.descriptor;
 
 import lombok.Value;
-import org.cloudburstmc.protocol.bedrock.data.defintions.ItemDefinition;
+import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 
 @Value
