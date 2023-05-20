@@ -47,7 +47,7 @@ public class Bedrock_v582 extends Bedrock_v575 {
             .raknetProtocolVersion(11)
             .protocolVersion(582)
             .minecraftVersion("1.19.80")
-            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
+            .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v582())
             .updateSerializer(RequestChunkRadiusPacket.class, RequestChunkRadiusSerializer_v582.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, new CraftingDataSerializer_v582())

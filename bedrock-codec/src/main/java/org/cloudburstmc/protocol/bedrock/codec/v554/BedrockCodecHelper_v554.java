@@ -19,12 +19,14 @@ import java.util.List;
 
 public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
 
-    private static final TextProcessingEventOrigin[] ORIGINS = TextProcessingEventOrigin.values();
     protected static final ItemDescriptorType[] DESCRIPTOR_TYPES = ItemDescriptorType.values();
+    protected final TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins;
 
     public BedrockCodecHelper_v554(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes,
-                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities) {
+                                   TypeMap<ItemStackRequestActionType> stackRequestActionTypes, TypeMap<ContainerSlotType> containerSlotTypes,
+                                   TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities);
+        this.textProcessingEventOrigins = textProcessingEventOrigins;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
         this.readArray(buffer, filteredStrings, this::readString);
 
         int originVal = buffer.readIntLE();
-        TextProcessingEventOrigin origin = originVal == -1 ? null : ORIGINS[originVal]; // new for v552
+        TextProcessingEventOrigin origin = originVal == -1 ? null : this.textProcessingEventOrigins.getType(originVal);  // new for v552
         return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), filteredStrings.toArray(new String[0]), origin);
     }
 
@@ -48,7 +50,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
     public void writeItemStackRequest(ByteBuf buffer, ItemStackRequest request) {
         super.writeItemStackRequest(buffer, request);
         TextProcessingEventOrigin origin = request.getTextProcessingEventOrigin();
-        buffer.writeIntLE(origin == null ? -1 : request.getTextProcessingEventOrigin().ordinal()); // new for v552
+        buffer.writeIntLE(origin == null ? -1 : this.textProcessingEventOrigins.getId(origin));  // new for v552
     }
 
     @Override

@@ -11,6 +11,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.TreeMap;
@@ -86,6 +87,23 @@ public final class TypeMap<T> {
             joiner.add(entry.getKey() + " => " + entry.getValue());
         }
         return joiner.toString();
+    }
+
+    public static <T extends Enum<T>> TypeMap<T> fromEnum(Class<T> clazz) {
+        return fromEnum(clazz, -1);
+    }
+
+    public static <T extends Enum<T>> TypeMap<T> fromEnum(Class<T> clazz, int maxIndex) {
+        EnumSet<T> values = EnumSet.allOf(clazz);
+
+        Builder<T> builder = builder(clazz);
+        for (T value : values) {
+            if (maxIndex != -1 && value.ordinal() > maxIndex) {
+                break;
+            }
+            builder.insert(value.ordinal(), value);
+        }
+        return builder.build();
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
