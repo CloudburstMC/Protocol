@@ -29,7 +29,7 @@ public class Bedrock_v567 extends Bedrock_v560 {
             .raknetProtocolVersion(11)
             .protocolVersion(567)
             .minecraftVersion("1.19.60")
-            .helper(() -> new BedrockCodecHelper_v557(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES))
+            .helper(() -> new BedrockCodecHelper_v557(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v567())
             .updateSerializer(CommandRequestPacket.class, new CommandRequestSerializer_v567())
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))

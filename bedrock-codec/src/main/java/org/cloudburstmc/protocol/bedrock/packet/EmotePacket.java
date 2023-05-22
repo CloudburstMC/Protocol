@@ -14,6 +14,14 @@ import java.util.Set;
 @ToString(doNotUseGetters = true)
 public class EmotePacket implements BedrockPacket {
     private long runtimeEntityId;
+    /**
+     * @since v588
+     */
+    private String xuid;
+    /**
+     * @since 588
+     */
+    private String platformId;
     private String emoteId;
     private final Set<EmoteFlag> flags = EnumSet.noneOf(EmoteFlag.class);
 

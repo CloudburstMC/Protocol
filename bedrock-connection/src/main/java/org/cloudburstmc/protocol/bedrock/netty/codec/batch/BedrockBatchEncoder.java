@@ -28,7 +28,8 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
         }
 
         // Accumulate messages to batch
-        messages.add(((ByteBuf) msg).slice());
+        this.messages.add(((ByteBuf) msg).slice());
+        promise.trySuccess(); // complete write promise here
     }
 
     @Override

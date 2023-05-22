@@ -9,7 +9,9 @@ import org.cloudburstmc.protocol.bedrock.data.EmoteFlag;
 import org.cloudburstmc.protocol.bedrock.packet.EmotePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+import java.util.Set;
+
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmoteSerializer_v388 implements BedrockPacketSerializer<EmotePacket> {
 
     public static final EmoteSerializer_v388 INSTANCE = new EmoteSerializer_v388();
@@ -18,21 +20,29 @@ public class EmoteSerializer_v388 implements BedrockPacketSerializer<EmotePacket
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
         helper.writeString(buffer, packet.getEmoteId());
-        int flags = 0;
-        for (EmoteFlag flag : packet.getFlags()) {
-            flags |= 1 << flag.ordinal();
-        }
-        buffer.writeByte(flags);
+        this.writeFlags(buffer, helper, packet.getFlags());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setEmoteId(helper.readString(buffer));
-        int flags = buffer.readUnsignedByte();
+        this.readFlags(buffer, helper, packet.getFlags());
+    }
+
+    protected void writeFlags(ByteBuf buffer, BedrockCodecHelper helper, Set<EmoteFlag> flags) {
+        int flagsData = 0;
+        for (EmoteFlag flag : flags) {
+            flagsData |= 1 << flag.ordinal();
+        }
+        buffer.writeByte(flagsData);
+    }
+
+    protected void readFlags(ByteBuf buffer, BedrockCodecHelper helper, Set<EmoteFlag> flags) {
+        int flagsData = buffer.readUnsignedByte();
         for (EmoteFlag flag : EmoteFlag.values()) {
-            if ((flags & (1L << flag.ordinal())) != 0) {
-                packet.getFlags().add(flag);
+            if ((flagsData & (1L << flag.ordinal())) != 0) {
+                flags.add(flag);
             }
         }
     }
