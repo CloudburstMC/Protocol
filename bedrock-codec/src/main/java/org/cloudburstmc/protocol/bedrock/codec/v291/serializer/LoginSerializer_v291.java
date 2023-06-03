@@ -1,9 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.JSONValue;
-import com.nimbusds.jwt.SignedJWT;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.util.AsciiString;
@@ -13,9 +9,11 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
+import org.jose4j.json.internal.json_simple.JSONArray;
+import org.jose4j.json.internal.json_simple.JSONObject;
+import org.jose4j.json.internal.json_simple.JSONValue;
 
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
@@ -27,16 +25,14 @@ public class LoginSerializer_v291 implements BedrockPacketSerializer<LoginPacket
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LoginPacket packet) {
         buffer.writeInt(packet.getProtocolVersion());
         JSONArray array = new JSONArray();
-        for (SignedJWT node : packet.getChain()) {
-            array.appendElement(node.serialize());
-        }
+        array.addAll(packet.getChain());
 
         JSONObject json = new JSONObject();
-        json.appendField("chain", array);
+        json.put("chain", array);
 
         String chainData = json.toJSONString();
         int chainLength = ByteBufUtil.utf8Bytes(chainData);
-        String extraData = packet.getExtra().serialize();
+        String extraData = packet.getExtra();
         int extraLength = ByteBufUtil.utf8Bytes(extraData);
 
         VarInts.writeUnsignedInt(buffer, chainLength + extraLength + 8);
@@ -52,26 +48,18 @@ public class LoginSerializer_v291 implements BedrockPacketSerializer<LoginPacket
 
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
-        Object json = JSONValue.parse(readString(jwt).array());
+        Object json = JSONValue.parse(readString(jwt).toString());
         checkArgument(json instanceof JSONObject && ((JSONObject) json).containsKey("chain"), "Invalid login chain");
         Object chain = ((JSONObject) json).get("chain");
         checkArgument(chain instanceof JSONArray, "Expected JSON array for login chain");
 
-        try {
-            for (Object node : (JSONArray) chain) {
-                checkArgument(node instanceof String, "Expected String in login chain");
-                packet.getChain().add(SignedJWT.parse((String) node));
-            }
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Unable to decode JWT in login chain", e);
+        for (Object node : (JSONArray) chain) {
+            checkArgument(node instanceof String, "Expected String in login chain");
+            packet.getChain().add((String) node);
         }
 
         String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
-        try {
-            packet.setExtra(SignedJWT.parse(value));
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Unable to decode extra data", e);
-        }
+        packet.setExtra(value);
     }
 
     protected AsciiString readString(ByteBuf buffer) {
