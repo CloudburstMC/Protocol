@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v582.Bedrock_v582;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EmoteSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EventSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.StartGameSerializer_v589;
+import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.UnlockedRecipesSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -49,7 +50,7 @@ public class Bedrock_v589 extends Bedrock_v582 {
             .updateSerializer(StartGamePacket.class, new StartGameSerializer_v589())
             .updateSerializer(EventPacket.class, EventSerializer_v589.INSTANCE)
             .updateSerializer(EmotePacket.class, EmoteSerializer_v589.INSTANCE)
-            // TODO: UnlockedRecipesPacket
+            .updateSerializer(UnlockedRecipesPacket.class, new UnlockedRecipesSerializer_v589())
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))

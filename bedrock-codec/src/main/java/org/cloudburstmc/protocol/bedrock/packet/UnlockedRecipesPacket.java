@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class UnlockedRecipesPacket implements BedrockPacket {
-    private boolean unlockedNotification;
+    private ActionType action;
     private final List<String> unlockedRecipes = new ObjectArrayList<>();
 
     @Override
@@ -24,5 +24,13 @@ public class UnlockedRecipesPacket implements BedrockPacket {
     @Override
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UNLOCKED_RECIPES;
+    }
+
+    public enum ActionType {
+        EMPTY,
+        INITIALLY_UNLOCKED,
+        NEWLY_UNLOCKED,
+        REMOVE_UNLOCKED,
+        REMOVE_ALL
     }
 }
