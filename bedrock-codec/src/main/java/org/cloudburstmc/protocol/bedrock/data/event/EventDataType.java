@@ -32,7 +32,7 @@ public enum EventDataType {
     STRIDER_RIDDEN_IN_LAVA_IN_OVERWORLD,
     SNEAK_CLOSE_TO_SCULK_SENSOR,
     /**
-     * @since v588
+     * @since v589
      */
     CAREFUL_RESTORATION
 }

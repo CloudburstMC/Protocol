@@ -13,7 +13,7 @@ public enum TextProcessingEventOrigin {
     SLASH_COMMAND_TEXT,
     CARTOGRAPHY_TEXT,
     /**
-     * @deprecated since v588
+     * @deprecated since v589
      */
     SLASH_COMMAND_NON_CHAT,
     /**
@@ -27,15 +27,15 @@ public enum TextProcessingEventOrigin {
      */
     TICKING_AREA_TEXT,
     /**
-     * @since  v588
+     * @since  v589
      */
     KICK_COMMAND,
     /**
-     * @since  v588
+     * @since  v589
      */
     TITLE_COMMAND,
     /**
-     * @since  v588
+     * @since  v589
      */
     SUMMON_COMMAND
 }

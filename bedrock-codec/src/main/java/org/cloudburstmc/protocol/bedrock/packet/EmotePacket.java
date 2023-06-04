@@ -15,11 +15,11 @@ import java.util.Set;
 public class EmotePacket implements BedrockPacket {
     private long runtimeEntityId;
     /**
-     * @since v588
+     * @since v589
      */
     private String xuid;
     /**
-     * @since 588
+     * @since 589
      */
     private String platformId;
     private String emoteId;

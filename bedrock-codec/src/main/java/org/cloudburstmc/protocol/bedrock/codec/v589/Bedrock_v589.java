@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v588;
+package org.cloudburstmc.protocol.bedrock.codec.v589;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
@@ -6,15 +6,15 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.Bedrock_v582;
-import org.cloudburstmc.protocol.bedrock.codec.v588.serializer.EmoteSerializer_v588;
-import org.cloudburstmc.protocol.bedrock.codec.v588.serializer.EventSerializer_v588;
-import org.cloudburstmc.protocol.bedrock.codec.v588.serializer.StartGameSerializer_v588;
+import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EmoteSerializer_v589;
+import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EventSerializer_v589;
+import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.StartGameSerializer_v589;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
-public class Bedrock_v588 extends Bedrock_v582 {
+public class Bedrock_v589 extends Bedrock_v582 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v582.SOUND_EVENTS
             .toBuilder()
@@ -43,12 +43,12 @@ public class Bedrock_v588 extends Bedrock_v582 {
 
     public static final BedrockCodec CODEC = Bedrock_v582.CODEC.toBuilder()
             .raknetProtocolVersion(11)
-            .protocolVersion(588)
+            .protocolVersion(589)
             .minecraftVersion("1.20.0")
             .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
-            .updateSerializer(StartGamePacket.class, new StartGameSerializer_v588())
-            .updateSerializer(EventPacket.class, EventSerializer_v588.INSTANCE)
-            .updateSerializer(EmotePacket.class, EmoteSerializer_v588.INSTANCE)
+            .updateSerializer(StartGamePacket.class, new StartGameSerializer_v589())
+            .updateSerializer(EventPacket.class, EventSerializer_v589.INSTANCE)
+            .updateSerializer(EmotePacket.class, EmoteSerializer_v589.INSTANCE)
             // TODO: UnlockedRecipesPacket
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))

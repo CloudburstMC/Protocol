@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v588.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v589.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -6,7 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.StartGameSerializ
 import org.cloudburstmc.protocol.bedrock.data.NetworkPermissions;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 
-public class StartGameSerializer_v588 extends StartGameSerializer_v582 {
+public class StartGameSerializer_v589 extends StartGameSerializer_v582 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {

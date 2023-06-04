@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v588.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v589.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -9,9 +9,9 @@ import org.cloudburstmc.protocol.bedrock.packet.EmotePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class EmoteSerializer_v588 extends EmoteSerializer_v388 {
+public class EmoteSerializer_v589 extends EmoteSerializer_v388 {
 
-    public static final EmoteSerializer_v588 INSTANCE = new EmoteSerializer_v588();
+    public static final EmoteSerializer_v589 INSTANCE = new EmoteSerializer_v589();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, EmotePacket packet) {

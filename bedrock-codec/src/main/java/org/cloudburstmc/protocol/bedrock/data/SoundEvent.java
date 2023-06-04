@@ -486,19 +486,19 @@ public enum SoundEvent {
      */
     BREAK_DECORATED_POD,
     /**
-     * @since v588
+     * @since v589
      */
     SNIFFER_EGG_CRACK,
     /**
-     * @since v588
+     * @since v589
      */
     SNIFFER_EGG_HATCHED,
     /**
-     * @since v588
+     * @since v589
      */
     WAXED_SIGN_INTERACT_FAIL,
     /**
-     * @since v588
+     * @since v589
      */
     RECORD_RELIC,
     UNDEFINED
