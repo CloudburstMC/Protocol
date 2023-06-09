@@ -15,6 +15,7 @@ public class MoveEntityAbsolutePacket implements BedrockPacket {
     private Vector3f rotation;
     private boolean onGround;
     private boolean teleported;
+    private boolean forceMove;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

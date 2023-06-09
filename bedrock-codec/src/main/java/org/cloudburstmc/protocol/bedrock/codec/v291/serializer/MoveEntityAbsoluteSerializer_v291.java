@@ -17,6 +17,7 @@ public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerialize
 
     private static final int FLAG_ON_GROUND = 0x1;
     private static final int FLAG_TELEPORTED = 0x2;
+    private static final int FLAG_FORCE_MOVE = 0x4;
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MoveEntityAbsolutePacket packet) {
@@ -27,6 +28,9 @@ public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerialize
         }
         if (packet.isTeleported()) {
             flags |= FLAG_TELEPORTED;
+        }
+        if (packet.isForceMove()) {
+            flags |= FLAG_FORCE_MOVE;
         }
         buffer.writeByte(flags);
         helper.writeVector3f(buffer, packet.getPosition());
@@ -39,6 +43,7 @@ public class MoveEntityAbsoluteSerializer_v291 implements BedrockPacketSerialize
         int flags = buffer.readUnsignedByte();
         packet.setOnGround((flags & FLAG_ON_GROUND) != 0);
         packet.setTeleported((flags & FLAG_TELEPORTED) != 0);
+        packet.setForceMove((flags & FLAG_FORCE_MOVE) != 0);
         packet.setPosition(helper.readVector3f(buffer));
         packet.setRotation(this.readByteRotation(buffer, helper));
     }
