@@ -81,6 +81,10 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     protected void onTick() {
+        if (this.closed.get()) {
+            return;
+        }
+
         if (!this.packetQueue.isEmpty()) {
             BedrockPacketWrapper packet;
             while ((packet = this.packetQueue.poll()) != null) {
@@ -190,8 +194,18 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     protected void onClose() {
-        if (this.channel.isOpen() || !this.closed.compareAndSet(false, true)) {
+        if (this.channel.isOpen()) {
+            log.warn("Tried to close peer, but channel is open!", new Throwable());
             return;
+        }
+
+        if (!this.closed.compareAndSet(false, true)) {
+            return;
+        }
+
+        if (this.tickFuture != null) {
+            this.tickFuture.cancel(false);
+            this.tickFuture = null;
         }
 
         for (BedrockSession session : this.sessions.values())
@@ -237,10 +251,6 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        if (this.tickFuture != null) {
-            this.tickFuture.cancel(false);
-            this.tickFuture = null;
-        }
         this.onClose();
     }
 
