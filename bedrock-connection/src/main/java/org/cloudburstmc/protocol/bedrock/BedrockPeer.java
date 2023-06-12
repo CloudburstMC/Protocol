@@ -103,7 +103,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     private void free() {
         for (BedrockPacketWrapper wrapper : this.packetQueue) {
-            ReferenceCountUtil.release(wrapper);
+            ReferenceCountUtil.safeRelease(wrapper);
         }
     }
 

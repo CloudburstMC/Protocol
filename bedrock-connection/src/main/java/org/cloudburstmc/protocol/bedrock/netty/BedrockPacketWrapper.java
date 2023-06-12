@@ -31,8 +31,8 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
 
     @Override
     protected void deallocate() {
-        ReferenceCountUtil.release(this.packet);
-        ReferenceCountUtil.release(this.packetBuffer);
+        ReferenceCountUtil.safeRelease(this.packet);
+        ReferenceCountUtil.safeRelease(this.packetBuffer);
     }
 
     @Override
