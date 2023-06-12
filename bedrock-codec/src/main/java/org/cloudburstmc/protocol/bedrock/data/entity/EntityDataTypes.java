@@ -117,7 +117,7 @@ public class EntityDataTypes {
     public static final EntityDataType<Vector3f> SEAT_OFFSET = new EntityDataType<>(Vector3f.class, "SEAT_OFFSET");
     public static final EntityDataType<Boolean> SEAT_LOCK_RIDER_ROTATION = new EntityDataType<>(Boolean.class, "SEAT_LOCK_RIDER_ROTATION");
     public static final EntityDataType<Float> SEAT_LOCK_RIDER_ROTATION_DEGREES = new EntityDataType<>(Float.class, "SEAT_LOCK_RIDER_ROTATION_DEGREES");
-    public static final EntityDataType<Float> SEAT_ROTATION_OFFSET = new EntityDataType<>(Float.class, "SEAT_ROTATION_OFFSET");
+    public static final EntityDataType<Boolean> SEAT_HAS_ROTATION = new EntityDataType<>(Boolean.class, "SEAT_HAS_ROTATION");
     public static final EntityDataType<Float> SEAT_ROTATION_OFFSET_DEGREES = new EntityDataType<>(Float.class, "SEAT_ROTATION_OFFSET_DEGREES");
     /**
      * Radius of Area Effect Cloud

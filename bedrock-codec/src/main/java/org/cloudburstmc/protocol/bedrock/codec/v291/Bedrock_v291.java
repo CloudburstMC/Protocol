@@ -200,7 +200,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.SEAT_OFFSET, 56, EntityDataFormat.VECTOR3F)
             .insert(EntityDataTypes.SEAT_LOCK_RIDER_ROTATION, 57, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .insert(EntityDataTypes.SEAT_LOCK_RIDER_ROTATION_DEGREES, 58, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.SEAT_ROTATION_OFFSET, 59, EntityDataFormat.FLOAT)
+            .insert(EntityDataTypes.SEAT_HAS_ROTATION, 59, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
             .insert(EntityDataTypes.AREA_EFFECT_CLOUD_RADIUS, 60, EntityDataFormat.FLOAT)
             .insert(EntityDataTypes.AREA_EFFECT_CLOUD_WAITING, 61, EntityDataFormat.INT)
             .insert(EntityDataTypes.AREA_EFFECT_CLOUD_PARTICLE, 62, EntityDataFormat.INT, new TypeMapTransformer<>(PARTICLE_TYPES))
