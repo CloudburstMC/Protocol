@@ -58,9 +58,7 @@ public class SerializedSkin {
         skinData.checkLegacySkinSize();
         capeData.checkLegacyCapeSize();
 
-        String skinResourcePatch = convertLegacyGeometryName(geometryName);
-
-        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData, Collections.emptyList(), capeData,
+        return new SerializedSkin(skinId, playFabId, geometryName, null, skinData, Collections.emptyList(), capeData,
                 geometryData, "", "", premiumSkin, false, false, true, "", "",
                 "wide", "#0", Collections.emptyList(), Collections.emptyList(), true);
     }
@@ -88,10 +86,7 @@ public class SerializedSkin {
                                     boolean primaryUser, String capeId, String fullSkinId, String armSize,
                                     String skinColor, List<PersonaPieceData> personaPieces,
                                     List<PersonaPieceTintData> tintColors) {
-
-        String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
-
-        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData,
+        return new SerializedSkin(skinId, playFabId, null, skinResourcePatch, skinData,
                 Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, "", animationData,
                 premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors, true);
     }
@@ -103,9 +98,7 @@ public class SerializedSkin {
                                     String fullSkinId, String armSize, String skinColor, List<PersonaPieceData> personaPieces,
                                     List<PersonaPieceTintData> tintColors) {
 
-        String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
-
-        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData,
+        return new SerializedSkin(skinId, playFabId, null, skinResourcePatch, skinData,
                 Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, geometryDataEngineVersion, animationData,
                 premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors, true);
     }
@@ -116,9 +109,8 @@ public class SerializedSkin {
                                     boolean persona, boolean capeOnClassic, boolean primaryUser, String capeId,
                                     String fullSkinId, String armSize, String skinColor, List<PersonaPieceData> personaPieces,
                                     List<PersonaPieceTintData> tintColors, boolean overridingPlayerAppearance) {
-        String geometryName = convertSkinPatchToLegacy(skinResourcePatch);
 
-        return new SerializedSkin(skinId, playFabId, geometryName, skinResourcePatch, skinData,
+        return new SerializedSkin(skinId, playFabId, null, skinResourcePatch, skinData,
                 Collections.unmodifiableList(new ObjectArrayList<>(animations)), capeData, geometryData, geometryDataEngineVersion, animationData,
                 premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors, overridingPlayerAppearance);
     }
@@ -136,6 +128,20 @@ public class SerializedSkin {
         return skinId != null && !skinId.trim().isEmpty() &&
                 skinData != null && skinData.getWidth() >= 64 && skinData.getHeight() >= 32 &&
                 skinData.getImage().length >= SINGLE_SKIN_SIZE;
+    }
+
+    public String getSkinResourcePatch() {
+        if (skinResourcePatch == null && geometryName != null) {
+            return convertLegacyGeometryName(geometryName);
+        }
+        return skinResourcePatch;
+    }
+
+    public String getGeometryName() {
+        if (geometryName == null && skinResourcePatch != null) {
+            return convertSkinPatchToLegacy(skinResourcePatch);
+        }
+        return geometryName;
     }
 
     private static String convertLegacyGeometryName(String geometryName) {
