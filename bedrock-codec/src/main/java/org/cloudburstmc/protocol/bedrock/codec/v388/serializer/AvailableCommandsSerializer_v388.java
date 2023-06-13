@@ -52,7 +52,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                                 enumValues.add(key);
                                 if (!constraints.isEmpty()) {
                                     int valueIndex = enumValues.indexOf(key);
-                                    enumConstraints.add(LongObjectPair.of(LongKeys.key(enumIndex, valueIndex), constraints));
+                                    enumConstraints.add(LongObjectPair.of(LongKeys.key(valueIndex, enumIndex), constraints));
                                 }
                             });
                         }

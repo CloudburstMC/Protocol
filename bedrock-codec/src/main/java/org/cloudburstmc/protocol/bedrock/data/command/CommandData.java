@@ -12,7 +12,7 @@ public class CommandData {
     private final String name;
     private final String description;
     private final Set<Flag> flags;
-    private final byte permission;
+    private final CommandPermission permission;
     private final CommandEnumData aliases;
     private final CommandParamData[][] overloads;
 
