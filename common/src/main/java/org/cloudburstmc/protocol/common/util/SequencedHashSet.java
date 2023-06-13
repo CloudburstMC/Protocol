@@ -138,4 +138,9 @@ public class SequencedHashSet<E> implements List<E> {
     public E remove(int index) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String toString() {
+        return map.keySet().toString();
+    }
 }
