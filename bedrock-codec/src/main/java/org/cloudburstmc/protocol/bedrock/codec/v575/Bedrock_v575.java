@@ -66,9 +66,9 @@ public class Bedrock_v575 extends Bedrock_v568 {
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = TypeMap.builder(CommandParam.class)
             .insert(0, CommandParam.UNKNOWN)
             .insert(1, CommandParam.INT)
-            .insert(2, CommandParam.FLOAT)
-            .insert(3, CommandParam.VALUE)
-            .insert(4, CommandParam.R_VALUE)
+            // .insert(2, CommandParam.FLOAT)
+            .insert(3, CommandParam.FLOAT) // FLOAT is actually VALUE
+            .insert(4, CommandParam.VALUE) // and VALUE is actually R_VALUE
             .insert(5, CommandParam.WILDCARD_INT)
             .insert(6, CommandParam.OPERATOR)
             .insert(7, CommandParam.COMPARE_OPERATOR)
