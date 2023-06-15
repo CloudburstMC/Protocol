@@ -39,7 +39,9 @@ public final class TypeMap<T> {
     }
 
     public T getType(int id) {
-        return toObject.get(id);
+        T value = toObject.get(id);
+        checkNotNull(value, "type null for id %s", id);
+        return value;
     }
 
     public Builder<T> toBuilder() {
