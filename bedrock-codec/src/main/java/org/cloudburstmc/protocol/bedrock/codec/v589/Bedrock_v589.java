@@ -23,6 +23,7 @@ public class Bedrock_v589 extends Bedrock_v582 {
             .insert(467, SoundEvent.SNIFFER_EGG_HATCHED)
             .insert(468, SoundEvent.WAXED_SIGN_INTERACT_FAIL)
             .insert(469, SoundEvent.RECORD_RELIC)
+            .insert(470, SoundEvent.UNDEFINED)
             .build();
 
     protected static final TypeMap<TextProcessingEventOrigin> TEXT_PROCESSING_ORIGINS = TypeMap.builder(TextProcessingEventOrigin.class)
