@@ -124,7 +124,7 @@ public class EncryptionUtils {
                     }
 
                     // the second chain entry has to be signed by Mojang
-                    if (i == 1 && (!currentKey.equals(MOJANG_PUBLIC_KEY) || !currentKey.equals(OLD_MOJANG_PUBLIC_KEY))) {
+                    if (i == 1 && (!currentKey.equals(MOJANG_PUBLIC_KEY) && !currentKey.equals(OLD_MOJANG_PUBLIC_KEY))) {
                         throw new IllegalStateException("The chain isn't signed by Mojang!");
                     }
 
