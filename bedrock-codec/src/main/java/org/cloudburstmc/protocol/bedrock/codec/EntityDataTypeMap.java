@@ -5,9 +5,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 
-import java.util.Arrays;
-import java.util.IdentityHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.*;
@@ -44,6 +42,18 @@ public class EntityDataTypeMap {
 
     public static Builder builder() {
         return new Builder(new Definition[64][][]);
+    }
+
+    public String prettyPrint() {
+        TreeMap<Integer, EntityDataType<?>> map = new TreeMap<>();
+        this.typeDefinitionMap.forEach((type, def) -> map.put(def.id, type));
+
+
+        StringJoiner joiner = new StringJoiner("\n");
+        for (Map.Entry<Integer, EntityDataType<?>> entry : map.entrySet()) {
+            joiner.add(entry.getKey() + " => " + entry.getValue());
+        }
+        return joiner.toString();
     }
 
     @Getter

@@ -35,6 +35,13 @@ public final class TypeMap<T> {
 
     public int getId(T value) {
         checkNotNull(value, "value");
+        int index = toId.getInt(value);
+        checkArgument(index != -1, "No id found for %s", value);
+        return index;
+    }
+
+    public int getIdUnsafe(T value) {
+        checkNotNull(value, "value");
         return toId.getInt(value);
     }
 
@@ -214,6 +221,8 @@ public final class TypeMap<T> {
         @SuppressWarnings("unchecked")
         public TypeMap<T> build() {
             Object2IntMap<T> toId = new Object2IntOpenHashMap<>();
+            toId.defaultReturnValue(-1);
+
             Int2ObjectMap<T> toObject = new Int2ObjectOpenHashMap<>();
             for (int i = 0; i < this.types.length; i++) {
                 Object type = this.types[i];
