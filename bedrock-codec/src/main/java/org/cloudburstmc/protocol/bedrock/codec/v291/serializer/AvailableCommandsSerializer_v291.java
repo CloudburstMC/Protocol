@@ -56,8 +56,8 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 enums.add(data.getAliases());
             }
 
-            for (CommandParamData[] overload : data.getOverloads()) {
-                for (CommandParamData parameter : overload) {
+            for (CommandOverloadData overload : data.getOverloads()) {
+                for (CommandParamData parameter : overload.getOverloads()) {
                     CommandEnumData commandEnumData = parameter.getEnumData();
                     if (commandEnumData != null) {
                         if (commandEnumData.isSoft()) {
@@ -170,11 +170,11 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         CommandEnumData aliases = commandData.getAliases();
         buffer.writeIntLE(aliases == null ? -1 : enums.indexOf(aliases));
 
-        CommandParamData[][] overloads = commandData.getOverloads();
+        CommandOverloadData[] overloads = commandData.getOverloads();
         VarInts.writeUnsignedInt(buffer, overloads.length);
-        for (CommandParamData[] overload : overloads) {
-            VarInts.writeUnsignedInt(buffer, overload.length);
-            for (CommandParamData param : overload) {
+        for (CommandOverloadData overload : overloads) {
+            VarInts.writeUnsignedInt(buffer, overload.getOverloads().length);
+            for (CommandParamData param : overload.getOverloads()) {
                 this.writeParameter(buffer, helper, param, enums, softEnums, postFixes);
             }
         }
@@ -189,14 +189,14 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
         int aliasIndex = buffer.readIntLE();
         CommandEnumData aliases = aliasIndex == -1 ? null : enums.get(aliasIndex);
 
-        CommandParamData[][] overloads = new CommandParamData[VarInts.readUnsignedInt(buffer)][];
+        CommandOverloadData[] overloads = new CommandOverloadData[VarInts.readUnsignedInt(buffer)];
         for (int i = 0; i < overloads.length; i++) {
-            overloads[i] = new CommandParamData[VarInts.readUnsignedInt(buffer)];
-            for (int i2 = 0; i2 < overloads[i].length; i2++) {
-                overloads[i][i2] = readParameter(buffer, helper, enums, postfixes, softEnumParameters);
+            overloads[i] = new CommandOverloadData(false, new CommandParamData[VarInts.readUnsignedInt(buffer)]);
+            for (int i2 = 0; i2 < overloads[i].getOverloads().length; i2++) {
+                overloads[i].getOverloads()[i2] = readParameter(buffer, helper, enums, postfixes, softEnumParameters);
             }
         }
-        return new CommandData(name, description, flags, permissions, aliases, overloads);
+        return new CommandData(name, description, flags, permissions, aliases, Collections.emptyList(), overloads);
     }
 
     protected void writeFlags(ByteBuf buffer, Set<CommandData.Flag> flags) {

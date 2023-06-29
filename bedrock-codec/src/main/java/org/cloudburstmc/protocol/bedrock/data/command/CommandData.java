@@ -14,14 +14,16 @@ public class CommandData {
     private final Set<Flag> flags;
     private final CommandPermission permission;
     private final CommandEnumData aliases;
-    private final CommandParamData[][] overloads;
+    private final List<ChainedSubCommandData> subcommands;
+    private final CommandOverloadData[] overloads;
 
     public String toString() {
         StringBuilder overloads = new StringBuilder("[\r\n");
 
-        for (CommandParamData[] overload : this.overloads) {
+        for (CommandOverloadData overload : this.overloads) {
             overloads.append("    [\r\n");
-            for (CommandParamData parameter : overload) {
+            overloads.append("       chaining=").append(overload.isChaining()).append("\r\n");
+            for (CommandParamData parameter : overload.getOverloads()) {
                 overloads.append("       ").append(parameter).append("\r\n");
             }
             overloads.append("    ]\r\n");
@@ -30,7 +32,7 @@ public class CommandData {
 
         StringBuilder builder = new StringBuilder("CommandData(\r\n");
         List<?> objects = Arrays.asList("name=" + name, "description=" + description,
-                "flags=" + Arrays.toString(flags.toArray()), "permission=" + permission, "aliases=" + aliases,
+                "flags=" + Arrays.toString(flags.toArray()), "permission=" + permission, "aliases=" + aliases, "subcommands=" + Arrays.toString(subcommands.toArray()),
                 "overloads=" + overloads);
 
         for (Object object : objects) {

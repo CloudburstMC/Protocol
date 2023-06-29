@@ -126,5 +126,9 @@ public enum EntityFlag {
     /**
      * @since v575
      */
-    SEARCHING
+    SEARCHING,
+    /**
+     * @since v594
+     */
+    CRAWLING
 }

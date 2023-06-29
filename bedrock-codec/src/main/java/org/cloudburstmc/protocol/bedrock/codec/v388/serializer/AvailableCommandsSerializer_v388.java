@@ -39,8 +39,8 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
                 enums.add(data.getAliases());
             }
 
-            for (CommandParamData[] overload : data.getOverloads()) {
-                for (CommandParamData parameter : overload) {
+            for (CommandOverloadData overload : data.getOverloads()) {
+                for (CommandParamData parameter : overload.getOverloads()) {
                     CommandEnumData commandEnumData = parameter.getEnumData();
                     if (commandEnumData != null) {
                         if (commandEnumData.isSoft()) {

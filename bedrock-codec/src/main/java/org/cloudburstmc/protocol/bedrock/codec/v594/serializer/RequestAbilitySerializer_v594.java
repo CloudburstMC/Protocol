@@ -1,22 +1,17 @@
-package org.cloudburstmc.protocol.bedrock.codec.v527.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v594.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.RequestAbilitySerializer_v527;
 import org.cloudburstmc.protocol.bedrock.packet.RequestAbilityPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor
-public class RequestAbilitySerializer_v527 implements BedrockPacketSerializer<RequestAbilityPacket> {
-
-    protected static final Ability[] ABILITIES = Ability.values();
-    protected static final Ability.Type[] TYPES = Ability.Type.values();
+public class RequestAbilitySerializer_v594 extends RequestAbilitySerializer_v527 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RequestAbilityPacket packet) {
-        VarInts.writeInt(buffer, packet.getAbility().ordinal());
+        buffer.writeByte(packet.getAbility().ordinal());
         buffer.writeByte(packet.getType().ordinal());
         buffer.writeBoolean(packet.isBoolValue());
         buffer.writeFloatLE(packet.getFloatValue());
@@ -24,7 +19,7 @@ public class RequestAbilitySerializer_v527 implements BedrockPacketSerializer<Re
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, RequestAbilityPacket packet) {
-        packet.setAbility(ABILITIES[VarInts.readInt(buffer)]);
+        packet.setAbility(ABILITIES[buffer.readUnsignedByte()]);
         packet.setType(TYPES[buffer.readUnsignedByte()]);
         packet.setBoolValue(buffer.readBoolean());
         packet.setFloatValue(buffer.readFloatLE());

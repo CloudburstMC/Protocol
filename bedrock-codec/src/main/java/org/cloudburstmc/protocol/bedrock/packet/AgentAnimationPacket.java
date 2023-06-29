@@ -5,16 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-/**
- * Deprecated since v594
- */
-@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ScriptCustomEventPacket implements BedrockPacket {
-    private String eventName;
-    private String data;
+public class AgentAnimationPacket implements BedrockPacket {
+    private byte animation;
+    private long runtimeEntityId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -22,7 +18,6 @@ public class ScriptCustomEventPacket implements BedrockPacket {
     }
 
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SCRIPT_CUSTOM_EVENT;
+        return BedrockPacketType.AGENT_ANIMATION;
     }
 }
-

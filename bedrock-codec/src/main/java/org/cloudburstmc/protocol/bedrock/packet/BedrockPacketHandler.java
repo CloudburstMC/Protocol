@@ -815,4 +815,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(OpenSignPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(AgentAnimationPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

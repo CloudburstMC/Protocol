@@ -55,7 +55,7 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .build();
 
     protected static final TypeMap<EntityEventType> ENTITY_EVENTS = Bedrock_v361.ENTITY_EVENTS.toBuilder()
-            .insert(74, EntityEventType.FINISHED_CHARGING_CROSSBOW)
+            .insert(74, EntityEventType.FINISHED_CHARGING_ITEM)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v361.LEVEL_EVENTS.toBuilder()

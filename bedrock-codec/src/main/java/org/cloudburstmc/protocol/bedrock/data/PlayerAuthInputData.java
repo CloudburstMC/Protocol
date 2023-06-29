@@ -45,5 +45,17 @@ public enum PlayerAuthInputData {
     /**
      * @since v575
      */
-    EMOTING
+    EMOTING,
+    /**
+     * @since v594
+     */
+    MISSED_SWING,
+    /**
+     * @since v594
+     */
+    START_CRAWLING,
+    /**
+     * @since v594
+     */
+    STOP_CRAWLING
 }

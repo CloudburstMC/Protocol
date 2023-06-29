@@ -260,4 +260,10 @@ public class EntityDataTypes {
      * @since v527
      */
     public static final EntityDataType<Boolean> PLAYER_HAS_DIED = new EntityDataType<>(Boolean.class, "PLAYER_HAS_DIED");
+
+    // TODO: confirm format
+    /**
+     * @since v594
+     */
+    public static final EntityDataType<NbtMap> COLLISION_BOX = new EntityDataType<>(NbtMap.class, "COLLISION_BOX");
 }

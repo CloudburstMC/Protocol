@@ -15,6 +15,11 @@ import java.util.List;
 /**
  * @since v567
  */
+
+/**
+ * Deprecated since v594
+ */
+@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)

@@ -16,5 +16,9 @@ public enum ItemUseType {
     INTERACT,
     RETRIEVED,
     DYED,
-    TRADED
+    TRADED,
+    /**
+     * @since 594
+     */
+    BRUSHING_COMPLETED
 }
