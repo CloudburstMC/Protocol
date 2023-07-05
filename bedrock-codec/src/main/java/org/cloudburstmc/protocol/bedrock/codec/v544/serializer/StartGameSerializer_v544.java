@@ -70,8 +70,7 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         buffer.writeBoolean(packet.isNetherType());
         helper.writeString(buffer, packet.getEduSharedUriResource().getButtonName());
         helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
-                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(), (buf, optional) -> {});
         buffer.writeByte(packet.getChatRestrictionLevel().ordinal()); // Added
         buffer.writeBoolean(packet.isDisablingPlayerInteractions()); // Added
     }
@@ -122,7 +121,7 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
         packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
-        packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        packet.setForceExperimentalGameplay(OptionalBoolean.of(buffer.readBoolean()));
         packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]); // Added
         packet.setDisablingPlayerInteractions(buffer.readBoolean()); // Added
     }

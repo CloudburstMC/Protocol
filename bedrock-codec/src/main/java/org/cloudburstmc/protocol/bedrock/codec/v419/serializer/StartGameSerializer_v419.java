@@ -130,8 +130,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         buffer.writeIntLE(packet.getLimitedWorldWidth());
         buffer.writeIntLE(packet.getLimitedWorldHeight());
         buffer.writeBoolean(packet.isNetherType());
-        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
-                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(), (buf, optional) -> {});
     }
 
     protected void readLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
@@ -175,7 +174,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         packet.setLimitedWorldWidth(buffer.readIntLE());
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
-        packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
+        packet.setForceExperimentalGameplay(OptionalBoolean.of(buffer.readBoolean()));
     }
 
     protected long readSeed(ByteBuf buffer) {
