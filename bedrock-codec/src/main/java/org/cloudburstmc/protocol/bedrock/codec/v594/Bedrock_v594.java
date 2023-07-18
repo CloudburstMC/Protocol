@@ -7,13 +7,11 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v589.Bedrock_v589;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AgentAnimationSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
-import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.RequestAbilitySerializer_v594;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.AgentAnimationPacket;
 import org.cloudburstmc.protocol.bedrock.packet.AvailableCommandsPacket;
-import org.cloudburstmc.protocol.bedrock.packet.RequestAbilityPacket;
 import org.cloudburstmc.protocol.bedrock.packet.ScriptCustomEventPacket;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -38,7 +36,6 @@ public class Bedrock_v594 extends Bedrock_v589 {
             .minecraftVersion("1.20.10")
             .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .deregisterPacket(ScriptCustomEventPacket.class)
-            .updateSerializer(RequestAbilityPacket.class, new RequestAbilitySerializer_v594())
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v594(COMMAND_PARAMS)) // TODO: chained command deserialization needs more work
             .registerPacket(AgentAnimationPacket::new, new AgentAnimationSerializer_v594(), 304)
             .build();
