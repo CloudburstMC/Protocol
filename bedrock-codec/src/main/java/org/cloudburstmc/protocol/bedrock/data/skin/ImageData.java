@@ -20,6 +20,7 @@ public class ImageData {
     private static final int DOUBLE_SKIN_SIZE = 64 * 64 * PIXEL_SIZE;
     private static final int SKIN_128_64_SIZE = 128 * 64 * PIXEL_SIZE;
     private static final int SKIN_128_128_SIZE = 128 * 128 * PIXEL_SIZE;
+    private static final int SKIN_PERSONA_SIZE = 256 * 256 * PIXEL_SIZE;
 
     private final int width;
     private final int height;
@@ -43,8 +44,10 @@ public class ImageData {
                 return new ImageData(128, 64, image);
             case SKIN_128_128_SIZE:
                 return new ImageData(128, 128, image);
+            case SKIN_PERSONA_SIZE:
+                return new ImageData(256, 256, image);
             default:
-                throw new IllegalArgumentException("Invalid legacy skin");
+                throw new IllegalArgumentException("Invalid skin length");
         }
     }
 
@@ -57,6 +60,15 @@ public class ImageData {
                 return;
             default:
                 throw new IllegalArgumentException("Invalid legacy skin");
+        }
+    }
+
+    public void checkPersonaSkinSize() {
+        switch (image.length) {
+            case SKIN_PERSONA_SIZE:
+                return;
+            default:
+                throw new IllegalArgumentException("Invalid persona skin");
         }
     }
 
