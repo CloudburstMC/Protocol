@@ -23,7 +23,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryAct
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.cloudburstmc.protocol.common.Definition;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
+import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -38,9 +40,13 @@ public interface BedrockCodecHelper {
 
     void setBlockDefinitions(DefinitionRegistry<BlockDefinition> registry);
 
+    void setCameraPresetDefinitions(DefinitionRegistry<NamedDefinition> registry);
+
     DefinitionRegistry<ItemDefinition> getItemDefinitions();
 
     DefinitionRegistry<BlockDefinition> getBlockDefinitions();
+
+    DefinitionRegistry<NamedDefinition> getCameraPresetDefinitions();
 
     // Array serialization (with helper)
 
@@ -188,6 +194,8 @@ public interface BedrockCodecHelper {
     <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function);
 
     <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer);
+
+    <T> void writeOptionalNull(ByteBuf buffer, T object, BiConsumer<ByteBuf, T> consumer);
 
     void readEntityProperties(ByteBuf buffer, EntityProperties properties);
 

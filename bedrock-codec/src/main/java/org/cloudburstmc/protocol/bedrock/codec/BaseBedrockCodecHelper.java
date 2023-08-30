@@ -34,7 +34,9 @@ import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.cloudburstmc.protocol.common.Definition;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
+import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -490,6 +492,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public DefinitionRegistry<NamedDefinition> getCameraPresetDefinitions() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setCameraPresetDefinitions(DefinitionRegistry<NamedDefinition> registry) {
         throw new UnsupportedOperationException();
     }
 }

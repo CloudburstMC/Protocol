@@ -1,10 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -21,6 +18,10 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
      * @since v448
      */
     private boolean forcingServerPacksEnabled;
+    /**
+     * @since v618
+     */
+    private List<CDNEntry> CDNEntries = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -41,5 +42,11 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
         private final String contentId;
         private final boolean scripting;
         private final boolean raytracingCapable;
+    }
+
+    @Value
+    public static class CDNEntry {
+        private final String packId;
+        private final String remoteUrl;
     }
 }

@@ -2,11 +2,12 @@ package org.cloudburstmc.protocol.bedrock.data.definitions;
 
 import lombok.Data;
 import org.cloudburstmc.nbt.NbtMap;
+import org.cloudburstmc.protocol.common.NamedDefinition;
 
 import java.util.TreeMap;
 
 @Data
-public class SimpleBlockDefinition implements BlockDefinition {
+public class SimpleBlockDefinition implements BlockDefinition, NamedDefinition {
     private final String identifier;
     private final int runtimeId;
     private final NbtMap state;

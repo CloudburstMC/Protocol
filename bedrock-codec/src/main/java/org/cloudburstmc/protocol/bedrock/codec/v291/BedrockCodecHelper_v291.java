@@ -382,4 +382,9 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
             consumer.accept(buffer, object);
         }
     }
+
+    @Override
+    public <T> void writeOptionalNull(ByteBuf buffer, T object, BiConsumer<ByteBuf, T> consumer) {
+        this.writeOptional(buffer, Objects::nonNull, object, consumer);
+    }
 }

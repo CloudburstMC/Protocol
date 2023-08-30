@@ -27,15 +27,19 @@ public enum TextProcessingEventOrigin {
      */
     TICKING_AREA_TEXT,
     /**
-     * @since  v589
+     * @since v589
      */
     KICK_COMMAND,
     /**
-     * @since  v589
+     * @since v589
      */
     TITLE_COMMAND,
     /**
-     * @since  v589
+     * @since v589
      */
-    SUMMON_COMMAND
+    SUMMON_COMMAND,
+    /**
+     * @since v618
+     */
+    PASS_THROUGH_WITHOUT_SIFT
 }

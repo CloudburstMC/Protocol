@@ -58,5 +58,13 @@ public enum PlayerActionType {
     /**
      * @since v594
      */
-    STOP_CRAWLING
+    STOP_CRAWLING,
+    /**
+     * @since v618
+     */
+    START_FLYING,
+    /**
+     * @since v618
+     */
+    STOP_FLYING
 }

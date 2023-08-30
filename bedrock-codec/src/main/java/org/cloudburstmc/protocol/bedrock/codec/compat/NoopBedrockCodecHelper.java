@@ -137,6 +137,11 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     }
 
     @Override
+    public <T> void writeOptionalNull(ByteBuf buffer, T object, BiConsumer<ByteBuf, T> consumer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder) {
         throw new UnsupportedOperationException();
     }

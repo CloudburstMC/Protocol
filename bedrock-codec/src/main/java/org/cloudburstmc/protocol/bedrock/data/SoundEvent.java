@@ -501,5 +501,34 @@ public enum SoundEvent {
      * @since v589
      */
     RECORD_RELIC,
+    /**
+     * @since v618
+     */
+    BUMP,
+    /**
+     * @since v618
+     */
+    PUMPKIN_CARVE,
+    /**
+     * @since v618
+     */
+    CONVERT_HUSK_TO_ZOMBIE,
+    /**
+     * @since v618
+     */
+    PIG_DEATH,
+    /**
+     * @since v618
+     */
+    HOGLIN_CONVERT_TO_ZOMBIE,
+    /**
+     * @since v618
+     */
+    AMBIENT_UNDERWATER_ENTER,
+    /**
+     * @since v618
+     */
+    AMBIENT_UNDERWATER_EXIT,
+
     UNDEFINED
 }
