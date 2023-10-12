@@ -2,9 +2,7 @@ package org.cloudburstmc.protocol.common.util;
 
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -17,7 +15,8 @@ import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
-import static org.cloudburstmc.protocol.common.util.Preconditions.*;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public final class TypeMap<T> {
 
@@ -118,26 +117,12 @@ public final class TypeMap<T> {
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder<T> {
         private final String type;
-        private Object[] types = new Object[0];
-
-        private void ensureIndex(int index) {
-            ensureCapacity(index + 1);
-        }
-
-        private void ensureCapacity(int size) {
-            if (size > this.types.length) {
-                int newSize = powerOfTwoCeiling(size + 1);
-                Object[] newTypes = new Object[newSize];
-                System.arraycopy(types, 0, newTypes, 0, this.types.length);
-                this.types = newTypes;
-            }
-        }
+        private final Int2ObjectAVLTreeMap<Object> types = new Int2ObjectAVLTreeMap<>();
 
         public Builder<T> insert(int index, T value) {
             checkNotNull(value, "value");
-            this.ensureIndex(index);
-            checkArgument(this.types[index] == null, "Cannot insert into non-null value at index " + index);
-            this.types[index] = value;
+            checkArgument(this.types.get(index) == null, "Cannot insert into non-null value at index " + index);
+            this.types.put(index, value);
             return this;
         }
 
@@ -149,28 +134,13 @@ public final class TypeMap<T> {
          * @return
          */
         public Builder<T> shift(int startIndex, int amount) {
-            return shift(startIndex, amount, this.types.length - startIndex);
-        }
-
-        /**
-         * Shifts values from a specific start index
-         *
-         * @param startIndex
-         * @param amount
-         * @param length
-         * @return
-         */
-        public Builder<T> shift(int startIndex, int amount, int length) {
-            checkArgument(startIndex < this.types.length, "Start index is out of bounds");
-            int endIndex = startIndex + length;
-            checkArgument(endIndex <= this.types.length, "Length exceeds array bounds");
-            this.ensureCapacity(this.types.length + amount);
-            System.arraycopy(this.types, startIndex, this.types, startIndex + amount, length);
-
-            // Clear old values
-            for (int i = 0; i < amount; i++) {
-                this.types[startIndex + i] = null;
+            Int2ObjectSortedMap<Object> shiftMap = types.tailMap(startIndex);
+            Int2ObjectArrayMap<Object> tmp = new Int2ObjectArrayMap<>(shiftMap.size());
+            for (Int2ObjectMap.Entry<Object> entry : shiftMap.int2ObjectEntrySet()) {
+                tmp.put(entry.getIntKey() + amount, entry.getValue());
+                types.put(entry.getIntKey(), null);
             }
+            types.putAll(tmp);
             return this;
         }
 
@@ -184,19 +154,16 @@ public final class TypeMap<T> {
          */
         public Builder<T> replace(int index, T value) {
             checkNotNull(value, "value");
-            checkArgument(index < this.types.length, "Cannot update out of bounds value");
-            checkArgument(this.types[index] != null, "Cannot update null value");
-            this.types[index] = value;
+            checkArgument(this.types.get(index) != null, "Cannot update null value");
+            this.types.put(index, value);
             return this;
         }
 
         public Builder<T> update(int oldIndex, int newIndex, T value) {
             checkNotNull(value, "value");
-            checkArgument(oldIndex < this.types.length, "Cannot update out of bounds value");
-            checkArgument(this.types[oldIndex] == value, "oldIndex value does not equal expected");
-            this.ensureIndex(newIndex);
-            this.types[oldIndex] = null;
-            this.types[newIndex] = value;
+            checkArgument(this.types.get(oldIndex) == value, "oldIndex value does not equal expected");
+            this.types.remove(oldIndex);
+            this.types.put(newIndex, value);
             return this;
         }
 
@@ -205,16 +172,13 @@ public final class TypeMap<T> {
             map.toObject.forEach((index, value) -> {
                 int newIndex = index + offset;
                 checkNotNull(value, "value");
-                this.ensureIndex(newIndex);
-                this.types[newIndex] = value;
+                this.types.put(newIndex, value);
             });
             return this;
         }
 
         public Builder<T> remove(int index) {
-            checkElementIndex(index, this.types.length);
-            // checkArgument(this.types[index] != null, "Cannot remove null value");
-            this.types[index] = null;
+            this.types.remove(index);
             return this;
         }
 
@@ -224,11 +188,11 @@ public final class TypeMap<T> {
             toId.defaultReturnValue(-1);
 
             Int2ObjectMap<T> toObject = new Int2ObjectOpenHashMap<>();
-            for (int i = 0; i < this.types.length; i++) {
-                Object type = this.types[i];
+            for (Int2ObjectMap.Entry<Object> entry : types.int2ObjectEntrySet()) {
+                Object type = entry.getValue();
                 if (type != null) {
-                    toId.put((T) type, i);
-                    toObject.put(i, (T) type);
+                    toId.put((T) type, entry.getIntKey());
+                    toObject.put(entry.getIntKey(), (T) type);
                 }
             }
             return new TypeMap<>(this.type, toId, toObject);

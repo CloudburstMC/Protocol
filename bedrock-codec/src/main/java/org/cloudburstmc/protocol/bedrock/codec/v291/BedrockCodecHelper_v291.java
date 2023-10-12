@@ -375,7 +375,6 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     @Override
     public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer) {
         checkNotNull(consumer, "read consumer");
-
         boolean exists = isPresent.test(object);
         buffer.writeBoolean(exists);
         if (exists) {

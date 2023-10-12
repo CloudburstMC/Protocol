@@ -76,5 +76,6 @@ public enum CommandParamType {
     BLOCK_STATES,
     BLOCK_STATES_CONT, // TODO: unknown - maybe count?
     COMMAND,
-    SLASH_COMMAND
+    SLASH_COMMAND,
+    CHAINED_COMMAND
 }
