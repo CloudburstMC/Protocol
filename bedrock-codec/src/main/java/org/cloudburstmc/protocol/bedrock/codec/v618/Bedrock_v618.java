@@ -20,7 +20,6 @@ import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v618 extends Bedrock_v594 {
-    // TODO: check command params
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v594.SOUND_EVENTS
             .toBuilder()

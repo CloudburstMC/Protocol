@@ -18,9 +18,17 @@ public class BedrockCompat {
             .helper(() -> NoopBedrockCodecHelper.INSTANCE)
             .registerPacket(LoginPacket::new, LoginSerializerCompat.INSTANCE, 1)
             .registerPacket(PlayStatusPacket::new, PlayStatusSerializerCompat.INSTANCE, 2)
-            .registerPacket(DisconnectPacket::new, DisconnectSerializerCompat.INSTANCE, 5)
+            .registerPacket(DisconnectPacket::new, new DisconnectSerializerCompat(true), 5)
             .registerPacket(RequestNetworkSettingsPacket::new, RequestNetworkSettingsSerializerCompat.INSTANCE, 193)
             .protocolVersion(0)
             .minecraftVersion("0.0.0")
+            .build();
+
+    /**
+     * This is legacy version of the compat codec which does not use DisconnectFailReason in DisconnectPacket.
+     * Use this for servers that do not support Minecraft: Bedrock Edition 1.20.40 and above.
+     */
+    public static BedrockCodec CODEC_LEGACY = CODEC.toBuilder()
+            .updateSerializer(DisconnectPacket.class, new DisconnectSerializerCompat(false))
             .build();
 }

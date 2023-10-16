@@ -130,5 +130,17 @@ public enum EntityFlag {
     /**
      * @since v594
      */
-    CRAWLING
+    CRAWLING,
+    /**
+     * @since v622
+     */
+    TIMER_FLAG_1,
+    /**
+     * @since v622
+     */
+    TIMER_FLAG_2,
+    /**
+     * @since v622
+     */
+    TIMER_FLAG_3
 }

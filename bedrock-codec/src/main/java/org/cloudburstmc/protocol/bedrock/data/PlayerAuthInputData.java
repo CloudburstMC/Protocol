@@ -65,5 +65,9 @@ public enum PlayerAuthInputData {
     /**
      * @since v618
      */
-    STOP_FLYING
+    STOP_FLYING,
+    /**
+     * @since v622
+     */
+    RECEIVED_SERVER_DATA
 }
