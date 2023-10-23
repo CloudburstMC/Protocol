@@ -1,6 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
-public enum OperatingSystem {
+public enum BuildPlatform {
 
     UNDEFINED,
     ANDROID,
@@ -18,9 +18,9 @@ public enum OperatingSystem {
     XBOX,
     WINDOWS_PHONE;
 
-    private static final OperatingSystem[] VALUES = values();
+    private static final BuildPlatform[] VALUES = values();
 
-    public static OperatingSystem from(int id) {
+    public static BuildPlatform from(int id) {
         return id < VALUES.length ? VALUES[id] : VALUES[0];
     }
 }
