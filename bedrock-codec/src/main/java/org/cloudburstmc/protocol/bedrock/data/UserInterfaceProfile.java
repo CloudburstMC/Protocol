@@ -3,7 +3,8 @@ package org.cloudburstmc.protocol.bedrock.data;
 public enum UserInterfaceProfile {
 
     CLASSIC,
-    POCKET;
+    POCKET,
+    NONE;
 
     private static final UserInterfaceProfile[] VALUES = values();
 
