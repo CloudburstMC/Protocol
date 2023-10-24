@@ -5,5 +5,11 @@ public enum InputMode {
     MOUSE,
     TOUCH,
     GAMEPAD,
-    MOTION_CONTROLLER
+    MOTION_CONTROLLER;
+
+    private static final InputMode[] VALUES = values();
+
+    public static InputMode from(int id) {
+        return VALUES[id];
+    }
 }
