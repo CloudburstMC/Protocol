@@ -262,6 +262,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 if (type == null) {
                     throw new IllegalStateException("Invalid parameter type: " + parameterTypeId + ", Symbol: " + symbol);
                 }
+                param.setType(type);
             }
         } else {
             throw new IllegalStateException("No param type specified: " + param.getName());
