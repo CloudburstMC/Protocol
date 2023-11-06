@@ -258,10 +258,8 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
                 param.setEnumData(enums.get(symbol & ~(ARG_FLAG_ENUM | ARG_FLAG_VALID)));
             } else {
                 int parameterTypeId = symbol & ~ARG_FLAG_VALID;
-                try {
-                    CommandParam type = paramTypeMap.getType(parameterTypeId);
-                    param.setType(type);
-                } catch (NullPointerException e) {
+                CommandParam type = paramTypeMap.getTypeUnsafe(parameterTypeId);
+                if (type == null) {
                     throw new IllegalStateException("Invalid parameter type: " + parameterTypeId + ", Symbol: " + symbol);
                 }
             }

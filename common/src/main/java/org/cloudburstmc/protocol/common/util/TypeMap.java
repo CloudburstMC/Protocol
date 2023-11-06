@@ -50,6 +50,10 @@ public final class TypeMap<T> {
         return value;
     }
 
+    public T getTypeUnsafe(int id) {
+        return toObject.get(id);
+    }
+
     public Builder<T> toBuilder() {
         Builder<T> builder = new Builder<>(type);
         this.toObject.forEach(builder::insert);
