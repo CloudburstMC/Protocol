@@ -84,10 +84,18 @@ public enum LevelEvent implements LevelEventType {
     PARTICLE_BREAK_BLOCK_SOUTH,
     PARTICLE_BREAK_BLOCK_WEST,
     PARTICLE_BREAK_BLOCK_EAST,
+    /**
+     * @since v630
+     */
+    PARTICLE_SHOOT_WHITE_SMOKE,
     SCULK_CATALYST_BLOOM,
     SCULK_CHARGE,
     SCULK_CHARGE_POP,
     SONIC_EXPLOSION,
+    /**
+     * @since v630
+     */
+    DUST_PLUME,
 
     // world
     START_RAINING,

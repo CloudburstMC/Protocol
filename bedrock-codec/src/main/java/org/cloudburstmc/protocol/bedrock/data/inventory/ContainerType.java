@@ -42,7 +42,15 @@ public enum ContainerType {
     HUD(31),
     JIGSAW_EDITOR(32),
     SMITHING_TABLE(33),
-    CHEST_BOAT(34);
+    CHEST_BOAT(34),
+    /**
+     * @since v630
+     */
+    DECORATED_POT(35),
+    /**
+     * @since v630
+     */
+    CRAFTER(36);
 
     public static final ContainerType[] VALUES;
 

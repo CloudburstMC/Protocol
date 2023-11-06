@@ -823,4 +823,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(RefreshEntitlementsPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ServerPostMovePositionPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ToggleCrafterSlotRequestPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(SetPlayerInventoryOptionsPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

@@ -537,6 +537,34 @@ public enum SoundEvent {
      * @since v622
      */
     BOTTLE_EMPTY,
+    /**
+     * @since v630
+     */
+    CRAFTER_CRAFT,
+    /**
+     * @since v630
+     */
+    CRAFTER_FAILED,
+    /**
+     * @since v630
+     */
+    CRAFTER_DISABLE_SLOT,
+    /**
+     * @since v630
+     */
+    DECORATED_POT_INSERT,
+    /**
+     * @since v630
+     */
+    DECORATED_POT_INSERT_FAILED,
+    /**
+     * @since v630
+     */
+    COPPER_BULB_ON,
+    /**
+     * @since v630
+     */
+    COPPER_BULB_OFF,
 
     UNDEFINED
 }

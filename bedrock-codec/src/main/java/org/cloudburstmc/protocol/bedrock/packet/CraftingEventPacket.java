@@ -11,6 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @since since v630
+ */
+@Deprecated
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)

@@ -62,5 +62,9 @@ public enum ContainerSlotType {
     CURSOR,
     CREATED_OUTPUT,
     RECIPE_BOOK,
-    SMITHING_TABLE_TEMPLATE
+    SMITHING_TABLE_TEMPLATE,
+    /**
+     * @since v630
+     */
+    CRAFTER_BLOCK_CONTAINER
 }
