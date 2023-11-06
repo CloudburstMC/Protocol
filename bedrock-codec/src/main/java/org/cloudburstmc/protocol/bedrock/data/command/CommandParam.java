@@ -84,6 +84,7 @@ public class CommandParam {
     public static final CommandParam BLOCK_STATES_CONT = new CommandParam(CommandParamType.BLOCK_STATES_CONT);
     public static final CommandParam COMMAND = new CommandParam(CommandParamType.COMMAND);
     public static final CommandParam SLASH_COMMAND = new CommandParam(CommandParamType.SLASH_COMMAND);
+    public static final CommandParam CHAINED_COMMAND = new CommandParam(CommandParamType.CHAINED_COMMAND);
 
     private final CommandParamType paramType;
     private final int defaultValue;
