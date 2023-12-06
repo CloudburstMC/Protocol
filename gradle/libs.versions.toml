@@ -1,7 +1,7 @@
 [versions]
 checkerframework = "3.37.0"
 fastutil = "8.5.13-SNAPSHOT"
-netty = "4.1.96.Final"
+netty = "4.1.101.Final"
 
 [libraries]
 checker-qual = { group = "org.checkerframework", name = "checker-qual", version.ref = "checkerframework" }
