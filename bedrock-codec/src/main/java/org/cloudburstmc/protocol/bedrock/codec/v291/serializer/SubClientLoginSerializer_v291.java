@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.SubClientLoginPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.jose4j.json.internal.json_simple.JSONArray;
+import org.jose4j.json.internal.json_simple.JSONObject;
 import org.jose4j.json.internal.json_simple.JSONValue;
 import org.jose4j.json.internal.json_simple.parser.ParseException;
 
@@ -25,7 +26,11 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubClientLoginPacket packet) {
         JSONArray array = new JSONArray();
         array.addAll(packet.getChain());
-        String chainData = array.toJSONString();
+
+        JSONObject json = new JSONObject();
+        json.put("chain", array);
+
+        String chainData = json.toJSONString();
         int chainLength = ByteBufUtil.utf8Bytes(chainData);
         String extraData = packet.getExtra();
         int extraLength = ByteBufUtil.utf8Bytes(extraData);
@@ -43,9 +48,12 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
 
         try {
             Object json = JSONValue.parseWithException(readString(jwt).toString());
-            checkArgument(json instanceof JSONArray, "Expected JSON array for login chain");
+            checkArgument(json instanceof JSONObject && ((JSONObject) json).containsKey("chain"), "Invalid login chain");
 
-            for (Object node : (JSONArray) json) {
+            Object chain = ((JSONObject) json).get("chain");
+            checkArgument(chain instanceof JSONArray, "Expected JSON array for login chain");
+
+            for (Object node : (JSONArray) chain) {
                 checkArgument(node instanceof String, "Expected String in login chain");
                 packet.getChain().add((String) node);
             }
