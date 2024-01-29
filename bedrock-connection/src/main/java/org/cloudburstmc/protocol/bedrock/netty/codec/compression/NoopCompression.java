@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.compression;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 
 public class NoopCompression implements BatchCompression {
 
@@ -18,7 +19,7 @@ public class NoopCompression implements BatchCompression {
 
     @Override
     public CompressionAlgorithm getAlgorithm() {
-        return null;
+        return PacketCompressionAlgorithm.NONE;
     }
 
     @Override
