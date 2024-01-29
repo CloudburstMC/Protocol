@@ -88,6 +88,14 @@ public enum LevelEvent implements LevelEventType {
      * @since v630
      */
     PARTICLE_SHOOT_WHITE_SMOKE,
+    /**
+     * @since v649
+     */
+    PARTICLE_WIND_EXPLOSION,
+    PARTICLE_TRAIL_SPAWNER_DETECTION,
+    PARTICLE_TRAIL_SPAWNER_SPAWNING,
+    PARTICLE_TRAIL_SPAWNER_EJECTING,
+
     SCULK_CATALYST_BLOOM,
     SCULK_CHARGE,
     SCULK_CHARGE_POP,

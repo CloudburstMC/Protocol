@@ -25,8 +25,15 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
      * @since v485
      */
     private int subChunkLimit;
+
     private final LongList blobIds = new LongArrayList();
+
     private ByteBuf data;
+
+    /**
+     * @since v649
+     */
+    private int dimension;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -46,5 +46,6 @@ public class PlayerListPacket implements BedrockPacket {
         private boolean teacher;
         private boolean host;
         private boolean trustedSkin;
+        private boolean subClient;
     }
 }

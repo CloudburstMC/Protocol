@@ -15,8 +15,7 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {
-        VarInts.writeInt(buffer, packet.getChunkX());
-        VarInts.writeInt(buffer, packet.getChunkZ());
+        this.writeChunkLocation(buffer, packet);
 
         if (!packet.isRequestSubChunks()) {
             VarInts.writeUnsignedInt(buffer, packet.getSubChunksLength());
@@ -42,8 +41,7 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, LevelChunkPacket packet) {
-        packet.setChunkX(VarInts.readInt(buffer));
-        packet.setChunkZ(VarInts.readInt(buffer));
+        this.readChunkLocation(buffer, packet);
 
         int subChunksCount = VarInts.readUnsignedInt(buffer);
         if (subChunksCount >= 0) {
@@ -68,5 +66,15 @@ public class LevelChunkSerializer_v486 extends LevelChunkSerializer_v361 {
             }
         }
         packet.setData(helper.readByteBuf(buffer));
+    }
+
+    protected void writeChunkLocation(ByteBuf buffer, LevelChunkPacket packet) {
+        VarInts.writeInt(buffer, packet.getChunkX());
+        VarInts.writeInt(buffer, packet.getChunkZ());
+    }
+
+    protected void readChunkLocation(ByteBuf buffer, LevelChunkPacket packet) {
+        packet.setChunkX(VarInts.readInt(buffer));
+        packet.setChunkZ(VarInts.readInt(buffer));
     }
 }

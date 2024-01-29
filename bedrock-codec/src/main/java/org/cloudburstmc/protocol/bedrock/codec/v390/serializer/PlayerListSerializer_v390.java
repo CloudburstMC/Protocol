@@ -22,16 +22,7 @@ public class PlayerListSerializer_v390 implements BedrockPacketSerializer<Player
 
         if (packet.getAction() == Action.ADD) {
             for (Entry entry : packet.getEntries()) {
-                helper.writeUuid(buffer, entry.getUuid());
-
-                VarInts.writeLong(buffer, entry.getEntityId());
-                helper.writeString(buffer, entry.getName());
-                helper.writeString(buffer, entry.getXuid());
-                helper.writeString(buffer, entry.getPlatformChatId());
-                buffer.writeIntLE(entry.getBuildPlatform());
-                helper.writeSkin(buffer, entry.getSkin());
-                buffer.writeBoolean(entry.isTeacher());
-                buffer.writeBoolean(entry.isHost());
+                this.writeEntryBase(buffer, helper, entry);
             }
 
             for (Entry entry : packet.getEntries()) {
@@ -52,16 +43,7 @@ public class PlayerListSerializer_v390 implements BedrockPacketSerializer<Player
 
         if (action == Action.ADD) {
             for (int i = 0; i < length; i++) {
-                Entry entry = new Entry(helper.readUuid(buffer));
-                entry.setEntityId(VarInts.readLong(buffer));
-                entry.setName(helper.readString(buffer));
-                entry.setXuid(helper.readString(buffer));
-                entry.setPlatformChatId(helper.readString(buffer));
-                entry.setBuildPlatform(buffer.readIntLE());
-                entry.setSkin(helper.readSkin(buffer));
-                entry.setTeacher(buffer.readBoolean());
-                entry.setHost(buffer.readBoolean());
-                packet.getEntries().add(entry);
+                packet.getEntries().add(this.readEntryBase(buffer, helper));
             }
 
             for (int i = 0; i < length && buffer.isReadable(); i++) {
@@ -72,5 +54,31 @@ public class PlayerListSerializer_v390 implements BedrockPacketSerializer<Player
                 packet.getEntries().add(new Entry(helper.readUuid(buffer)));
             }
         }
+    }
+
+    protected void writeEntryBase(ByteBuf buffer, BedrockCodecHelper helper, Entry entry) {
+        helper.writeUuid(buffer, entry.getUuid());
+
+        VarInts.writeLong(buffer, entry.getEntityId());
+        helper.writeString(buffer, entry.getName());
+        helper.writeString(buffer, entry.getXuid());
+        helper.writeString(buffer, entry.getPlatformChatId());
+        buffer.writeIntLE(entry.getBuildPlatform());
+        helper.writeSkin(buffer, entry.getSkin());
+        buffer.writeBoolean(entry.isTeacher());
+        buffer.writeBoolean(entry.isHost());
+    }
+
+    protected Entry readEntryBase(ByteBuf buffer, BedrockCodecHelper helper) {
+        Entry entry = new Entry(helper.readUuid(buffer));
+        entry.setEntityId(VarInts.readLong(buffer));
+        entry.setName(helper.readString(buffer));
+        entry.setXuid(helper.readString(buffer));
+        entry.setPlatformChatId(helper.readString(buffer));
+        entry.setBuildPlatform(buffer.readIntLE());
+        entry.setSkin(helper.readSkin(buffer));
+        entry.setTeacher(buffer.readBoolean());
+        entry.setHost(buffer.readBoolean());
+        return entry;
     }
 }
