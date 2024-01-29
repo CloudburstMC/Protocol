@@ -141,9 +141,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     public void setCompression(PacketCompressionAlgorithm algorithm) {
         Objects.requireNonNull(algorithm, "algorithm");
-
-        BatchCompression compression = BedrockChannelInitializer.getCompression(algorithm, this.getRakVersion(), false);
-        this.setCompression(new SimpleCompressionStrategy(compression));
+        this.setCompression(BedrockChannelInitializer.getCompression(algorithm, this.getRakVersion(), false));
     }
 
     public void setCompression(CompressionStrategy strategy) {

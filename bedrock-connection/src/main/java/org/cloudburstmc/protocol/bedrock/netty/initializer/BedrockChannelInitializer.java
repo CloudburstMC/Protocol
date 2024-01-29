@@ -23,6 +23,11 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
     private static final FrameIdCodec RAKNET_FRAME_CODEC = new FrameIdCodec(RAKNET_MINECRAFT_ID);
     private static final BedrockBatchDecoder BATCH_DECODER = new BedrockBatchDecoder();
 
+    private static final CompressionStrategy ZLIB_RAW_STRATEGY = new SimpleCompressionStrategy(new ZlibCompression(Zlib.RAW));
+    private static final CompressionStrategy ZLIB_STRATEGY = new SimpleCompressionStrategy(new ZlibCompression(Zlib.DEFAULT));
+    private static final CompressionStrategy SNAPPY_STRATEGY = new SimpleCompressionStrategy(new SnappyCompression());
+    private static final CompressionStrategy NOOP_STRATEGY = new SimpleCompressionStrategy(new NoopCompression());
+
     @Override
     protected final void initChannel(Channel channel) throws Exception {
         this.preInitChannel(channel);
@@ -43,31 +48,33 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
 
         int rakVersion = channel.config().getOption(RakChannelOption.RAK_PROTOCOL_VERSION);
 
-        BatchCompression compression = getCompression(PacketCompressionAlgorithm.ZLIB, rakVersion, true);
+        CompressionStrategy compression = getCompression(PacketCompressionAlgorithm.ZLIB, rakVersion, true);
         // At this point all connections use not prefixed compression
-        channel.pipeline().addLast(CompressionCodec.NAME, new CompressionCodec(new SimpleCompressionStrategy(compression), false));
+        channel.pipeline().addLast(CompressionCodec.NAME, new CompressionCodec(compression, false));
     }
 
-    public static BatchCompression getCompression(CompressionAlgorithm algorithm, int rakVersion, boolean initial) {
+    public static CompressionStrategy getCompression(CompressionAlgorithm algorithm, int rakVersion, boolean initial) {
         switch (rakVersion) {
             case 7:
             case 8:
             case 9:
-                return new ZlibCompression(Zlib.DEFAULT);
+                return ZLIB_STRATEGY;
             case 10:
-                return new ZlibCompression(Zlib.RAW);
+                return ZLIB_RAW_STRATEGY;
             case 11:
-                return initial ? new NoopCompression() : getCompression(algorithm);
+                return initial ? NOOP_STRATEGY : getCompression(algorithm);
             default:
                 throw new UnsupportedOperationException("Unsupported RakNet protocol version: " + rakVersion);
         }
     }
 
-    private static BatchCompression getCompression(CompressionAlgorithm algorithm) {
+    private static CompressionStrategy getCompression(CompressionAlgorithm algorithm) {
         if (algorithm == PacketCompressionAlgorithm.ZLIB) {
-            return new ZlibCompression(Zlib.RAW);
+            return ZLIB_RAW_STRATEGY;
         } else if (algorithm == PacketCompressionAlgorithm.SNAPPY) {
-            return new SnappyCompression();
+            return SNAPPY_STRATEGY;
+        } else if (algorithm == PacketCompressionAlgorithm.NONE) {
+            return NOOP_STRATEGY;
         } else {
             throw new UnsupportedOperationException("Unsupported compression algorithm: " + algorithm);
         }
