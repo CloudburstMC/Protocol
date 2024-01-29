@@ -29,7 +29,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
     protected final void encode(ChannelHandlerContext ctx, BedrockPacketWrapper msg, List<Object> out) throws Exception {
         if (msg.getPacketBuffer() != null) {
             // We have a pre-encoded packet buffer, just use that.
-            out.add(msg.getPacketBuffer().retain());
+            out.add(msg.retain());
         } else {
             ByteBuf buf = ctx.alloc().buffer(128);
             try {
@@ -37,7 +37,9 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
                 msg.setPacketId(getPacketId(packet));
                 encodeHeader(buf, msg);
                 this.codec.tryEncode(helper, buf, packet);
-                out.add(buf.retain());
+
+                msg.setPacketBuffer(buf.retain());
+                out.add(msg.retain());
             } catch (Throwable t) {
                 log.error("Error encoding packet {}", msg.getPacket(), t);
             } finally {

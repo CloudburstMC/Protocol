@@ -77,13 +77,6 @@ public abstract class BedrockSession {
         this.peer.setCompression(algorithm);
     }
 
-    public void setCompressionLevel(int level) {
-        if (isSubClient()) {
-            throw new IllegalStateException("The compression level can only be set by the primary session");
-        }
-        this.peer.setCompressionLevel(level);
-    }
-
     public void enableEncryption(SecretKey key) {
         if (isSubClient()) {
             throw new IllegalStateException("Encryption can only be enabled by the primary session");

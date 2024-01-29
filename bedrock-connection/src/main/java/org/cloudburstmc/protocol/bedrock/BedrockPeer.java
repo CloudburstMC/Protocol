@@ -14,6 +14,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
+import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v428.Bedrock_v428;
@@ -21,15 +22,16 @@ import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.netty.codec.FrameIdCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
+import org.cloudburstmc.protocol.bedrock.netty.codec.compression.BatchCompression;
 import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionCodec;
-import org.cloudburstmc.protocol.bedrock.netty.codec.compression.SnappyCompressionCodec;
-import org.cloudburstmc.protocol.bedrock.netty.codec.compression.ZlibCompressionCodec;
+import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionStrategy;
+import org.cloudburstmc.protocol.bedrock.netty.codec.compression.SimpleCompressionStrategy;
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptionEncoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec;
+import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockChannelInitializer;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
-import org.cloudburstmc.protocol.common.util.Zlib;
 
 import javax.crypto.SecretKey;
 import java.net.SocketAddress;
@@ -139,38 +141,30 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     public void setCompression(PacketCompressionAlgorithm algorithm) {
         Objects.requireNonNull(algorithm, "algorithm");
-        ChannelHandler handler = this.channel.pipeline().get(CompressionCodec.NAME);
-        if (handler != null) {
-            throw new IllegalArgumentException("Compression is already set");
-        }
-        ChannelHandler compressionHandler;
-        switch (algorithm) {
-            case ZLIB:
-                compressionHandler = new ZlibCompressionCodec(Zlib.RAW);
-                break;
-            case SNAPPY:
-                compressionHandler = new SnappyCompressionCodec();
-                break;
-            default:
-                throw new UnsupportedOperationException("Unsupported compression algorithm: " + algorithm);
-        }
-        this.channel.pipeline().addBefore(BedrockBatchDecoder.NAME, CompressionCodec.NAME, compressionHandler);
+
+        BatchCompression compression = BedrockChannelInitializer.getCompression(algorithm, this.getRakVersion(), false);
+        this.setCompression(new SimpleCompressionStrategy(compression));
     }
 
-    public void setCompressionLevel(int level) {
+    public void setCompression(CompressionStrategy strategy) {
+        Objects.requireNonNull(strategy, "strategy");
+
+        boolean needsPrefix = this.getCodec().getProtocolVersion() >= 649; // TODO: do not hardcode
+
         ChannelHandler handler = this.channel.pipeline().get(CompressionCodec.NAME);
         if (handler == null) {
-            throw new IllegalArgumentException("Peer has no compression!");
+            this.channel.pipeline().addBefore(BedrockBatchDecoder.NAME, CompressionCodec.NAME, new CompressionCodec(strategy, needsPrefix));
+        } else {
+            this.channel.pipeline().replace(CompressionCodec.NAME, CompressionCodec.NAME, new CompressionCodec(strategy, needsPrefix));
         }
-        ((CompressionCodec) handler).setLevel(level);
     }
 
-    public PacketCompressionAlgorithm getCompression() {
+    public CompressionStrategy getCompressionStrategy() {
         ChannelHandler handler = this.channel.pipeline().get(CompressionCodec.NAME);
         if (!(handler instanceof CompressionCodec)) {
             return null;
         }
-        return ((CompressionCodec) handler).getAlgorithm();
+        return ((CompressionCodec) handler).getStrategy();
     }
 
     public BedrockCodec getCodec() {
@@ -232,6 +226,10 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     public Channel getChannel() {
         return this.channel;
+    }
+
+    public int getRakVersion() {
+        return this.channel.config().getOption(RakChannelOption.RAK_PROTOCOL_VERSION);
     }
 
     /*

@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AbstractReferenceCounted;
 import io.netty.util.ReferenceCountUtil;
+import io.netty.util.ReferenceCounted;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,5 +41,10 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
         ReferenceCountUtil.touch(this.packet);
         ReferenceCountUtil.touch(this.packetBuffer);
         return this;
+    }
+
+    @Override
+    public BedrockPacketWrapper retain() {
+        return (BedrockPacketWrapper) super.retain();
     }
 }

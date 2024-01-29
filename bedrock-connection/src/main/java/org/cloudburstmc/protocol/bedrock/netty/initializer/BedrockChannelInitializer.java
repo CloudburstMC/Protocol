@@ -5,11 +5,12 @@ import io.netty.channel.ChannelInitializer;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.bedrock.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
+import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.netty.codec.FrameIdCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchEncoder;
-import org.cloudburstmc.protocol.bedrock.netty.codec.compression.CompressionCodec;
-import org.cloudburstmc.protocol.bedrock.netty.codec.compression.ZlibCompressionCodec;
+import org.cloudburstmc.protocol.bedrock.netty.codec.compression.*;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec_v1;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec_v2;
@@ -42,19 +43,33 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
 
         int rakVersion = channel.config().getOption(RakChannelOption.RAK_PROTOCOL_VERSION);
 
+        BatchCompression compression = getCompression(PacketCompressionAlgorithm.ZLIB, rakVersion, true);
+        // At this point all connections use not prefixed compression
+        channel.pipeline().addLast(CompressionCodec.NAME, new CompressionCodec(new SimpleCompressionStrategy(compression), false));
+    }
+
+    public static BatchCompression getCompression(CompressionAlgorithm algorithm, int rakVersion, boolean initial) {
         switch (rakVersion) {
             case 7:
             case 8:
             case 9:
-                channel.pipeline().addLast(CompressionCodec.NAME, new ZlibCompressionCodec(Zlib.DEFAULT));
-                break;
-            case 10: // Zlib Raw
-                channel.pipeline().addLast(CompressionCodec.NAME, new ZlibCompressionCodec(Zlib.RAW));
-                break;
-            case 11: // No compression on initial packet request
-                break;
+                return new ZlibCompression(Zlib.DEFAULT);
+            case 10:
+                return new ZlibCompression(Zlib.RAW);
+            case 11:
+                return initial ? new NoopCompression() : getCompression(algorithm);
             default:
                 throw new UnsupportedOperationException("Unsupported RakNet protocol version: " + rakVersion);
+        }
+    }
+
+    private static BatchCompression getCompression(CompressionAlgorithm algorithm) {
+        if (algorithm == PacketCompressionAlgorithm.ZLIB) {
+            return new ZlibCompression(Zlib.RAW);
+        } else if (algorithm == PacketCompressionAlgorithm.SNAPPY) {
+            return new SnappyCompression();
+        } else {
+            throw new UnsupportedOperationException("Unsupported compression algorithm: " + algorithm);
         }
     }
 

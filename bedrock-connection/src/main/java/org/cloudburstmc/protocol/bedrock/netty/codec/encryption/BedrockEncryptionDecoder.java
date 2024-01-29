@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import lombok.RequiredArgsConstructor;
+import org.cloudburstmc.protocol.bedrock.netty.BedrockBatchWrapper;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RequiredArgsConstructor
-public class BedrockEncryptionDecoder extends MessageToMessageDecoder<ByteBuf> {
+public class BedrockEncryptionDecoder extends MessageToMessageDecoder<BedrockBatchWrapper> {
 
     public static final String NAME = "bedrock-encryption-decoder";
 
@@ -25,17 +26,17 @@ public class BedrockEncryptionDecoder extends MessageToMessageDecoder<ByteBuf> {
     private final Cipher cipher;
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        ByteBuffer inBuffer = in.nioBuffer();
+    protected void decode(ChannelHandlerContext ctx, BedrockBatchWrapper msg, List<Object> out) throws Exception {
+        ByteBuffer inBuffer = msg.getCompressed().nioBuffer();
         ByteBuffer outBuffer = inBuffer.duplicate();
 
         // Copy-safe so we can use the same buffer.
         this.cipher.update(inBuffer, outBuffer);
 
-        ByteBuf output = in.readSlice(in.readableBytes() - 8);
+        ByteBuf output = msg.getCompressed().readSlice(msg.getCompressed().readableBytes() - 8);
 
         if (VALIDATE) {
-            ByteBuf trailer = in.readSlice(8);
+            ByteBuf trailer = msg.getCompressed().readSlice(8);
 
             byte[] actual = new byte[8];
             trailer.readBytes(actual);
@@ -46,6 +47,8 @@ public class BedrockEncryptionDecoder extends MessageToMessageDecoder<ByteBuf> {
                 throw new CorruptedFrameException("Invalid encryption trailer");
             }
         }
-        out.add(output.retain());
+
+        msg.setCompressed(output.retain());
+        out.add(msg.retain());
     }
 }

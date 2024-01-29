@@ -5,20 +5,16 @@ import io.airlift.compress.snappy.SnappyRawDecompressor;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
+import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
-
-import java.util.List;
 
 import static sun.misc.Unsafe.ARRAY_BYTE_BASE_OFFSET;
 
-public class SnappyCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteBuf> implements CompressionCodec {
-    public static final String NAME = "compression-codec";
-
+public class SnappyCompression implements BatchCompression {
     private static final ThreadLocal<short[]> TABLE = ThreadLocal.withInitial(() -> new short[16384]);
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
+    public ByteBuf encode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         ByteBuf direct;
         if (!msg.isDirect() || msg instanceof CompositeByteBuf) {
             direct = ctx.alloc().ioBuffer(msg.readableBytes());
@@ -50,7 +46,7 @@ public class SnappyCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteB
 
             int compressed = SnappyRawCompressor.compress(null, inputAddress, inputEndAddress, outputArray, outputAddress, outputEndAddress, TABLE.get());
             output.writerIndex(output.writerIndex() + compressed);
-            out.add(output.retain());
+            return output.retain();
         } finally {
             output.release();
             if (direct != msg) {
@@ -60,7 +56,7 @@ public class SnappyCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteB
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
+    public ByteBuf decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         ByteBuf direct;
         if (!msg.isDirect() || msg instanceof CompositeByteBuf) {
             direct = ctx.alloc().ioBuffer(msg.readableBytes());
@@ -91,7 +87,7 @@ public class SnappyCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteB
 
             int decompressed = SnappyRawDecompressor.decompress(null, inputAddress, inputEndAddress, outputArray, outputAddress, outputEndAddress);
             output.writerIndex(output.writerIndex() + decompressed);
-            out.add(output.retain());
+            return output.retain();
         } finally {
             output.release();
             if (direct != msg) {
@@ -101,17 +97,16 @@ public class SnappyCompressionCodec extends MessageToMessageCodec<ByteBuf, ByteB
     }
 
     @Override
-    public int getLevel() {
-        return -1;
+    public CompressionAlgorithm getAlgorithm() {
+        return PacketCompressionAlgorithm.SNAPPY;
     }
 
     @Override
     public void setLevel(int level) {
-        // no-op
     }
 
     @Override
-    public PacketCompressionAlgorithm getAlgorithm() {
-        return PacketCompressionAlgorithm.SNAPPY;
+    public int getLevel() {
+        return -1;
     }
 }
