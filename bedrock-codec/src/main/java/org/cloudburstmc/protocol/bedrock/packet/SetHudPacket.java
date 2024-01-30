@@ -1,16 +1,24 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.HudElement;
+import org.cloudburstmc.protocol.bedrock.data.HudVisibility;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+import java.util.Set;
+
+/**
+ * @since v649
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ServerPostMovePositionPacket implements BedrockPacket {
-    private Vector3f position;
+public class SetHudPacket implements BedrockPacket {
+    private final Set<HudElement> elements = new ObjectOpenHashSet<>();
+    private HudVisibility visibility;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -19,6 +27,6 @@ public class ServerPostMovePositionPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.SERVER_POST_MOVE_POSITION;
+        return BedrockPacketType.SET_HUD;
     }
 }
