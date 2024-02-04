@@ -27,6 +27,7 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
         }
 
         if (msg.getCompressed() != null && !msg.isModified()) {
+            this.onPassedThrough(ctx, msg);
             out.add(msg.retain());
             return;
         }
@@ -53,6 +54,7 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
             compressed.release();
         }
 
+        this.onCompressed(ctx, msg);
         out.add(msg.retain());
     }
 
@@ -62,7 +64,7 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
 
         BatchCompression compression;
         if (this.prefixed) {
-            PacketCompressionAlgorithm algorithm = this.getCompressionAlgorithm(compressed.readByte());
+            CompressionAlgorithm algorithm = this.getCompressionAlgorithm(compressed.readByte());
             compression = this.strategy.getCompression(algorithm);
         } else {
             compression = this.strategy.getDefaultCompression();
@@ -70,11 +72,20 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
 
         msg.setAlgorithm(compression.getAlgorithm());
         msg.setUncompressed(compression.decode(ctx, compressed.slice()));
+        this.onDecompressed(ctx, msg);
         out.add(msg.retain());
     }
 
-    // TODO: consider moving to strategy
-    private byte getCompressionHeader(CompressionAlgorithm algorithm) {
+    protected void onPassedThrough(ChannelHandlerContext ctx, BedrockBatchWrapper msg) {
+    }
+
+    protected void onCompressed(ChannelHandlerContext ctx, BedrockBatchWrapper msg) {
+    }
+
+    protected void onDecompressed(ChannelHandlerContext ctx, BedrockBatchWrapper msg) {
+    }
+
+    protected final byte getCompressionHeader(CompressionAlgorithm algorithm) {
         if (algorithm.equals(PacketCompressionAlgorithm.NONE)) {
             return (byte) 0xff;
         } else if (algorithm.equals(PacketCompressionAlgorithm.ZLIB)) {
@@ -82,11 +93,15 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
         } else if (algorithm.equals(PacketCompressionAlgorithm.SNAPPY)) {
             return 0x01;
         }
-        throw new IllegalArgumentException("Unknown compression algorithm " + algorithm);
+
+        byte header = this.getCompressionHeader0(algorithm);
+        if (header == -1) {
+            throw new IllegalArgumentException("Unknown compression algorithm " + algorithm);
+        }
+        return header;
     }
 
-    // TODO: consider moving to strategy
-    protected PacketCompressionAlgorithm getCompressionAlgorithm(byte header) {
+    protected final CompressionAlgorithm getCompressionAlgorithm(byte header) {
         switch (header) {
             case 0x00:
                 return PacketCompressionAlgorithm.ZLIB;
@@ -95,7 +110,20 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
             case (byte) 0xff:
                 return PacketCompressionAlgorithm.NONE;
         }
-        throw new IllegalArgumentException("Unknown compression algorithm " + header);
+
+        CompressionAlgorithm algorithm = this.getCompressionAlgorithm0(header);
+        if (algorithm == null) {
+            throw new IllegalArgumentException("Unknown compression algorithm " + header);
+        }
+        return algorithm;
+    }
+
+    protected byte getCompressionHeader0(CompressionAlgorithm algorithm) {
+        return -1;
+    }
+
+    protected CompressionAlgorithm getCompressionAlgorithm0(byte header) {
+        return null;
     }
 
     public CompressionStrategy getStrategy() {
