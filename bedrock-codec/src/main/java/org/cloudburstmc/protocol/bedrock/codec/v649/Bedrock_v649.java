@@ -44,7 +44,7 @@ public class Bedrock_v649 extends Bedrock_v630 {
             .insert(497, SoundEvent.EQUIP_WOLF)
             .insert(498, SoundEvent.UNEQUIP_WOLF)
             .insert(499, SoundEvent.REFLECT)
-            .replace(500, SoundEvent.UNDEFINED)
+            .insert(500, SoundEvent.UNDEFINED)
             .build();
 
     // TODO: check for command params
