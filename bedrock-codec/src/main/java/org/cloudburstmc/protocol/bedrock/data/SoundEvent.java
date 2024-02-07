@@ -565,6 +565,38 @@ public enum SoundEvent {
      * @since v630
      */
     COPPER_BULB_OFF,
+    /**
+     * @since v649
+     */
+    AMBIENT_IN_AIR,
+    /**
+     * @since v649
+     */
+    WIND_BURST,
+    /**
+     * @since v649
+     */
+    IMITATE_BREEZE,
+    /**
+     * @since v649
+     */
+    ARMADILLO_BRUSH,
+    /**
+     * @since v649
+     */
+    ARMADILLO_SCUTE_DROP,
+    /**
+     * @since v649
+     */
+    EQUIP_WOLF,
+    /**
+     * @since v649
+     */
+    UNEQUIP_WOLF,
+    /**
+     * @since v649
+     */
+    REFLECT,
 
     UNDEFINED
 }
