@@ -42,7 +42,7 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 | Bedrock_v431 |      1.16.220       |
 | Bedrock_v440 |       1.17.0        |
 | Bedrock_v448 |  1.17.10 - 1.17.11  |
-| Bedrock_v465 |  1.17.30 - 1.1734   |
+| Bedrock_v465 |  1.17.30 - 1.17.34  |
 | Bedrock_v471 |  1.17.40 - 1.17.41  |
 | Bedrock_v475 |       1.18.0        |
 | Bedrock_v486 |       1.18.10       |
@@ -56,7 +56,14 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 | Bedrock_v560 |       1.19.50       |
 | Bedrock_v567 |       1.19.60       |
 | Bedrock_v568 |  1.19.62 - 1.19.63  |
-| Bedrock_v575 |  1.19.70 - 1.19.72  |
+| Bedrock_v575 |  1.19.70 - 1.19.73  |
+| Bedrock_v582 |  1.19.80 - 1.19.83  |
+| Bedrock_v589 |  1.20.0  - 1.20.1   |
+| Bedrock_v594 |  1.20.10 - 1.20.15  |
+| Bedrock_v618 |  1.20.30 - 1.20.32  |
+| Bedrock_v622 |  1.20.40 - 1.20.41  |
+| Bedrock_v630 |  1.20.50 - 1.20.51  |
+| Bedrock_v649 |       1.20.60       |
 
 ##### Repository:
 
