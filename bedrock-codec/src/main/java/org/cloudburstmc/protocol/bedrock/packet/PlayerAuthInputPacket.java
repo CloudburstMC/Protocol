@@ -58,6 +58,10 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      * @since 649
      */
     private long predictedVehicle;
+    /**
+     * @since 662
+     */
+    private Vector2f vehicleRotation;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -13,6 +13,10 @@ public class LecternUpdatePacket implements BedrockPacket {
     private int page;
     private int totalPages;
     private Vector3i blockPosition;
+    /**
+     * @deprecated since v662
+     */
+    @Deprecated
     private boolean droppingBook;
 
     @Override

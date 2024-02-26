@@ -47,8 +47,6 @@ public class Bedrock_v649 extends Bedrock_v630 {
             .insert(500, SoundEvent.UNDEFINED)
             .build();
 
-    // TODO: check for command params
-
     public static final BedrockCodec CODEC = Bedrock_v630.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(649)

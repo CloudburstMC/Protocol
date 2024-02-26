@@ -95,6 +95,10 @@ public enum LevelEvent implements LevelEventType {
     PARTICLE_TRAIL_SPAWNER_DETECTION,
     PARTICLE_TRAIL_SPAWNER_SPAWNING,
     PARTICLE_TRAIL_SPAWNER_EJECTING,
+    /**
+     * @since v662
+     */
+    PARTICLE_BREEZE_WIND_EXPLOSION,
 
     SCULK_CATALYST_BLOOM,
     SCULK_CHARGE,
@@ -141,5 +145,11 @@ public enum LevelEvent implements LevelEventType {
 
     ALL_PLAYERS_SLEEPING,
     SLEEPING_PLAYERS,
-    JUMP_PREVENTED
+    JUMP_PREVENTED,
+    /**
+     * @since v662
+     */
+    ANIMATION_VAULT_ACTIVATE,
+    ANIMATION_VAULT_DEACTIVATE,
+    ANIMATION_VAULT_EJECT_ITEM,
 }

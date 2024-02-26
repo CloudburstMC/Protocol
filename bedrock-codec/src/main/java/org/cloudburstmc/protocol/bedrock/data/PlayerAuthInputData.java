@@ -73,5 +73,13 @@ public enum PlayerAuthInputData {
     /**
      * @since v649
      */
-    IN_CLIENT_PREDICTED_IN_VEHICLE
+    IN_CLIENT_PREDICTED_IN_VEHICLE,
+    /**
+     * @since v662
+     */
+    PADDLE_LEFT,
+    /**
+     * @since v662
+     */
+    PADDLE_RIGHT
 }
