@@ -85,6 +85,19 @@ public class CommandParam {
     public static final CommandParam COMMAND = new CommandParam(CommandParamType.COMMAND);
     public static final CommandParam SLASH_COMMAND = new CommandParam(CommandParamType.SLASH_COMMAND);
     public static final CommandParam CHAINED_COMMAND = new CommandParam(CommandParamType.CHAINED_COMMAND);
+    public static final CommandParam RATIONAL_RANGE_VAL = new CommandParam(CommandParamType.RATIONAL_RANGE_VAL);
+    public static final CommandParam RATIONAL_RANGE_POST_VAL = new CommandParam(CommandParamType.RATIONAL_RANGE_POST_VAL);
+    public static final CommandParam RATIONAL_RANGE = new CommandParam(CommandParamType.RATIONAL_RANGE);
+    public static final CommandParam RATIONAL_RANGE_FULL = new CommandParam(CommandParamType.RATIONAL_RANGE_FULL);
+    public static final CommandParam PROPERTY_VALUE = new CommandParam(CommandParamType.PROPERTY_VALUE);
+    public static final CommandParam HAS_PROPERTY_PARAM_VALUE = new CommandParam(CommandParamType.HAS_PROPERTY_PARAM_VALUE);
+    public static final CommandParam HAS_PROPERTY_PARAM_ENUM_VALUE = new CommandParam(CommandParamType.HAS_PROPERTY_PARAM_ENUM_VALUE);
+    public static final CommandParam HAS_PROPERTY_ARG = new CommandParam(CommandParamType.HAS_PROPERTY_ARG);
+    public static final CommandParam HAS_PROPERTY_ARGS = new CommandParam(CommandParamType.HAS_PROPERTY_ARGS);
+    public static final CommandParam HAS_PROPERTY_ELEMENT = new CommandParam(CommandParamType.HAS_PROPERTY_ELEMENT);
+    public static final CommandParam HAS_PROPERTY_ELEMENTS = new CommandParam(CommandParamType.HAS_PROPERTY_ELEMENTS);
+    public static final CommandParam HAS_PROPERTY_SELECTOR = new CommandParam(CommandParamType.HAS_PROPERTY_SELECTOR);
+
 
     private final CommandParamType paramType;
     private final int defaultValue;
