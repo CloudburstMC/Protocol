@@ -64,6 +64,7 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 | Bedrock_v622 |  1.20.40 - 1.20.41  |
 | Bedrock_v630 |  1.20.50 - 1.20.51  |
 | Bedrock_v649 |       1.20.60       |
+| Bedrock_v662 |       1.20.70       |
 
 ##### Repository:
 
