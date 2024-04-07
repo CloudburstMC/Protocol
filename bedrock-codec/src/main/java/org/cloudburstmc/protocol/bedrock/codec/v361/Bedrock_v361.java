@@ -6,10 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSeriali
 import org.cloudburstmc.protocol.bedrock.codec.v354.Bedrock_v354;
 import org.cloudburstmc.protocol.bedrock.codec.v354.serializer.LecternUpdateSerializer_v354;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
@@ -76,16 +73,16 @@ public class Bedrock_v361 extends Bedrock_v354 {
             .updateSerializer(CommandBlockUpdatePacket.class, CommandBlockUpdateSerializer_v361.INSTANCE)
             .updateSerializer(ResourcePackDataInfoPacket.class, new ResourcePackDataInfoSerializer_v361(RESOURCE_PACK_TYPES))
             .updateSerializer(StructureBlockUpdatePacket.class, StructureBlockUpdateSerializer_v361.INSTANCE)
-            .registerPacket(LevelEventGenericPacket::new, new LevelEventGenericSerializer_v361(LEVEL_EVENTS), 124)
-            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v354.INSTANCE, 125)
-            .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v361.INSTANCE, 126)
+            .registerPacket(LevelEventGenericPacket::new, new LevelEventGenericSerializer_v361(LEVEL_EVENTS), 124, PacketRecipient.CLIENT)
+            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v354.INSTANCE, 125, PacketRecipient.SERVER)
+            .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v361.INSTANCE, 126, PacketRecipient.CLIENT)
             // AddEntityPacket 127
             // RemoveEntityPacket 128
-            .registerPacket(ClientCacheStatusPacket::new, ClientCacheStatusSerializer_v361.INSTANCE, 129)
-            .registerPacket(StructureTemplateDataRequestPacket::new, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132)
-            .registerPacket(StructureTemplateDataResponsePacket::new, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133)
-            .registerPacket(UpdateBlockPropertiesPacket::new, UpdateBlockPropertiesSerializer_v361.INSTANCE, 134)
-            .registerPacket(ClientCacheBlobStatusPacket::new, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135)
-            .registerPacket(ClientCacheMissResponsePacket::new, ClientCacheMissResponseSerializer_v361.INSTANCE, 136)
+            .registerPacket(ClientCacheStatusPacket::new, ClientCacheStatusSerializer_v361.INSTANCE, 129, PacketRecipient.SERVER)
+            .registerPacket(StructureTemplateDataRequestPacket::new, StructureTemplateDataRequestSerializer_v361.INSTANCE, 132, PacketRecipient.SERVER)
+            .registerPacket(StructureTemplateDataResponsePacket::new, StructureTemplateDataResponseSerializer_v361.INSTANCE, 133, PacketRecipient.CLIENT)
+            .registerPacket(UpdateBlockPropertiesPacket::new, UpdateBlockPropertiesSerializer_v361.INSTANCE, 134, PacketRecipient.CLIENT)
+            .registerPacket(ClientCacheBlobStatusPacket::new, ClientCacheBlobStatusSerializer_v361.INSTANCE, 135, PacketRecipient.SERVER)
+            .registerPacket(ClientCacheMissResponsePacket::new, ClientCacheMissResponseSerializer_v361.INSTANCE, 136, PacketRecipient.CLIENT)
             .build();
 }

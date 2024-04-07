@@ -4,6 +4,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v534.BedrockCodecHelper_v534;
 import org.cloudburstmc.protocol.bedrock.codec.v534.Bedrock_v534;
 import org.cloudburstmc.protocol.bedrock.codec.v544.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 
 public class Bedrock_v544 extends Bedrock_v534 {
@@ -18,7 +19,7 @@ public class Bedrock_v544 extends Bedrock_v534 {
             .updateSerializer(MapInfoRequestPacket.class, new MapInfoRequestSerializer_v544())
             .updateSerializer(ModalFormResponsePacket.class, new ModalFormResponseSerializer_v544())
             .updateSerializer(NetworkChunkPublisherUpdatePacket.class, new NetworkChunkPublisherUpdateSerializer_v544())
-            .registerPacket(FeatureRegistryPacket::new, new FeatureRegistrySerializer_v544(), 191)
+            .registerPacket(FeatureRegistryPacket::new, new FeatureRegistrySerializer_v544(), 191, PacketRecipient.CLIENT)
             .build();
 
 }

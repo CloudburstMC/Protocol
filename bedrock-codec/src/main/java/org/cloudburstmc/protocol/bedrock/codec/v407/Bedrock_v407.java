@@ -10,10 +10,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v390.Bedrock_v390;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
@@ -202,17 +199,17 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(EducationSettingsPacket.class, EducationSettingsSerializer_v407.INSTANCE)
-            .registerPacket(CreativeContentPacket::new, CreativeContentSerializer_v407.INSTANCE, 145)
-            .registerPacket(PlayerEnchantOptionsPacket::new, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146)
-            .registerPacket(ItemStackRequestPacket::new, ItemStackRequestSerializer_v407.INSTANCE, 147)
-            .registerPacket(ItemStackResponsePacket::new, ItemStackResponseSerializer_v407.INSTANCE, 148)
-            .registerPacket(PlayerArmorDamagePacket::new, PlayerArmorDamageSerializer_v407.INSTANCE, 149)
-            .registerPacket(CodeBuilderPacket::new, CodeBuilderSerializer_v407.INSTANCE, 150)
-            .registerPacket(UpdatePlayerGameTypePacket::new, UpdatePlayerGameTypeSerializer_v407.INSTANCE, 151)
-            .registerPacket(EmoteListPacket::new, EmoteListSerializer_v407.INSTANCE, 152)
-            .registerPacket(PositionTrackingDBServerBroadcastPacket::new, PositionTrackingDBServerBroadcastSerializer_v407.INSTANCE, 153)
-            .registerPacket(PositionTrackingDBClientRequestPacket::new, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154)
-            .registerPacket(DebugInfoPacket::new, DebugInfoSerializer_v407.INSTANCE, 155)
-            .registerPacket(PacketViolationWarningPacket::new, PacketViolationWarningSerializer_v407.INSTANCE, 156)
+            .registerPacket(CreativeContentPacket::new, CreativeContentSerializer_v407.INSTANCE, 145, PacketRecipient.CLIENT)
+            .registerPacket(PlayerEnchantOptionsPacket::new, PlayerEnchantOptionsSerializer_v407.INSTANCE, 146, PacketRecipient.CLIENT)
+            .registerPacket(ItemStackRequestPacket::new, ItemStackRequestSerializer_v407.INSTANCE, 147, PacketRecipient.SERVER)
+            .registerPacket(ItemStackResponsePacket::new, ItemStackResponseSerializer_v407.INSTANCE, 148, PacketRecipient.CLIENT)
+            .registerPacket(PlayerArmorDamagePacket::new, PlayerArmorDamageSerializer_v407.INSTANCE, 149, PacketRecipient.CLIENT)
+            .registerPacket(CodeBuilderPacket::new, CodeBuilderSerializer_v407.INSTANCE, 150, PacketRecipient.CLIENT)
+            .registerPacket(UpdatePlayerGameTypePacket::new, UpdatePlayerGameTypeSerializer_v407.INSTANCE, 151, PacketRecipient.CLIENT)
+            .registerPacket(EmoteListPacket::new, EmoteListSerializer_v407.INSTANCE, 152, PacketRecipient.BOTH)
+            .registerPacket(PositionTrackingDBServerBroadcastPacket::new, PositionTrackingDBServerBroadcastSerializer_v407.INSTANCE, 153, PacketRecipient.CLIENT)
+            .registerPacket(PositionTrackingDBClientRequestPacket::new, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154, PacketRecipient.SERVER)
+            .registerPacket(DebugInfoPacket::new, DebugInfoSerializer_v407.INSTANCE, 155, PacketRecipient.BOTH)
+            .registerPacket(PacketViolationWarningPacket::new, PacketViolationWarningSerializer_v407.INSTANCE, 156, PacketRecipient.SERVER)
             .build();
 }

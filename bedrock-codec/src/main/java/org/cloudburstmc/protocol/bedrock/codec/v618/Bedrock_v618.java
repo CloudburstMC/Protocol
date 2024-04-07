@@ -14,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.CameraPresetsSeri
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.RefreshEntitlementsSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.codec.v618.serializer.ResourcePacksInfoSerializer_v618;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -68,6 +69,6 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v618.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, new CameraPresetsSerializer_v618())
             .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_618())
-            .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305)
+            .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305, PacketRecipient.CLIENT)
             .build();
 }

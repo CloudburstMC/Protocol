@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v557.BedrockCodecHelper_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v557.Bedrock_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v560.serializer.UpdateClientInputLocksSerializer_v560;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
@@ -61,6 +62,6 @@ public class Bedrock_v560 extends Bedrock_v557 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(UpdateClientInputLocksPacket::new, new UpdateClientInputLocksSerializer_v560(), 196)
+            .registerPacket(UpdateClientInputLocksPacket::new, new UpdateClientInputLocksSerializer_v560(), 196, PacketRecipient.CLIENT)
             .build();
 }

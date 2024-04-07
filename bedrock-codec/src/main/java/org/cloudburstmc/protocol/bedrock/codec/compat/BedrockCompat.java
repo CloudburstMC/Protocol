@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.DisconnectSeria
 import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.LoginSerializerCompat;
 import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.PlayStatusSerializerCompat;
 import org.cloudburstmc.protocol.bedrock.codec.compat.serializer.RequestNetworkSettingsSerializerCompat;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket;
@@ -16,10 +17,10 @@ public class BedrockCompat {
      */
     public static BedrockCodec CODEC = BedrockCodec.builder()
             .helper(() -> NoopBedrockCodecHelper.INSTANCE)
-            .registerPacket(LoginPacket::new, LoginSerializerCompat.INSTANCE, 1)
-            .registerPacket(PlayStatusPacket::new, PlayStatusSerializerCompat.INSTANCE, 2)
-            .registerPacket(DisconnectPacket::new, new DisconnectSerializerCompat(true), 5)
-            .registerPacket(RequestNetworkSettingsPacket::new, RequestNetworkSettingsSerializerCompat.INSTANCE, 193)
+            .registerPacket(LoginPacket::new, LoginSerializerCompat.INSTANCE, 1, PacketRecipient.SERVER)
+            .registerPacket(PlayStatusPacket::new, PlayStatusSerializerCompat.INSTANCE, 2, PacketRecipient.CLIENT)
+            .registerPacket(DisconnectPacket::new, new DisconnectSerializerCompat(true), 5, PacketRecipient.BOTH)
+            .registerPacket(RequestNetworkSettingsPacket::new, RequestNetworkSettingsSerializerCompat.INSTANCE, 193, PacketRecipient.SERVER)
             .protocolVersion(0)
             .minecraftVersion("0.0.0")
             .build();

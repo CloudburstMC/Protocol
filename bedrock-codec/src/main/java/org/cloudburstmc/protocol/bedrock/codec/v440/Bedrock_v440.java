@@ -15,6 +15,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.RemoveVolumeEntit
 import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.StartGameSerializer_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v440.serializer.SyncEntityPropertySerializer_v440;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
@@ -90,8 +91,8 @@ public class Bedrock_v440 extends Bedrock_v431 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
-            .registerPacket(SyncEntityPropertyPacket::new, SyncEntityPropertySerializer_v440.INSTANCE, 165)
-            .registerPacket(AddVolumeEntityPacket::new, AddVolumeEntitySerializer_v440.INSTANCE, 166)
-            .registerPacket(RemoveVolumeEntityPacket::new, RemoveVolumeEntitySerializer_v440.INSTANCE, 167)
+            .registerPacket(SyncEntityPropertyPacket::new, SyncEntityPropertySerializer_v440.INSTANCE, 165, PacketRecipient.CLIENT)
+            .registerPacket(AddVolumeEntityPacket::new, AddVolumeEntitySerializer_v440.INSTANCE, 166, PacketRecipient.CLIENT)
+            .registerPacket(RemoveVolumeEntityPacket::new, RemoveVolumeEntitySerializer_v440.INSTANCE, 167, PacketRecipient.CLIENT)
             .build();
 }

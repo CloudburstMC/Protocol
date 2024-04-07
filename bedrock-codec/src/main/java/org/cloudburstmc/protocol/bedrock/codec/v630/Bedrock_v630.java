@@ -12,10 +12,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v622.Bedrock_v622;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.SetPlayerInventoryOptionsSerializer_v360;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.ShowStoreOfferSerializer_v630;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.ToggleCrafterSlotRequestSerializer_v630;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -70,7 +67,7 @@ public class Bedrock_v630 extends Bedrock_v622 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(ShowStoreOfferPacket.class, ShowStoreOfferSerializer_v630.INSTANCE)
-            .registerPacket(ToggleCrafterSlotRequestPacket::new, new ToggleCrafterSlotRequestSerializer_v630(), 306)
-            .registerPacket(SetPlayerInventoryOptionsPacket::new, new SetPlayerInventoryOptionsSerializer_v360(), 307)
+            .registerPacket(ToggleCrafterSlotRequestPacket::new, new ToggleCrafterSlotRequestSerializer_v630(), 306, PacketRecipient.SERVER)
+            .registerPacket(SetPlayerInventoryOptionsPacket::new, new SetPlayerInventoryOptionsSerializer_v360(), 307, PacketRecipient.BOTH)
             .build();
 }

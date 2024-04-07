@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.Bedrock_v527;
 import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -58,9 +59,9 @@ public class Bedrock_v534 extends Bedrock_v527 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(UpdateAbilitiesPacket::new, UpdateAbilitiesSerializer_v534.INSTANCE, 187)
-            .registerPacket(UpdateAdventureSettingsPacket::new, UpdateAdventureSettingsSerializer_v534.INSTANCE, 188)
-            .registerPacket(DeathInfoPacket::new, DeathInfoSerializer_v534.INSTANCE, 189)
-            .registerPacket(EditorNetworkPacket::new, EditorNetworkSerializer_v534.INSTANCE, 190)
+            .registerPacket(UpdateAbilitiesPacket::new, UpdateAbilitiesSerializer_v534.INSTANCE, 187, PacketRecipient.CLIENT)
+            .registerPacket(UpdateAdventureSettingsPacket::new, UpdateAdventureSettingsSerializer_v534.INSTANCE, 188, PacketRecipient.CLIENT)
+            .registerPacket(DeathInfoPacket::new, DeathInfoSerializer_v534.INSTANCE, 189, PacketRecipient.CLIENT)
+            .registerPacket(EditorNetworkPacket::new, EditorNetworkSerializer_v534.INSTANCE, 190, PacketRecipient.BOTH)
             .build();
 }

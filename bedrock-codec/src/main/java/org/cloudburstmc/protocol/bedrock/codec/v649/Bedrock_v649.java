@@ -10,10 +10,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGeneric
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v630.Bedrock_v630;
 import org.cloudburstmc.protocol.bedrock.codec.v649.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
@@ -69,6 +66,6 @@ public class Bedrock_v649 extends Bedrock_v630 {
             .updateSerializer(LevelChunkPacket.class, LevelChunkSerializer_v649.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v649())
             .updateSerializer(PlayerListPacket.class, PlayerListSerializer_v649.INSTANCE)
-            .registerPacket(SetHudPacket::new, SetHudSerializer_v649.INSTANCE, 308)
+            .registerPacket(SetHudPacket::new, SetHudSerializer_v649.INSTANCE, 308, PacketRecipient.CLIENT)
             .build();
 }

@@ -11,10 +11,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.AvailableCommands
 import org.cloudburstmc.protocol.bedrock.codec.v503.BedrockCodecHelper_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v503.Bedrock_v503;
 import org.cloudburstmc.protocol.bedrock.codec.v527.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -86,9 +83,9 @@ public class Bedrock_v527 extends Bedrock_v503 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(PlayerActionPacket.class, new PlayerActionSerializer_v527())
             .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v527())
-            .registerPacket(LessonProgressPacket::new, new LessonProgressSerializer_v527(), 183)
-            .registerPacket(RequestAbilityPacket::new, new RequestAbilitySerializer_v527(), 184)
-            .registerPacket(RequestPermissionsPacket::new, new RequestPermissionsSerializer_v527(), 185)
-            .registerPacket(ToastRequestPacket::new, new ToastRequestSerializer_v527(), 186)
+            .registerPacket(LessonProgressPacket::new, new LessonProgressSerializer_v527(), 183, PacketRecipient.CLIENT)
+            .registerPacket(RequestAbilityPacket::new, new RequestAbilitySerializer_v527(), 184, PacketRecipient.SERVER)
+            .registerPacket(RequestPermissionsPacket::new, new RequestPermissionsSerializer_v527(), 185, PacketRecipient.SERVER)
+            .registerPacket(ToastRequestPacket::new, new ToastRequestSerializer_v527(), 186, PacketRecipient.CLIENT)
             .build();
 }

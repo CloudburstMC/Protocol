@@ -10,10 +10,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.EntityEventSerial
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
 import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -110,10 +107,10 @@ public class Bedrock_v313 extends Bedrock_v291 {
             .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
-            .registerPacket(SpawnParticleEffectPacket::new, SpawnParticleEffectSerializer_v313.INSTANCE, 118)
-            .registerPacket(AvailableEntityIdentifiersPacket::new, AvailableEntityIdentifiersSerializer_v313.INSTANCE, 119)
-            .registerPacket(LevelSoundEvent2Packet::new, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS), 120)
-            .registerPacket(NetworkChunkPublisherUpdatePacket::new, NetworkChunkPublisherUpdateSerializer_v313.INSTANCE, 121)
-            .registerPacket(BiomeDefinitionListPacket::new, BiomeDefinitionListSerializer_v313.INSTANCE, 122)
+            .registerPacket(SpawnParticleEffectPacket::new, SpawnParticleEffectSerializer_v313.INSTANCE, 118, PacketRecipient.CLIENT)
+            .registerPacket(AvailableEntityIdentifiersPacket::new, AvailableEntityIdentifiersSerializer_v313.INSTANCE, 119, PacketRecipient.CLIENT)
+            .registerPacket(LevelSoundEvent2Packet::new, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS), 120, PacketRecipient.BOTH)
+            .registerPacket(NetworkChunkPublisherUpdatePacket::new, NetworkChunkPublisherUpdateSerializer_v313.INSTANCE, 121, PacketRecipient.CLIENT)
+            .registerPacket(BiomeDefinitionListPacket::new, BiomeDefinitionListSerializer_v313.INSTANCE, 122, PacketRecipient.CLIENT)
             .build();
 }
