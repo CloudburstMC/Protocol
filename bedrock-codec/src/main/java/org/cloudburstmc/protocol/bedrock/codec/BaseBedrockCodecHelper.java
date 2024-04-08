@@ -18,6 +18,7 @@ import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtType;
 import org.cloudburstmc.nbt.NbtUtils;
+import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
@@ -34,7 +35,6 @@ import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
-import org.cloudburstmc.protocol.common.Definition;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -66,14 +66,24 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     @Setter
     protected DefinitionRegistry<BlockDefinition> blockDefinitions;
 
+    @Getter
+    @Setter
+    protected EncodingSettings encodingSettings = EncodingSettings.DEFAULT;
+
     protected static boolean isAir(ItemDefinition definition) {
         return definition == null || "minecraft:air".equals(definition.getIdentifier());
     }
 
+    @Override
     public byte[] readByteArray(ByteBuf buffer) {
+        return this.readByteArray(buffer, this.encodingSettings.maxByteArraySize());
+    }
+
+    public byte[] readByteArray(ByteBuf buffer, int maxLength) {
         int length = VarInts.readUnsignedInt(buffer);
         checkArgument(buffer.isReadable(length),
                 "Tried to read %s bytes but only has %s readable", length, buffer.readableBytes());
+        checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s bytes but maximum is %s", length, maxLength);
         byte[] bytes = new byte[length];
         buffer.readBytes(bytes);
         return bytes;
@@ -191,9 +201,20 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
      */
 
     @Override
-    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader,
-                              BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+        this.readArray(buffer, array, function, this.encodingSettings.maxListSize());
+    }
+
+    @Override
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+        this.readArray(buffer, array, lengthReader, function, this.encodingSettings.maxListSize());
+    }
+
+    @Override
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, BiFunction<ByteBuf, BedrockCodecHelper, T> function, int maxLength) {
         long length = lengthReader.applyAsLong(buffer);
+        checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s bytes but maximum is %s", length, maxLength);
+
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer, this));
         }
@@ -209,8 +230,13 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T> T[] readArray(ByteBuf buffer, T[] array, BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+        return this.readArray(buffer, array, function, this.encodingSettings.maxListSize());
+    }
+
+    @Override
+    public <T> T[] readArray(ByteBuf buffer, T[] array, BiFunction<ByteBuf, BedrockCodecHelper, T> function, int maxLength) {
         ObjectArrayList<T> list = new ObjectArrayList<>();
-        readArray(buffer, list, function);
+        readArray(buffer, list, function, maxLength);
         return list.toArray(array);
     }
 
@@ -227,7 +253,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function) {
+        this.readArray(buffer, array, function, this.encodingSettings.maxListSize());
+    }
+
+    @Override
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function, int maxLength) {
         int length = VarInts.readUnsignedInt(buffer);
+        checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s bytes but maximum is %s", length, maxLength);
+
         for (int i = 0; i < length; i++) {
             array.add(function.apply(buffer));
         }
@@ -243,8 +276,13 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T> T[] readArray(ByteBuf buffer, T[] array, Function<ByteBuf, T> function) {
+        return this.readArray(buffer, array, function, this.encodingSettings.maxListSize());
+    }
+
+    @Override
+    public <T> T[] readArray(ByteBuf buffer, T[] array, Function<ByteBuf, T> function, int maxLength) {
         ObjectArrayList<T> list = new ObjectArrayList<>();
-        readArray(buffer, list, function);
+        readArray(buffer, list, function, maxLength);
         return list.toArray(array);
     }
 
@@ -348,7 +386,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
             ItemData toItem = helper.readItem(buf);
 
             return new InventoryActionData(source, slot, fromItem, toItem);
-        });
+        }, 64); // 64 should be enough
         return false;
     }
 
@@ -448,6 +486,10 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     protected ImageData readImage(ByteBuf buffer) {
+        return this.readImage(buffer, ImageData.SKIN_PERSONA_SIZE);
+    }
+
+    protected ImageData readImage(ByteBuf buffer, int maxSize) {
         throw new UnsupportedOperationException();
     }
 

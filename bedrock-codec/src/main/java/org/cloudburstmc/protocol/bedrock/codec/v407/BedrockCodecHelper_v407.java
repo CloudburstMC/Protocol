@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v407;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v390.BedrockCodecHelper_v390;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
@@ -75,7 +76,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
             }
 
             return new InventoryActionData(source, slot, fromItem, toItem, networkStackId);
-        });
+        }, 64); // 64 should be enough
         return hasNetworkIds;
     }
 
@@ -110,12 +111,12 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
     @Override
     public ItemStackRequest readItemStackRequest(ByteBuf buffer) {
         int requestId = VarInts.readInt(buffer);
-        List<ItemStackRequestAction> actions = new ArrayList<>();
+        List<ItemStackRequestAction> actions = new ObjectArrayList<>();
 
         this.readArray(buffer, actions, byteBuf -> {
             ItemStackRequestActionType type = this.stackRequestActionTypes.getType(byteBuf.readByte());
             return readRequestActionData(byteBuf, type);
-        });
+        }, 32);
         return new ItemStackRequest(requestId, actions.toArray(new ItemStackRequestAction[0]), new String[0]);
     }
 

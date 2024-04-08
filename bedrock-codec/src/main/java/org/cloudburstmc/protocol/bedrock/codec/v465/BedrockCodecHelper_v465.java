@@ -26,15 +26,12 @@ public class BedrockCodecHelper_v465 extends BedrockCodecHelper_v448 {
         String skinId = this.readString(buffer);
         String playFabId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
-        ImageData skinData = this.readImage(buffer);
+        ImageData skinData = this.readImage(buffer, ImageData.SKIN_PERSONA_SIZE);
 
-        int animationCount = buffer.readIntLE();
         List<AnimationData> animations = new ObjectArrayList<>();
-        for (int i = 0; i < animationCount; i++) {
-            animations.add(this.readAnimationData(buffer));
-        }
+        this.readArray(buffer, animations, ByteBuf::readIntLE, (b, h) -> this.readAnimationData(b));
 
-        ImageData capeData = this.readImage(buffer);
+        ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
         String geometryData = this.readString(buffer);
         String geometryDataEngineVersion = this.readString(buffer);
         String animationData = this.readString(buffer);
@@ -44,27 +41,25 @@ public class BedrockCodecHelper_v465 extends BedrockCodecHelper_v448 {
         String skinColor = this.readString(buffer);
 
         List<PersonaPieceData> personaPieces = new ObjectArrayList<>();
-        int piecesLength = buffer.readIntLE();
-        for (int i = 0; i < piecesLength; i++) {
-            String pieceId = this.readString(buffer);
-            String pieceType = this.readString(buffer);
-            String packId = this.readString(buffer);
-            boolean isDefault = buffer.readBoolean();
-            String productId = this.readString(buffer);
-            personaPieces.add(new PersonaPieceData(pieceId, pieceType, packId, isDefault, productId));
-        }
+        this.readArray(buffer, personaPieces, ByteBuf::readIntLE, (buf, h) -> {
+            String pieceId = this.readString(buf);
+            String pieceType = this.readString(buf);
+            String packId = this.readString(buf);
+            boolean isDefault = buf.readBoolean();
+            String productId = this.readString(buf);
+            return new PersonaPieceData(pieceId, pieceType, packId, isDefault, productId);
+        });
 
         List<PersonaPieceTintData> tintColors = new ObjectArrayList<>();
-        int tintsLength = buffer.readIntLE();
-        for (int i = 0; i < tintsLength; i++) {
-            String pieceType = this.readString(buffer);
+        this.readArray(buffer, tintColors, ByteBuf::readIntLE, (buf, h) -> {
+            String pieceType = this.readString(buf);
             List<String> colors = new ObjectArrayList<>();
-            int colorsLength = buffer.readIntLE();
+            int colorsLength = buf.readIntLE();
             for (int i2 = 0; i2 < colorsLength; i2++) {
-                colors.add(this.readString(buffer));
+                colors.add(this.readString(buf));
             }
-            tintColors.add(new PersonaPieceTintData(pieceType, colors));
-        }
+            return new PersonaPieceTintData(pieceType, colors);
+        });
 
         boolean premium = buffer.readBoolean();
         boolean persona = buffer.readBoolean();

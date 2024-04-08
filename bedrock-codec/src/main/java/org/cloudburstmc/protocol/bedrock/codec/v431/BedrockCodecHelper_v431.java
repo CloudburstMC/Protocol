@@ -299,7 +299,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             ItemData toItem = helper.readItem(buf);
 
             return new InventoryActionData(source, slot, fromItem, toItem);
-        });
+        }, 64); // 64 should be enough
         return false;
     }
 

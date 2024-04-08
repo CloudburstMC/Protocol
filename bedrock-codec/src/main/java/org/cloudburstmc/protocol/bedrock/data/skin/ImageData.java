@@ -16,11 +16,11 @@ public class ImageData {
 
     private static final int PIXEL_SIZE = 4;
 
-    private static final int SINGLE_SKIN_SIZE = 64 * 32 * PIXEL_SIZE;
-    private static final int DOUBLE_SKIN_SIZE = 64 * 64 * PIXEL_SIZE;
-    private static final int SKIN_128_64_SIZE = 128 * 64 * PIXEL_SIZE;
-    private static final int SKIN_128_128_SIZE = 128 * 128 * PIXEL_SIZE;
-    private static final int SKIN_PERSONA_SIZE = 256 * 256 * PIXEL_SIZE;
+    public static final int SINGLE_SKIN_SIZE = 64 * 32 * PIXEL_SIZE;
+    public static final int DOUBLE_SKIN_SIZE = 64 * 64 * PIXEL_SIZE;
+    public static final int SKIN_128_64_SIZE = 128 * 64 * PIXEL_SIZE;
+    public static final int SKIN_128_128_SIZE = 128 * 128 * PIXEL_SIZE;
+    public static final int SKIN_PERSONA_SIZE = 256 * 256 * PIXEL_SIZE;
 
     private final int width;
     private final int height;

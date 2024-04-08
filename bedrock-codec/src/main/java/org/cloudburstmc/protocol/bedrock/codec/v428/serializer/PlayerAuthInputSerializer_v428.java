@@ -71,7 +71,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
             if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
                 helper.readArray(buffer, itemTransaction.getLegacySlots(), (buf, packetHelper) -> {
                     byte containerId = buf.readByte();
-                    byte[] slots = packetHelper.readByteArray(buf);
+                    byte[] slots = packetHelper.readByteArray(buf, 89);
                     return new LegacySetItemSlotData(containerId, slots);
                 });
             }
@@ -93,10 +93,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            int arraySize = VarInts.readInt(buffer);
-            for (int i = 0; i < arraySize; i++) {
-                packet.getPlayerActions().add(readPlayerBlockActionData(buffer, helper));
-            }
+            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, 32); // 32 is more than enough
         }
     }
 

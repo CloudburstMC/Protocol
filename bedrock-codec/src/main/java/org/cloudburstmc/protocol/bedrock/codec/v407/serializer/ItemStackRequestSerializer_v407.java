@@ -19,6 +19,6 @@ public class ItemStackRequestSerializer_v407 implements BedrockPacketSerializer<
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackRequestPacket packet) {
-        helper.readArray(buffer, packet.getRequests(), helper::readItemStackRequest);
+        helper.readArray(buffer, packet.getRequests(), helper::readItemStackRequest, 64); // 64 should be enough
     }
 }
