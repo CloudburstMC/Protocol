@@ -49,7 +49,7 @@ public final class BedrockCodec {
 
         if (definition != null && recipient != null && definition.getRecipient() != PacketRecipient.BOTH &&
                 definition.getRecipient() != recipient) {
-            throw new IllegalArgumentException("Packet " + definition.getFactory().get().getClass().getSimpleName() + " can not be sent by " + recipient);
+            throw new IllegalArgumentException("Packet " + definition.getFactory().get().getClass().getSimpleName() + " was sent to " + recipient + " instead of " + definition.getRecipient());
         }
 
         BedrockPacket packet;
