@@ -18,6 +18,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.Map;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
@@ -31,6 +32,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         checkNotNull(entityDataMap, "entityDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
+        checkArgument(length <= this.encodingSettings.maxListSize(), "Entity data size is too big: {}", length);
 
         for (int i = 0; i < length; i++) {
             int id = VarInts.readUnsignedInt(buffer);

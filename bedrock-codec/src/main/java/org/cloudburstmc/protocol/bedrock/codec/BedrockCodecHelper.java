@@ -78,9 +78,15 @@ public interface BedrockCodecHelper {
 
     <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function);
 
+    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, Function<ByteBuf, T> function);
+
+    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, Function<ByteBuf, T> function, int maxLength);
+
     <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function, int maxLength);
 
     <T> void writeArray(ByteBuf buffer, Collection<T> array, BiConsumer<ByteBuf, T> consumer);
+
+    <T> void writeArray(ByteBuf buffer, Collection<T> array, ObjIntConsumer<ByteBuf> lengthWriter, BiConsumer<ByteBuf, T> consumer);
 
     <T> T[] readArray(ByteBuf buffer, T[] array, Function<ByteBuf, T> function);
 

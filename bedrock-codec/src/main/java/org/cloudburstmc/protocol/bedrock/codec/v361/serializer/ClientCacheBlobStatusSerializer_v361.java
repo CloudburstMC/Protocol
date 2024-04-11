@@ -11,6 +11,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.function.LongConsumer;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerializer<ClientCacheBlobStatusPacket> {
     public static final ClientCacheBlobStatusSerializer_v361 INSTANCE = new ClientCacheBlobStatusSerializer_v361();
@@ -28,8 +30,13 @@ public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerial
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientCacheBlobStatusPacket packet) {
+        int maxLength = helper.getEncodingSettings().maxListSize();
+
         int naksLength = VarInts.readUnsignedInt(buffer);
+        checkArgument(naksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", naksLength, maxLength);
+
         int acksLength = VarInts.readUnsignedInt(buffer);
+        checkArgument(acksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", acksLength, maxLength);
 
         LongList naks = packet.getNaks();
         for (int i = 0; i < naksLength; i++) {

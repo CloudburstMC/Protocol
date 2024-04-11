@@ -21,29 +21,13 @@ public class ResourcePackClientResponseSerializer_v291 implements BedrockPacketS
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackClientResponsePacket packet) {
         buffer.writeByte(packet.getStatus().ordinal());
-
-        writeArrayShortLE(buffer, packet.getPackIds(), helper::writeString);
+        helper.writeArray(buffer, packet.getPackIds(), ByteBuf::writeShortLE, helper::writeString);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePackClientResponsePacket packet) {
         Status status = Status.values()[buffer.readUnsignedByte()];
         packet.setStatus(status);
-
-        readArrayShortLE(buffer, packet.getPackIds(), helper::readString);
-    }
-
-    protected <T> void readArrayShortLE(ByteBuf buffer, Collection<T> collection, Function<ByteBuf, T> function) {
-        int length = buffer.readUnsignedShortLE();
-        for (int i = 0; i < length; i++) {
-            collection.add(function.apply(buffer));
-        }
-    }
-
-    protected <T> void writeArrayShortLE(ByteBuf buffer, Collection<T> collection, BiConsumer<ByteBuf, T> consumer) {
-        buffer.writeShortLE(collection.size());
-        for (T t : collection) {
-            consumer.accept(buffer, t);
-        }
+        helper.readArray(buffer, packet.getPackIds(), ByteBuf::readUnsignedShortLE, helper::readString);
     }
 }

@@ -258,7 +258,17 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function, int maxLength) {
-        int length = VarInts.readUnsignedInt(buffer);
+        this.readArray(buffer, array, VarInts::readUnsignedInt, function, maxLength);
+    }
+
+    @Override
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, Function<ByteBuf, T> function) {
+        this.readArray(buffer, array, lengthReader, function, this.encodingSettings.maxListSize());
+    }
+
+    @Override
+    public <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, Function<ByteBuf, T> function, int maxLength) {
+        long length = lengthReader.applyAsLong(buffer);
         checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s bytes but maximum is %s", length, maxLength);
 
         for (int i = 0; i < length; i++) {
@@ -268,9 +278,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T> void writeArray(ByteBuf buffer, Collection<T> array, BiConsumer<ByteBuf, T> biConsumer) {
-        VarInts.writeUnsignedInt(buffer, array.size());
+        this.writeArray(buffer, array, VarInts::writeUnsignedInt, biConsumer);
+    }
+
+    @Override
+    public <T> void writeArray(ByteBuf buffer, Collection<T> array, ObjIntConsumer<ByteBuf> lengthWriter, BiConsumer<ByteBuf, T> consumer) {
+        lengthWriter.accept(buffer, array.size());
         for (T val : array) {
-            biConsumer.accept(buffer, val);
+            consumer.accept(buffer, val);
         }
     }
 
