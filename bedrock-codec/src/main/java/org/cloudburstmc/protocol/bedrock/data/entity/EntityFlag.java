@@ -113,14 +113,17 @@ public enum EntityFlag {
     PUSH_TOWARDS_CLOSEST_SPACE,
     /**
      * @since v575
+     * @deprecated since v671
      */
     SCENTING,
     /**
      * @since v575
+     * @deprecated since v671
      */
     RISING,
     /**
      * @since v575
+     * @deprecated since v671
      */
     FEELING_HAPPY,
     /**
@@ -142,5 +145,9 @@ public enum EntityFlag {
     /**
      * @since v622
      */
-    TIMER_FLAG_3
+    TIMER_FLAG_3,
+    /**
+     * @since v671
+     */
+    BODY_ROTATION_BLOCKED
 }

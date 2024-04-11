@@ -20,6 +20,10 @@ public class ResourcePackStackPacket implements BedrockPacket {
     private String gameVersion;
     private final List<ExperimentData> experiments = new ObjectArrayList<>();
     private boolean experimentsPreviouslyToggled;
+    /**
+     * @since v671
+     */
+    private boolean hasEditorPacks;
 
 
     @Override
