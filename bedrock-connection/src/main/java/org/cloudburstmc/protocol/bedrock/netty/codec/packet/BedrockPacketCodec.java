@@ -30,9 +30,9 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        Attribute<PacketDirection> attribute = ctx.channel().attr(PacketDirection.ATTRIBUTE);
+        PacketDirection attribute = ctx.channel().attr(PacketDirection.ATTRIBUTE).get();
         if (attribute != null) {
-            this.inboundRecipient = attribute.get().getInbound();
+            this.inboundRecipient = attribute.getInbound();
         }
     }
 
