@@ -113,5 +113,9 @@ public enum ParticleType implements LevelEventType {
     /**
      * @since v662
      */
-    VAULT_CONNECTION
+    VAULT_CONNECTION,
+    /**
+     * @since v671
+     */
+    WOLF_ARMOR_BREAK
 }

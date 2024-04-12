@@ -16,7 +16,7 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererPacket packet) {
-        VarInts.writeUnsignedInt(buffer, packet.getDebugMarkerType().ordinal());
+        this.writeMarkerType(buffer, helper, packet.getDebugMarkerType());
         if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
             helper.writeString(buffer, packet.getMarkerText());
             helper.writeVector3f(buffer, packet.getMarkerPosition());
@@ -30,7 +30,7 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererPacket packet) {
-        packet.setDebugMarkerType(ClientboundDebugRendererType.values()[VarInts.readUnsignedInt(buffer)]);
+        packet.setDebugMarkerType(this.readMarkerType(buffer, helper));
         if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
             packet.setMarkerText(helper.readString(buffer));
             packet.setMarkerPosition(helper.readVector3f(buffer));
@@ -40,5 +40,13 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
             packet.setMarkerColorAlpha(buffer.readFloat());
             packet.setMarkerDuration(buffer.readLongLE());
         }
+    }
+
+    protected void writeMarkerType(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererType type) {
+        VarInts.writeUnsignedInt(buffer, type.ordinal());
+    }
+
+    protected ClientboundDebugRendererType readMarkerType(ByteBuf buffer, BedrockCodecHelper helper) {
+        return ClientboundDebugRendererType.values()[VarInts.readUnsignedInt(buffer)];
     }
 }
