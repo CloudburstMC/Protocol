@@ -50,6 +50,8 @@ public interface BedrockCodecHelper {
 
     EncodingSettings getEncodingSettings();
 
+    void setEncodingSettings(EncodingSettings settings);
+
     // Array serialization (with helper)
 
     <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function);
@@ -174,23 +176,21 @@ public interface BedrockCodecHelper {
 
     void writeBlockPosition(ByteBuf buffer, Vector3i blockPosition);
 
-    default Object readTag(ByteBuf buffer) {
-        return readTag(buffer, Object.class);
-    }
-
     <T> T readTag(ByteBuf buffer, Class<T> expected);
+
+    <T> T readTag(ByteBuf buffer, Class<T> expected, long maxReadSize);
 
     void writeTag(ByteBuf buffer, Object tag);
 
-    default Object readTagLE(ByteBuf buffer) {
-        return readTag(buffer, Object.class);
-    }
-
     <T> T readTagLE(ByteBuf buffer, Class<T> expected);
+
+    <T> T readTagLE(ByteBuf buffer, Class<T> expected, long maxReadSize);
 
     void writeTagLE(ByteBuf buffer, Object tag);
 
     <T> T readTagValue(ByteBuf buffer, NbtType<T> type);
+
+    <T> T readTagValue(ByteBuf buffer, NbtType<T> type, long maxReadSize);
 
     void writeTagValue(ByteBuf buffer, Object tag);
 

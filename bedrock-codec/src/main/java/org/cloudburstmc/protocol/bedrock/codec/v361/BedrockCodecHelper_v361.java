@@ -57,7 +57,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
                     value = readString(buffer);
                     break;
                 case NBT:
-                    value = this.readTag(buffer);
+                    value = this.readTag(buffer, Object.class);
                     break;
                 case VECTOR3I:
                     value = readVector3i(buffer);

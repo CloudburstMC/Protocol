@@ -110,6 +110,8 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     public String readString(ByteBuf buffer) {
         int length = VarInts.readUnsignedInt(buffer);
+        checkArgument(this.encodingSettings.maxStringLength() <= 0 || length <= this.encodingSettings.maxStringLength(),
+                "Tried to read %s bytes but maximum is %s", length, this.encodingSettings.maxStringLength());
         return (String) buffer.readCharSequence(length, StandardCharsets.UTF_8);
     }
 
@@ -309,10 +311,15 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T readTag(ByteBuf buffer, Class<T> expected) {
-        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
+        return this.readTag(buffer, expected, this.encodingSettings.maxNetworkNBTSize());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T readTag(ByteBuf buffer, Class<T> expected, long maxReadSize) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer), maxReadSize)) {
             Object tag = reader.readTag();
             checkArgument(expected.isInstance(tag), "Expected tag of %s type but received %s",
                     expected, tag.getClass());
@@ -331,10 +338,15 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T readTagLE(ByteBuf buffer, Class<T> expected) {
-        try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer))) {
+        return this.readTagLE(buffer, expected, this.encodingSettings.maxNetworkNBTSize());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T readTagLE(ByteBuf buffer, Class<T> expected, long maxReadSize) {
+        try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer), maxReadSize)) {
             Object tag = reader.readTag();
             checkArgument(expected.isInstance(tag), "Expected tag of %s type but received %s",
                     expected, tag.getClass());
@@ -354,7 +366,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public <T> T readTagValue(ByteBuf buffer, NbtType<T> type) {
-        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
+        return this.readTagValue(buffer, type, this.encodingSettings.maxNetworkNBTSize());
+    }
+
+    @Override
+    public <T> T readTagValue(ByteBuf buffer, NbtType<T> type, long maxReadSize) {
+        try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer), maxReadSize)) {
             return reader.readValue(type);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -88,7 +88,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
         NbtMap compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
+            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)), this.encodingSettings.maxItemNBTSize())) {
                 Object tag = reader.readTag();
                 if (tag instanceof NbtMap) {
                     compoundTag = (NbtMap) tag;

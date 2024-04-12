@@ -52,7 +52,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
         ByteBuf buf = buffer.readSlice(VarInts.readUnsignedInt(buffer));
         try (LittleEndianByteBufInputStream stream = new LittleEndianByteBufInputStream(buf);
-             NBTInputStream nbtStream = new NBTInputStream(stream)) {
+             NBTInputStream nbtStream = new NBTInputStream(stream, this.encodingSettings.maxItemNBTSize())) {
             int nbtSize = stream.readShort();
 
             if (nbtSize > 0) {
@@ -121,7 +121,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
         ByteBuf buf = buffer.readSlice(VarInts.readUnsignedInt(buffer));
         try (LittleEndianByteBufInputStream stream = new LittleEndianByteBufInputStream(buf);
-             NBTInputStream nbtStream = new NBTInputStream(stream)) {
+             NBTInputStream nbtStream = new NBTInputStream(stream, this.encodingSettings.maxItemNBTSize())) {
             int nbtSize = stream.readShort();
 
             if (nbtSize > 0) {

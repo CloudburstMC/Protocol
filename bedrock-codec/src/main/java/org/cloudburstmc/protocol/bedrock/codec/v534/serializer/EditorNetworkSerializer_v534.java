@@ -18,6 +18,6 @@ public class EditorNetworkSerializer_v534 implements BedrockPacketSerializer<Edi
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, EditorNetworkPacket packet) {
-        packet.setPayload(helper.readTag(buffer));
+        packet.setPayload(helper.readTag(buffer, Object.class));
     }
 }
