@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.PredictionType;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -53,6 +54,13 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      * The type of prediction player sends.
      */
     private PredictionType predictionType = PredictionType.PLAYER;
+
+    /**
+     * @since 671
+     *
+     * The rotation of the vehicle.
+     */
+    private Vector2f vehicleRotation;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

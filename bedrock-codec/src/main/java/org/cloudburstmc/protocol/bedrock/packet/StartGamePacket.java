@@ -170,6 +170,10 @@ public class StartGamePacket implements BedrockPacket {
      * @since v589
      */
     private NetworkPermissions networkPermissions = NetworkPermissions.DEFAULT;
+    /**
+     * @since v671
+     */
+    private boolean hardcore;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
