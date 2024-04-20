@@ -117,7 +117,7 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .registerPacket(TickSyncPacket::new, TickSyncSerializer_v388.INSTANCE, 23, PacketRecipient.BOTH)
             .registerPacket(EducationSettingsPacket::new, EducationSettingsSerializer_v388.INSTANCE, 137, PacketRecipient.CLIENT)
-            .registerPacket(EmotePacket::new, EmoteSerializer_v388.INSTANCE, 138, PacketRecipient.CLIENT)
+            .registerPacket(EmotePacket::new, EmoteSerializer_v388.INSTANCE, 138, PacketRecipient.BOTH)
             .registerPacket(MultiplayerSettingsPacket::new, MultiplayerSettingsSerializer_v388.INSTANCE, 139, PacketRecipient.BOTH)
             .registerPacket(SettingsCommandPacket::new, SettingsCommandSerializer_v388.INSTANCE, 140, PacketRecipient.SERVER)
             .registerPacket(AnvilDamagePacket::new, AnvilDamageSerializer_v388.INSTANCE, 141, PacketRecipient.SERVER)

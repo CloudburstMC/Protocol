@@ -687,7 +687,7 @@ public class Bedrock_v291 {
             .registerPacket(CraftingEventPacket::new, CraftingEventSerializer_v291.INSTANCE, 53, PacketRecipient.SERVER)
             .registerPacket(GuiDataPickItemPacket::new, GuiDataPickItemSerializer_v291.INSTANCE, 54, PacketRecipient.CLIENT)
             .registerPacket(AdventureSettingsPacket::new, AdventureSettingsSerializer_v291.INSTANCE, 55, PacketRecipient.CLIENT)
-            .registerPacket(BlockEntityDataPacket::new, BlockEntityDataSerializer_v291.INSTANCE, 56, PacketRecipient.CLIENT)
+            .registerPacket(BlockEntityDataPacket::new, BlockEntityDataSerializer_v291.INSTANCE, 56, PacketRecipient.BOTH)
             .registerPacket(PlayerInputPacket::new, PlayerInputSerializer_v291.INSTANCE, 57, PacketRecipient.SERVER)
             .registerPacket(LevelChunkPacket::new, FullChunkDataSerializer_v291.INSTANCE, 58, PacketRecipient.CLIENT)
             .registerPacket(SetCommandsEnabledPacket::new, SetCommandsEnabledSerializer_v291.INSTANCE, 59, PacketRecipient.CLIENT)
