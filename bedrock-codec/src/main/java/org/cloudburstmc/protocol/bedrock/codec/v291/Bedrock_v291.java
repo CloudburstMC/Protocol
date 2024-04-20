@@ -705,7 +705,7 @@ public class Bedrock_v291 {
             .registerPacket(ItemFrameDropItemPacket::new, ItemFrameDropItemSerializer_v291.INSTANCE, 71, PacketRecipient.SERVER)
             .registerPacket(GameRulesChangedPacket::new, GameRulesChangedSerializer_v291.INSTANCE, 72, PacketRecipient.CLIENT)
             .registerPacket(CameraPacket::new, CameraSerializer_v291.INSTANCE, 73, PacketRecipient.CLIENT)
-            .registerPacket(BossEventPacket::new, BossEventSerializer_v291.INSTANCE, 74, PacketRecipient.CLIENT)
+            .registerPacket(BossEventPacket::new, BossEventSerializer_v291.INSTANCE, 74, PacketRecipient.BOTH)
             .registerPacket(ShowCreditsPacket::new, ShowCreditsSerializer_v291.INSTANCE, 75, PacketRecipient.CLIENT)
             .registerPacket(AvailableCommandsPacket::new, new AvailableCommandsSerializer_v291(COMMAND_PARAMS), 76, PacketRecipient.CLIENT)
             .registerPacket(CommandRequestPacket::new, CommandRequestSerializer_v291.INSTANCE, 77, PacketRecipient.SERVER)
