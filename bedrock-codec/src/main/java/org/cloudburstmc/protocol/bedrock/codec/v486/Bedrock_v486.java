@@ -56,6 +56,6 @@ public class Bedrock_v486 extends Bedrock_v475 {
             .updateSerializer(SubChunkRequestPacket.class, SubChunkRequestSerializer_v486.INSTANCE)
             .registerPacket(PlayerStartItemCooldownPacket::new, PlayerStartItemCooldownSerializer_v486.INSTANCE, 176, PacketRecipient.CLIENT)
             .registerPacket(ScriptMessagePacket::new, ScriptMessageSerializer_v486.INSTANCE, 177, PacketRecipient.BOTH)
-            .registerPacket(CodeBuilderSourcePacket::new, CodeBuilderSourceSerializer_v486.INSTANCE, 178, PacketRecipient.CLIENT)
+            .registerPacket(CodeBuilderSourcePacket::new, CodeBuilderSourceSerializer_v486.INSTANCE, 178, PacketRecipient.SERVER)
             .build();
 }

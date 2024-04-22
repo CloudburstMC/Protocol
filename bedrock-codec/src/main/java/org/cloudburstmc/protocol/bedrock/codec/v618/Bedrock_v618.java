@@ -69,6 +69,6 @@ public class Bedrock_v618 extends Bedrock_v594 {
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v618.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, new CameraPresetsSerializer_v618())
             .updateSerializer(CameraInstructionPacket.class, new CameraInstructionSerializer_618())
-            .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305, PacketRecipient.CLIENT)
+            .registerPacket(RefreshEntitlementsPacket::new, new RefreshEntitlementsSerializer_v618(), 305, PacketRecipient.SERVER)
             .build();
 }
