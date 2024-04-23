@@ -15,9 +15,9 @@ public class EncodingSettings {
      * based on the context.
      */
     public static final EncodingSettings DEFAULT = EncodingSettings.builder()
-            .maxListSize(1024)
+            .maxListSize(1536)
             .maxByteArraySize(1024 * 1024) // 1MB
-            .maxNetworkNBTSize(1024 * 1024) // 1MB
+            .maxNetworkNBTSize(1024 * 1024 * 512) // 1.5MB
             .maxItemNBTSize(1024 * 100) // 100KB
             .maxStringLength(1024 * 32) // 32KB
             .build();
@@ -28,9 +28,9 @@ public class EncodingSettings {
      * be able to receive larger packets and NBT data.
      */
     public static final EncodingSettings CLIENT = EncodingSettings.builder()
-            .maxListSize(2048)
+            .maxListSize(4096)
             .maxByteArraySize(1024 * 1024 * 2) // 2MB
-            .maxNetworkNBTSize(1024 * 1024 * 2) // 2MB
+            .maxNetworkNBTSize(1024 * 1024 * 3) // 3MB
             .maxItemNBTSize(1024 * 512) // 500KB
             .maxStringLength(1024 * 64) // 64KB
             .build();
