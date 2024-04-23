@@ -32,6 +32,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
@@ -87,7 +88,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
 
         NbtMap compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
+            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)), this.encodingSettings.maxItemNBTSize())) {
                 Object tag = reader.readTag();
                 if (tag instanceof NbtMap) {
                     compoundTag = (NbtMap) tag;
@@ -225,6 +226,7 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
         checkNotNull(entityDataMap, "entityDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
+        checkArgument(length <= this.encodingSettings.maxListSize(), "Entity data size is too big: {}", length);
 
         for (int i = 0; i < length; i++) {
             int id = VarInts.readUnsignedInt(buffer);

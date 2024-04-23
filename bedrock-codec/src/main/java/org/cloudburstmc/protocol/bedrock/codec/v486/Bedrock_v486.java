@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v465.BedrockCodecHelper_v465;
 import org.cloudburstmc.protocol.bedrock.codec.v475.Bedrock_v475;
 import org.cloudburstmc.protocol.bedrock.codec.v486.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
@@ -53,8 +54,8 @@ public class Bedrock_v486 extends Bedrock_v475 {
             .updateSerializer(LevelChunkPacket.class, LevelChunkSerializer_v486.INSTANCE)
             .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v486.INSTANCE)
             .updateSerializer(SubChunkRequestPacket.class, SubChunkRequestSerializer_v486.INSTANCE)
-            .registerPacket(PlayerStartItemCooldownPacket::new, PlayerStartItemCooldownSerializer_v486.INSTANCE, 176)
-            .registerPacket(ScriptMessagePacket::new, ScriptMessageSerializer_v486.INSTANCE, 177)
-            .registerPacket(CodeBuilderSourcePacket::new, CodeBuilderSourceSerializer_v486.INSTANCE, 178)
+            .registerPacket(PlayerStartItemCooldownPacket::new, PlayerStartItemCooldownSerializer_v486.INSTANCE, 176, PacketRecipient.CLIENT)
+            .registerPacket(ScriptMessagePacket::new, ScriptMessageSerializer_v486.INSTANCE, 177, PacketRecipient.BOTH)
+            .registerPacket(CodeBuilderSourcePacket::new, CodeBuilderSourceSerializer_v486.INSTANCE, 178, PacketRecipient.SERVER)
             .build();
 }

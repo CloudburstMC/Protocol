@@ -52,7 +52,7 @@ public class InventoryTransactionSerializer_v407 extends InventoryTransactionSer
         if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
             helper.readArray(buffer, packet.getLegacySlots(), (buf, packetHelper) -> {
                 byte containerId = buf.readByte();
-                byte[] slots = packetHelper.readByteArray(buf);
+                byte[] slots = packetHelper.readByteArray(buf, 89); // 89 seems to be the largest slot count
                 return new LegacySetItemSlotData(containerId, slots);
             });
         }

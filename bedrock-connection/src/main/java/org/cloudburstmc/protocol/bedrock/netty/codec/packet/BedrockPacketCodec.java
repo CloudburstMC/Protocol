@@ -3,11 +3,14 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.Attribute;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
+import org.cloudburstmc.protocol.bedrock.PacketDirection;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.compat.BedrockCompat;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.UnknownPacket;
@@ -17,13 +20,21 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 
 public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, BedrockPacketWrapper> {
-
-    public static final String NAME = "bedrock-packet-codec";
-
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPacketCodec.class);
+    public static final String NAME = "bedrock-packet-codec";
 
     private BedrockCodec codec = BedrockCompat.CODEC;
     private BedrockCodecHelper helper = codec.createHelper();
+
+    private PacketRecipient inboundRecipient;
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        PacketDirection attribute = ctx.channel().attr(PacketDirection.ATTRIBUTE).get();
+        if (attribute != null) {
+            this.inboundRecipient = attribute.getInbound();
+        }
+    }
 
     @Override
     protected final void encode(ChannelHandlerContext ctx, BedrockPacketWrapper msg, List<Object> out) throws Exception {
@@ -56,7 +67,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
             int index = msg.readerIndex();
             this.decodeHeader(msg, wrapper);
             wrapper.setHeaderLength(msg.readerIndex() - index);
-            wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId()));
+            wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId(), this.inboundRecipient));
             out.add(wrapper.retain());
         } catch (Throwable t) {
             log.info("Failed to decode packet", t);

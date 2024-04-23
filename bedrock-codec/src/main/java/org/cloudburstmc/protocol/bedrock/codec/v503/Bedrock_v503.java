@@ -16,6 +16,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v486.Bedrock_v486;
 import org.cloudburstmc.protocol.bedrock.codec.v503.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
@@ -126,9 +127,9 @@ public class Bedrock_v503 extends Bedrock_v486 {
             .updateSerializer(SpawnParticleEffectPacket.class, new SpawnParticleEffectSerializer_v503())
             .updateSerializer(AddVolumeEntityPacket.class, new AddVolumeEntitySerializer_v503())
             .updateSerializer(RemoveVolumeEntityPacket.class, new RemoveVolumeEntitySerializer_v503())
-            .registerPacket(TickingAreasLoadStatusPacket::new, new TickingAreasLoadStatusSerializer_v503(), 179)
-            .registerPacket(DimensionDataPacket::new, new DimensionDataSerializer_v503(), 180)
-            .registerPacket(AgentActionEventPacket::new, new AgentActionEventSerializer_v503(), 181)
-            .registerPacket(ChangeMobPropertyPacket::new, new ChangeMobPropertySerializer_v503(), 182)
+            .registerPacket(TickingAreasLoadStatusPacket::new, new TickingAreasLoadStatusSerializer_v503(), 179, PacketRecipient.CLIENT)
+            .registerPacket(DimensionDataPacket::new, new DimensionDataSerializer_v503(), 180, PacketRecipient.CLIENT)
+            .registerPacket(AgentActionEventPacket::new, new AgentActionEventSerializer_v503(), 181, PacketRecipient.CLIENT)
+            .registerPacket(ChangeMobPropertyPacket::new, new ChangeMobPropertySerializer_v503(), 182, PacketRecipient.CLIENT)
             .build();
 }

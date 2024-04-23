@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.Bedrock_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v582.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -54,8 +55,8 @@ public class Bedrock_v582 extends Bedrock_v575 {
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
-            .registerPacket(CompressedBiomeDefinitionListPacket::new, CompressedBiomeDefinitionListSerializer_v582.INSTANCE, 301)
-            .registerPacket(TrimDataPacket::new, TrimDataSerializer_v582.INSTANCE, 302)
-            .registerPacket(OpenSignPacket::new, OpenSignSerializer_v582.INSTANCE, 303)
+            .registerPacket(CompressedBiomeDefinitionListPacket::new, CompressedBiomeDefinitionListSerializer_v582.INSTANCE, 301, PacketRecipient.CLIENT)
+            .registerPacket(TrimDataPacket::new, TrimDataSerializer_v582.INSTANCE, 302, PacketRecipient.CLIENT)
+            .registerPacket(OpenSignPacket::new, OpenSignSerializer_v582.INSTANCE, 303, PacketRecipient.CLIENT)
             .build();
 }

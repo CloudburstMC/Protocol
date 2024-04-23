@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGeneric
 import org.cloudburstmc.protocol.bedrock.codec.v440.Bedrock_v440;
 import org.cloudburstmc.protocol.bedrock.codec.v448.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -64,7 +65,7 @@ public class Bedrock_v448 extends Bedrock_v440 {
             .updateSerializer(NpcRequestPacket.class, NpcRequestSerializer_v448.INSTANCE)
             .updateSerializer(SetTitlePacket.class, SetTitleSerializer_v448.INSTANCE)
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v448.INSTANCE)
-            .registerPacket(SimulationTypePacket::new, SimulationTypeSerializer_v448.INSTANCE, 168)
-            .registerPacket(NpcDialoguePacket::new, NpcDialogueSerializer_v448.INSTANCE, 169)
+            .registerPacket(SimulationTypePacket::new, SimulationTypeSerializer_v448.INSTANCE, 168, PacketRecipient.CLIENT)
+            .registerPacket(NpcDialoguePacket::new, NpcDialogueSerializer_v448.INSTANCE, 169, PacketRecipient.CLIENT)
             .build();
 }

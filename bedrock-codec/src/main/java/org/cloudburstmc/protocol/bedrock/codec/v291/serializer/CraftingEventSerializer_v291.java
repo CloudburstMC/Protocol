@@ -19,8 +19,8 @@ public class CraftingEventSerializer_v291 implements BedrockPacketSerializer<Cra
         VarInts.writeInt(buffer, packet.getType().ordinal());
         helper.writeUuid(buffer, packet.getUuid());
 
-        helper.writeArray(buffer, packet.getInputs(), (buf, item) -> helper.writeItem(buf, item));
-        helper.writeArray(buffer, packet.getOutputs(), (buf, item) -> helper.writeItem(buf, item));
+        helper.writeArray(buffer, packet.getInputs(), helper::writeItem);
+        helper.writeArray(buffer, packet.getOutputs(), helper::writeItem);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class CraftingEventSerializer_v291 implements BedrockPacketSerializer<Cra
         packet.setType(CraftingType.values()[VarInts.readInt(buffer)]);
         packet.setUuid(helper.readUuid(buffer));
 
-        helper.readArray(buffer, packet.getInputs(), buf -> helper.readItem(buf));
-        helper.readArray(buffer, packet.getOutputs(), buf -> helper.readItem(buf));
+        helper.readArray(buffer, packet.getInputs(), helper::readItem, 9); // crafting table is the biggest container
+        helper.readArray(buffer, packet.getOutputs(), helper::readItem, 2); // I have seen Custom recipes with more than 1 output
     }
 }

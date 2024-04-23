@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.Bedrock_v313;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -47,6 +48,6 @@ public class Bedrock_v332 extends Bedrock_v313 {
             .updateSerializer(SpawnParticleEffectPacket.class, SpawnParticleEffectSerializer_v332.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v291(COMMAND_PARAMS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
-            .registerPacket(LevelSoundEventPacket::new, new LevelSoundEventSerializer_v332(SOUND_EVENTS), 123)
+            .registerPacket(LevelSoundEventPacket::new, new LevelSoundEventSerializer_v332(SOUND_EVENTS), 123, PacketRecipient.BOTH)
             .build();
 }

@@ -14,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v422.Bedrock_v422;
 import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
@@ -91,6 +92,6 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v388(COMMAND_PARAMS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
-            .registerPacket(ClientboundDebugRendererPacket::new, ClientboundDebugRendererSerializer_v428.INSTANCE, 164)
+            .registerPacket(ClientboundDebugRendererPacket::new, ClientboundDebugRendererSerializer_v428.INSTANCE, 164, PacketRecipient.CLIENT)
             .build();
 }

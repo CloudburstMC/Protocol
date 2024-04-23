@@ -97,7 +97,7 @@ public class CraftingDataSerializer_v291 implements BedrockPacketSerializer<Craf
         int width = VarInts.readInt(buffer);
         int height = VarInts.readInt(buffer);
         int inputCount = width * height;
-        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>(inputCount);
+        List<ItemDescriptorWithCount> inputs = new ObjectArrayList<>();
         for (int i = 0; i < inputCount; i++) {
             inputs.add(ItemDescriptorWithCount.fromItem(helper.readItem(buffer)));
         }

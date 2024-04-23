@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.AvailableCommandsSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.codec.v408.Bedrock_v408;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -41,11 +42,11 @@ public class Bedrock_v419 extends Bedrock_v408 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v388(COMMAND_PARAMS))
-            .registerPacket(MotionPredictionHintsPacket::new, MotionPredictionHintsSerializer_v419.INSTANCE, 157)
-            .registerPacket(AnimateEntityPacket::new, AnimateEntitySerializer_v419.INSTANCE, 158)
-            .registerPacket(CameraShakePacket::new, CameraShakeSerializer_v419.INSTANCE, 159)
-            .registerPacket(PlayerFogPacket::new, PlayerFogSerializer_v419.INSTANCE, 160)
-            .registerPacket(CorrectPlayerMovePredictionPacket::new, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161)
-            .registerPacket(ItemComponentPacket::new, ItemComponentSerializer_v419.INSTANCE, 162)
+            .registerPacket(MotionPredictionHintsPacket::new, MotionPredictionHintsSerializer_v419.INSTANCE, 157, PacketRecipient.CLIENT)
+            .registerPacket(AnimateEntityPacket::new, AnimateEntitySerializer_v419.INSTANCE, 158, PacketRecipient.CLIENT)
+            .registerPacket(CameraShakePacket::new, CameraShakeSerializer_v419.INSTANCE, 159, PacketRecipient.CLIENT)
+            .registerPacket(PlayerFogPacket::new, PlayerFogSerializer_v419.INSTANCE, 160, PacketRecipient.CLIENT)
+            .registerPacket(CorrectPlayerMovePredictionPacket::new, CorrectPlayerMovePredictionSerializer_v419.INSTANCE, 161, PacketRecipient.CLIENT)
+            .registerPacket(ItemComponentPacket::new, ItemComponentSerializer_v419.INSTANCE, 162, PacketRecipient.CLIENT)
             .build();
 }

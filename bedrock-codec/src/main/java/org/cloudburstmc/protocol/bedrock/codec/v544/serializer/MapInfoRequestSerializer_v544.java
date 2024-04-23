@@ -26,6 +26,6 @@ public class MapInfoRequestSerializer_v544 extends MapInfoRequestSerializer_v291
             int pixel = buf.readIntLE();
             int index = buf.readUnsignedShortLE();
             return new MapPixel(pixel, index);
-        });
+        }, 128 * 128); // There shouldn't be map with more pixels
     }
 }

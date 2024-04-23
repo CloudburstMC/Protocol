@@ -33,15 +33,12 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
     public SerializedSkin readSkin(ByteBuf buffer) {
         String skinId = this.readString(buffer);
         String skinResourcePatch = this.readString(buffer);
-        ImageData skinData = this.readImage(buffer);
+        ImageData skinData = this.readImage(buffer, ImageData.SKIN_PERSONA_SIZE);
 
-        int animationCount = buffer.readIntLE();
-        List<AnimationData> animations = new ObjectArrayList<>(animationCount);
-        for (int i = 0; i < animationCount; i++) {
-            animations.add(this.readAnimationData(buffer));
-        }
+        List<AnimationData> animations = new ObjectArrayList<>();
+        this.readArray(buffer, animations, ByteBuf::readIntLE, (b, h) -> this.readAnimationData(b));
 
-        ImageData capeData = this.readImage(buffer);
+        ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
         String geometryData = this.readString(buffer);
         String animationData = this.readString(buffer);
         boolean premium = buffer.readBoolean();
@@ -80,7 +77,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     @Override
     public AnimationData readAnimationData(ByteBuf buffer) {
-        ImageData image = this.readImage(buffer);
+        ImageData image = this.readImage(buffer, ImageData.SKIN_128_128_SIZE);
         AnimatedTextureType type = TEXTURE_TYPES[buffer.readIntLE()];
         float frames = buffer.readFloatLE();
         return new AnimationData(image, type, frames);
@@ -94,10 +91,10 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
     }
 
     @Override
-    public ImageData readImage(ByteBuf buffer) {
+    public ImageData readImage(ByteBuf buffer, int maxSize) {
         int width = buffer.readIntLE();
         int height = buffer.readIntLE();
-        byte[] image = readByteArray(buffer);
+        byte[] image = readByteArray(buffer, maxSize);
         return ImageData.of(width, height, image);
     }
 

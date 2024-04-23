@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v545.Bedrock_v545;
 import org.cloudburstmc.protocol.bedrock.codec.v554.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -31,10 +32,10 @@ public class Bedrock_v554 extends Bedrock_v545 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(ServerStatsPacket::new, new ServerStatsSerializer_v554(), 192)
-            .registerPacket(RequestNetworkSettingsPacket::new, new RequestNetworkSettingsSerializer_v554(), 193)
-            .registerPacket(GameTestRequestPacket::new, new GameTestRequestSerializer_v554(), 194)
-            .registerPacket(GameTestResultsPacket::new, new GameTestResultsSerializer_v554(), 195)
+            .registerPacket(ServerStatsPacket::new, new ServerStatsSerializer_v554(), 192, PacketRecipient.CLIENT)
+            .registerPacket(RequestNetworkSettingsPacket::new, new RequestNetworkSettingsSerializer_v554(), 193, PacketRecipient.SERVER)
+            .registerPacket(GameTestRequestPacket::new, new GameTestRequestSerializer_v554(), 194, PacketRecipient.SERVER)
+            .registerPacket(GameTestResultsPacket::new, new GameTestResultsSerializer_v554(), 195, PacketRecipient.CLIENT)
             .build();
 
 }

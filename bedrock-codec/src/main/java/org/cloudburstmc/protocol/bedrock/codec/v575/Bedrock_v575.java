@@ -13,10 +13,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.CameraInstruction
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.CameraPresetsSerializer_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.PlayerAuthInputSerializer_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v575.serializer.UnlockedRecipesSerializer_v575;
-import org.cloudburstmc.protocol.bedrock.data.Ability;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
@@ -151,8 +148,8 @@ public class Bedrock_v575 extends Bedrock_v568 {
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(PlayerAuthInputPacket.class, new PlayerAuthInputSerializer_v575())
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
-            .registerPacket(CameraPresetsPacket::new, new CameraPresetsSerializer_v575(), 198)
-            .registerPacket(UnlockedRecipesPacket::new, new UnlockedRecipesSerializer_v575(), 199)
-            .registerPacket(CameraInstructionPacket::new, new CameraInstructionSerializer_v575(), 300)
+            .registerPacket(CameraPresetsPacket::new, new CameraPresetsSerializer_v575(), 198, PacketRecipient.CLIENT)
+            .registerPacket(UnlockedRecipesPacket::new, new UnlockedRecipesSerializer_v575(), 199, PacketRecipient.CLIENT)
+            .registerPacket(CameraInstructionPacket::new, new CameraInstructionSerializer_v575(), 300, PacketRecipient.CLIENT)
             .build();
 }

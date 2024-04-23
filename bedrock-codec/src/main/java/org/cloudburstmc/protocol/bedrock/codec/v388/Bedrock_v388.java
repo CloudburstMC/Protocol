@@ -11,10 +11,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v361.Bedrock_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.ResourcePackDataInfoSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ResourcePackType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -118,14 +115,14 @@ public class Bedrock_v388 extends Bedrock_v361 {
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
-            .registerPacket(TickSyncPacket::new, TickSyncSerializer_v388.INSTANCE, 23)
-            .registerPacket(EducationSettingsPacket::new, EducationSettingsSerializer_v388.INSTANCE, 137)
-            .registerPacket(EmotePacket::new, EmoteSerializer_v388.INSTANCE, 138)
-            .registerPacket(MultiplayerSettingsPacket::new, MultiplayerSettingsSerializer_v388.INSTANCE, 139)
-            .registerPacket(SettingsCommandPacket::new, SettingsCommandSerializer_v388.INSTANCE, 140)
-            .registerPacket(AnvilDamagePacket::new, AnvilDamageSerializer_v388.INSTANCE, 141)
-            .registerPacket(CompletedUsingItemPacket::new, CompletedUsingItemSerializer_v388.INSTANCE, 142)
-            .registerPacket(NetworkSettingsPacket::new, NetworkSettingsSerializer_v388.INSTANCE, 143)
-            .registerPacket(PlayerAuthInputPacket::new, PlayerAuthInputSerializer_v388.INSTANCE, 144)
+            .registerPacket(TickSyncPacket::new, TickSyncSerializer_v388.INSTANCE, 23, PacketRecipient.BOTH)
+            .registerPacket(EducationSettingsPacket::new, EducationSettingsSerializer_v388.INSTANCE, 137, PacketRecipient.CLIENT)
+            .registerPacket(EmotePacket::new, EmoteSerializer_v388.INSTANCE, 138, PacketRecipient.BOTH)
+            .registerPacket(MultiplayerSettingsPacket::new, MultiplayerSettingsSerializer_v388.INSTANCE, 139, PacketRecipient.BOTH)
+            .registerPacket(SettingsCommandPacket::new, SettingsCommandSerializer_v388.INSTANCE, 140, PacketRecipient.SERVER)
+            .registerPacket(AnvilDamagePacket::new, AnvilDamageSerializer_v388.INSTANCE, 141, PacketRecipient.SERVER)
+            .registerPacket(CompletedUsingItemPacket::new, CompletedUsingItemSerializer_v388.INSTANCE, 142, PacketRecipient.CLIENT)
+            .registerPacket(NetworkSettingsPacket::new, NetworkSettingsSerializer_v388.INSTANCE, 143, PacketRecipient.CLIENT)
+            .registerPacket(PlayerAuthInputPacket::new, PlayerAuthInputSerializer_v388.INSTANCE, 144, PacketRecipient.SERVER)
             .build();
 }

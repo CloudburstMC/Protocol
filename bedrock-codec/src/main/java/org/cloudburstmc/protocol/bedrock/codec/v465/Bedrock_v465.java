@@ -12,10 +12,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v448.Bedrock_v448;
 import org.cloudburstmc.protocol.bedrock.codec.v465.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -72,8 +69,8 @@ public class Bedrock_v465 extends Bedrock_v448 {
             .updateSerializer(EducationSettingsPacket.class, EducationSettingsSerializer_v465.INSTANCE)
             .updateSerializer(HurtArmorPacket.class, HurtArmorSerializer_v465.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v465.INSTANCE)
-            .registerPacket(EduUriResourcePacket::new, EduUriResourceSerializer_v465.INSTANCE, 170)
-            .registerPacket(CreatePhotoPacket::new, CreatePhotoSerializer_v465.INSTANCE, 171)
-            .registerPacket(UpdateSubChunkBlocksPacket::new, UpdateSubChunkBlocksSerializer_v465.INSTANCE, 172)
+            .registerPacket(EduUriResourcePacket::new, EduUriResourceSerializer_v465.INSTANCE, 170, PacketRecipient.CLIENT)
+            .registerPacket(CreatePhotoPacket::new, CreatePhotoSerializer_v465.INSTANCE, 171, PacketRecipient.SERVER)
+            .registerPacket(UpdateSubChunkBlocksPacket::new, UpdateSubChunkBlocksSerializer_v465.INSTANCE, 172, PacketRecipient.CLIENT)
             .build();
 }

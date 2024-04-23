@@ -38,7 +38,7 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
         int nbtSize = buffer.readShortLE();
         NbtMap compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)))) {
+            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize), this.encodingSettings.maxItemNBTSize()))) {
                 compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);

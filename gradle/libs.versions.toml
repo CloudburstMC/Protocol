@@ -13,12 +13,12 @@ fastutil-int-object-maps = { group = "org.cloudburstmc.fastutil.maps", name = "i
 fastutil-object-int-maps = { group = "org.cloudburstmc.fastutil.maps", name = "object-int-maps", version.ref = "fastutil" }
 
 netty-buffer = { group = "io.netty", name = "netty-buffer", version.ref = "netty" }
-netty-transport-raknet = { group = "org.cloudburstmc.netty", name = "netty-transport-raknet", version = "1.0.0.CR1-SNAPSHOT" }
+netty-transport-raknet = { group = "org.cloudburstmc.netty", name = "netty-transport-raknet", version = "1.0.0.CR3-SNAPSHOT" }
 
 jose4j = { group = "org.bitbucket.b_c", name = "jose4j", version = "0.9.3" }
 natives = { group = "com.nukkitx", name = "natives", version = "1.0.3" }
 math = { group = "org.cloudburstmc.math", name = "immutable", version = "2.0-SNAPSHOT" }
-nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.2.Final" }
+nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.3.Final" }
 lmbda = { group = "org.lanternpowered", name = "lmbda", version = "2.0.0" }
 
 snappy = { group = "io.airlift", name = "aircompressor", version = "0.25" }

@@ -14,10 +14,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.EventSerializer_v
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.PhotoInfoRequestSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.SubChunkRequestSerializer_v471;
 import org.cloudburstmc.protocol.bedrock.codec.v471.serializer.SubChunkSerializer_v471;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.ParticleType;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -60,8 +57,8 @@ public class Bedrock_v471 extends Bedrock_v465 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(PhotoInfoRequestPacket::new, PhotoInfoRequestSerializer_v471.INSTANCE, 173)
-            .registerPacket(SubChunkPacket::new, SubChunkSerializer_v471.INSTANCE, 174)
-            .registerPacket(SubChunkRequestPacket::new, SubChunkRequestSerializer_v471.INSTANCE, 175)
+            .registerPacket(PhotoInfoRequestPacket::new, PhotoInfoRequestSerializer_v471.INSTANCE, 173, PacketRecipient.SERVER)
+            .registerPacket(SubChunkPacket::new, SubChunkSerializer_v471.INSTANCE, 174, PacketRecipient.CLIENT)
+            .registerPacket(SubChunkRequestPacket::new, SubChunkRequestSerializer_v471.INSTANCE, 175, PacketRecipient.SERVER)
             .build();
 }

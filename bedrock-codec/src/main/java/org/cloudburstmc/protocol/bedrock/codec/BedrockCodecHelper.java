@@ -5,6 +5,7 @@ import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtType;
+import org.cloudburstmc.protocol.bedrock.data.EncodingSettings;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
 import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
@@ -23,7 +24,6 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryAct
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
-import org.cloudburstmc.protocol.common.Definition;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -48,22 +48,31 @@ public interface BedrockCodecHelper {
 
     DefinitionRegistry<NamedDefinition> getCameraPresetDefinitions();
 
+    EncodingSettings getEncodingSettings();
+
+    void setEncodingSettings(EncodingSettings settings);
+
     // Array serialization (with helper)
 
-    default <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
-        readArray(buffer, array, VarInts::readUnsignedInt, function);
+    <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function);
+
+    default <T> void readArray(ByteBuf buffer, Collection<T> array, BiFunction<ByteBuf, BedrockCodecHelper, T> function, int maxLength) {
+        this.readArray(buffer, array, VarInts::readUnsignedInt, function, maxLength);
     }
 
-    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader,
-                       BiFunction<ByteBuf, BedrockCodecHelper, T> function);
+    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, BiFunction<ByteBuf, BedrockCodecHelper, T> function);
+
+    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, BiFunction<ByteBuf, BedrockCodecHelper, T> function, int maxLength);
 
     default <T> void writeArray(ByteBuf buffer, Collection<T> array, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
-        writeArray(buffer, array, VarInts::writeUnsignedInt, consumer);
+        this.writeArray(buffer, array, VarInts::writeUnsignedInt, consumer);
     }
 
     <T> void writeArray(ByteBuf buffer, Collection<T> array, ObjIntConsumer<ByteBuf> lengthWriter, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer);
 
     <T> T[] readArray(ByteBuf buffer, T[] array, BiFunction<ByteBuf, BedrockCodecHelper, T> function);
+
+    <T> T[] readArray(ByteBuf buffer, T[] array, BiFunction<ByteBuf, BedrockCodecHelper, T> function, int maxLength);
 
     <T> void writeArray(ByteBuf buffer, T[] array, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer);
 
@@ -71,9 +80,19 @@ public interface BedrockCodecHelper {
 
     <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function);
 
+    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, Function<ByteBuf, T> function);
+
+    <T> void readArray(ByteBuf buffer, Collection<T> array, ToLongFunction<ByteBuf> lengthReader, Function<ByteBuf, T> function, int maxLength);
+
+    <T> void readArray(ByteBuf buffer, Collection<T> array, Function<ByteBuf, T> function, int maxLength);
+
     <T> void writeArray(ByteBuf buffer, Collection<T> array, BiConsumer<ByteBuf, T> consumer);
 
+    <T> void writeArray(ByteBuf buffer, Collection<T> array, ObjIntConsumer<ByteBuf> lengthWriter, BiConsumer<ByteBuf, T> consumer);
+
     <T> T[] readArray(ByteBuf buffer, T[] array, Function<ByteBuf, T> function);
+
+    <T> T[] readArray(ByteBuf buffer, T[] array, Function<ByteBuf, T> function, int maxLength);
 
     <T> void writeArray(ByteBuf buffer, T[] array, BiConsumer<ByteBuf, T> consumer);
 
@@ -121,6 +140,8 @@ public interface BedrockCodecHelper {
 
     byte[] readByteArray(ByteBuf buffer);
 
+    byte[] readByteArray(ByteBuf buffer, int maxLength);
+
     void writeByteArray(ByteBuf buffer, byte[] bytes);
 
     ByteBuf readByteBuf(ByteBuf buffer);
@@ -155,23 +176,21 @@ public interface BedrockCodecHelper {
 
     void writeBlockPosition(ByteBuf buffer, Vector3i blockPosition);
 
-    default Object readTag(ByteBuf buffer) {
-        return readTag(buffer, Object.class);
-    }
-
     <T> T readTag(ByteBuf buffer, Class<T> expected);
+
+    <T> T readTag(ByteBuf buffer, Class<T> expected, long maxReadSize);
 
     void writeTag(ByteBuf buffer, Object tag);
 
-    default Object readTagLE(ByteBuf buffer) {
-        return readTag(buffer, Object.class);
-    }
-
     <T> T readTagLE(ByteBuf buffer, Class<T> expected);
+
+    <T> T readTagLE(ByteBuf buffer, Class<T> expected, long maxReadSize);
 
     void writeTagLE(ByteBuf buffer, Object tag);
 
     <T> T readTagValue(ByteBuf buffer, NbtType<T> type);
+
+    <T> T readTagValue(ByteBuf buffer, NbtType<T> type, long maxReadSize);
 
     void writeTagValue(ByteBuf buffer, Object tag);
 

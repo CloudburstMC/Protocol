@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.Bedrock_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v340.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
@@ -62,7 +63,7 @@ public class Bedrock_v340 extends Bedrock_v332 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v340.INSTANCE, 124)
-            .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v340.INSTANCE, 125)
+            .registerPacket(LecternUpdatePacket::new, LecternUpdateSerializer_v340.INSTANCE, 124, PacketRecipient.SERVER)
+            .registerPacket(VideoStreamConnectPacket::new, VideoStreamConnectSerializer_v340.INSTANCE, 125, PacketRecipient.CLIENT)
             .build();
 }

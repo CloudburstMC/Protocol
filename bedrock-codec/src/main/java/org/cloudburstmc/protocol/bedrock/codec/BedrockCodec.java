@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.packet.UnknownPacket;
 
@@ -38,9 +39,19 @@ public final class BedrockCodec {
         return new Builder();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public BedrockPacket tryDecode(BedrockCodecHelper helper, ByteBuf buf, int id) throws PacketSerializeException {
+        return tryDecode(helper, buf, id, null);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public BedrockPacket tryDecode(BedrockCodecHelper helper, ByteBuf buf, int id, PacketRecipient recipient) throws PacketSerializeException {
         BedrockPacketDefinition<? extends BedrockPacket> definition = getPacketDefinition(id);
+
+        if (definition != null && recipient != null && definition.getRecipient() != PacketRecipient.BOTH &&
+                definition.getRecipient() != recipient) {
+            throw new IllegalArgumentException("Packet " + definition.getFactory().get().getClass().getSimpleName() + " was sent to " + recipient + " instead of " + definition.getRecipient());
+        }
+
         BedrockPacket packet;
         BedrockPacketSerializer<BedrockPacket> serializer;
         if (definition == null) {
@@ -119,13 +130,13 @@ public final class BedrockCodec {
         private String minecraftVersion = null;
         private Supplier<BedrockCodecHelper> helperFactory;
 
-        public <T extends BedrockPacket> Builder registerPacket(Supplier<T> factory, BedrockPacketSerializer<T> serializer, @NonNegative int id) {
+        public <T extends BedrockPacket> Builder registerPacket(Supplier<T> factory, BedrockPacketSerializer<T> serializer, @NonNegative int id, PacketRecipient recipient) {
             Class<? extends BedrockPacket> packetClass = factory.get().getClass();
 
             checkArgument(id >= 0, "id cannot be negative");
             checkArgument(!packets.containsKey(packetClass), "Packet class already registered");
 
-            BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, factory, serializer);
+            BedrockPacketDefinition<T> info = new BedrockPacketDefinition<>(id, factory, serializer, recipient);
 
             packets.put(packetClass, info);
 
@@ -135,7 +146,7 @@ public final class BedrockCodec {
         public <T extends BedrockPacket> Builder updateSerializer(Class<T> packetClass, BedrockPacketSerializer<T> serializer) {
             BedrockPacketDefinition<T> info = (BedrockPacketDefinition<T>) packets.get(packetClass);
             checkArgument(info != null, "Packet does not exist");
-            BedrockPacketDefinition<T> updatedInfo = new BedrockPacketDefinition<>(info.getId(), info.getFactory(), serializer);
+            BedrockPacketDefinition<T> updatedInfo = new BedrockPacketDefinition<>(info.getId(), info.getFactory(), serializer, info.getRecipient());
 
             packets.replace(packetClass, info, updatedInfo);
 

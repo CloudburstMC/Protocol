@@ -18,20 +18,14 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
         VarInts.writeInt(buffer, packet.getDimension());
         helper.writeVector3i(buffer, packet.getSubChunkPosition());
-
-        buffer.writeIntLE(packet.getPositionOffsets().size());
-        packet.getPositionOffsets().forEach(position -> this.writeSubChunkOffset(buffer, position));
+        helper.writeArray(buffer, packet.getPositionOffsets(), ByteBuf::writeIntLE, this::writeSubChunkOffset);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
         packet.setDimension(VarInts.readInt(buffer));
         packet.setSubChunkPosition(helper.readVector3i(buffer));
-
-        int size = buffer.readIntLE(); // Unsigned but realistically, we're not going to read that many.
-        for (int i = 0; i < size; i++) {
-            packet.getPositionOffsets().add(this.readSubChunkOffset(buffer));
-        }
+        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset);
     }
 
     protected void writeSubChunkOffset(ByteBuf buffer, Vector3i offsetPosition) {
