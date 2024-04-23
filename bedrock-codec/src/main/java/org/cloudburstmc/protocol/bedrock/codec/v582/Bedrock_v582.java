@@ -57,6 +57,6 @@ public class Bedrock_v582 extends Bedrock_v575 {
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v448(COMMAND_PARAMS))
             .registerPacket(CompressedBiomeDefinitionListPacket::new, CompressedBiomeDefinitionListSerializer_v582.INSTANCE, 301, PacketRecipient.CLIENT)
             .registerPacket(TrimDataPacket::new, TrimDataSerializer_v582.INSTANCE, 302, PacketRecipient.CLIENT)
-            .registerPacket(OpenSignPacket::new, OpenSignSerializer_v582.INSTANCE, 303, PacketRecipient.SERVER)
+            .registerPacket(OpenSignPacket::new, OpenSignSerializer_v582.INSTANCE, 303, PacketRecipient.CLIENT)
             .build();
 }

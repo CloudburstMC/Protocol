@@ -130,6 +130,6 @@ public class Bedrock_v503 extends Bedrock_v486 {
             .registerPacket(TickingAreasLoadStatusPacket::new, new TickingAreasLoadStatusSerializer_v503(), 179, PacketRecipient.CLIENT)
             .registerPacket(DimensionDataPacket::new, new DimensionDataSerializer_v503(), 180, PacketRecipient.CLIENT)
             .registerPacket(AgentActionEventPacket::new, new AgentActionEventSerializer_v503(), 181, PacketRecipient.CLIENT)
-            .registerPacket(ChangeMobPropertyPacket::new, new ChangeMobPropertySerializer_v503(), 182, PacketRecipient.SERVER)
+            .registerPacket(ChangeMobPropertyPacket::new, new ChangeMobPropertySerializer_v503(), 182, PacketRecipient.CLIENT)
             .build();
 }

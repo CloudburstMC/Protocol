@@ -37,6 +37,6 @@ public class Bedrock_v567 extends Bedrock_v560 {
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(CraftingDataPacket.class, new CraftingDataSerializer_v567())
-            .registerPacket(ClientCheatAbilityPacket::new, new ClientCheatAbilitySerializer_v567(), 197, PacketRecipient.SERVER)
+            .registerPacket(ClientCheatAbilityPacket::new, new ClientCheatAbilitySerializer_v567(), 197, PacketRecipient.CLIENT)
             .build();
 }
