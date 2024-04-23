@@ -597,6 +597,70 @@ public enum SoundEvent {
      * @since v649
      */
     REFLECT,
+    /**
+     * @since v662
+     */
+    OPEN_SHUTTER,
+    /**
+     * @since v662
+     */
+    CLOSE_SHUTTER,
+    /**
+     * @since v662
+     */
+    EJECT_ITEM,
+    /**
+     * @since v662
+     */
+    INSERT_ITEM,
+    /**
+     * @since v662
+     */
+    INSERT_ITEM_FAIL,
+    /**
+     * @since v662
+     */
+    VAULT_AMBIENT,
+    /**
+     * @since v662
+     */
+    VAULT_ACTIVATE,
+    /**
+     * @since v662
+     */
+    VAULT_DEACTIVATE,
+    /**
+     * @since v662
+     */
+    HURT_REDUCED,
+    /**
+     * @since v662
+     */
+    WIND_CHARGE_BURST,
+    /**
+     * @since v671
+     */
+    CRACK_WOLF,
+    /**
+     * @since v671
+     */
+    BREAK_WOLF,
+    /**
+     * @since v671
+     */
+    REPAIR_WOLF,
+    /**
+     * @since v671
+     */
+    SMASH_AIR,
+    /**
+     * @since v671
+     */
+    SMASH_GROUND,
+    /**
+     * @since v671
+     */
+    HEAVY_SMASH_GROUND,
 
     UNDEFINED
 }
