@@ -28,11 +28,11 @@ public class EncodingSettings {
      * be able to receive larger packets and NBT data.
      */
     public static final EncodingSettings CLIENT = EncodingSettings.builder()
-            .maxListSize(4096)
-            .maxByteArraySize(1024 * 1024 * 2) // 2MB
-            .maxNetworkNBTSize(1024 * 1024 * 3) // 3MB
-            .maxItemNBTSize(1024 * 512) // 500KB
-            .maxStringLength(1024 * 64) // 64KB
+            .maxListSize(10240)
+            .maxByteArraySize(1024 * 1024 * 20) // 20MB
+            .maxNetworkNBTSize(1024 * 1024 * 10) // 10MB
+            .maxItemNBTSize(1024 * 1024 * 5) // 5MB
+            .maxStringLength(1024 * 1024) // 1MB
             .build();
 
     /**
