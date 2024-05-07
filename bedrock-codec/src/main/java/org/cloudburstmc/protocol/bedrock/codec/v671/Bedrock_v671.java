@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
-import org.cloudburstmc.protocol.bedrock.codec.v649.Bedrock_v649;
 import org.cloudburstmc.protocol.bedrock.codec.v662.Bedrock_v662;
 import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
@@ -41,7 +40,7 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .build();
 
-    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v649.SOUND_EVENTS
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v662.SOUND_EVENTS
             .toBuilder()
             .replace(511, SoundEvent.ARMOR_CRACK_WOLF)
             .insert(512, SoundEvent.ARMOR_BREAK_WOLF)
