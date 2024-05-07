@@ -3,23 +3,21 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class ContainerClosePacket implements BedrockPacket {
-    private byte id;
-    private ContainerType type;
-    private boolean serverInitiated;
+public class AwardAchievementPacket implements BedrockPacket {
+    private int achievementId;
 
     @Override
-    public final PacketSignal handle(BedrockPacketHandler handler) {
+    public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CONTAINER_CLOSE;
+        return BedrockPacketType.AWARD_ACHIEVEMENT;
     }
 }

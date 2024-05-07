@@ -661,6 +661,54 @@ public enum SoundEvent {
      * @since v671
      */
     MACE_SMASH_HEAVY_GROUND,
+    /**
+     * @since v685
+     */
+    TRAIL_SPAWNER_CHARGE_ACTIVATE,
+    /**
+     * @since v685
+     */
+    TRAIL_SPAWNER_AMBIENT_OMINOUS,
+    /**
+     * @since v685
+     */
+    OMINOUS_ITEM_SPAWNER_SPAWN_ITEM,
+    /**
+     * @since v685
+     */
+    OMINOUS_BOTTLE_END_USE,
+    /**
+     * @since v685
+     */
+    OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN,
+    /**
+     * @since v685
+     */
+    APPLY_EFFECT_BAD_OMEN,
+    /**
+     * @since v685
+     */
+    APPLY_EFFECT_RAID_OMEN,
+    /**
+     * @since v685
+     */
+    APPLY_EFFECT_TRIAL_OMEN,
+    /**
+     * @since v685
+     */
+    OMINOUS_ITEM_SPAWNER_ABOUT_TO_SPAWN_ITEM,
+    /**
+     * @since v685
+     */
+    RECORD_CREATOR,
+    /**
+     * @since v685
+     */
+    RECORD_CREATOR_MUSIC_BOX,
+    /**
+     * @since v685
+     */
+    RECORD_PRECIPICE,
 
     UNDEFINED
 }

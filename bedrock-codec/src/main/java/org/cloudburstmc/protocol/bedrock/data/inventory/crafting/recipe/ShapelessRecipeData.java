@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.inventory.crafting.recipe;
 import lombok.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.CraftingDataType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.crafting.RecipeUnlockingRequirement;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 
 import java.util.List;
@@ -24,17 +25,29 @@ public class ShapelessRecipeData implements CraftingRecipeData {
     private final String tag;
     private final int priority;
     private final int netId;
+    /**
+     * @since v685
+     */
+    private final RecipeUnlockingRequirement requirement;
+
+    public static ShapelessRecipeData of(CraftingDataType type, String id, List<ItemDescriptorWithCount> ingredients,
+                                         List<ItemData> results, UUID uuid, String tag, int priority, int netId,
+                                         RecipeUnlockingRequirement requirement) {
+        checkArgument(type == CraftingDataType.SHAPELESS || type == CraftingDataType.SHAPELESS_CHEMISTRY || type == CraftingDataType.SHULKER_BOX,
+                "type must be SHAPELESS, SHAPELESS_CHEMISTRY or SHULKER_BOX");
+        return new ShapelessRecipeData(type, id, ingredients, results, uuid, tag, priority, netId, requirement);
+    }
 
     public static ShapelessRecipeData of(CraftingDataType type, String id, List<ItemDescriptorWithCount> ingredients,
                                          List<ItemData> results, UUID uuid, String tag, int priority, int netId) {
-        checkArgument(type == CraftingDataType.SHAPELESS || type == CraftingDataType.SHAPELESS_CHEMISTRY || type == CraftingDataType.SHULKER_BOX,
-                "type must be SHAPELESS, SHAPELESS_CHEMISTRY or SHULKER_BOX");
-        return new ShapelessRecipeData(type, id, ingredients, results, uuid, tag, priority, netId);
+        return ShapelessRecipeData.of(type, id, ingredients, results, uuid, tag, priority, netId,
+                RecipeUnlockingRequirement.INVALID);
     }
 
     public static ShapelessRecipeData shapeless(String id, List<ItemDescriptorWithCount> ingredients,
-                                                List<ItemData> results, UUID uuid, String tag, int priority, int netId) {
-        return of(CraftingDataType.SHAPELESS, id, ingredients, results, uuid, tag, priority, netId);
+                                                List<ItemData> results, UUID uuid, String tag, int priority, int netId,
+                                                RecipeUnlockingRequirement requirement) {
+        return of(CraftingDataType.SHAPELESS, id, ingredients, results, uuid, tag, priority, netId, requirement);
     }
 
     public static ShapelessRecipeData shapelessChemistry(String id, List<ItemDescriptorWithCount> ingredients,

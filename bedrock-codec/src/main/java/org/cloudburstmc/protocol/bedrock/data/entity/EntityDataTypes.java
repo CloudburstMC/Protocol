@@ -32,6 +32,10 @@ public class EntityDataTypes {
     public static final EntityDataType<Long> TARGET_EID = new EntityDataType<>(Long.class, "TARGET_EID");
     public static final EntityDataType<Short> AIR_SUPPLY = new EntityDataType<>(Short.class, "AIR_SUPPLY");
     public static final EntityDataType<Integer> EFFECT_COLOR = new EntityDataType<>(Integer.class, "EFFECT_COLOR");
+    /**
+     * @deprecated since v685
+     */
+    @Deprecated
     public static final EntityDataType<Byte> EFFECT_AMBIENCE = new EntityDataType<>(Byte.class, "EFFECT_AMBIENCE");
     public static final EntityDataType<Byte> JUMP_DURATION = new EntityDataType<>(Byte.class, "JUMP_DURATION");
     public static final EntityDataType<Integer> HURT_TICKS = new EntityDataType<>(Integer.class, "HURT_TICKS");
@@ -177,6 +181,10 @@ public class EntityDataTypes {
     public static final EntityDataType<Float> LAYING_AMOUNT_PREVIOUS = new EntityDataType<>(Float.class, "LAYING_AMOUNT_PREVIOUS");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_DURATION = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_DURATION");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_SPAWN_TIME = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_SPAWN_TIME");
+    /**
+     * @deprecated since v685
+     */
+    @Deprecated
     public static final EntityDataType<Float> AREA_EFFECT_CLOUD_CHANGE_RATE = new EntityDataType<>(Float.class, "AREA_EFFECT_CLOUD_CHANGE_RATE");
     public static final EntityDataType<Float> AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP = new EntityDataType<>(Float.class, "AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_PICKUP_COUNT = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_PICKUP_COUNT");
@@ -264,4 +272,8 @@ public class EntityDataTypes {
      * @since v594
      */
     public static final EntityDataType<Vector3f> COLLISION_BOX = new EntityDataType<>(Vector3f.class, "COLLISION_BOX");
+    /**
+     * @since v685
+     */
+    public static final EntityDataType<NbtMap> VISIBLE_MOB_EFFECTS = new EntityDataType<>(NbtMap.class, "VISIBLE_MOB_EFFECTS");
 }

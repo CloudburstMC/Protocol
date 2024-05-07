@@ -19,6 +19,7 @@ public class TextPacket implements BedrockPacket {
     private List<String> parameters = new ObjectArrayList<>();
     private String xuid;
     private String platformChatId = "";
+    private String filteredMessage;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
