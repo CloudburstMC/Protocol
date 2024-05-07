@@ -11,8 +11,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class ContainerClosePacket implements BedrockPacket {
     private byte id;
-    private ContainerType type;
     private boolean serverInitiated;
+    /**
+     * @since v685
+     */
+    private ContainerType type;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
