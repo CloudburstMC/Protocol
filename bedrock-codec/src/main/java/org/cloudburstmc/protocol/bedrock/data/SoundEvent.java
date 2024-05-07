@@ -637,6 +637,30 @@ public enum SoundEvent {
      * @since v662
      */
     WIND_CHARGE_BURST,
+    /**
+     * @since v671
+     */
+    ARMOR_CRACK_WOLF,
+    /**
+     * @since v671
+     */
+    ARMOR_BREAK_WOLF,
+    /**
+     * @since v671
+     */
+    ARMOR_REPAIR_WOLF,
+    /**
+     * @since v671
+     */
+    MACE_SMASH_AIR,
+    /**
+     * @since v671
+     */
+    MACE_SMASH_GROUND,
+    /**
+     * @since v671
+     */
+    MACE_SMASH_HEAVY_GROUND,
 
     UNDEFINED
 }
