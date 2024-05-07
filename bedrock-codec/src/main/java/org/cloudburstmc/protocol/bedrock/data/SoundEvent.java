@@ -597,6 +597,46 @@ public enum SoundEvent {
      * @since v649
      */
     REFLECT,
+    /**
+     * @since v662
+     */
+    VAULT_OPEN_SHUTTER,
+    /**
+     * @since v662
+     */
+    VAULT_CLOSE_SHUTTER,
+    /**
+     * @since v662
+     */
+    VAULT_EJECT_ITEM,
+    /**
+     * @since v662
+     */
+    VAULT_INSERT_ITEM,
+    /**
+     * @since v662
+     */
+    VAULT_INSERT_ITEM_FAIL,
+    /**
+     * @since v662
+     */
+    VAULT_AMBIENT,
+    /**
+     * @since v662
+     */
+    VAULT_ACTIVATE,
+    /**
+     * @since v662
+     */
+    VAULT_DEACTIVATE,
+    /**
+     * @since v662
+     */
+    HURT_REDUCED,
+    /**
+     * @since v662
+     */
+    WIND_CHARGE_BURST,
 
     UNDEFINED
 }
