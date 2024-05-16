@@ -30,7 +30,12 @@ public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
         UUID uuid = helper.readUuid(buffer);
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
-        RecipeUnlockingRequirement requirement = this.readRequirement(buffer, helper, type);
+
+        RecipeUnlockingRequirement requirement = RecipeUnlockingRequirement.INVALID;
+        if (type == CraftingDataType.SHAPELESS) {
+            requirement = this.readRequirement(buffer, helper, type);
+        }
+
         int networkId = VarInts.readUnsignedInt(buffer);
         return ShapelessRecipeData.of(type, recipeId, inputs, outputs, uuid, craftingTag, priority, networkId, requirement);
     }
@@ -44,7 +49,10 @@ public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getTag());
         VarInts.writeInt(buffer, data.getPriority());
-        this.writeRequirement(buffer, helper, data);
+
+        if (data.getType() == CraftingDataType.SHAPELESS) {
+            this.writeRequirement(buffer, helper, data);
+        }
         VarInts.writeUnsignedInt(buffer, data.getNetId());
     }
 
@@ -64,7 +72,12 @@ public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
         String craftingTag = helper.readString(buffer);
         int priority = VarInts.readInt(buffer);
         boolean assumeSymmetry = buffer.readBoolean();
-        RecipeUnlockingRequirement requirement = this.readRequirement(buffer, helper, type);
+
+        RecipeUnlockingRequirement requirement = RecipeUnlockingRequirement.INVALID;
+        if (type == CraftingDataType.SHAPED) {
+            requirement = this.readRequirement(buffer, helper, type);
+        }
+
         int networkId = VarInts.readUnsignedInt(buffer);
         return ShapedRecipeData.of(type, recipeId, width, height, inputs, outputs, uuid, craftingTag, priority, networkId, assumeSymmetry, requirement);
     }
@@ -84,7 +97,11 @@ public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
         helper.writeString(buffer, data.getTag());
         VarInts.writeInt(buffer, data.getPriority());
         buffer.writeBoolean(data.isAssumeSymetry());
-        this.writeRequirement(buffer, helper, data);
+
+        if (data.getType() == CraftingDataType.SHAPED) {
+            this.writeRequirement(buffer, helper, data);
+        }
+
         VarInts.writeUnsignedInt(buffer, data.getNetId());
     }
 
