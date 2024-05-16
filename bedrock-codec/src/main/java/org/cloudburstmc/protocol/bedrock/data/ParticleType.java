@@ -117,5 +117,9 @@ public enum ParticleType implements LevelEventType {
     /**
      * @since v671
      */
-    WOLF_ARMOR_BREAK
+    WOLF_ARMOR_BREAK,
+    /**
+     * @since 685
+     */
+    OMINOUS_ITEM_SPAWNER,
 }

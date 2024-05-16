@@ -89,10 +89,7 @@ public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
     }
 
     protected RecipeUnlockingRequirement readRequirement(ByteBuf buffer, BedrockCodecHelper helper, CraftingDataType type) {
-        if (!type.equals(CraftingDataType.SHAPED) && !type.equals(CraftingDataType.SHAPELESS)) {
-            return RecipeUnlockingRequirement.INVALID;
-        }
-        final RecipeUnlockingRequirement requirement = new RecipeUnlockingRequirement(RecipeUnlockingRequirement.UnlockingContext.from(buffer.readByte()));
+        RecipeUnlockingRequirement requirement = new RecipeUnlockingRequirement(RecipeUnlockingRequirement.UnlockingContext.from(buffer.readByte()));
         if (requirement.getContext().equals(RecipeUnlockingRequirement.UnlockingContext.NONE)) {
             helper.readArray(buffer, requirement.getIngredients(), (buf, h) -> h.readIngredient(buf));
         }
@@ -100,9 +97,6 @@ public class CraftingDataSerializer_v685 extends CraftingDataSerializer_v671 {
     }
 
     protected void writeRequirement(ByteBuf buffer, BedrockCodecHelper helper, CraftingRecipeData data) {
-        if (!data.getType().equals(CraftingDataType.SHAPED) && !data.getType().equals(CraftingDataType.SHAPELESS)) {
-            return;
-        }
         buffer.writeByte(data.getRequirement().getContext().ordinal());
         if (data.getRequirement().getContext().equals(RecipeUnlockingRequirement.UnlockingContext.NONE)) {
             helper.writeArray(buffer, data.getRequirement().getIngredients(), (buf, h, ingredient) -> h.writeIngredient(buf, ingredient));

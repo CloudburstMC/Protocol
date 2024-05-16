@@ -22,7 +22,7 @@ public class TextPacket implements BedrockPacket {
     /**
      * @since v685
      */
-    private String filteredMessage;
+    private String filteredMessage = "";
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

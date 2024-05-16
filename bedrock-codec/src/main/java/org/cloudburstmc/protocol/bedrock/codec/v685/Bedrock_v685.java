@@ -11,10 +11,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.codec.v671.Bedrock_v671;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.*;
-import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
-import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
-import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
+import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -22,6 +19,10 @@ import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 public class Bedrock_v685 extends Bedrock_v671 {
+
+    protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v671.PARTICLE_TYPES.toBuilder()
+            .insert(93, ParticleType.OMINOUS_ITEM_SPAWNER)
+            .build();
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
             .toBuilder()
@@ -54,6 +55,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()
+            .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .replace(LEVEL_EVENT_BLOCK + 115, LevelEvent.PARTICLE_TRIAL_SPAWNER_DETECTION_CHARGED)
             .insert(LEVEL_EVENT_BLOCK + 116, LevelEvent.PARTICLE_TRIAL_SPAWNER_BECOME_CHARGED)
             .insert(LEVEL_EVENT_BLOCK + 117, LevelEvent.ALL_PLAYERS_SLEEPING)
