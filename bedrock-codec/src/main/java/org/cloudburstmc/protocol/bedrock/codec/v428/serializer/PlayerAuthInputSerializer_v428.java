@@ -93,7 +93,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_BLOCK_ACTIONS)) {
-            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData, 32); // 32 is more than enough
+            helper.readArray(buffer, packet.getPlayerActions(), VarInts::readInt, this::readPlayerBlockActionData);
         }
     }
 
