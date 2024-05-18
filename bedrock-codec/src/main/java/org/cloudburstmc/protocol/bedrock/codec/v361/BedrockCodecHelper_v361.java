@@ -82,9 +82,9 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
                         entityDataMap.put(definition.getType(), transformer.deserialize(this, entityDataMap, value));
                     }
                 }
-            } else {
-                log.debug("Unknown entity data: {} type {} value {}", id, format, value);
             }
+            
+            log.debug("Unknown entity data: {} type {} value {}", id, format, value);
         }
     }
 

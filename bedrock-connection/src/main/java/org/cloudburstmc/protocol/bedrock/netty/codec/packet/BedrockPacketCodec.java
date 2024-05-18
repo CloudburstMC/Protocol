@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
-import io.netty.util.Attribute;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.cloudburstmc.protocol.bedrock.PacketDirection;
@@ -52,7 +51,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
                 msg.setPacketBuffer(buf.retain());
                 out.add(msg.retain());
             } catch (Throwable t) {
-                log.error("Error encoding packet {}", msg.getPacket(), t);
+                log.debug("Error encoding packet {}", msg.getPacket(), t);
             } finally {
                 buf.release();
             }
@@ -70,7 +69,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
             wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId(), this.inboundRecipient));
             out.add(wrapper.retain());
         } catch (Throwable t) {
-            log.info("Failed to decode packet", t);
+            log.debug("Failed to decode packet", t);
             throw t;
         } finally {
             wrapper.release();

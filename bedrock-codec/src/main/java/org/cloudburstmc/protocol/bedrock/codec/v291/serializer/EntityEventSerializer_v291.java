@@ -31,7 +31,7 @@ public class EntityEventSerializer_v291 implements BedrockPacketSerializer<Entit
         int event = buffer.readUnsignedByte();
         packet.setType(this.typeMap.getType(event));
         packet.setData(VarInts.readInt(buffer));
-        if (packet.getType() == null) {
+        if (log.isDebugEnabled() && packet.getType() == null) {
             log.debug("Unknown EntityEvent {} in packet {}", event, packet);
         }
     }

@@ -5,8 +5,6 @@ import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockBatchWrapper;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -17,8 +15,6 @@ import java.util.Queue;
 public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
 
     public static final String NAME = "bedrock-batch-encoder";
-
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockBatchEncoder.class);
 
     private final Queue<BedrockPacketWrapper> messages = new ArrayDeque<>();
 
