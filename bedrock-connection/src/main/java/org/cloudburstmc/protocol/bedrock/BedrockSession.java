@@ -112,8 +112,6 @@ public abstract class BedrockSession {
         BedrockPacket packet = wrapper.getPacket();
         this.logInbound(packet);
 
-        if (!log.isDebugEnabled()) return;
-
         if (packetHandler == null) {
             log.debug("Received packet without a packet handler for {}:{}: {}", this.getSocketAddress(), this.subClientId, packet);
         } else if (this.packetHandler.handlePacket(packet) == PacketSignal.UNHANDLED) {
