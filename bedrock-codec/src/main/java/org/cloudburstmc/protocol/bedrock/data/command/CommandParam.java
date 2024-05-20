@@ -97,7 +97,10 @@ public class CommandParam {
     public static final CommandParam HAS_PROPERTY_ELEMENT = new CommandParam(CommandParamType.HAS_PROPERTY_ELEMENT);
     public static final CommandParam HAS_PROPERTY_ELEMENTS = new CommandParam(CommandParamType.HAS_PROPERTY_ELEMENTS);
     public static final CommandParam HAS_PROPERTY_SELECTOR = new CommandParam(CommandParamType.HAS_PROPERTY_SELECTOR);
-
+    public static final CommandParam CODE_BUILDER_ARG = new CommandParam(CommandParamType.CODE_BUILDER_ARG);
+    public static final CommandParam CODE_BUILDER_ARGS = new CommandParam(CommandParamType.CODE_BUILDER_ARGS);
+    public static final CommandParam CODE_BUILDER_SELECT_PARAM = new CommandParam(CommandParamType.CODE_BUILDER_SELECT_PARAM);
+    public static final CommandParam CODE_BUILDER_SELECTOR = new CommandParam(CommandParamType.CODE_BUILDER_SELECTOR);
 
     private final CommandParamType paramType;
     private final int defaultValue;

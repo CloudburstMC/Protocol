@@ -20,5 +20,9 @@ public enum ItemUseType {
     /**
      * @since 594
      */
-    BRUSHING_COMPLETED
+    BRUSHING_COMPLETED,
+    /**
+     * @since v685
+     */
+    OPENED_VAULT
 }

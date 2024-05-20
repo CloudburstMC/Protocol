@@ -99,6 +99,12 @@ public enum LevelEvent implements LevelEventType {
      * @since v662
      */
     PARTICLE_BREEZE_WIND_EXPLOSION,
+    /**
+     * @since v685
+     */
+    PARTICLE_TRIAL_SPAWNER_DETECTION_CHARGED,
+    PARTICLE_TRIAL_SPAWNER_BECOME_CHARGED,
+    PARTICLE_SMASH_ATTACK_GROUND_DUST,
 
     SCULK_CATALYST_BLOOM,
     SCULK_CHARGE,
@@ -152,4 +158,8 @@ public enum LevelEvent implements LevelEventType {
     ANIMATION_VAULT_ACTIVATE,
     ANIMATION_VAULT_DEACTIVATE,
     ANIMATION_VAULT_EJECT_ITEM,
+    /**
+     * @since v685
+     */
+    ANIMATION_SPAWN_COBWEB,
 }

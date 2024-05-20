@@ -835,4 +835,8 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(SetHudPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(AwardAchievementPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

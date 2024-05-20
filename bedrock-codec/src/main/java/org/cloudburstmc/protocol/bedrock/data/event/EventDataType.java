@@ -34,5 +34,9 @@ public enum EventDataType {
     /**
      * @since v589
      */
-    CAREFUL_RESTORATION
+    CAREFUL_RESTORATION,
+    /**
+     * @since v685
+     */
+    ITEM_USED_EVENT
 }

@@ -3,6 +3,9 @@ package org.cloudburstmc.protocol.bedrock.data;
 public enum PlayerAuthInputData {
     ASCEND,
     DESCEND,
+    /**
+     * @deprecated since v685
+     */
     NORTH_JUMP,
     JUMP_DOWN,
     SPRINT_DOWN,
@@ -81,5 +84,9 @@ public enum PlayerAuthInputData {
     /**
      * @since v662
      */
-    PADDLE_RIGHT
+    PADDLE_RIGHT,
+    /**
+     * @since v685
+     */
+    BLOCK_BREAKING_DELAY_ENABLED
 }

@@ -1,18 +1,19 @@
 package org.cloudburstmc.protocol.bedrock.codec.v662;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketDefinition;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelSoundEvent1Serializer_v291;
+import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2Serializer_v313;
+import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v575.BedrockCodecHelper_v575;
-import org.cloudburstmc.protocol.bedrock.codec.v582.Bedrock_v582;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.codec.v649.Bedrock_v649;
 import org.cloudburstmc.protocol.bedrock.codec.v662.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
-import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
+import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.packet.*;
@@ -59,6 +60,21 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .replace(14, TextProcessingEventOrigin.SERVER_FORM) // replaces PASS_THROUGH_WITHOUT_SIFT
             .build();
 
+    protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v649.SOUND_EVENTS
+            .toBuilder()
+            .replace(500, SoundEvent.VAULT_OPEN_SHUTTER)
+            .insert(501, SoundEvent.VAULT_CLOSE_SHUTTER)
+            .insert(502, SoundEvent.VAULT_EJECT_ITEM)
+            .insert(503, SoundEvent.VAULT_INSERT_ITEM)
+            .insert(504, SoundEvent.VAULT_INSERT_ITEM_FAIL)
+            .insert(505, SoundEvent.VAULT_AMBIENT)
+            .insert(506, SoundEvent.VAULT_ACTIVATE)
+            .insert(507, SoundEvent.VAULT_DEACTIVATE)
+            .insert(508, SoundEvent.HURT_REDUCED)
+            .insert(509, SoundEvent.WIND_CHARGE_BURST)
+            .insert(511, SoundEvent.UNDEFINED)
+            .build();
+
     public static final BedrockCodec CODEC = Bedrock_v649.CODEC.toBuilder()
             .raknetProtocolVersion(11)
             .protocolVersion(662)
@@ -66,6 +82,9 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .helper(() -> new BedrockCodecHelper_v575(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
+            .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
+            .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
+            .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v594(COMMAND_PARAMS))
             .updateSerializer(LecternUpdatePacket.class, LecternUpdateSerializer_v662.INSTANCE)
             .updateSerializer(MobEffectPacket.class, MobEffectSerializer_v662.INSTANCE)

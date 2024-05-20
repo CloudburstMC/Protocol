@@ -597,6 +597,118 @@ public enum SoundEvent {
      * @since v649
      */
     REFLECT,
+    /**
+     * @since v662
+     */
+    VAULT_OPEN_SHUTTER,
+    /**
+     * @since v662
+     */
+    VAULT_CLOSE_SHUTTER,
+    /**
+     * @since v662
+     */
+    VAULT_EJECT_ITEM,
+    /**
+     * @since v662
+     */
+    VAULT_INSERT_ITEM,
+    /**
+     * @since v662
+     */
+    VAULT_INSERT_ITEM_FAIL,
+    /**
+     * @since v662
+     */
+    VAULT_AMBIENT,
+    /**
+     * @since v662
+     */
+    VAULT_ACTIVATE,
+    /**
+     * @since v662
+     */
+    VAULT_DEACTIVATE,
+    /**
+     * @since v662
+     */
+    HURT_REDUCED,
+    /**
+     * @since v662
+     */
+    WIND_CHARGE_BURST,
+    /**
+     * @since v671
+     */
+    ARMOR_CRACK_WOLF,
+    /**
+     * @since v671
+     */
+    ARMOR_BREAK_WOLF,
+    /**
+     * @since v671
+     */
+    ARMOR_REPAIR_WOLF,
+    /**
+     * @since v671
+     */
+    MACE_SMASH_AIR,
+    /**
+     * @since v671
+     */
+    MACE_SMASH_GROUND,
+    /**
+     * @since v671
+     */
+    MACE_SMASH_HEAVY_GROUND,
+    /**
+     * @since v685
+     */
+    TRAIL_SPAWNER_CHARGE_ACTIVATE,
+    /**
+     * @since v685
+     */
+    TRAIL_SPAWNER_AMBIENT_OMINOUS,
+    /**
+     * @since v685
+     */
+    OMINOUS_ITEM_SPAWNER_SPAWN_ITEM,
+    /**
+     * @since v685
+     */
+    OMINOUS_BOTTLE_END_USE,
+    /**
+     * @since v685
+     */
+    OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN,
+    /**
+     * @since v685
+     */
+    APPLY_EFFECT_BAD_OMEN,
+    /**
+     * @since v685
+     */
+    APPLY_EFFECT_RAID_OMEN,
+    /**
+     * @since v685
+     */
+    APPLY_EFFECT_TRIAL_OMEN,
+    /**
+     * @since v685
+     */
+    OMINOUS_ITEM_SPAWNER_ABOUT_TO_SPAWN_ITEM,
+    /**
+     * @since v685
+     */
+    RECORD_CREATOR,
+    /**
+     * @since v685
+     */
+    RECORD_CREATOR_MUSIC_BOX,
+    /**
+     * @since v685
+     */
+    RECORD_PRECIPICE,
 
     UNDEFINED
 }
