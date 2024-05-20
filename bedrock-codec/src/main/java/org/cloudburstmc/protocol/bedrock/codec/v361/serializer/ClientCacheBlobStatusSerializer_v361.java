@@ -33,10 +33,10 @@ public class ClientCacheBlobStatusSerializer_v361 implements BedrockPacketSerial
         int maxLength = helper.getEncodingSettings().maxListSize();
 
         int naksLength = VarInts.readUnsignedInt(buffer);
-        checkArgument(naksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", naksLength, maxLength);
+        checkArgument(maxLength == 0 || naksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", naksLength, maxLength);
 
         int acksLength = VarInts.readUnsignedInt(buffer);
-        checkArgument(acksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", acksLength, maxLength);
+        checkArgument(maxLength == 0 || acksLength <= maxLength, "Tried to read %s Nacks but maximum is %s", acksLength, maxLength);
 
         LongList naks = packet.getNaks();
         for (int i = 0; i < naksLength; i++) {
