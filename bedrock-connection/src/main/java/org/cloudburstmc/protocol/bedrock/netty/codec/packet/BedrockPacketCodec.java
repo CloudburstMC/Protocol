@@ -51,7 +51,9 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
                 msg.setPacketBuffer(buf.retain());
                 out.add(msg.retain());
             } catch (Throwable t) {
-                log.debug("Error encoding packet {}", msg.getPacket(), t);
+                if (log.isDebugEnabled()) {
+                    log.debug("Error encoding packet {}", msg.getPacket(), t);
+                }
             } finally {
                 buf.release();
             }
@@ -69,7 +71,9 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
             wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId(), this.inboundRecipient));
             out.add(wrapper.retain());
         } catch (Throwable t) {
-            log.debug("Failed to decode packet", t);
+            if (log.isDebugEnabled()) {
+                log.debug("Failed to decode packet", t);
+            }
             throw t;
         } finally {
             wrapper.release();
