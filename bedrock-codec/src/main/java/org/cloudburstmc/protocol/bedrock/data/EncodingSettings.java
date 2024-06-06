@@ -32,7 +32,7 @@ public class EncodingSettings {
             .maxByteArraySize(1024 * 1024 * 20) // 20MB
             .maxNetworkNBTSize(1024 * 1024 * 10) // 10MB
             .maxItemNBTSize(1024 * 1024 * 5) // 5MB
-            .maxStringLength(1024 * 1024) // 1MB
+            .maxStringLength(1024 * 1024 * 2) // 2MB
             .build();
 
     /**
