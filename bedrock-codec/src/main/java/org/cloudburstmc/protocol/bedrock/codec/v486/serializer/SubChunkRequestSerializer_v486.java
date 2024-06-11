@@ -25,7 +25,7 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
         packet.setDimension(VarInts.readInt(buffer));
         packet.setSubChunkPosition(helper.readVector3i(buffer));
-        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset, 2048); // Somehow client sometimes requests over 1000 sub chunks
+        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset, 3072); // Somehow client sometimes requests over 1000 sub chunks
     }
 
     protected void writeSubChunkOffset(ByteBuf buffer, Vector3i offsetPosition) {

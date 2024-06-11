@@ -19,6 +19,6 @@ public class PurchaseReceiptSerializer_v291 implements BedrockPacketSerializer<P
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PurchaseReceiptPacket packet) {
-        helper.readArray(buffer, packet.getReceipts(), helper::readString);
+        helper.readArray(buffer, packet.getReceipts(), buf -> helper.readStringMaxLen(buf, 1024 * 128)); // This json is usually bigger than other strings
     }
 }

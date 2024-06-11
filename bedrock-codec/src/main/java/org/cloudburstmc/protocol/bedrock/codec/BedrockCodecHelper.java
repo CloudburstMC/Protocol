@@ -150,6 +150,8 @@ public interface BedrockCodecHelper {
 
     String readString(ByteBuf buffer);
 
+    String readStringMaxLen(ByteBuf buffer, int maxLength);
+
     void writeString(ByteBuf buffer, String string);
 
     UUID readUuid(ByteBuf buffer);
