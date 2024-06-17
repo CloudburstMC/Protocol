@@ -15,7 +15,7 @@ import java.util.Set;
 public class PlayerArmorDamageSerializer_v407 implements BedrockPacketSerializer<PlayerArmorDamagePacket> {
     public static final PlayerArmorDamageSerializer_v407 INSTANCE = new PlayerArmorDamageSerializer_v407();
 
-    private static final PlayerArmorDamageFlag[] FLAGS = PlayerArmorDamageFlag.values();
+    protected static final PlayerArmorDamageFlag[] FLAGS = PlayerArmorDamageFlag.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerArmorDamagePacket packet) {

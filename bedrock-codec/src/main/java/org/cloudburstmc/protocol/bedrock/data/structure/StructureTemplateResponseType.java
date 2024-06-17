@@ -6,6 +6,7 @@ public enum StructureTemplateResponseType {
     QUERY,
     /**
      * @since v560
+     * @deprecated since v705
      */
     IMPORT;
 

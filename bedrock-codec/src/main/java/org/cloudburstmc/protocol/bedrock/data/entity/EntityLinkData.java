@@ -11,10 +11,16 @@ public class EntityLinkData {
     private final Type type;
     private final boolean immediate;
     private final boolean riderInitiated;
+    private final float vehicleAngularVelocity;
 
     @Deprecated
     public EntityLinkData(long from, long to, Type type, boolean immediate) {
-        this(from, to, type, immediate, false);
+        this(from, to, type, immediate, false, 0f);
+    }
+
+    @Deprecated
+    public EntityLinkData(long from, long to, Type type, boolean immediate, boolean riderInitiated) {
+        this(from, to, type, immediate, riderInitiated, 0f);
     }
 
     public enum Type {

@@ -23,4 +23,13 @@ public class ItemUseTransaction {
     private Vector3f playerPosition;
     private Vector3f clickPosition;
     private BlockDefinition blockDefinition;
+    /**
+     * @since v705
+     */
+    private PredictedResult clientInteractPrediction;
+
+    public enum PredictedResult {
+        FAILURE,
+        SUCCESS
+    }
 }

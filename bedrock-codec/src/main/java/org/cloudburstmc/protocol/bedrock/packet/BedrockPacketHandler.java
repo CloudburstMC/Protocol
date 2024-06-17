@@ -839,4 +839,16 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(AwardAchievementPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ClientboundCloseFormPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundLoadingScreenPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(JigsawStructureDataPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
