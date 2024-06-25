@@ -51,7 +51,7 @@ public class Bedrock_v685 extends Bedrock_v671 {
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
             .toBuilder()
-            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.NBT) // TODO check data format
+            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.LONG)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()
