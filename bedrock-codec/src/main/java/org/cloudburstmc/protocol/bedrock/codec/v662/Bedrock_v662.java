@@ -22,6 +22,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 public class Bedrock_v662 extends Bedrock_v649 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v649.COMMAND_PARAMS.toBuilder()
+            .remove(134217728)//remove CommandParam.CHAINED_COMMAND
             .shift(24, 4)
             .insert(24, CommandParam.RATIONAL_RANGE_VAL)
             .insert(25, CommandParam.RATIONAL_RANGE_POST_VAL)
@@ -36,6 +37,7 @@ public class Bedrock_v662 extends Bedrock_v649 {
             .insert(53, CommandParam.HAS_PROPERTY_ELEMENT)
             .insert(54, CommandParam.HAS_PROPERTY_ELEMENTS)
             .insert(55, CommandParam.HAS_PROPERTY_SELECTOR)
+            .insert(134217728, CommandParam.CHAINED_COMMAND)//reinsert, avoid shift
             .build();
 
     protected static final TypeMap<ParticleType> PARTICLE_TYPES = Bedrock_v649.PARTICLE_TYPES
