@@ -11,6 +11,11 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v471 {
+    // A limit of how many sub chunks can client request within a single packet
+    // It seems that client does not have any cap on how many sub chunks it can request,
+    // and in some edge cases it requests all sub chunks within the view distance
+    // The limit set here is based on maximum view distance vanilla client supports (96 chunks)
+    private static final int MAX_SUB_CHUNKS = (int) (0.785 * 96 * 96 * 24); // circle area * 96 chunks * 24 sub chunks per chunk
 
     public static final SubChunkRequestSerializer_v486 INSTANCE = new SubChunkRequestSerializer_v486();
 
@@ -25,7 +30,7 @@ public class SubChunkRequestSerializer_v486 extends SubChunkRequestSerializer_v4
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubChunkRequestPacket packet) {
         packet.setDimension(VarInts.readInt(buffer));
         packet.setSubChunkPosition(helper.readVector3i(buffer));
-        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset, 3072); // Somehow client sometimes requests over 1000 sub chunks
+        helper.readArray(buffer, packet.getPositionOffsets(), ByteBuf::readIntLE, this::readSubChunkOffset, MAX_SUB_CHUNKS);
     }
 
     protected void writeSubChunkOffset(ByteBuf buffer, Vector3i offsetPosition) {
