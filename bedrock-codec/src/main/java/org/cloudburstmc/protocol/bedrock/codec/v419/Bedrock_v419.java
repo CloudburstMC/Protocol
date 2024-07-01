@@ -7,6 +7,8 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.AvailableCommandsSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.codec.v408.Bedrock_v408;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.*;
+import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
+import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandParam;
@@ -23,6 +25,13 @@ public class Bedrock_v419 extends Bedrock_v408 {
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v408.SOUND_EVENTS.toBuilder()
             .replace(317, SoundEvent.EQUIP_NETHERITE)
             .insert(318, SoundEvent.UNDEFINED)
+            .build();
+
+    protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v408.LEVEL_EVENTS.toBuilder()
+            .insert(1900, LevelEvent.QUEUE_CUSTOM_MUSIC)
+            .insert(1901, LevelEvent.PLAY_CUSTOM_MUSIC)
+            .insert(1902, LevelEvent.STOP_CUSTOM_MUSIC)
+            .insert(1903, LevelEvent.SET_MUSIC_VOLUME)
             .build();
 
     public static BedrockCodec CODEC = Bedrock_v408.CODEC.toBuilder()
