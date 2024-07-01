@@ -41,6 +41,12 @@ public enum LevelEvent implements LevelEventType {
     SOUND_INK_SACE_USED,
     SOUND_AMETHYST_RESONATE,
 
+    // music since v417
+    QUEUE_CUSTOM_MUSIC,
+    PLAY_CUSTOM_MUSIC,
+    STOP_CUSTOM_MUSIC,
+    SET_MUSIC_VOLUME,
+
     // particles
     PARTICLE_SHOOT,
     PARTICLE_DESTROY_BLOCK,
