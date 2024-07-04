@@ -26,8 +26,8 @@ public class Bedrock_v685 extends Bedrock_v671 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
             .toBuilder()
-            .insert(516, SoundEvent.TRAIL_SPAWNER_CHARGE_ACTIVATE)
-            .insert(517, SoundEvent.TRAIL_SPAWNER_AMBIENT_OMINOUS)
+            .insert(516, SoundEvent.TRIAL_SPAWNER_CHARGE_ACTIVATE)
+            .insert(517, SoundEvent.TRIAL_SPAWNER_AMBIENT_OMINOUS)
             .insert(518, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM)
             .insert(519, SoundEvent.OMINOUS_BOTTLE_END_USE)
             .replace(521, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN)

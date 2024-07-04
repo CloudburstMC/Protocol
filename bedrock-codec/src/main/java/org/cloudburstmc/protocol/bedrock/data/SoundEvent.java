@@ -664,11 +664,11 @@ public enum SoundEvent {
     /**
      * @since v685
      */
-    TRAIL_SPAWNER_CHARGE_ACTIVATE,
+    TRIAL_SPAWNER_CHARGE_ACTIVATE,
     /**
      * @since v685
      */
-    TRAIL_SPAWNER_AMBIENT_OMINOUS,
+    TRIAL_SPAWNER_AMBIENT_OMINOUS,
     /**
      * @since v685
      */
