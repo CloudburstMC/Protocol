@@ -48,6 +48,20 @@ public class EncodingSettings {
             .maxStringLength(1024 * 32) // 32KB
             .build();
 
+    /**
+     * A {@link EncodingSettings} instance for implementations
+     * that don't need such limits. (e.g. Proxy server client <-> downstream server connection)
+     * This setting is not generally recommended for use in most cases,
+     * as it will allow any large packets to be received.
+     */
+    public static final EncodingSettings UNLIMITED = EncodingSettings.builder()
+            .maxListSize(-1)
+            .maxByteArraySize(-1)
+            .maxNetworkNBTSize(-1)
+            .maxItemNBTSize(-1)
+            .maxStringLength(-1)
+            .build();
+
     private final int maxListSize;
     private final int maxByteArraySize;
     private final int maxNetworkNBTSize;
