@@ -50,7 +50,7 @@ public class EncodingSettings {
 
     /**
      * A {@link EncodingSettings} instance for implementations
-     * that don't need such limits. (e.g. Proxy server client <-> downstream server connection)
+     * that don't need such limits. (e.g. Proxy server client &lt;-&gt; downstream server connection)
      * This setting is not generally recommended for use in most cases,
      * as it will allow any large packets to be received.
      */
