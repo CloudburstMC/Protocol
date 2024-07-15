@@ -26,8 +26,8 @@ public class Bedrock_v685 extends Bedrock_v671 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v671.SOUND_EVENTS
             .toBuilder()
-            .insert(516, SoundEvent.TRAIL_SPAWNER_CHARGE_ACTIVATE)
-            .insert(517, SoundEvent.TRAIL_SPAWNER_AMBIENT_OMINOUS)
+            .insert(516, SoundEvent.TRIAL_SPAWNER_CHARGE_ACTIVATE)
+            .insert(517, SoundEvent.TRIAL_SPAWNER_AMBIENT_OMINOUS)
             .insert(518, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM)
             .insert(519, SoundEvent.OMINOUS_BOTTLE_END_USE)
             .replace(521, SoundEvent.OMINOUS_ITEM_SPAWNER_SPAWN_ITEM_BEGIN)
@@ -42,16 +42,18 @@ public class Bedrock_v685 extends Bedrock_v671 {
             .build();
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v671.COMMAND_PARAMS.toBuilder()
+            .remove(134217728)//remove CommandParam.CHAINED_COMMAND
             .shift(86, 4)
             .insert(86, CommandParam.CODE_BUILDER_ARG)
             .insert(87, CommandParam.CODE_BUILDER_ARGS)
             .insert(88, CommandParam.CODE_BUILDER_SELECT_PARAM)
             .insert(89, CommandParam.CODE_BUILDER_SELECTOR)
+            .insert(134217728, CommandParam.CHAINED_COMMAND)//reinsert, avoid shift
             .build();
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v671.ENTITY_DATA
             .toBuilder()
-            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.NBT) // TODO check data format
+            .insert(EntityDataTypes.VISIBLE_MOB_EFFECTS, 131, EntityDataFormat.LONG)
             .build();
 
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v671.LEVEL_EVENTS.toBuilder()

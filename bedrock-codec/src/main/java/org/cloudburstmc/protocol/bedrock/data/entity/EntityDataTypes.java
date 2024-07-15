@@ -275,5 +275,5 @@ public class EntityDataTypes {
     /**
      * @since v685
      */
-    public static final EntityDataType<NbtMap> VISIBLE_MOB_EFFECTS = new EntityDataType<>(NbtMap.class, "VISIBLE_MOB_EFFECTS");
+    public static final EntityDataType<Long> VISIBLE_MOB_EFFECTS = new EntityDataType<>(Long.class, "VISIBLE_MOB_EFFECTS");
 }

@@ -12,7 +12,7 @@ public class ContainerCloseSerializer_v685 implements BedrockPacketSerializer<Co
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ContainerClosePacket packet) {
         buffer.writeByte(packet.getId());
-        buffer.writeByte(packet.getType().ordinal());
+        buffer.writeByte(packet.getType().getId());
         buffer.writeBoolean(packet.isServerInitiated());
     }
 

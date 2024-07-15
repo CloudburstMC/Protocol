@@ -27,9 +27,9 @@ public class Bedrock_v649 extends Bedrock_v630 {
     protected static final TypeMap<LevelEventType> LEVEL_EVENTS = Bedrock_v630.LEVEL_EVENTS.toBuilder()
             .replace(LEVEL_EVENT_BLOCK + 109, LevelEvent.PARTICLE_SHOOT_WHITE_SMOKE)
             .replace(LEVEL_EVENT_BLOCK + 110, LevelEvent.PARTICLE_WIND_EXPLOSION)
-            .insert(LEVEL_EVENT_BLOCK + 111, LevelEvent.PARTICLE_TRAIL_SPAWNER_DETECTION)
-            .insert(LEVEL_EVENT_BLOCK + 112, LevelEvent.PARTICLE_TRAIL_SPAWNER_SPAWNING)
-            .insert(LEVEL_EVENT_BLOCK + 113, LevelEvent.PARTICLE_TRAIL_SPAWNER_EJECTING)
+            .insert(LEVEL_EVENT_BLOCK + 111, LevelEvent.PARTICLE_TRIAL_SPAWNER_DETECTION)
+            .insert(LEVEL_EVENT_BLOCK + 112, LevelEvent.PARTICLE_TRIAL_SPAWNER_SPAWNING)
+            .insert(LEVEL_EVENT_BLOCK + 113, LevelEvent.PARTICLE_TRIAL_SPAWNER_EJECTING)
             .insert(LEVEL_EVENT_BLOCK + 114, LevelEvent.ALL_PLAYERS_SLEEPING)
             .insert(LEVEL_EVENT_PARTICLE_TYPE, PARTICLE_TYPES)
             .build();

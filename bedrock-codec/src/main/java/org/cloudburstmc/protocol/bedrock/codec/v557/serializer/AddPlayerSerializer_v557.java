@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v557.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.AddPlayerSerializer_v534;
-import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.UpdateAbilitiesSerializer_v534;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 

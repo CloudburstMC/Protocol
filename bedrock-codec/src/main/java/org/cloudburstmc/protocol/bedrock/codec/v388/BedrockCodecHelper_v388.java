@@ -39,7 +39,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
         this.readArray(buffer, animations, ByteBuf::readIntLE, (b, h) -> this.readAnimationData(b));
 
         ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
-        String geometryData = this.readString(buffer);
+        String geometryData = this.readStringMaxLen(buffer, 1024 * 256); // Allow larger geometry data
         String animationData = this.readString(buffer);
         boolean premium = buffer.readBoolean();
         boolean persona = buffer.readBoolean();
@@ -77,7 +77,7 @@ public class BedrockCodecHelper_v388 extends BedrockCodecHelper_v361 {
 
     @Override
     public AnimationData readAnimationData(ByteBuf buffer) {
-        ImageData image = this.readImage(buffer, ImageData.SKIN_128_128_SIZE);
+        ImageData image = this.readImage(buffer, ImageData.ANIMATION_SIZE);
         AnimatedTextureType type = TEXTURE_TYPES[buffer.readIntLE()];
         float frames = buffer.readFloatLE();
         return new AnimationData(image, type, frames);

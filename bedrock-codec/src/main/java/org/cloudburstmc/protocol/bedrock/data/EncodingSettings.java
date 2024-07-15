@@ -32,7 +32,7 @@ public class EncodingSettings {
             .maxByteArraySize(1024 * 1024 * 20) // 20MB
             .maxNetworkNBTSize(1024 * 1024 * 10) // 10MB
             .maxItemNBTSize(1024 * 1024 * 5) // 5MB
-            .maxStringLength(1024 * 1024) // 1MB
+            .maxStringLength(1024 * 1024 * 2) // 2MB
             .build();
 
     /**
@@ -46,6 +46,20 @@ public class EncodingSettings {
             .maxNetworkNBTSize(1024 * 512) // 500KB
             .maxItemNBTSize(1024 * 100) // 100KB
             .maxStringLength(1024 * 32) // 32KB
+            .build();
+
+    /**
+     * A {@link EncodingSettings} instance for implementations
+     * that don't need such limits. (e.g. Proxy server client &lt;-&gt; downstream server connection)
+     * This setting is not generally recommended for use in most cases,
+     * as it will allow any large packets to be received.
+     */
+    public static final EncodingSettings UNLIMITED = EncodingSettings.builder()
+            .maxListSize(-1)
+            .maxByteArraySize(-1)
+            .maxNetworkNBTSize(-1)
+            .maxItemNBTSize(-1)
+            .maxStringLength(-1)
             .build();
 
     private final int maxListSize;

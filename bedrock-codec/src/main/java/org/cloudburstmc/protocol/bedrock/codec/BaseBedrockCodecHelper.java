@@ -109,9 +109,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     public String readString(ByteBuf buffer) {
+        return this.readStringMaxLen(buffer, this.encodingSettings.maxStringLength());
+    }
+
+    @Override
+    public String readStringMaxLen(ByteBuf buffer, int maxLength) {
         int length = VarInts.readUnsignedInt(buffer);
-        checkArgument(this.encodingSettings.maxStringLength() <= 0 || length <= this.encodingSettings.maxStringLength(),
-                "Tried to read %s bytes but maximum is %s", length, this.encodingSettings.maxStringLength());
+        checkArgument(maxLength <= 0 || length <= maxLength,
+                "Tried to read %s bytes but maximum is %s", length, maxLength);
         return (String) buffer.readCharSequence(length, StandardCharsets.UTF_8);
     }
 

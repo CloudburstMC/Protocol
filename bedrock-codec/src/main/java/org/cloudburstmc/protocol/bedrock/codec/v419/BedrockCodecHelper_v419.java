@@ -46,7 +46,7 @@ public class BedrockCodecHelper_v419 extends BedrockCodecHelper_v407 {
 
     @Override
     public AnimationData readAnimationData(ByteBuf buffer) {
-        ImageData image = this.readImage(buffer, ImageData.SKIN_128_128_SIZE);
+        ImageData image = this.readImage(buffer, ImageData.ANIMATION_SIZE);
         AnimatedTextureType textureType = TEXTURE_TYPES[buffer.readIntLE()];
         float frames = buffer.readFloatLE();
         AnimationExpressionType expressionType = EXPRESSION_TYPES[buffer.readIntLE()];

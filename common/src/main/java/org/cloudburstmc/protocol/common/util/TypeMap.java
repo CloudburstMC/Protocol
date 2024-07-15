@@ -1,7 +1,5 @@
 package org.cloudburstmc.protocol.common.util;
 
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
@@ -19,8 +17,6 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public final class TypeMap<T> {
-
-    private static final InternalLogger log = InternalLoggerFactory.getInstance(TypeMap.class);
 
     private final String type;
     private final Object2IntMap<T> toId;

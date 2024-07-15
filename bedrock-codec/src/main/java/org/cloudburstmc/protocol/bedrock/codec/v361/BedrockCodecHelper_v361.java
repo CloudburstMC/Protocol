@@ -32,7 +32,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
         checkNotNull(entityDataMap, "entityDataDictionary");
 
         int length = VarInts.readUnsignedInt(buffer);
-        checkArgument(this.encodingSettings.maxListSize() == 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
+        checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
 
         for (int i = 0; i < length; i++) {
             int id = VarInts.readUnsignedInt(buffer);
