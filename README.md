@@ -65,6 +65,10 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 | Bedrock_v630 |  1.20.50 - 1.20.51  |
 | Bedrock_v649 |       1.20.60       |
 | Bedrock_v662 |       1.20.70       |
+| Bedrock_v671 |       1.20.80       |
+| Bedrock_v685 |       1.21.0        |
+| Bedrock_v686 |       1.21.2        |
+| Bedrock_v705 |       1.21.10       |
 
 ##### Repository:
 
@@ -101,6 +105,7 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 * [__Cloudburst__ - A bedrock first server software](https://github.com/CloudburstMC/Server)
 * [__ProxyPass__ - Vanilla server man-in-the-middle proxy](https://github.com/CloudburstMC/ProxyPass)
 * [__Geyser__ - A bridge between Bedrock and Java Edition](https://github.com/GeyserMC/Geyser)
-* [__BedrockConnect__ - Allow Xbox/Switch Bedrock clients to add and join servers](https://github.com/Pugmatt/BedrockConnect)
+* [__BedrockConnect
+  __ - Allow Xbox/Switch Bedrock clients to add and join servers](https://github.com/Pugmatt/BedrockConnect)
 
 _If you would like to add your project here, please create a pull request._
