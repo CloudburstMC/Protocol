@@ -22,7 +22,7 @@ public class BedrockCodecHelper_v471 extends BedrockCodecHelper_v465 {
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         switch (type) {
             case CRAFT_REPAIR_AND_DISENCHANT:
-                return new CraftGrindstoneAction(VarInts.readUnsignedInt(byteBuf), VarInts.readInt(byteBuf));
+                return new CraftGrindstoneAction(VarInts.readUnsignedInt(byteBuf), 0, VarInts.readInt(byteBuf));
             case CRAFT_LOOM:
                 return new CraftLoomAction(this.readString(byteBuf));
             default:

@@ -22,7 +22,7 @@ public class BedrockCodecHelper_v448 extends BedrockCodecHelper_v440 {
     protected ItemStackRequestAction readRequestActionData(ByteBuf byteBuf, ItemStackRequestActionType type) {
         if (type == ItemStackRequestActionType.CRAFT_RECIPE_AUTO) {
             return new AutoCraftRecipeAction(
-                    VarInts.readUnsignedInt(byteBuf), byteBuf.readUnsignedByte(), Collections.emptyList()
+                    VarInts.readUnsignedInt(byteBuf), byteBuf.readUnsignedByte(), Collections.emptyList(), 0
             );
         } else {
             return super.readRequestActionData(byteBuf, type);

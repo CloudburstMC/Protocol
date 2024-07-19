@@ -231,15 +231,17 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 );
             case CRAFT_RECIPE:
                 return new CraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf)
+                        VarInts.readUnsignedInt(byteBuf),
+                        0
                 );
             case CRAFT_RECIPE_AUTO:
                 return new AutoCraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf), 0, Collections.emptyList()
+                        VarInts.readUnsignedInt(byteBuf), 0, Collections.emptyList(), 0
                 );
             case CRAFT_CREATIVE:
                 return new CraftCreativeAction(
-                        VarInts.readUnsignedInt(byteBuf)
+                        VarInts.readUnsignedInt(byteBuf),
+                        0
                 );
             case CRAFT_NON_IMPLEMENTED_DEPRECATED:
                 return new CraftNonImplementedAction();
