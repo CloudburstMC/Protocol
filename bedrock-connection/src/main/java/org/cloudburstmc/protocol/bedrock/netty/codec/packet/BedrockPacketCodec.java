@@ -62,7 +62,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
 
     @Override
     protected final void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
-        BedrockPacketWrapper wrapper = new BedrockPacketWrapper();
+        BedrockPacketWrapper wrapper = BedrockPacketWrapper.create();
         wrapper.setPacketBuffer(msg.retainedSlice());
         try {
             int index = msg.readerIndex();

@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
-import org.cloudburstmc.protocol.bedrock.util.BatchFlag;
+import org.cloudburstmc.protocol.bedrock.util.PacketFlag;
 
 import java.util.List;
 import java.util.Set;
@@ -29,7 +29,7 @@ public class BedrockBatchWrapper extends AbstractReferenceCounted {
     private List<BedrockPacketWrapper> packets = new ObjectArrayList<>();
 
     private boolean modified;
-    private Set<BatchFlag> flags = new ObjectOpenHashSet<>();
+    private Set<PacketFlag> flags = new ObjectOpenHashSet<>();
 
     private BedrockBatchWrapper(ObjectPool.Handle<BedrockBatchWrapper> handle) {
         this.handle = handle;
@@ -41,20 +41,20 @@ public class BedrockBatchWrapper extends AbstractReferenceCounted {
 
     public static BedrockBatchWrapper newInstance(ByteBuf compressed, ByteBuf uncompressed) {
         BedrockBatchWrapper batch = RECYCLER.get();
-        batch.compressed = compressed;
-        batch.uncompressed = uncompressed;
-        batch.setRefCnt(1);
-
         if (!batch.packets.isEmpty() || !batch.flags.isEmpty()) {
             throw new IllegalStateException("Batch was not deallocated");
         }
+
+        batch.compressed = compressed;
+        batch.uncompressed = uncompressed;
+        batch.setRefCnt(1);
         return batch;
     }
 
     public static BedrockBatchWrapper create(int subClientId, BedrockPacket... packets) {
         BedrockBatchWrapper batch = BedrockBatchWrapper.newInstance();
         for (BedrockPacket packet : packets) {
-            batch.getPackets().add(new BedrockPacketWrapper(0, subClientId, 0, packet, null));
+            batch.getPackets().add(BedrockPacketWrapper.create(0, subClientId, 0, packet, null));
         }
         return batch;
     }
@@ -76,6 +76,14 @@ public class BedrockBatchWrapper extends AbstractReferenceCounted {
     public void addPacket(BedrockPacketWrapper wrapper) {
         this.packets.add(wrapper);
         this.modify();
+
+        if (!wrapper.getFlags().isEmpty()) {
+            for (PacketFlag flag : wrapper.getFlags()) {
+                if (flag.canInherit()) {
+                    this.flags.add(flag);
+                }
+            }
+        }
     }
 
     public void modify() {
@@ -109,15 +117,15 @@ public class BedrockBatchWrapper extends AbstractReferenceCounted {
         this.uncompressed = uncompressed;
     }
 
-    public void setFlag(BatchFlag flag) {
+    public void setFlag(PacketFlag flag) {
         this.flags.add(flag);
     }
 
-    public boolean hasFlag(BatchFlag flag) {
+    public boolean hasFlag(PacketFlag flag) {
         return this.flags.contains(flag);
     }
 
-    public void unsetFlag(BatchFlag flag) {
+    public void unsetFlag(PacketFlag flag) {
         this.flags.remove(flag);
     }
 

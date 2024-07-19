@@ -110,11 +110,11 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     public void sendPacket(int senderClientId, int targetClientId, BedrockPacket packet) {
-        this.packetQueue.add(new BedrockPacketWrapper(0, senderClientId, targetClientId, packet, null));
+        this.packetQueue.add(BedrockPacketWrapper.create(0, senderClientId, targetClientId, packet, null));
     }
 
     public void sendPacketImmediately(int senderClientId, int targetClientId, BedrockPacket packet) {
-        this.channel.writeAndFlush(new BedrockPacketWrapper(0, senderClientId, targetClientId, packet, null));
+        this.channel.writeAndFlush(BedrockPacketWrapper.create(0, senderClientId, targetClientId, packet, null));
     }
 
     public void enableEncryption(@NonNull SecretKey secretKey) {
