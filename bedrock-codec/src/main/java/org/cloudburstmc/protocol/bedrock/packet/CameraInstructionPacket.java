@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraFadeInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSetInstruction;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraTargetInstruction;
 import org.cloudburstmc.protocol.common.PacketSignal;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
@@ -16,6 +17,14 @@ public class CameraInstructionPacket implements BedrockPacket {
     private CameraSetInstruction setInstruction;
     private CameraFadeInstruction fadeInstruction;
     private OptionalBoolean clear = OptionalBoolean.empty();
+    /**
+     * @since v712
+     */
+    private CameraTargetInstruction targetInstruction;
+    /**
+     * @since v712
+     */
+    private OptionalBoolean removeTarget = OptionalBoolean.empty();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

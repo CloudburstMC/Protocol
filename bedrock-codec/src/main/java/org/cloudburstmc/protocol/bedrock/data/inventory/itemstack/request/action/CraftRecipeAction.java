@@ -11,6 +11,10 @@ import lombok.Value;
 @Value
 public class CraftRecipeAction implements RecipeItemStackRequestAction {
     int recipeNetworkId;
+    /**
+     * @since v712
+     */
+    int numberOfRequestedCrafts;
 
     @Override
     public ItemStackRequestActionType getType() {

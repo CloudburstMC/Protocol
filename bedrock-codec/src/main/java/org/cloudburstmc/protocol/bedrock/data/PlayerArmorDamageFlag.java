@@ -4,5 +4,9 @@ public enum PlayerArmorDamageFlag {
     HELMET,
     CHESTPLATE,
     LEGGINGS,
-    BOOTS
+    BOOTS,
+    /**
+     * @since v712
+     */
+    BODY
 }

@@ -13,6 +13,10 @@ public class InventorySlotPacket implements BedrockPacket {
     private int containerId;
     private int slot;
     private ItemData item;
+    /**
+     * @since v712
+     */
+    private int dynamicContainerId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -28,6 +28,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.bedrock.data.skin.AnimationData;
@@ -581,6 +582,16 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Override
     public void setCameraPresetDefinitions(DefinitionRegistry<NamedDefinition> registry) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer) {
         throw new UnsupportedOperationException();
     }
 }

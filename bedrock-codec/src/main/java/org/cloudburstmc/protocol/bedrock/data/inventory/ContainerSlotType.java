@@ -66,5 +66,9 @@ public enum ContainerSlotType {
     /**
      * @since v630
      */
-    CRAFTER_BLOCK_CONTAINER
+    CRAFTER_BLOCK_CONTAINER,
+    /**
+     * @since v712
+     */
+    DYNAMIC_CONTAINER
 }

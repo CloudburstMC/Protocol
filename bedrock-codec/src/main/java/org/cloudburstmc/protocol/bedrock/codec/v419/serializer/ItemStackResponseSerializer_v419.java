@@ -3,10 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v419.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v407.serializer.ItemStackResponseSerializer_v407;
-import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponse;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
-import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseStatus;
 import org.cloudburstmc.protocol.bedrock.packet.ItemStackResponsePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -28,10 +26,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
             if (response.getResult() != ItemStackResponseStatus.OK)
                 return;
 
-            helper.writeArray(buf, response.getContainers(), (buf2, containerEntry) -> {
-                helper.writeContainerSlotType(buf2, containerEntry.getContainer());
-                helper.writeArray(buf2, containerEntry.getItems(), this::writeItemEntry);
-            });
+            helper.writeArray(buf, response.getContainers(), helper::writeItemStackResponseContainer);
         });
     }
 
@@ -46,13 +41,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
                 return new ItemStackResponse(result, requestId, Collections.emptyList());
 
             List<ItemStackResponseContainer> containerEntries = new ArrayList<>();
-            helper.readArray(buf, containerEntries, buf2 -> {
-                ContainerSlotType container = helper.readContainerSlotType(buf2);
-
-                List<ItemStackResponseSlot> itemEntries = new ArrayList<>();
-                helper.readArray(buf2, itemEntries, byteBuf -> this.readItemEntry(buf2, helper));
-                return new ItemStackResponseContainer(container, itemEntries);
-            });
+            helper.readArray(buf, containerEntries, helper::readItemStackResponseContainer);
             return new ItemStackResponse(result, requestId, containerEntries);
         });
     }

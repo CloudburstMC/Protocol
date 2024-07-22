@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryTransactionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.ItemUseTransaction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.LegacySetItemSlotData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -46,6 +47,10 @@ public class InventoryTransactionPacket implements BedrockPacket {
      * @return block definition of block
      */
     private BlockDefinition blockDefinition;
+    /**
+     * @since v712
+     */
+    private ItemUseTransaction.TriggerType triggerType;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

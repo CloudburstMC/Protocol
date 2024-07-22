@@ -709,6 +709,14 @@ public enum SoundEvent {
      * @since v685
      */
     RECORD_PRECIPICE,
+    /**
+     * @since v712
+     */
+    IMITATE_BOGGED,
+    /**
+     * @since v712
+     */
+    VAULT_REJECT_REWARDED_PLAYER,
 
     UNDEFINED
 }

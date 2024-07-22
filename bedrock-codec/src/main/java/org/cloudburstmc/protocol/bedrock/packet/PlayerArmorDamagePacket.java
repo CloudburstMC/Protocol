@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString(doNotUseGetters = true)
 public class PlayerArmorDamagePacket implements BedrockPacket {
     private final Set<PlayerArmorDamageFlag> flags = EnumSet.noneOf(PlayerArmorDamageFlag.class);
-    private final int[] damage = new int[4];
+    private final int[] damage = new int[5];
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

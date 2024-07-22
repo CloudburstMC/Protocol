@@ -21,6 +21,10 @@ public class AbilityLayer {
         /**
          * @since v557
          */
-        EDITOR
+        EDITOR,
+        /**
+         * @since v712
+         */
+        LOADING_SCREEN
     }
 }

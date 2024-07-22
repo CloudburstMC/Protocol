@@ -23,4 +23,23 @@ public class ItemUseTransaction {
     private Vector3f playerPosition;
     private Vector3f clickPosition;
     private BlockDefinition blockDefinition;
+    /**
+     * @since v712
+     */
+    private PredictedResult clientInteractPrediction;
+    /**
+     * @since v712
+     */
+    private TriggerType triggerType;
+
+    public enum PredictedResult {
+        FAILURE,
+        SUCCESS
+    }
+
+    public enum TriggerType {
+        UNKNOWN,
+        PLAYER_INPUT,
+        SIMULATION_TICK
+    }
 }

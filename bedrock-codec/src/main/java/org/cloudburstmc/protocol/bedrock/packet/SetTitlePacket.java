@@ -22,6 +22,10 @@ public class SetTitlePacket implements BedrockPacket {
      * @since v448
      */
     private String platformOnlineId;
+    /**
+     * @since v712
+     */
+    private String filteredTitleText = "";
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

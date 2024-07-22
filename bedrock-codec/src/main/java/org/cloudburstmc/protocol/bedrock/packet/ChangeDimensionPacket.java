@@ -13,6 +13,10 @@ public class ChangeDimensionPacket implements BedrockPacket {
     private int dimension;
     private Vector3f position;
     private boolean respawn;
+    /**
+     * @since v712
+     */
+    private int loadingScreenId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -23,27 +23,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.serialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            //TODO use inventory transaction packet serialization?
-            ItemUseTransaction transaction = packet.getItemUseTransaction();
-            int legacyRequestId = transaction.getLegacyRequestId();
-            VarInts.writeInt(buffer, legacyRequestId);
-
-            if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-                helper.writeArray(buffer, transaction.getLegacySlots(), (buf, packetHelper, data) -> {
-                    buf.writeByte(data.getContainerId());
-                    packetHelper.writeByteArray(buf, data.getSlots());
-                });
-            }
-
-            helper.writeInventoryActions(buffer, transaction.getActions(), transaction.isUsingNetIds());
-            VarInts.writeUnsignedInt(buffer, transaction.getActionType());
-            helper.writeBlockPosition(buffer, transaction.getBlockPosition());
-            VarInts.writeInt(buffer, transaction.getBlockFace());
-            VarInts.writeInt(buffer, transaction.getHotbarSlot());
-            helper.writeItem(buffer, transaction.getItemInHand());
-            helper.writeVector3f(buffer, transaction.getPlayerPosition());
-            helper.writeVector3f(buffer, transaction.getClickPosition());
-            VarInts.writeUnsignedInt(buffer, transaction.getBlockDefinition().getRuntimeId());
+            this.writeItemUseTransaction(buffer, helper, packet.getItemUseTransaction());
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -63,29 +43,7 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
         super.deserialize(buffer, helper, packet);
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_INTERACTION)) {
-            ItemUseTransaction itemTransaction = new ItemUseTransaction();
-
-            int legacyRequestId = VarInts.readInt(buffer);
-            itemTransaction.setLegacyRequestId(legacyRequestId);
-
-            if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
-                helper.readArray(buffer, itemTransaction.getLegacySlots(), (buf, packetHelper) -> {
-                    byte containerId = buf.readByte();
-                    byte[] slots = packetHelper.readByteArray(buf, 89);
-                    return new LegacySetItemSlotData(containerId, slots);
-                });
-            }
-
-            boolean hasNetIds = helper.readInventoryActions(buffer, itemTransaction.getActions());
-            itemTransaction.setActionType(VarInts.readUnsignedInt(buffer));
-            itemTransaction.setBlockPosition(helper.readBlockPosition(buffer));
-            itemTransaction.setBlockFace(VarInts.readInt(buffer));
-            itemTransaction.setHotbarSlot(VarInts.readInt(buffer));
-            itemTransaction.setItemInHand(helper.readItem(buffer));
-            itemTransaction.setPlayerPosition(helper.readVector3f(buffer));
-            itemTransaction.setClickPosition(helper.readVector3f(buffer));
-            itemTransaction.setBlockDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
-            packet.setItemUseTransaction(itemTransaction);
+            packet.setItemUseTransaction(this.readItemUseTransaction(buffer, helper));
         }
 
         if (packet.getInputData().contains(PlayerAuthInputData.PERFORM_ITEM_STACK_REQUEST)) {
@@ -123,5 +81,54 @@ public class PlayerAuthInputSerializer_v428 extends PlayerAuthInputSerializer_v4
                 actionData.setFace(VarInts.readInt(buffer));
         }
         return actionData;
+    }
+
+    protected void writeItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseTransaction transaction) {
+        //TODO use inventory transaction packet serialization?
+        int legacyRequestId = transaction.getLegacyRequestId();
+        VarInts.writeInt(buffer, legacyRequestId);
+
+        if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
+            helper.writeArray(buffer, transaction.getLegacySlots(), (buf, packetHelper, data) -> {
+                buf.writeByte(data.getContainerId());
+                packetHelper.writeByteArray(buf, data.getSlots());
+            });
+        }
+
+        helper.writeInventoryActions(buffer, transaction.getActions(), transaction.isUsingNetIds());
+        VarInts.writeUnsignedInt(buffer, transaction.getActionType());
+        helper.writeBlockPosition(buffer, transaction.getBlockPosition());
+        VarInts.writeInt(buffer, transaction.getBlockFace());
+        VarInts.writeInt(buffer, transaction.getHotbarSlot());
+        helper.writeItem(buffer, transaction.getItemInHand());
+        helper.writeVector3f(buffer, transaction.getPlayerPosition());
+        helper.writeVector3f(buffer, transaction.getClickPosition());
+        VarInts.writeUnsignedInt(buffer, transaction.getBlockDefinition().getRuntimeId());
+    }
+
+    protected ItemUseTransaction readItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper) {
+        ItemUseTransaction itemTransaction = new ItemUseTransaction();
+
+        int legacyRequestId = VarInts.readInt(buffer);
+        itemTransaction.setLegacyRequestId(legacyRequestId);
+
+        if (legacyRequestId < -1 && (legacyRequestId & 1) == 0) {
+            helper.readArray(buffer, itemTransaction.getLegacySlots(), (buf, packetHelper) -> {
+                byte containerId = buf.readByte();
+                byte[] slots = packetHelper.readByteArray(buf, 89);
+                return new LegacySetItemSlotData(containerId, slots);
+            });
+        }
+
+        boolean hasNetIds = helper.readInventoryActions(buffer, itemTransaction.getActions());
+        itemTransaction.setActionType(VarInts.readUnsignedInt(buffer));
+        itemTransaction.setBlockPosition(helper.readBlockPosition(buffer));
+        itemTransaction.setBlockFace(VarInts.readInt(buffer));
+        itemTransaction.setHotbarSlot(VarInts.readInt(buffer));
+        itemTransaction.setItemInHand(helper.readItem(buffer));
+        itemTransaction.setPlayerPosition(helper.readVector3f(buffer));
+        itemTransaction.setClickPosition(helper.readVector3f(buffer));
+        itemTransaction.setBlockDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
+        return itemTransaction;
     }
 }
