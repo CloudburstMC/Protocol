@@ -6,14 +6,12 @@ import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.ServerboundLoadingScreenPacketType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
-import java.util.Optional;
-
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ServerboundLoadingScreenPacket implements BedrockPacket {
     private ServerboundLoadingScreenPacketType type;
-    private Optional<Integer> loadingScreenId;
+    private int loadingScreenId;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
