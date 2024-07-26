@@ -32,7 +32,7 @@ public class PlayerAuthInputSerializer_v712 extends PlayerAuthInputSerializer_v6
         helper.writeVector3f(buffer, transaction.getPlayerPosition());
         helper.writeVector3f(buffer, transaction.getClickPosition());
         VarInts.writeUnsignedInt(buffer, transaction.getBlockDefinition().getRuntimeId());
-        buffer.writeByte(transaction.getClientInteractPrediction().ordinal());
+        VarInts.writeUnsignedInt(buffer, transaction.getClientInteractPrediction().ordinal());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class PlayerAuthInputSerializer_v712 extends PlayerAuthInputSerializer_v6
         itemTransaction.setPlayerPosition(helper.readVector3f(buffer));
         itemTransaction.setClickPosition(helper.readVector3f(buffer));
         itemTransaction.setBlockDefinition(helper.getBlockDefinitions().getDefinition(VarInts.readUnsignedInt(buffer)));
-        itemTransaction.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[buffer.readByte()]);
+        itemTransaction.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[VarInts.readUnsignedInt(buffer)]);
         return itemTransaction;
     }
 }

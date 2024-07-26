@@ -19,6 +19,6 @@ public class ServerboundLoadingScreenSerializer_v712 implements BedrockPacketSer
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundLoadingScreenPacket packet) {
         packet.setType(ServerboundLoadingScreenPacketType.values()[VarInts.readInt(buffer)]);
-        packet.setLoadingScreenId(helper.readOptional(buffer, 0, ByteBuf::readIntLE));
+        packet.setLoadingScreenId(helper.readOptional(buffer, null, ByteBuf::readIntLE));
     }
 }

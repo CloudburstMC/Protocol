@@ -17,7 +17,7 @@ public class CameraInstructionSerializer_v712 extends CameraInstructionSerialize
         super.serialize(buffer, helper, packet);
         helper.writeOptionalNull(buffer, packet.getTargetInstruction(), (buf, targetInstruction) -> {
             helper.writeOptionalNull(buf, targetInstruction.getTargetCenterOffset(), helper::writeVector3f);
-            VarInts.writeLong(buf, targetInstruction.getUniqueEntityId());
+            buf.writeLongLE(targetInstruction.getUniqueEntityId());
         });
         helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getRemoveTarget(),
                 (buf, removeTarget) -> buf.writeBoolean(removeTarget.getAsBoolean()));
@@ -28,7 +28,7 @@ public class CameraInstructionSerializer_v712 extends CameraInstructionSerialize
         super.deserialize(buffer, helper, packet);
         packet.setTargetInstruction(helper.readOptional(buffer, null, buf -> {
             Vector3f targetCenterOffset = helper.readOptional(buffer, null, helper::readVector3f);
-            long uniqueEntityId = VarInts.readLong(buffer);
+            long uniqueEntityId = buf.readLongLE();
             return new CameraTargetInstruction(targetCenterOffset, uniqueEntityId);
         }));
         packet.setRemoveTarget(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));

@@ -9,7 +9,6 @@ import org.cloudburstmc.math.vector.Vector3f;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CameraTargetInstruction {
-
     private Vector3f targetCenterOffset;
     private long uniqueEntityId;
 }

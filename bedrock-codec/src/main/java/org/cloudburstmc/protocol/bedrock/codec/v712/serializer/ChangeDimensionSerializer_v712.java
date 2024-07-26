@@ -17,6 +17,6 @@ public class ChangeDimensionSerializer_v712 extends ChangeDimensionSerializer_v2
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ChangeDimensionPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setLoadingScreenId(helper.readOptional(buffer, 0, ByteBuf::readIntLE));
+        packet.setLoadingScreenId(helper.readOptional(buffer, null, ByteBuf::readIntLE));
     }
 }

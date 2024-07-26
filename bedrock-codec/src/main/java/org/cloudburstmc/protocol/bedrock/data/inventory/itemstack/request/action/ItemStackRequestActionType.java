@@ -19,6 +19,12 @@ public enum ItemStackRequestActionType {
     CRAFT_LOOM,
     CRAFT_NON_IMPLEMENTED_DEPRECATED,
     CRAFT_RESULTS_DEPRECATED,
+    /**
+     * @deprecated since 712
+     */
     PLACE_IN_ITEM_CONTAINER,
+    /**
+     * @deprecated since 712
+     */
     TAKE_FROM_ITEM_CONTAINER
 }
