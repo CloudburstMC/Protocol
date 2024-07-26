@@ -11,7 +11,10 @@ import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSe
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.AvailableCommandsSerializer_v388;
 import org.cloudburstmc.protocol.bedrock.codec.v422.Bedrock_v422;
-import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.CameraShakeSerializer_v428;
+import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.ClientboundDebugRendererSerializer_v428;
+import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.PlayerAuthInputSerializer_v428;
+import org.cloudburstmc.protocol.bedrock.codec.v428.serializer.StartGameSerializer_v428;
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent;
 import org.cloudburstmc.protocol.bedrock.data.LevelEventType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
@@ -84,7 +87,6 @@ public class Bedrock_v428 extends Bedrock_v422 {
             .helper(() -> new BedrockCodecHelper_v428(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES))
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v428.INSTANCE)
             .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v428.INSTANCE)
-            .updateSerializer(ItemStackResponsePacket.class, ItemStackResponseSerializer_v428.INSTANCE)
             .updateSerializer(CameraShakePacket.class, CameraShakeSerializer_v428.INSTANCE)
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))

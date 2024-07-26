@@ -20,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescriptorWithCount;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
@@ -233,4 +234,8 @@ public interface BedrockCodecHelper {
     void writePlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
 
     void readPlayerAbilities(ByteBuf buffer, PlayerAbilityHolder abilityHolder);
+
+    void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container);
+
+    ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer);
 }

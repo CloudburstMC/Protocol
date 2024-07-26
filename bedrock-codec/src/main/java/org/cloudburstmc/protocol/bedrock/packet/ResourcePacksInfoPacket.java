@@ -1,7 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -46,6 +49,10 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
         private final String contentId;
         private final boolean scripting;
         private final boolean raytracingCapable;
+        /**
+         * @since v712
+         */
+        private final boolean addonPack;
     }
 
     @Value

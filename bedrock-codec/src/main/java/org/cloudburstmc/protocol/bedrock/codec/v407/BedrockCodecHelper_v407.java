@@ -14,6 +14,8 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.ItemDescripto
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequest;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemStackRequestSlotData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.*;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseContainer;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryActionData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventorySource;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -231,15 +233,15 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 );
             case CRAFT_RECIPE:
                 return new CraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf)
+                        VarInts.readUnsignedInt(byteBuf), 0
                 );
             case CRAFT_RECIPE_AUTO:
                 return new AutoCraftRecipeAction(
-                        VarInts.readUnsignedInt(byteBuf), 0, Collections.emptyList()
+                        VarInts.readUnsignedInt(byteBuf), 0, Collections.emptyList(), 0
                 );
             case CRAFT_CREATIVE:
                 return new CraftCreativeAction(
-                        VarInts.readUnsignedInt(byteBuf)
+                        VarInts.readUnsignedInt(byteBuf), 0
                 );
             case CRAFT_NON_IMPLEMENTED_DEPRECATED:
                 return new CraftNonImplementedAction();
@@ -257,7 +259,8 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         return new ItemStackRequestSlotData(
                 this.readContainerSlotType(buffer),
                 buffer.readUnsignedByte(),
-                VarInts.readInt(buffer)
+                VarInts.readInt(buffer),
+                null
         );
     }
 
@@ -306,6 +309,37 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         VarInts.writeInt(buffer, descriptor.getItemId().getRuntimeId());
         VarInts.writeInt(buffer, toAuxValue(descriptor.getAuxValue()));
         VarInts.writeInt(buffer, ingredient.getCount());
+    }
+
+    @Override
+    public void writeItemStackResponseContainer(ByteBuf buffer, ItemStackResponseContainer container) {
+        this.writeContainerSlotType(buffer, container.getContainer());
+        this.writeArray(buffer, container.getItems(), this::writeItemEntry);
+    }
+
+    @Override
+    public ItemStackResponseContainer readItemStackResponseContainer(ByteBuf buffer) {
+        ContainerSlotType slotType = this.readContainerSlotType(buffer);
+        List<ItemStackResponseSlot> itemEntries = new ArrayList<>();
+        this.readArray(buffer, itemEntries, this::readItemEntry);
+        return new ItemStackResponseContainer(slotType, itemEntries, null);
+    }
+
+    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
+        return new ItemStackResponseSlot(
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                VarInts.readInt(buffer),
+                "",
+                0);
+    }
+
+    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
+        buffer.writeByte(itemEntry.getSlot());
+        buffer.writeByte(itemEntry.getHotbarSlot());
+        buffer.writeByte(itemEntry.getCount());
+        VarInts.writeInt(buffer, itemEntry.getStackNetworkId());
     }
 
     protected int fromAuxValue(int value) {

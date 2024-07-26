@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.MineBlockAction;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -138,5 +139,22 @@ public class BedrockCodecHelper_v428 extends BedrockCodecHelper_v422 {
                 this.writeString(buffer, color);
             }
         }
+    }
+
+    @Override
+    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
+        return new ItemStackResponseSlot(
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                VarInts.readInt(buffer),
+                this.readString(buffer),
+                VarInts.readInt(buffer));
+    }
+
+    @Override
+    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
+        super.writeItemEntry(buffer, itemEntry);
+        VarInts.writeInt(buffer, itemEntry.getDurabilityCorrection());
     }
 }

@@ -10,6 +10,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class EditorNetworkPacket implements BedrockPacket {
     private Object payload; // NBT like
+    /**
+     * @since v712
+     */
+    private boolean routeToManager;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -63,7 +63,8 @@ public class BedrockCodecHelper_v557 extends BedrockCodecHelper_v554 {
             return new AutoCraftRecipeAction(
                     recipeId,
                     timesCrafted,
-                    ingredients
+                    ingredients,
+                    0
             );
         } else {
             return super.readRequestActionData(byteBuf, type);

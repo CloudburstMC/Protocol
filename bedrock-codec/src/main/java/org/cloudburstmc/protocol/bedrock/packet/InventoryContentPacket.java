@@ -15,6 +15,10 @@ import java.util.List;
 public class InventoryContentPacket implements BedrockPacket {
     private List<ItemData> contents = new ObjectArrayList<>();
     private int containerId;
+    /**
+     * @since v712
+     */
+    private int dynamicContainerId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

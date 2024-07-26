@@ -22,6 +22,11 @@ public class AutoCraftRecipeAction implements RecipeItemStackRequestAction {
      */
     List<ItemDescriptorWithCount> ingredients;
 
+    /**
+     * @since v712
+     */
+    int numberOfRequestedCrafts;
+
     @Override
     public ItemStackRequestActionType getType() {
         return ItemStackRequestActionType.CRAFT_RECIPE_AUTO;

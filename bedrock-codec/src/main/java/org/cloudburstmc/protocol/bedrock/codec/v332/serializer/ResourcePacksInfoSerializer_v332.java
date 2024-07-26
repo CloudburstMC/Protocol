@@ -45,6 +45,6 @@ public class ResourcePacksInfoSerializer_v332 extends ResourcePacksInfoSerialize
         String contentId = helper.readString(buffer);
         boolean isScripting = buffer.readBoolean();
         return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId,
-                isScripting, false);
+                isScripting, false, false);
     }
 }

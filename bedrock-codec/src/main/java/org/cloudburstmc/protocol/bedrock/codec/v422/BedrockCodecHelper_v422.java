@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.ItemSt
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.CraftRecipeOptionalAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestAction;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
+import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.response.ItemStackResponseSlot;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -66,5 +67,22 @@ public class BedrockCodecHelper_v422 extends BedrockCodecHelper_v419 {
         } else {
             super.writeRequestActionData(byteBuf, action);
         }
+    }
+
+    @Override
+    protected ItemStackResponseSlot readItemEntry(ByteBuf buffer) {
+        return new ItemStackResponseSlot(
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                buffer.readUnsignedByte(),
+                VarInts.readInt(buffer),
+                this.readString(buffer),
+                0);
+    }
+
+    @Override
+    protected void writeItemEntry(ByteBuf buffer, ItemStackResponseSlot itemEntry) {
+        super.writeItemEntry(buffer, itemEntry);
+        this.writeString(buffer, itemEntry.getCustomName());
     }
 }

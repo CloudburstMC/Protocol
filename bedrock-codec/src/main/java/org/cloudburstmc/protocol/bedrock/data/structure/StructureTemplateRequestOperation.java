@@ -7,6 +7,7 @@ public enum StructureTemplateRequestOperation {
     QUERY_SAVED_STRUCTURE,
     /**
      * @since v560
+     * @deprecated since v712
      */
     IMPORT;
 
