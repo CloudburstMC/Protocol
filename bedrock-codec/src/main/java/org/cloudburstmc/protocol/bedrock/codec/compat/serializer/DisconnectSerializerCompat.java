@@ -20,6 +20,7 @@ public class DisconnectSerializerCompat implements BedrockPacketSerializer<Disco
         buffer.writeBoolean(packet.isMessageSkipped());
         if (!packet.isMessageSkipped()) {
             helper.writeString(buffer, packet.getKickMessage());
+            helper.writeString(buffer, packet.getFilteredMessage());
         }
     }
 
@@ -31,6 +32,9 @@ public class DisconnectSerializerCompat implements BedrockPacketSerializer<Disco
         packet.setMessageSkipped(buffer.readBoolean());
         if (!packet.isMessageSkipped()) {
             packet.setKickMessage(helper.readString(buffer));
+            if (buffer.isReadable()) { // backwards compatibility
+                packet.setFilteredMessage(helper.readString(buffer));
+            }
         }
     }
 }
