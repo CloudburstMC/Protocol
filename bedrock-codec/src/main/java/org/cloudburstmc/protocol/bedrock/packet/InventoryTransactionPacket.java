@@ -52,6 +52,11 @@ public class InventoryTransactionPacket implements BedrockPacket {
      */
     private ItemUseTransaction.TriggerType triggerType;
 
+    /**
+     * @since v712
+     */
+    private ItemUseTransaction.PredictedResult clientInteractPrediction;
+
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
