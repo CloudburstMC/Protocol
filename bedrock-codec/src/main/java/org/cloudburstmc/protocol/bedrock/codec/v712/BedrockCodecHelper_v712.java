@@ -60,7 +60,7 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
             VarInts.writeInt(byteBuf, ((CraftGrindstoneAction) action).getRepairCost());
         } else if (action.getType().equals(ItemStackRequestActionType.CRAFT_RECIPE_AUTO)) {
             VarInts.writeUnsignedInt(byteBuf, ((AutoCraftRecipeAction) action).getRecipeNetworkId());
-            byteBuf.writeByte(((AutoCraftRecipeAction) action).getNumberOfRequestedCrafts());
+            byteBuf.writeByte(((AutoCraftRecipeAction) action).getNumberOfRequestedCrafts()); // since v712
             byteBuf.writeByte(((AutoCraftRecipeAction) action).getTimesCrafted());
             List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
             byteBuf.writeByte(ingredients.size());
@@ -80,8 +80,8 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
             return new CraftGrindstoneAction(VarInts.readUnsignedInt(byteBuf), byteBuf.readByte(), VarInts.readInt(byteBuf));
         } else if (type.equals(ItemStackRequestActionType.CRAFT_RECIPE_AUTO)) {
             int recipeNetworkId = VarInts.readUnsignedInt(byteBuf);
+            int numberOfRequestedCrafts = byteBuf.readUnsignedByte(); // since v712
             int timesCrafted = byteBuf.readUnsignedByte();
-            int numberOfRequestedCrafts = byteBuf.readUnsignedByte();
             List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
             this.readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, this::readIngredient);
             return new AutoCraftRecipeAction(recipeNetworkId, timesCrafted, ingredients, numberOfRequestedCrafts);
