@@ -133,6 +133,7 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
         this.writeVector3f(buffer, packet.getPlayerPosition());
         this.writeVector3f(buffer, packet.getClickPosition());
         VarInts.writeUnsignedInt(buffer, packet.getBlockDefinition().getRuntimeId());
+        VarInts.writeUnsignedInt(buffer, packet.getClientInteractPrediction().ordinal());
     }
 
     @Override
@@ -146,6 +147,7 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
         packet.setPlayerPosition(this.readVector3f(buffer));
         packet.setClickPosition(this.readVector3f(buffer));
         packet.setBlockDefinition(this.blockDefinitions.getDefinition(VarInts.readUnsignedInt(buffer)));
+        packet.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[VarInts.readUnsignedInt(buffer)]);
     }
 
     protected void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
