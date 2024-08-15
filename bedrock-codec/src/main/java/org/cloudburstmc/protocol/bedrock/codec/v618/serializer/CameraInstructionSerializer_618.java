@@ -20,18 +20,7 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
-        helper.writeOptionalNull(buffer, packet.getSetInstruction(), (buf, set) -> {
-            DefinitionUtils.checkDefinition(helper.getCameraPresetDefinitions(), set.getPreset());
-            buffer.writeIntLE(set.getPreset().getRuntimeId());
-
-            helper.writeOptionalNull(buf, set.getEase(), this::writeEase);
-            helper.writeOptionalNull(buf, set.getPos(), helper::writeVector3f);
-            helper.writeOptionalNull(buf, set.getRot(), helper::writeVector2f);
-            helper.writeOptionalNull(buf, set.getFacing(), helper::writeVector3f);
-            helper.writeOptional(buf, OptionalBoolean::isPresent, set.getDefaultPreset(),
-                    (b, optional) -> b.writeBoolean(optional.getAsBoolean()));
-        });
-
+        helper.writeOptionalNull(buffer, packet.getSetInstruction(), (buf, set) -> this.writeSetInstruction(helper, buf, set));
         helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getClear(),
                 (b, optional) -> b.writeBoolean(optional.getAsBoolean()));
 
@@ -43,18 +32,7 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
-        CameraSetInstruction set = helper.readOptional(buffer, null, buf -> {
-            int runtimeId = buf.readIntLE();
-            NamedDefinition definition = helper.getCameraPresetDefinitions().getDefinition(runtimeId);
-            Preconditions.checkNotNull(definition, "Unknown camera preset " + runtimeId);
-
-            CameraSetInstruction.EaseData ease = helper.readOptional(buf, null, this::readEase);
-            Vector3f pos = helper.readOptional(buf, null, helper::readVector3f);
-            Vector2f rot = helper.readOptional(buf, null, helper::readVector2f);
-            Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);
-            OptionalBoolean defaultPreset = helper.readOptional(buffer, OptionalBoolean.empty(), b -> OptionalBoolean.of(b.readBoolean()));
-            return new CameraSetInstruction(definition, ease, pos, rot, facing, defaultPreset);
-        });
+        CameraSetInstruction set = helper.readOptional(buffer, null, buf -> this.readSetInstruction(buf, helper));
 
         packet.setSetInstruction(set);
         packet.setClear(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
@@ -104,5 +82,31 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
                 (int) (buffer.readFloatLE() * 255),
                 (int) (buffer.readFloatLE() * 255)
         );
+    }
+
+    protected void writeSetInstruction(BedrockCodecHelper helper, ByteBuf buf, CameraSetInstruction set) {
+        DefinitionUtils.checkDefinition(helper.getCameraPresetDefinitions(), set.getPreset());
+        buf.writeIntLE(set.getPreset().getRuntimeId());
+
+        helper.writeOptionalNull(buf, set.getEase(), this::writeEase);
+        helper.writeOptionalNull(buf, set.getPos(), helper::writeVector3f);
+        helper.writeOptionalNull(buf, set.getRot(), helper::writeVector2f);
+        helper.writeOptionalNull(buf, set.getFacing(), helper::writeVector3f);
+
+        helper.writeOptional(buf, OptionalBoolean::isPresent, set.getDefaultPreset(),
+                (b, optional) -> b.writeBoolean(optional.getAsBoolean()));
+    }
+
+    protected CameraSetInstruction readSetInstruction(ByteBuf buf, BedrockCodecHelper helper) {
+        int runtimeId = buf.readIntLE();
+        NamedDefinition definition = helper.getCameraPresetDefinitions().getDefinition(runtimeId);
+        Preconditions.checkNotNull(definition, "Unknown camera preset " + runtimeId);
+
+        CameraSetInstruction.EaseData ease = helper.readOptional(buf, null, this::readEase);
+        Vector3f pos = helper.readOptional(buf, null, helper::readVector3f);
+        Vector2f rot = helper.readOptional(buf, null, helper::readVector2f);
+        Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);
+        OptionalBoolean defaultPreset = helper.readOptional(buf, OptionalBoolean.empty(), b -> OptionalBoolean.of(b.readBoolean()));
+        return new CameraSetInstruction(definition, ease, pos, rot, facing, null, defaultPreset);
     }
 }

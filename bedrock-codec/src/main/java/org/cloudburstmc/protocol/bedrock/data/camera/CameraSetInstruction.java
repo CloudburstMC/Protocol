@@ -17,6 +17,10 @@ public class CameraSetInstruction {
     private Vector3f pos;
     private Vector2f rot;
     private Vector3f facing;
+    /**
+     * @since v712
+     */
+    private Vector2f viewOffset;
     private OptionalBoolean defaultPreset = OptionalBoolean.empty();
 
     @Data
