@@ -1,5 +1,6 @@
 dependencies {
     api(projects.common)
+    api(platform(libs.fastutil.bom))
     api(libs.netty.buffer)
     api(libs.fastutil.long.common)
     api(libs.fastutil.long.`object`.maps)
