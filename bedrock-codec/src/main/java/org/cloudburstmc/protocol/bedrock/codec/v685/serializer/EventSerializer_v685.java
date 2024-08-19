@@ -2,12 +2,12 @@ package org.cloudburstmc.protocol.bedrock.codec.v685.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v589.serializer.EventSerializer_v589;
+import org.cloudburstmc.protocol.bedrock.codec.v671.serializer.EventSerializer_v671;
 import org.cloudburstmc.protocol.bedrock.data.event.EventData;
 import org.cloudburstmc.protocol.bedrock.data.event.EventDataType;
 import org.cloudburstmc.protocol.bedrock.data.event.ItemUsedEventData;
 
-public class EventSerializer_v685 extends EventSerializer_v589 {
+public class EventSerializer_v685 extends EventSerializer_v671 {
     public static final EventSerializer_v685 INSTANCE = new EventSerializer_v685();
 
     public EventSerializer_v685() {
