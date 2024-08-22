@@ -67,7 +67,7 @@ public class Bedrock_v671 extends Bedrock_v662 {
             .updateSerializer(UpdatePlayerGameTypePacket.class, UpdatePlayerGameTypeSerializer_v671.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v671.INSTANCE)
             .updateSerializer(CraftingDataPacket.class, CraftingDataSerializer_v671.INSTANCE)
-            .deregisterPacket(FilterTextPacket.class) // TODO: check
-            // TODO: confirm change in AnimatePacket
+            .updateSerializer(EventPacket.class, EventSerializer_v671.INSTANCE)
+            .deregisterPacket(FilterTextPacket.class)
             .build();
 }

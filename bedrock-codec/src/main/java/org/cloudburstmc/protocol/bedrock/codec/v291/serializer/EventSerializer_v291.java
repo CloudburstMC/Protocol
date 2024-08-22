@@ -103,7 +103,7 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
         int interactionEntityType = VarInts.readInt(buffer);
         int entityVariant = VarInts.readInt(buffer);
         int entityColor = buffer.readUnsignedByte();
-        return new EntityInteractEventData(interactionType, interactionEntityType, entityVariant, entityColor);
+        return new EntityInteractEventData(-1L, interactionType, interactionEntityType, entityVariant, entityColor);
     }
 
     protected void writeEntityInteract(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
