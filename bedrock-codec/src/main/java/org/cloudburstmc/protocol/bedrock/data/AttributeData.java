@@ -14,14 +14,26 @@ public class AttributeData {
     float minimum;
     float maximum;
     float value;
+    /**
+     * @since v729
+     */
+    float defaultMinimum;
+    /**
+     * @since v729
+     */
+    float defaultMaximum;
     float defaultValue;
     List<AttributeModifierData> modifiers;
 
     public AttributeData(String name, float minimum, float maximum, float value) {
-        this(name, minimum, maximum, value, maximum, Collections.emptyList());
+        this(name, minimum, maximum, value, minimum, maximum, maximum, Collections.emptyList());
     }
 
     public AttributeData(String name, float minimum, float maximum, float value, float defaultValue) {
-        this(name, minimum, maximum, value, defaultValue, Collections.emptyList());
+        this(name, minimum, maximum, value, minimum, maximum, defaultValue, Collections.emptyList());
+    }
+
+    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue, List<AttributeModifierData> modifiers) {
+        this(name, minimum, maximum, value, minimum, maximum, defaultValue, modifiers);
     }
 }

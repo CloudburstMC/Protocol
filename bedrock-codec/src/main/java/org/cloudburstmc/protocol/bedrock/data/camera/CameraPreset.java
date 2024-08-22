@@ -18,9 +18,21 @@ public class CameraPreset {
     private Float yaw;
     private Float pitch;
     /**
+     * @since v729
+     */
+    private Float rotationSpeed;
+    /**
+     * @since v729
+     */
+    private OptionalBoolean snapToTarget;
+    /**
      * @since v712
      */
     private Vector2f viewOffset;
+    /**
+     * @since v729
+     */
+    private Vector3f entityOffset;
     /**
      * @since v712
      */

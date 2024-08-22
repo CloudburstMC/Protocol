@@ -41,4 +41,12 @@ public class ContainerId {
     public static final int HOTBAR = 122;
     public static final int FIXED_INVENTORY = 123;
     public static final int UI = 124;
+    /**
+     * @since v729
+     */
+    public static final int CONTAINER_ID_REGISTRY = 125;
+    /**
+     * @since v729
+     */
+    public static final int CONTAINER_ID_REGISTRY_INVENTORY = 126;
 }

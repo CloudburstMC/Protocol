@@ -859,4 +859,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ServerboundDiagnosticsPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(CameraAimAssistPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ContainerRegistryCleanupPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

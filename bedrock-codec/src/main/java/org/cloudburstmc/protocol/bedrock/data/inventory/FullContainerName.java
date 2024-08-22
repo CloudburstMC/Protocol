@@ -6,5 +6,5 @@ import lombok.Value;
 public class FullContainerName {
 
    private final ContainerSlotType container;
-   private final int dynamicId;
+   private final Integer dynamicId;
 }

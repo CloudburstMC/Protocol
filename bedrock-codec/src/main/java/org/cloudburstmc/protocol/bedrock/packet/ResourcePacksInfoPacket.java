@@ -23,6 +23,7 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
     private boolean scriptingEnabled;
     /**
      * @since v448
+     * @deprecated since v729
      */
     private boolean forcingServerPacksEnabled;
     /**

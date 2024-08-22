@@ -717,6 +717,18 @@ public enum SoundEvent {
      * @since v712
      */
     VAULT_REJECT_REWARDED_PLAYER,
+    /**
+     * @since v729
+     */
+    IMITATE_ENDERMITE,
+    /**
+     * @since v729
+     */
+    BUNDLE_INSERT_FAIL,
+    /**
+     * @since v729
+     */
+    IMITATE_DROWNED,
 
     UNDEFINED
 }

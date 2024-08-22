@@ -24,6 +24,10 @@ public class EmotePacket implements BedrockPacket {
     private String platformId;
     private String emoteId;
     private final Set<EmoteFlag> flags = EnumSet.noneOf(EmoteFlag.class);
+    /**
+     * @since v729
+     */
+    private int emoteLengthTicks;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -15,8 +16,17 @@ public class InventorySlotPacket implements BedrockPacket {
     private ItemData item;
     /**
      * @since v712
+     * @deprecated since v729
      */
     private int dynamicContainerId;
+    /**
+     * @since v729
+     */
+    private FullContainerName fullContainerName;
+    /**
+     * @since v729
+     */
+    private int dynamicContainerSize;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
