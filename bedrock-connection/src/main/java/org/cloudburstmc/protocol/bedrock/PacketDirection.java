@@ -15,7 +15,7 @@ public enum PacketDirection {
      */
     SERVER_BOUND(PacketRecipient.CLIENT, PacketRecipient.SERVER);
 
-    public static final AttributeKey<PacketDirection> ATTRIBUTE = AttributeKey.newInstance("packet_direction");
+    public static final AttributeKey<PacketDirection> ATTRIBUTE = AttributeKey.valueOf("packet_direction");
 
     private final PacketRecipient inbound;
     private final PacketRecipient outbound;
