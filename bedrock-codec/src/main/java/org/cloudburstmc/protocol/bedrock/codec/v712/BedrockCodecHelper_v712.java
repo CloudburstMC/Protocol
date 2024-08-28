@@ -65,6 +65,9 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
             List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
             byteBuf.writeByte(ingredients.size());
             writeArray(byteBuf, ingredients, this::writeIngredient);
+        } else if (action.getType().equals(ItemStackRequestActionType.CRAFT_LOOM)) {
+            this.writeString(byteBuf, ((CraftLoomAction) action).getPatternId());
+            byteBuf.writeByte(((CraftLoomAction) action).getTimesCrafted());
         } else {
             super.writeRequestActionData(byteBuf, action);
         }
@@ -85,6 +88,10 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
             List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
             this.readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, this::readIngredient);
             return new AutoCraftRecipeAction(recipeNetworkId, timesCrafted, ingredients, numberOfRequestedCrafts);
+        } else if (type.equals(ItemStackRequestActionType.CRAFT_LOOM)) {
+            String patternId = this.readString(byteBuf);
+            int timesCrafted = byteBuf.readUnsignedByte();
+            return new CraftLoomAction(patternId, timesCrafted);
         } else {
             return super.readRequestActionData(byteBuf, type);
         }
