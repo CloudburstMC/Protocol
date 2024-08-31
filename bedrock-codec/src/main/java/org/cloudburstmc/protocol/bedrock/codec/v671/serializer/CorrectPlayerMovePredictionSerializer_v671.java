@@ -18,7 +18,7 @@ public class CorrectPlayerMovePredictionSerializer_v671 extends CorrectPlayerMov
         helper.writeVector3f(buffer, packet.getPosition());
         helper.writeVector3f(buffer, packet.getDelta());
         if (packet.getPredictionType() == PredictionType.VEHICLE) {
-            helper.writeVector2f(buffer, packet.getVehicleRotation());
+            this.writeVehiclePrediction(buffer, helper, packet);
         }
         buffer.writeBoolean(packet.isOnGround());
         VarInts.writeUnsignedLong(buffer, packet.getTick());
@@ -30,9 +30,17 @@ public class CorrectPlayerMovePredictionSerializer_v671 extends CorrectPlayerMov
         packet.setPosition(helper.readVector3f(buffer));
         packet.setDelta(helper.readVector3f(buffer));
         if (packet.getPredictionType() == PredictionType.VEHICLE) {
-            packet.setVehicleRotation(helper.readVector2f(buffer));
+            this.readVehiclePrediction(buffer, helper, packet);
         }
         packet.setOnGround(buffer.readBoolean());
         packet.setTick(VarInts.readUnsignedInt(buffer));
+    }
+
+    protected void writeVehiclePrediction(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
+        helper.writeVector2f(buffer, packet.getVehicleRotation());
+    }
+
+    protected void readVehiclePrediction(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
+        packet.setVehicleRotation(helper.readVector2f(buffer));
     }
 }

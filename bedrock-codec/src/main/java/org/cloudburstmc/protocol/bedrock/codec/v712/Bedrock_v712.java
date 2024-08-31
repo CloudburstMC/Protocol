@@ -44,6 +44,7 @@ public class Bedrock_v712 extends Bedrock_v686 {
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v712.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v712.INSTANCE)
             .updateSerializer(ChangeDimensionPacket.class, ChangeDimensionSerializer_v712.INSTANCE)
+            .updateSerializer(CorrectPlayerMovePredictionPacket.class, CorrectPlayerMovePredictionSerializer_v712.INSTANCE)
             .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v712.INSTANCE)
             .updateSerializer(EditorNetworkPacket.class, EditorNetworkSerializer_v712.INSTANCE)
             .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v712.INSTANCE)
