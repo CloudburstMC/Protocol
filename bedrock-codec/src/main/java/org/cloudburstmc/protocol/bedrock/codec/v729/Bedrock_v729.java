@@ -29,7 +29,7 @@ public class Bedrock_v729 extends Bedrock_v712 {
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(CameraPresetsPacket.class, CameraPresetSerializer_v729.INSTANCE)
+            .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v729.INSTANCE)
             .updateSerializer(EmotePacket.class, EmoteSerializer_v729.INSTANCE)
             .updateSerializer(InventoryContentPacket.class, InventoryContentSerializer_v729.INSTANCE)
             .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v729.INSTANCE)

@@ -9,8 +9,8 @@ import org.cloudburstmc.protocol.bedrock.data.camera.CameraAudioListener;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraPreset;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
-public class CameraPresetSerializer_v729 extends CameraPresetsSerializer_v712 {
-    public static final CameraPresetSerializer_v729 INSTANCE = new CameraPresetSerializer_v729();
+public class CameraPresetsSerializer_v729 extends CameraPresetsSerializer_v712 {
+    public static final CameraPresetsSerializer_v729 INSTANCE = new CameraPresetsSerializer_v729();
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
