@@ -13,6 +13,9 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class ResourcePacksInfoPacket implements BedrockPacket {
+    /**
+     * @deprecated since v729
+     */
     private final List<Entry> behaviorPackInfos = new ObjectArrayList<>();
     private final List<Entry> resourcePackInfos = new ObjectArrayList<>();
     private boolean forcedToAccept;
