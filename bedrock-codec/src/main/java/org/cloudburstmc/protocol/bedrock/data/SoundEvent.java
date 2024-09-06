@@ -566,6 +566,30 @@ public enum SoundEvent {
      */
     COPPER_BULB_OFF,
     /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_OPEN_SHUTTER,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_EJECT_ITEM,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_DETECT_PLAYER,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_SPAWN_MOB,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_CLOSE_SHUTTER,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_AMBIENT,
+    /**
      * @since v649
      */
     AMBIENT_IN_AIR,

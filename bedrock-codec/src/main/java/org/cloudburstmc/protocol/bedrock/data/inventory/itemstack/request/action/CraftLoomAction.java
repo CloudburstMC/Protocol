@@ -5,6 +5,10 @@ import lombok.Value;
 @Value
 public class CraftLoomAction implements ItemStackRequestAction {
     String patternId;
+    /**
+     * @since v712
+     */
+    int timesCrafted;
 
     @Override
     public ItemStackRequestActionType getType() {
