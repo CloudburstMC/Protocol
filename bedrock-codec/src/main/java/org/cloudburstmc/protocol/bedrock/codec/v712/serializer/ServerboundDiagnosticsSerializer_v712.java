@@ -10,7 +10,7 @@ public class ServerboundDiagnosticsSerializer_v712 implements BedrockPacketSeria
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundDiagnosticsPacket packet) {
-        buffer.writeFloatLE(packet.getAvgTps());
+        buffer.writeFloatLE(packet.getAvgFps());
         buffer.writeFloatLE(packet.getAvgServerSimTickTimeMS());
         buffer.writeFloatLE(packet.getAvgClientSimTickTimeMS());
         buffer.writeFloatLE(packet.getAvgBeginFrameTimeMS());
@@ -23,7 +23,7 @@ public class ServerboundDiagnosticsSerializer_v712 implements BedrockPacketSeria
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundDiagnosticsPacket packet) {
-        packet.setAvgTps(buffer.readFloatLE());
+        packet.setAvgFps(buffer.readFloatLE());
         packet.setAvgServerSimTickTimeMS(buffer.readFloatLE());
         packet.setAvgClientSimTickTimeMS(buffer.readFloatLE());
         packet.setAvgBeginFrameTimeMS(buffer.readFloatLE());
