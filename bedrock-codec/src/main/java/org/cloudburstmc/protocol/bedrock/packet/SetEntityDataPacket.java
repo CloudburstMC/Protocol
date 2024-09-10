@@ -11,13 +11,13 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class SetEntityDataPacket implements BedrockPacket {
-    private final EntityDataMap metadata = new EntityDataMap();
+    private EntityDataMap metadata = new EntityDataMap();
     private long runtimeEntityId;
     private long tick;
     /**
      * @since v557
      */
-    private final EntityProperties properties = new EntityProperties();
+    private EntityProperties properties = new EntityProperties();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

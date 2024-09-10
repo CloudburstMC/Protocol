@@ -23,8 +23,8 @@ import java.util.UUID;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
-    private final EntityDataMap metadata = new EntityDataMap();
-    private final List<EntityLinkData> entityLinks = new ObjectArrayList<>();
+    private EntityDataMap metadata = new EntityDataMap();
+    private List<EntityLinkData> entityLinks = new ObjectArrayList<>();
     private UUID uuid;
     private String username;
     private long uniqueEntityId;
@@ -34,7 +34,7 @@ public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
     private Vector3f motion;
     private Vector3f rotation;
     private ItemData hand;
-    private final AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
+    private AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
     private String deviceId;
     private int buildPlatform;
     private GameType gameType;

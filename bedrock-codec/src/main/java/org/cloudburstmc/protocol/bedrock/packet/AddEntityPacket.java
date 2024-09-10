@@ -18,9 +18,9 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AddEntityPacket implements BedrockPacket {
-    private final List<AttributeData> attributes = new ObjectArrayList<>();
-    private final EntityDataMap metadata = new EntityDataMap();
-    private final List<EntityLinkData> entityLinks = new ObjectArrayList<>();
+    private List<AttributeData> attributes = new ObjectArrayList<>();
+    private EntityDataMap metadata = new EntityDataMap();
+    private List<EntityLinkData> entityLinks = new ObjectArrayList<>();
     private long uniqueEntityId;
     private long runtimeEntityId;
     private String identifier;
