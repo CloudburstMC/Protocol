@@ -20,4 +20,13 @@ public class AwardAchievementPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AWARD_ACHIEVEMENT;
     }
+
+    @Override
+    public AwardAchievementPacket clone() {
+        try {
+            return (AwardAchievementPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

@@ -60,4 +60,14 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
         private final String packId;
         private final String remoteUrl;
     }
+
+    @Override
+    public ResourcePacksInfoPacket clone() {
+        try {
+            return (ResourcePacksInfoPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

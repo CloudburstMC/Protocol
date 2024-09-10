@@ -20,4 +20,14 @@ public class PhotoInfoRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PHOTO_INFO_REQUEST;
     }
+
+    @Override
+    public PhotoInfoRequestPacket clone() {
+        try {
+            return (PhotoInfoRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

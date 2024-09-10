@@ -48,4 +48,14 @@ public class MotionPredictionHintsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_ENTITY_MOTION_PLUS;
     }
+
+    @Override
+    public MotionPredictionHintsPacket clone() {
+        try {
+            return (MotionPredictionHintsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

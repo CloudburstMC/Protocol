@@ -30,4 +30,14 @@ public class ModalFormResponsePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MODAL_FORM_RESPONSE;
     }
+
+    @Override
+    public ModalFormResponsePacket clone() {
+        try {
+            return (ModalFormResponsePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

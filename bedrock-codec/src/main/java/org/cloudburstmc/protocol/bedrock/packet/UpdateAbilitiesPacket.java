@@ -29,4 +29,14 @@ public class UpdateAbilitiesPacket implements BedrockPacket, PlayerAbilityHolder
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_ABILITIES;
     }
+
+    @Override
+    public UpdateAbilitiesPacket clone() {
+        try {
+            return (UpdateAbilitiesPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

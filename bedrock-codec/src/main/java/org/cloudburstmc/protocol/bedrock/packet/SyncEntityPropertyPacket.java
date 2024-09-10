@@ -19,4 +19,13 @@ public class SyncEntityPropertyPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SYNC_ENTITY_PROPERTY;
     }
+
+    @Override
+    public SyncEntityPropertyPacket clone() {
+        try {
+            return (SyncEntityPropertyPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

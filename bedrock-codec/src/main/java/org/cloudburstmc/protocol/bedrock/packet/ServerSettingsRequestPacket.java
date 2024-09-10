@@ -18,4 +18,14 @@ public class ServerSettingsRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVER_SETTINGS_REQUEST;
     }
+
+    @Override
+    public ServerSettingsRequestPacket clone() {
+        try {
+            return (ServerSettingsRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

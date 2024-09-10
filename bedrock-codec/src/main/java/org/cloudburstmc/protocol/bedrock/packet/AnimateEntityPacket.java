@@ -83,4 +83,14 @@ public class AnimateEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ANIMATE_ENTITY;
     }
+
+    @Override
+    public AnimateEntityPacket clone() {
+        try {
+            return (AnimateEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

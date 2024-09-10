@@ -20,4 +20,14 @@ public class MapCreateLockedCopyPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MAP_CREATE_LOCKED_COPY;
     }
+
+    @Override
+    public MapCreateLockedCopyPacket clone() {
+        try {
+            return (MapCreateLockedCopyPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

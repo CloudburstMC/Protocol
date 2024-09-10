@@ -44,4 +44,14 @@ public class SetSpawnPositionPacket implements BedrockPacket {
         PLAYER_SPAWN,
         WORLD_SPAWN
     }
+
+    @Override
+    public SetSpawnPositionPacket clone() {
+        try {
+            return (SetSpawnPositionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

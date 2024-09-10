@@ -20,4 +20,14 @@ public class BiomeDefinitionListPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BIOME_DEFINITIONS_LIST;
     }
+
+    @Override
+    public BiomeDefinitionListPacket clone() {
+        try {
+            return (BiomeDefinitionListPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

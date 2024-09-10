@@ -19,4 +19,14 @@ public class OnScreenTextureAnimationPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ON_SCREEN_TEXTURE_ANIMATION;
     }
+
+    @Override
+    public OnScreenTextureAnimationPacket clone() {
+        try {
+            return (OnScreenTextureAnimationPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

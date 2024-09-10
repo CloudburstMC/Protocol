@@ -23,4 +23,14 @@ public class ToggleCrafterSlotRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TOGGLE_CRAFTER_SLOT_REQUEST;
     }
+
+    @Override
+    public ToggleCrafterSlotRequestPacket clone() {
+        try {
+            return (ToggleCrafterSlotRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

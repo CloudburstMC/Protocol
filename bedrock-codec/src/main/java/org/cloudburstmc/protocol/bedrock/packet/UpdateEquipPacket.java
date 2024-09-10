@@ -24,4 +24,14 @@ public class UpdateEquipPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_EQUIP;
     }
+
+    @Override
+    public UpdateEquipPacket clone() {
+        try {
+            return (UpdateEquipPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

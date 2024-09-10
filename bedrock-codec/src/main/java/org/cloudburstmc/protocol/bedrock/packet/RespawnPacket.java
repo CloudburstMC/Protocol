@@ -28,4 +28,14 @@ public class RespawnPacket implements BedrockPacket {
         SERVER_READY,
         CLIENT_READY
     }
+
+    @Override
+    public RespawnPacket clone() {
+        try {
+            return (RespawnPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

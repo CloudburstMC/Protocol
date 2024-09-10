@@ -33,4 +33,14 @@ public class CraftingEventPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CRAFTING_EVENT;
     }
+
+    @Override
+    public CraftingEventPacket clone() {
+        try {
+            return (CraftingEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

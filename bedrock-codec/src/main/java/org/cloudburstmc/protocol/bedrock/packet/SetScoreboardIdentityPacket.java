@@ -36,4 +36,14 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
         private final long scoreboardId;
         private final UUID uuid;
     }
+
+    @Override
+    public SetScoreboardIdentityPacket clone() {
+        try {
+            return (SetScoreboardIdentityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -25,4 +25,14 @@ public class ContainerClosePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CONTAINER_CLOSE;
     }
+
+    @Override
+    public ContainerClosePacket clone() {
+        try {
+            return (ContainerClosePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -32,4 +32,14 @@ public class DimensionDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.DIMENSION_DATA;
     }
+
+    @Override
+    public DimensionDataPacket clone() {
+        try {
+            return (DimensionDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -20,4 +20,14 @@ public class FilterTextPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.FILTER_TEXT;
     }
+
+    @Override
+    public FilterTextPacket clone() {
+        try {
+            return (FilterTextPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

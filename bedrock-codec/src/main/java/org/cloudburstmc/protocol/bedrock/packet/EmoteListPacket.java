@@ -25,4 +25,14 @@ public class EmoteListPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EMOTE_LIST;
     }
+
+    @Override
+    public EmoteListPacket clone() {
+        try {
+            return (EmoteListPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -20,4 +20,14 @@ public class AgentAnimationPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AGENT_ANIMATION;
     }
+
+    @Override
+    public AgentAnimationPacket clone() {
+        try {
+            return (AgentAnimationPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

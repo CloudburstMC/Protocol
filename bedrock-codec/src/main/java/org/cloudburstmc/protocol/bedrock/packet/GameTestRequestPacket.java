@@ -27,4 +27,13 @@ public class GameTestRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.GAME_TEST_REQUEST;
     }
+
+    @Override
+    public GameTestRequestPacket clone() {
+        try {
+            return (GameTestRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

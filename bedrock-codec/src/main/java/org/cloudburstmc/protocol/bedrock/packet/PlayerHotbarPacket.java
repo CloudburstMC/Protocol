@@ -21,4 +21,14 @@ public class PlayerHotbarPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_HOTBAR;
     }
+
+    @Override
+    public PlayerHotbarPacket clone() {
+        try {
+            return (PlayerHotbarPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

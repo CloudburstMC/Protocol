@@ -23,4 +23,14 @@ public class PlaySoundPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAY_SOUND;
     }
+
+    @Override
+    public PlaySoundPacket clone() {
+        try {
+            return (PlaySoundPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

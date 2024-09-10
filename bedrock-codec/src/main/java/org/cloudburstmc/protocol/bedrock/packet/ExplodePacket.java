@@ -26,4 +26,14 @@ public class ExplodePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EXPLODE;
     }
+
+    @Override
+    public ExplodePacket clone() {
+        try {
+            return (ExplodePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

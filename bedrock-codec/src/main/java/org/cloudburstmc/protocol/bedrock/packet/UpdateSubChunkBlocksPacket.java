@@ -29,4 +29,14 @@ public class UpdateSubChunkBlocksPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_SUB_CHUNK_BLOCKS;
     }
+
+    @Override
+    public UpdateSubChunkBlocksPacket clone() {
+        try {
+            return (UpdateSubChunkBlocksPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

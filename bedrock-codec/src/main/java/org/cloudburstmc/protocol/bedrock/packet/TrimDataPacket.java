@@ -26,4 +26,14 @@ public class TrimDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TRIM_DATA;
     }
+
+    @Override
+    public TrimDataPacket clone() {
+        try {
+            return (TrimDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -28,4 +28,14 @@ public class SubChunkRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SUB_CHUNK_REQUEST;
     }
+
+    @Override
+    public SubChunkRequestPacket clone() {
+        try {
+            return (SubChunkRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

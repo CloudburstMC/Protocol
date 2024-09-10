@@ -21,4 +21,13 @@ public class JigsawStructureDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.JIGSAW_STRUCTURE_DATA;
     }
+
+    @Override
+    public JigsawStructureDataPacket clone() {
+        try {
+            return (JigsawStructureDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

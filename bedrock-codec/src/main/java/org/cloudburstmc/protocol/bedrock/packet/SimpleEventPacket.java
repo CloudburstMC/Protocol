@@ -20,4 +20,14 @@ public class SimpleEventPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SIMPLE_EVENT;
     }
+
+    @Override
+    public SimpleEventPacket clone() {
+        try {
+            return (SimpleEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -33,4 +33,14 @@ public class EmotePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EMOTE;
     }
+
+    @Override
+    public EmotePacket clone() {
+        try {
+            return (EmotePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

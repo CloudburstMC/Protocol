@@ -33,4 +33,14 @@ public class UnlockedRecipesPacket implements BedrockPacket {
         REMOVE_UNLOCKED,
         REMOVE_ALL
     }
+
+    @Override
+    public UnlockedRecipesPacket clone() {
+        try {
+            return (UnlockedRecipesPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

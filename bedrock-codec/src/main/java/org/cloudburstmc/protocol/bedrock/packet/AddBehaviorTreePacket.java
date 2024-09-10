@@ -19,4 +19,14 @@ public class AddBehaviorTreePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_BEHAVIOR_TREE;
     }
+
+    @Override
+    public AddBehaviorTreePacket clone() {
+        try {
+            return (AddBehaviorTreePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

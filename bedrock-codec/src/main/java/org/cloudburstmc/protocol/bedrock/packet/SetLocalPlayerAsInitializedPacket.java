@@ -19,4 +19,14 @@ public class SetLocalPlayerAsInitializedPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_LOCAL_PLAYER_AS_INITIALIZED;
     }
+
+    @Override
+    public SetLocalPlayerAsInitializedPacket clone() {
+        try {
+            return (SetLocalPlayerAsInitializedPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

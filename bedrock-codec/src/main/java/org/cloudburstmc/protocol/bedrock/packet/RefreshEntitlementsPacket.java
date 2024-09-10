@@ -14,4 +14,14 @@ public class RefreshEntitlementsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REFRESH_ENTITLEMENTS;
     }
+
+    @Override
+    public RefreshEntitlementsPacket clone() {
+        try {
+            return (RefreshEntitlementsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

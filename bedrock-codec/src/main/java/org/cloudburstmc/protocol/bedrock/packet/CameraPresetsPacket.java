@@ -25,4 +25,14 @@ public class CameraPresetsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CAMERA_PRESETS;
     }
+
+    @Override
+    public CameraPresetsPacket clone() {
+        try {
+            return (CameraPresetsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

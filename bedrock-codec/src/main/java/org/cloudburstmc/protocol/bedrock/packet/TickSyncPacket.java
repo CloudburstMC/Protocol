@@ -23,4 +23,14 @@ public class TickSyncPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TICK_SYNC;
     }
+
+    @Override
+    public TickSyncPacket clone() {
+        try {
+            return (TickSyncPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

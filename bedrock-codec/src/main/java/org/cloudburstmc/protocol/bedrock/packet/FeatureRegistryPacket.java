@@ -29,4 +29,14 @@ public class FeatureRegistryPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.FEATURE_REGISTRY;
     }
+
+    @Override
+    public FeatureRegistryPacket clone() {
+        try {
+            return (FeatureRegistryPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

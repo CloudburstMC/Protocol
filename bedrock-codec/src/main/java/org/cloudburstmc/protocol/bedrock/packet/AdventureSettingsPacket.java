@@ -32,4 +32,14 @@ public class AdventureSettingsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADVENTURE_SETTINGS;
     }
+
+    @Override
+    public AdventureSettingsPacket clone() {
+        try {
+            return (AdventureSettingsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

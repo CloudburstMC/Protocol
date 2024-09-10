@@ -30,4 +30,14 @@ public class ShowStoreOfferPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SHOW_STORE_OFFER;
     }
+
+    @Override
+    public ShowStoreOfferPacket clone() {
+        try {
+            return (ShowStoreOfferPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

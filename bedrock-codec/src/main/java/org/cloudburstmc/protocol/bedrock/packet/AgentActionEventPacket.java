@@ -29,4 +29,14 @@ public class AgentActionEventPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AGENT_ACTION_EVENT;
     }
+
+    @Override
+    public AgentActionEventPacket clone() {
+        try {
+            return (AgentActionEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

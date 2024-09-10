@@ -31,4 +31,14 @@ public class ResourcePackClientResponsePacket implements BedrockPacket {
         HAVE_ALL_PACKS,
         COMPLETED
     }
+
+    @Override
+    public ResourcePackClientResponsePacket clone() {
+        try {
+            return (ResourcePackClientResponsePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

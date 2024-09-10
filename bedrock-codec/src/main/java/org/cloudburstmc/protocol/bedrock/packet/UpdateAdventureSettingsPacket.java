@@ -23,4 +23,14 @@ public class UpdateAdventureSettingsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_ADVENTURE_SETTINGS;
     }
+
+    @Override
+    public UpdateAdventureSettingsPacket clone() {
+        try {
+            return (UpdateAdventureSettingsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

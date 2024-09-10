@@ -28,4 +28,13 @@ public class ServerboundDiagnosticsPacket implements BedrockPacket{
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVERBOUND_DIAGNOSTICS;
     }
+
+    @Override
+    public ServerboundDiagnosticsPacket clone() {
+        try {
+            return (ServerboundDiagnosticsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

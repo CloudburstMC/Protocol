@@ -29,4 +29,14 @@ public class NpcDialoguePacket implements BedrockPacket {
         OPEN,
         CLOSE
     }
+
+    @Override
+    public NpcDialoguePacket clone() {
+        try {
+            return (NpcDialoguePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

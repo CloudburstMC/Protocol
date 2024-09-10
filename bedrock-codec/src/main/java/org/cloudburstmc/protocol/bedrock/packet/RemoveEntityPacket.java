@@ -19,4 +19,14 @@ public class RemoveEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REMOVE_ENTITY;
     }
+
+    @Override
+    public RemoveEntityPacket clone() {
+        try {
+            return (RemoveEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

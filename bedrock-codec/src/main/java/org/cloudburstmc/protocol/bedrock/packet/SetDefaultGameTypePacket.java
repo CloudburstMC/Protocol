@@ -19,4 +19,14 @@ public class SetDefaultGameTypePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_DEFAULT_GAME_TYPE;
     }
+
+    @Override
+    public SetDefaultGameTypePacket clone() {
+        try {
+            return (SetDefaultGameTypePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

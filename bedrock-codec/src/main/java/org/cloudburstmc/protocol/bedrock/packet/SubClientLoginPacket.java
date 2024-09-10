@@ -23,4 +23,14 @@ public class SubClientLoginPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SUB_CLIENT_LOGIN;
     }
+
+    @Override
+    public SubClientLoginPacket clone() {
+        try {
+            return (SubClientLoginPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -19,4 +19,14 @@ public class SetCommandsEnabledPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_COMMANDS_ENABLED;
     }
+
+    @Override
+    public SetCommandsEnabledPacket clone() {
+        try {
+            return (SetCommandsEnabledPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

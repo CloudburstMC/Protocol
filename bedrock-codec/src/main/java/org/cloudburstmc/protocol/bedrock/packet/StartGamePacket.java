@@ -191,4 +191,14 @@ public class StartGamePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.START_GAME;
     }
+
+    @Override
+    public StartGamePacket clone() {
+        try {
+            return (StartGamePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

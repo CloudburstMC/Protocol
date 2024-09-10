@@ -42,4 +42,10 @@ public class SubChunkPacket extends AbstractReferenceCounted implements BedrockP
     protected void deallocate() {
         this.subChunks.forEach(SubChunkData::release);
     }
+
+    @Override
+    public SubChunkPacket clone() {
+        throw new UnsupportedOperationException("Can not clone reference counted packet");
+    }
 }
+

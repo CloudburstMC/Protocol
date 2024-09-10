@@ -20,4 +20,14 @@ public class NetworkStackLatencyPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.NETWORK_STACK_LATENCY;
     }
+
+    @Override
+    public NetworkStackLatencyPacket clone() {
+        try {
+            return (NetworkStackLatencyPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

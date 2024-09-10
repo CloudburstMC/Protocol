@@ -20,4 +20,14 @@ public class CameraPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CAMERA;
     }
+
+    @Override
+    public CameraPacket clone() {
+        try {
+            return (CameraPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

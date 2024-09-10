@@ -19,4 +19,14 @@ public class SetHealthPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_HEALTH;
     }
+
+    @Override
+    public SetHealthPacket clone() {
+        try {
+            return (SetHealthPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

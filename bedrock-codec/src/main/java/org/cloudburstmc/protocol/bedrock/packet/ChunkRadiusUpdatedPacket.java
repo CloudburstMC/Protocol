@@ -19,4 +19,14 @@ public class ChunkRadiusUpdatedPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CHUNK_RADIUS_UPDATED;
     }
+
+    @Override
+    public ChunkRadiusUpdatedPacket clone() {
+        try {
+            return (ChunkRadiusUpdatedPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

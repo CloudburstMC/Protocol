@@ -24,4 +24,14 @@ public class HurtArmorPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.HURT_ARMOR;
     }
+
+    @Override
+    public HurtArmorPacket clone() {
+        try {
+            return (HurtArmorPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

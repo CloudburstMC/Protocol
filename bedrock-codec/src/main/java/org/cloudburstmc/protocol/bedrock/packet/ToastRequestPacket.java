@@ -22,4 +22,14 @@ public class ToastRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TOAST_REQUEST;
     }
+
+    @Override
+    public ToastRequestPacket clone() {
+        try {
+            return (ToastRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

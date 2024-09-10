@@ -24,4 +24,14 @@ public class PlayerEnchantOptionsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_ENCHANT_OPTIONS;
     }
+
+    @Override
+    public PlayerEnchantOptionsPacket clone() {
+        try {
+            return (PlayerEnchantOptionsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

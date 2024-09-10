@@ -32,4 +32,14 @@ public class InteractPacket implements BedrockPacket {
         NPC_OPEN,
         OPEN_INVENTORY
     }
+
+    @Override
+    public InteractPacket clone() {
+        try {
+            return (InteractPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

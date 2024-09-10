@@ -24,4 +24,14 @@ public class MobEquipmentPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOB_EQUIPMENT;
     }
+
+    @Override
+    public MobEquipmentPacket clone() {
+        try {
+            return (MobEquipmentPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -23,4 +23,14 @@ public class LessonProgressPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LESSON_PROGRESS;
     }
+
+    @Override
+    public LessonProgressPacket clone() {
+        try {
+            return (LessonProgressPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

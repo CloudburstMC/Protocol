@@ -25,4 +25,14 @@ public class PlayerArmorDamagePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_ARMOR_DAMAGE;
     }
+
+    @Override
+    public PlayerArmorDamagePacket clone() {
+        try {
+            return (PlayerArmorDamagePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

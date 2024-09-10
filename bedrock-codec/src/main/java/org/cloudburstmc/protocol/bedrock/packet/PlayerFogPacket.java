@@ -33,4 +33,14 @@ public class PlayerFogPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_FOG;
     }
+
+    @Override
+    public PlayerFogPacket clone() {
+        try {
+            return (PlayerFogPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

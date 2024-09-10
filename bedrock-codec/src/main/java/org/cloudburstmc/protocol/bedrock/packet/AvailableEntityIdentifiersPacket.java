@@ -20,4 +20,14 @@ public class AvailableEntityIdentifiersPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AVAILABLE_ENTITY_IDENTIFIERS;
     }
+
+    @Override
+    public AvailableEntityIdentifiersPacket clone() {
+        try {
+            return (AvailableEntityIdentifiersPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

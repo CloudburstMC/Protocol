@@ -25,4 +25,14 @@ public class SetEntityMotionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_ENTITY_MOTION;
     }
+
+    @Override
+    public SetEntityMotionPacket clone() {
+        try {
+            return (SetEntityMotionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

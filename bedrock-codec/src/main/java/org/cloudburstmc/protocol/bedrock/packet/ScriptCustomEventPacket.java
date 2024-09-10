@@ -24,5 +24,15 @@ public class ScriptCustomEventPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SCRIPT_CUSTOM_EVENT;
     }
+
+    @Override
+    public ScriptCustomEventPacket clone() {
+        try {
+            return (ScriptCustomEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+
 

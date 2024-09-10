@@ -27,4 +27,14 @@ public class NpcRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.NPC_REQUEST;
     }
+
+    @Override
+    public NpcRequestPacket clone() {
+        try {
+            return (NpcRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

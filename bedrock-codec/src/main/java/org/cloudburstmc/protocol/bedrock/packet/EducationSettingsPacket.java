@@ -41,4 +41,14 @@ public class EducationSettingsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EDUCATION_SETTINGS;
     }
+
+    @Override
+    public EducationSettingsPacket clone() {
+        try {
+            return (EducationSettingsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

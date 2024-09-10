@@ -22,4 +22,14 @@ public class ClientCacheBlobStatusPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENT_CACHE_BLOB_STATUS;
     }
+
+    @Override
+    public ClientCacheBlobStatusPacket clone() {
+        try {
+            return (ClientCacheBlobStatusPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

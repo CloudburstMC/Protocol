@@ -19,4 +19,14 @@ public class SetTimePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_TIME;
     }
+
+    @Override
+    public SetTimePacket clone() {
+        try {
+            return (SetTimePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

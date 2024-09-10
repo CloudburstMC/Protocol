@@ -23,4 +23,14 @@ public class SetDisplayObjectivePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_DISPLAY_OBJECTIVE;
     }
+
+    @Override
+    public SetDisplayObjectivePacket clone() {
+        try {
+            return (SetDisplayObjectivePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

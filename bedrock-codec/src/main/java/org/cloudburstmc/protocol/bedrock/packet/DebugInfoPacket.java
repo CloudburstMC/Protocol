@@ -21,4 +21,14 @@ public class DebugInfoPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.DEBUG_INFO;
     }
+
+    @Override
+    public DebugInfoPacket clone() {
+        try {
+            return (DebugInfoPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

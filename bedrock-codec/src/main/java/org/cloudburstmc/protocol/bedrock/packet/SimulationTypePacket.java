@@ -20,4 +20,13 @@ public class SimulationTypePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SIMULATION_TYPE;
     }
+
+    @Override
+    public SimulationTypePacket clone() {
+        try {
+            return (SimulationTypePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

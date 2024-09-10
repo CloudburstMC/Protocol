@@ -21,4 +21,14 @@ public class AnvilDamagePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ANVIL_DAMAGE;
     }
+
+    @Override
+    public AnvilDamagePacket clone() {
+        try {
+            return (AnvilDamagePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

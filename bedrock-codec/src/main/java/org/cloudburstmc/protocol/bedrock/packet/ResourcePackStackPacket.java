@@ -41,4 +41,14 @@ public class ResourcePackStackPacket implements BedrockPacket {
         private final String packVersion;
         private final String subPackName;
     }
+
+    @Override
+    public ResourcePackStackPacket clone() {
+        try {
+            return (ResourcePackStackPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

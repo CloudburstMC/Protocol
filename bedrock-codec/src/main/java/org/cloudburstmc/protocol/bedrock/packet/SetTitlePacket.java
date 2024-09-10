@@ -47,4 +47,14 @@ public class SetTitlePacket implements BedrockPacket {
         SUBTITLE_JSON,
         ACTIONBAR_JSON
     }
+
+    @Override
+    public SetTitlePacket clone() {
+        try {
+            return (SetTitlePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

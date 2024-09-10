@@ -21,4 +21,14 @@ public class SpawnExperienceOrbPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SPAWN_EXPERIENCE_ORB;
     }
+
+    @Override
+    public SpawnExperienceOrbPacket clone() {
+        try {
+            return (SpawnExperienceOrbPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -33,4 +33,14 @@ public class StructureBlockUpdatePacket implements BedrockPacket {
         SAVE,
         LOAD,
     }
+
+    @Override
+    public StructureBlockUpdatePacket clone() {
+        try {
+            return (StructureBlockUpdatePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

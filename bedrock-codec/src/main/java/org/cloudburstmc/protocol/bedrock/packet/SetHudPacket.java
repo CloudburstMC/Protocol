@@ -29,4 +29,14 @@ public class SetHudPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_HUD;
     }
+
+    @Override
+    public SetHudPacket clone() {
+        try {
+            return (SetHudPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

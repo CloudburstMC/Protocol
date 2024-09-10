@@ -22,4 +22,14 @@ public class BlockPickRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BLOCK_PICK_REQUEST;
     }
+
+    @Override
+    public BlockPickRequestPacket clone() {
+        try {
+            return (BlockPickRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

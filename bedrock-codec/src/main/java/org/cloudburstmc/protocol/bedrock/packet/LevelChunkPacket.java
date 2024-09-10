@@ -54,4 +54,10 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
     protected void deallocate() {
         this.data.release();
     }
+
+    @Override
+    public LevelChunkPacket clone() {
+        throw new UnsupportedOperationException("Can not clone reference counted packet");
+    }
 }
+

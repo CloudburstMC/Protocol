@@ -25,4 +25,13 @@ public class ServerStatsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVER_STATS;
     }
+
+    @Override
+    public ServerStatsPacket clone() {
+        try {
+            return (ServerStatsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

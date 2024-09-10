@@ -29,4 +29,14 @@ public class SetScorePacket implements BedrockPacket {
         SET,
         REMOVE
     }
+
+    @Override
+    public SetScorePacket clone() {
+        try {
+            return (SetScorePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -27,4 +27,14 @@ public class ChangeDimensionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CHANGE_DIMENSION;
     }
+
+    @Override
+    public ChangeDimensionPacket clone() {
+        try {
+            return (ChangeDimensionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

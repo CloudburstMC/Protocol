@@ -29,4 +29,14 @@ public class ItemComponentPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ITEM_COMPONENT;
     }
+
+    @Override
+    public ItemComponentPacket clone() {
+        try {
+            return (ItemComponentPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

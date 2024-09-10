@@ -39,4 +39,14 @@ public class ClientCheatAbilityPacket implements BedrockPacket, PlayerAbilityHol
     public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
+
+    @Override
+    public ClientCheatAbilityPacket clone() {
+        try {
+            return (ClientCheatAbilityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

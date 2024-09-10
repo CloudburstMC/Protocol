@@ -35,4 +35,14 @@ public class BookEditPacket implements BedrockPacket {
         SWAP_PAGES,
         SIGN_BOOK
     }
+
+    @Override
+    public BookEditPacket clone() {
+        try {
+            return (BookEditPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

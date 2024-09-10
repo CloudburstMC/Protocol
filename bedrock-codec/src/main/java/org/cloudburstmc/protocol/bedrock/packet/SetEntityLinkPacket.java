@@ -20,4 +20,14 @@ public class SetEntityLinkPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_ENTITY_LINK;
     }
+
+    @Override
+    public SetEntityLinkPacket clone() {
+        try {
+            return (SetEntityLinkPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

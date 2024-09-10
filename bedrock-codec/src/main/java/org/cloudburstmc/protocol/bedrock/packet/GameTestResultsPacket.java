@@ -22,4 +22,13 @@ public class GameTestResultsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.GAME_TEST_RESULTS;
     }
+
+    @Override
+    public GameTestResultsPacket clone() {
+        try {
+            return (GameTestResultsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

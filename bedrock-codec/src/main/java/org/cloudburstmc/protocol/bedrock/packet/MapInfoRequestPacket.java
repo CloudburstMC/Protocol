@@ -29,4 +29,14 @@ public class MapInfoRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MAP_INFO_REQUEST;
     }
+
+    @Override
+    public MapInfoRequestPacket clone() {
+        try {
+            return (MapInfoRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

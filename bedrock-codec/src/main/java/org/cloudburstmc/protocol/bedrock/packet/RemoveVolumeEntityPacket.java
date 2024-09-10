@@ -22,4 +22,14 @@ public class RemoveVolumeEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REMOVE_VOLUME_ENTITY;
     }
+
+    @Override
+    public RemoveVolumeEntityPacket clone() {
+        try {
+            return (RemoveVolumeEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

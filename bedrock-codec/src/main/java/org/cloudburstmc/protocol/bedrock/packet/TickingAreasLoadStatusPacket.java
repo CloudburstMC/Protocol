@@ -25,4 +25,14 @@ public class TickingAreasLoadStatusPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TICKING_AREAS_LOAD_STATUS;
     }
+
+    @Override
+    public TickingAreasLoadStatusPacket clone() {
+        try {
+            return (TickingAreasLoadStatusPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

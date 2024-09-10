@@ -49,4 +49,14 @@ public class AddEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_ENTITY;
     }
+
+    @Override
+    public AddEntityPacket clone() {
+        try {
+            return (AddEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -24,4 +24,14 @@ public class LabTablePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LAB_TABLE;
     }
+
+    @Override
+    public LabTablePacket clone() {
+        try {
+            return (LabTablePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

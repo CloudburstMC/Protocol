@@ -26,4 +26,14 @@ public class InventorySlotPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.INVENTORY_SLOT;
     }
+
+    @Override
+    public InventorySlotPacket clone() {
+        try {
+            return (InventorySlotPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

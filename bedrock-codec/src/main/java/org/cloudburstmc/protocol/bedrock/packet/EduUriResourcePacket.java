@@ -21,4 +21,14 @@ public class EduUriResourcePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EDU_URI_RESOURCE;
     }
+
+    @Override
+    public EduUriResourcePacket clone() {
+        try {
+            return (EduUriResourcePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

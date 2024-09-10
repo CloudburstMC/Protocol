@@ -25,4 +25,13 @@ public class ServerboundLoadingScreenPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVERBOUND_LOADING_SCREEN;
     }
+
+    @Override
+    public ServerboundLoadingScreenPacket clone() {
+        try {
+            return (ServerboundLoadingScreenPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

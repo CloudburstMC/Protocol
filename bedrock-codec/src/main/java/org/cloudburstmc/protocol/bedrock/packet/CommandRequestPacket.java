@@ -26,4 +26,14 @@ public class CommandRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMMAND_REQUEST;
     }
+
+    @Override
+    public CommandRequestPacket clone() {
+        try {
+            return (CommandRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

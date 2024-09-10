@@ -22,4 +22,14 @@ public class CreatePhotoPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CREATE_PHOTO;
     }
+
+    @Override
+    public CreatePhotoPacket clone() {
+        try {
+            return (CreatePhotoPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

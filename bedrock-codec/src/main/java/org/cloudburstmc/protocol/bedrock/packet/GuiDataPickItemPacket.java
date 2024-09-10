@@ -21,4 +21,14 @@ public class GuiDataPickItemPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.GUI_DATA_PICK_ITEM;
     }
+
+    @Override
+    public GuiDataPickItemPacket clone() {
+        try {
+            return (GuiDataPickItemPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

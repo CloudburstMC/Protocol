@@ -20,4 +20,14 @@ public class TransferPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TRANSFER;
     }
+
+    @Override
+    public TransferPacket clone() {
+        try {
+            return (TransferPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

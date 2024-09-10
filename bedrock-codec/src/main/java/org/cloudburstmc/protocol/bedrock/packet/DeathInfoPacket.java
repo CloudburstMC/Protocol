@@ -23,4 +23,14 @@ public class DeathInfoPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.DEATH_INFO;
     }
+
+    @Override
+    public DeathInfoPacket clone() {
+        try {
+            return (DeathInfoPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -46,4 +46,14 @@ public class AddVolumeEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_VOLUME_ENTITY;
     }
+
+    @Override
+    public AddVolumeEntityPacket clone() {
+        try {
+            return (AddVolumeEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

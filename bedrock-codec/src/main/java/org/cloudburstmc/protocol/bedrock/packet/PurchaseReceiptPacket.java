@@ -22,4 +22,14 @@ public class PurchaseReceiptPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PURCHASE_RECEIPT;
     }
+
+    @Override
+    public PurchaseReceiptPacket clone() {
+        try {
+            return (PurchaseReceiptPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

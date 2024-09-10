@@ -22,4 +22,14 @@ public class LevelEventGenericPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LEVEL_EVENT_GENERIC;
     }
+
+    @Override
+    public LevelEventGenericPacket clone() {
+        try {
+            return (LevelEventGenericPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

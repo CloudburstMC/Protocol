@@ -46,4 +46,14 @@ public class NetworkSettingsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.NETWORK_SETTINGS;
     }
+
+    @Override
+    public NetworkSettingsPacket clone() {
+        try {
+            return (NetworkSettingsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -29,4 +29,9 @@ public class UpdateBlockSyncedPacket extends UpdateBlockPacket {
                 ", dataLayer=" + this.dataLayer +
                 ")";
     }
+
+    @Override
+    public UpdateBlockSyncedPacket clone() {
+        return (UpdateBlockSyncedPacket) super.clone();
+    }
 }

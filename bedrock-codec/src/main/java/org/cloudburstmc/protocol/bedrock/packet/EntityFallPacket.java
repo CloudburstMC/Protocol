@@ -21,4 +21,14 @@ public class EntityFallPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ENTITY_FALL;
     }
+
+    @Override
+    public EntityFallPacket clone() {
+        try {
+            return (EntityFallPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

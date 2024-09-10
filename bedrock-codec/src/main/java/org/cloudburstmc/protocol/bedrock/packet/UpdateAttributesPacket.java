@@ -25,4 +25,14 @@ public class UpdateAttributesPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_ATTRIBUTES;
     }
+
+    @Override
+    public UpdateAttributesPacket clone() {
+        try {
+            return (UpdateAttributesPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

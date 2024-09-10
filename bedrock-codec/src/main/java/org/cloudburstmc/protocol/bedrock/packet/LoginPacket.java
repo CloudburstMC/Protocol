@@ -25,4 +25,14 @@ public class LoginPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LOGIN;
     }
+
+    @Override
+    public LoginPacket clone() {
+        try {
+            return (LoginPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

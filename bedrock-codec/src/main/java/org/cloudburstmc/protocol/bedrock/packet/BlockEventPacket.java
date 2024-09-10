@@ -74,4 +74,14 @@ public class BlockEventPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BLOCK_EVENT;
     }
+
+    @Override
+    public BlockEventPacket clone() {
+        try {
+            return (BlockEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

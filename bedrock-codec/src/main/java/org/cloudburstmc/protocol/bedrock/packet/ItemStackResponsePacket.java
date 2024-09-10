@@ -30,4 +30,14 @@ public class ItemStackResponsePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ITEM_STACK_RESPONSE;
     }
+
+    @Override
+    public ItemStackResponsePacket clone() {
+        try {
+            return (ItemStackResponsePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

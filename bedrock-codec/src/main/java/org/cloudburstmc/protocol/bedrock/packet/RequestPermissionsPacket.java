@@ -23,4 +23,14 @@ public class RequestPermissionsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REQUEST_PERMISSIONS;
     }
+
+    @Override
+    public RequestPermissionsPacket clone() {
+        try {
+            return (RequestPermissionsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

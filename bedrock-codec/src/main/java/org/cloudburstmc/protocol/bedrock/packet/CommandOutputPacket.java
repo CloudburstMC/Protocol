@@ -30,4 +30,14 @@ public class CommandOutputPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMMAND_OUTPUT;
     }
+
+    @Override
+    public CommandOutputPacket clone() {
+        try {
+            return (CommandOutputPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

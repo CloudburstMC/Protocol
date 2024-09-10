@@ -19,4 +19,14 @@ public class RiderJumpPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RIDER_JUMP;
     }
+
+    @Override
+    public RiderJumpPacket clone() {
+        try {
+            return (RiderJumpPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

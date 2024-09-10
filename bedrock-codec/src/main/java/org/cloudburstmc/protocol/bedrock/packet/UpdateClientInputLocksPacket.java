@@ -24,4 +24,14 @@ public class UpdateClientInputLocksPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return UPDATE_CLIENT_INPUT_LOCKS;
     }
+
+    @Override
+    public UpdateClientInputLocksPacket clone() {
+        try {
+            return (UpdateClientInputLocksPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

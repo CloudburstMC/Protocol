@@ -33,4 +33,14 @@ public class CraftingDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CRAFTING_DATA;
     }
+
+    @Override
+    public CraftingDataPacket clone() {
+        try {
+            return (CraftingDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -63,4 +63,14 @@ public class PlayStatusPacket implements BedrockPacket {
 
         VANILLA_TO_EDITOR_MISMATCH
     }
+
+    @Override
+    public PlayStatusPacket clone() {
+        try {
+            return (PlayStatusPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -20,4 +20,14 @@ public class SettingsCommandPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SETTINGS_COMMAND;
     }
+
+    @Override
+    public SettingsCommandPacket clone() {
+        try {
+            return (SettingsCommandPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -71,4 +71,14 @@ public class PlayerAuthInputPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_AUTH_INPUT;
     }
+
+    @Override
+    public PlayerAuthInputPacket clone() {
+        try {
+            return (PlayerAuthInputPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

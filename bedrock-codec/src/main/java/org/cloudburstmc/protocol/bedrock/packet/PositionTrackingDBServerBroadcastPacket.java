@@ -29,4 +29,14 @@ public class PositionTrackingDBServerBroadcastPacket implements BedrockPacket {
         DESTROY,
         NOT_FOUND
     }
+
+    @Override
+    public PositionTrackingDBServerBroadcastPacket clone() {
+        try {
+            return (PositionTrackingDBServerBroadcastPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

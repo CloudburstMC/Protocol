@@ -23,4 +23,14 @@ public class AddHangingEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_HANGING_ENTITY;
     }
+
+    @Override
+    public AddHangingEntityPacket clone() {
+        try {
+            return (AddHangingEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

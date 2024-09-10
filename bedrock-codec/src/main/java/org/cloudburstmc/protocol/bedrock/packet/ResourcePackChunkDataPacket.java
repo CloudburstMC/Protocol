@@ -38,4 +38,10 @@ public class ResourcePackChunkDataPacket extends AbstractReferenceCounted implem
         data.touch(hint);
         return this;
     }
+
+    @Override
+    public ResourcePackChunkDataPacket clone() {
+        throw new UnsupportedOperationException("Can not clone reference counted packet");
+    }
 }
+

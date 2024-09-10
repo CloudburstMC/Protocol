@@ -26,4 +26,14 @@ public class LevelSoundEvent2Packet implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LEVEL_SOUND_EVENT_2;
     }
+
+    @Override
+    public LevelSoundEvent2Packet clone() {
+        try {
+            return (LevelSoundEvent2Packet) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

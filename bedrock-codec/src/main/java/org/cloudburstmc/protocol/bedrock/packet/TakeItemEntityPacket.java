@@ -20,4 +20,14 @@ public class TakeItemEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TAKE_ITEM_ENTITY;
     }
+
+    @Override
+    public TakeItemEntityPacket clone() {
+        try {
+            return (TakeItemEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

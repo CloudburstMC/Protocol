@@ -85,4 +85,10 @@ public final class UnknownPacket implements BedrockPacket, BedrockPacketSerializ
     public boolean release(int decrement) {
         return this.payload == null || this.payload.release(decrement);
     }
+
+    @Override
+    public UnknownPacket clone() {
+        throw new UnsupportedOperationException("Can not clone reference counted packet");
+    }
 }
+

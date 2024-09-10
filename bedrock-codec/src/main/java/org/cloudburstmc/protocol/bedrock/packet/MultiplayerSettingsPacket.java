@@ -20,4 +20,14 @@ public class MultiplayerSettingsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MULTIPLAYER_SETTINGS;
     }
+
+    @Override
+    public MultiplayerSettingsPacket clone() {
+        try {
+            return (MultiplayerSettingsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

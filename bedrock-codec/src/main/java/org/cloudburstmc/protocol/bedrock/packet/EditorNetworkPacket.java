@@ -23,4 +23,14 @@ public class EditorNetworkPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EDITOR_NETWORK;
     }
+
+    @Override
+    public EditorNetworkPacket clone() {
+        try {
+            return (EditorNetworkPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

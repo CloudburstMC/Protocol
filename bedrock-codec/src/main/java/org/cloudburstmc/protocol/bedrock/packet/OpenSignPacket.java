@@ -26,4 +26,14 @@ public class OpenSignPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.OPEN_SIGN;
     }
+
+    @Override
+    public OpenSignPacket clone() {
+        try {
+            return (OpenSignPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -29,4 +29,14 @@ public class ResourcePackDataInfoPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESOURCE_PACK_DATA_INFO;
     }
+
+    @Override
+    public ResourcePackDataInfoPacket clone() {
+        try {
+            return (ResourcePackDataInfoPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

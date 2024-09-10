@@ -22,4 +22,14 @@ public class EntityEventPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ENTITY_EVENT;
     }
+
+    @Override
+    public EntityEventPacket clone() {
+        try {
+            return (EntityEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

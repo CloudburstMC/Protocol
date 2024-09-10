@@ -25,4 +25,14 @@ public class ItemStackRequestPacket implements BedrockPacket {
         return BedrockPacketType.ITEM_STACK_REQUEST;
     }
 
+
+    @Override
+    public ItemStackRequestPacket clone() {
+        try {
+            return (ItemStackRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

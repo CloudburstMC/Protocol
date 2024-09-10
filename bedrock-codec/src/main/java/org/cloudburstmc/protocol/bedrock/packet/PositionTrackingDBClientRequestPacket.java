@@ -25,4 +25,14 @@ public class PositionTrackingDBClientRequestPacket implements BedrockPacket {
     public enum Action {
         QUERY
     }
+
+    @Override
+    public PositionTrackingDBClientRequestPacket clone() {
+        try {
+            return (PositionTrackingDBClientRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

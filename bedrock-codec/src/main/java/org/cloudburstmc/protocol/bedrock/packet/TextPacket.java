@@ -50,4 +50,14 @@ public class TextPacket implements BedrockPacket {
          */
         ANNOUNCEMENT_JSON
     }
+
+    @Override
+    public TextPacket clone() {
+        try {
+            return (TextPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -31,4 +31,14 @@ public class UpdateTradePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_TRADE;
     }
+
+    @Override
+    public UpdateTradePacket clone() {
+        try {
+            return (UpdateTradePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

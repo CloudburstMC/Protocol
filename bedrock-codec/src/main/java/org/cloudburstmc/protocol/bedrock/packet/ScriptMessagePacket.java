@@ -22,4 +22,14 @@ public class ScriptMessagePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SCRIPT_MESSAGE;
     }
+
+    @Override
+    public ScriptMessagePacket clone() {
+        try {
+            return (ScriptMessagePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

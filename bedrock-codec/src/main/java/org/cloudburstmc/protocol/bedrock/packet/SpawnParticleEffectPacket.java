@@ -27,4 +27,14 @@ public class SpawnParticleEffectPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SPAWN_PARTICLE_EFFECT;
     }
+
+    @Override
+    public SpawnParticleEffectPacket clone() {
+        try {
+            return (SpawnParticleEffectPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

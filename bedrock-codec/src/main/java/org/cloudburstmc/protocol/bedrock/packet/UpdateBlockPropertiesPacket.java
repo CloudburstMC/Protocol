@@ -20,4 +20,14 @@ public class UpdateBlockPropertiesPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_BLOCK_PROPERTIES;
     }
+
+    @Override
+    public UpdateBlockPropertiesPacket clone() {
+        try {
+            return (UpdateBlockPropertiesPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

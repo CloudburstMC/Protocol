@@ -27,4 +27,14 @@ public class SetEntityDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_ENTITY_DATA;
     }
+
+    @Override
+    public SetEntityDataPacket clone() {
+        try {
+            return (SetEntityDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

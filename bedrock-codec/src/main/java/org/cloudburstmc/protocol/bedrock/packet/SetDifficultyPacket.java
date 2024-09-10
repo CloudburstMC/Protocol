@@ -19,4 +19,14 @@ public class SetDifficultyPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_DIFFICULTY;
     }
+
+    @Override
+    public SetDifficultyPacket clone() {
+        try {
+            return (SetDifficultyPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

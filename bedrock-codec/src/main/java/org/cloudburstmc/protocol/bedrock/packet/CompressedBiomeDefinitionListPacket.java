@@ -20,4 +20,14 @@ public class CompressedBiomeDefinitionListPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMPRESSED_BIOME_DEFINITIONS_LIST;
     }
+
+    @Override
+    public CompressedBiomeDefinitionListPacket clone() {
+        try {
+            return (CompressedBiomeDefinitionListPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

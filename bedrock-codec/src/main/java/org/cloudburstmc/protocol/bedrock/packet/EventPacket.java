@@ -47,4 +47,14 @@ public class EventPacket implements BedrockPacket {
         COMPOSTER_BLOCK_USED,
         BELL_BLOCK_USED
     }
+
+    @Override
+    public EventPacket clone() {
+        try {
+            return (EventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -44,4 +44,14 @@ public class ClientboundMapItemDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENTBOUND_MAP_ITEM_DATA;
     }
+
+    @Override
+    public ClientboundMapItemDataPacket clone() {
+        try {
+            return (ClientboundMapItemDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

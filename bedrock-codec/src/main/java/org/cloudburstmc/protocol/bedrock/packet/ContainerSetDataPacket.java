@@ -32,4 +32,14 @@ public class ContainerSetDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CONTAINER_SET_DATA;
     }
+
+    @Override
+    public ContainerSetDataPacket clone() {
+        try {
+            return (ContainerSetDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

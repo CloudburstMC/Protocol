@@ -26,4 +26,14 @@ public class UpdatePlayerGameTypePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_PLAYER_GAME_TYPE;
     }
+
+    @Override
+    public UpdatePlayerGameTypePacket clone() {
+        try {
+            return (UpdatePlayerGameTypePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

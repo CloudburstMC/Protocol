@@ -65,4 +65,14 @@ public class InventoryTransactionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.INVENTORY_TRANSACTION;
     }
+
+    @Override
+    public InventoryTransactionPacket clone() {
+        try {
+            return (InventoryTransactionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

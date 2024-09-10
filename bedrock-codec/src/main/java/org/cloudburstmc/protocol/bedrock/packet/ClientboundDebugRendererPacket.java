@@ -53,4 +53,14 @@ public class ClientboundDebugRendererPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENTBOUND_DEBUG_RENDERER;
     }
+
+    @Override
+    public ClientboundDebugRendererPacket clone() {
+        try {
+            return (ClientboundDebugRendererPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

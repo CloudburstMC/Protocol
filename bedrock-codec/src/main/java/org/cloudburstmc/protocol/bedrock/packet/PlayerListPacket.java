@@ -48,4 +48,14 @@ public class PlayerListPacket implements BedrockPacket {
         private boolean trustedSkin;
         private boolean subClient;
     }
+
+    @Override
+    public PlayerListPacket clone() {
+        try {
+            return (PlayerListPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

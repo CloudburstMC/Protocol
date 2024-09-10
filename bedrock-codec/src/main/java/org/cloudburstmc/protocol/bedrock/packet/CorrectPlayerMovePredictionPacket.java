@@ -71,4 +71,14 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CORRECT_PLAYER_MOVE_PREDICTION;
     }
+
+    @Override
+    public CorrectPlayerMovePredictionPacket clone() {
+        try {
+            return (CorrectPlayerMovePredictionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

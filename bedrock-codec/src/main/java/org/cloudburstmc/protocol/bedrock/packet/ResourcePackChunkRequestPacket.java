@@ -23,4 +23,14 @@ public class ResourcePackChunkRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.RESOURCE_PACK_CHUNK_REQUEST;
     }
+
+    @Override
+    public ResourcePackChunkRequestPacket clone() {
+        try {
+            return (ResourcePackChunkRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

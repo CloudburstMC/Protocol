@@ -21,4 +21,14 @@ public class CompletedUsingItemPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.COMPLETED_USING_ITEM;
     }
+
+    @Override
+    public CompletedUsingItemPacket clone() {
+        try {
+            return (CompletedUsingItemPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

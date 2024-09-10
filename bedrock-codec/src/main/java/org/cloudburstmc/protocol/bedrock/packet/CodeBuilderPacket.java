@@ -21,4 +21,14 @@ public class CodeBuilderPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CODE_BUILDER;
     }
+
+    @Override
+    public CodeBuilderPacket clone() {
+        try {
+            return (CodeBuilderPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

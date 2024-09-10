@@ -24,4 +24,14 @@ public class StopSoundPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.STOP_SOUND;
     }
+
+    @Override
+    public StopSoundPacket clone() {
+        try {
+            return (StopSoundPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

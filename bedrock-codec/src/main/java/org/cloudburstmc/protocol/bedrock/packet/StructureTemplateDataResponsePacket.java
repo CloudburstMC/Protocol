@@ -24,4 +24,14 @@ public class StructureTemplateDataResponsePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE;
     }
+
+    @Override
+    public StructureTemplateDataResponsePacket clone() {
+        try {
+            return (StructureTemplateDataResponsePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

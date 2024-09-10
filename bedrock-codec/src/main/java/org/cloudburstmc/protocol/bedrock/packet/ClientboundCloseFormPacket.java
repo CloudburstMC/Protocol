@@ -19,4 +19,13 @@ public class ClientboundCloseFormPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CLIENTBOUND_CLOSE_FORM;
     }
+
+    @Override
+    public ClientboundCloseFormPacket clone() {
+        try {
+            return (ClientboundCloseFormPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

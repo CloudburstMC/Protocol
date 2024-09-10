@@ -22,4 +22,14 @@ public class PlayerStartItemCooldownPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_START_ITEM_COOLDOWN;
     }
+
+    @Override
+    public PlayerStartItemCooldownPacket clone() {
+        try {
+            return (PlayerStartItemCooldownPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

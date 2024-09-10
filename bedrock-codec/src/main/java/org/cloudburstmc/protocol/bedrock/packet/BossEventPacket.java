@@ -62,4 +62,14 @@ public class BossEventPacket implements BedrockPacket {
         UPDATE_STYLE,
         QUERY
     }
+
+    @Override
+    public BossEventPacket clone() {
+        try {
+            return (BossEventPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

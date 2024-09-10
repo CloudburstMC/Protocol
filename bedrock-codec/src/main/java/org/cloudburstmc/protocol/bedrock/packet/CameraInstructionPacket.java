@@ -43,4 +43,14 @@ public class CameraInstructionPacket implements BedrockPacket {
     public void setClear(OptionalBoolean clear) {
         this.clear = clear;
     }
+
+    @Override
+    public CameraInstructionPacket clone() {
+        try {
+            return (CameraInstructionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

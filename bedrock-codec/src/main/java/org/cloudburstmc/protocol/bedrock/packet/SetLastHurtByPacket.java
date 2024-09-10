@@ -19,4 +19,14 @@ public class SetLastHurtByPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_LAST_HURT_BY;
     }
+
+    @Override
+    public SetLastHurtByPacket clone() {
+        try {
+            return (SetLastHurtByPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

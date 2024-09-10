@@ -35,4 +35,10 @@ public class ClientCacheMissResponsePacket extends AbstractReferenceCounted impl
         this.blobs.values().forEach(byteBuf -> byteBuf.touch(hint));
         return this;
     }
+
+    @Override
+    public ClientCacheMissResponsePacket clone() {
+        throw new UnsupportedOperationException("Can not clone reference counted packet");
+    }
 }
+

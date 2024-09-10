@@ -28,4 +28,14 @@ public class InventoryContentPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.INVENTORY_CONTENT;
     }
+
+    @Override
+    public InventoryContentPacket clone() {
+        try {
+            return (InventoryContentPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -24,4 +24,14 @@ public class ContainerOpenPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CONTAINER_OPEN;
     }
+
+    @Override
+    public ContainerOpenPacket clone() {
+        try {
+            return (ContainerOpenPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -13,4 +13,9 @@ public class LevelSoundEventPacket extends LevelSoundEvent2Packet {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LEVEL_SOUND_EVENT;
     }
+
+    @Override
+    public LevelSoundEventPacket clone() {
+        return (LevelSoundEventPacket) super.clone();
+    }
 }

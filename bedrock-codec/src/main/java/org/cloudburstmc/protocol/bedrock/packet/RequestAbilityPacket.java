@@ -24,4 +24,14 @@ public class RequestAbilityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REQUEST_ABILITY;
     }
+
+    @Override
+    public RequestAbilityPacket clone() {
+        try {
+            return (RequestAbilityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

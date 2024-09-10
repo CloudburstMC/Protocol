@@ -24,4 +24,14 @@ public class ItemFrameDropItemPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ITEM_FRAME_DROP_ITEM;
     }
+
+    @Override
+    public ItemFrameDropItemPacket clone() {
+        try {
+            return (ItemFrameDropItemPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

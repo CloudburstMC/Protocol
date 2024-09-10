@@ -25,4 +25,14 @@ public class MoveEntityAbsolutePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.MOVE_ENTITY_ABSOLUTE;
     }
+
+    @Override
+    public MoveEntityAbsolutePacket clone() {
+        try {
+            return (MoveEntityAbsolutePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

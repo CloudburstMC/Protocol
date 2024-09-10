@@ -22,4 +22,14 @@ public class PlayerInputPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_INPUT;
     }
+
+    @Override
+    public PlayerInputPacket clone() {
+        try {
+            return (PlayerInputPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

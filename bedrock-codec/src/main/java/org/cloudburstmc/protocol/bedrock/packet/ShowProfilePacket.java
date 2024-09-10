@@ -19,4 +19,14 @@ public class ShowProfilePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SHOW_PROFILE;
     }
+
+    @Override
+    public ShowProfilePacket clone() {
+        try {
+            return (ShowProfilePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

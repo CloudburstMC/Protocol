@@ -31,4 +31,14 @@ public class AnimatePacket implements BedrockPacket {
         ROW_RIGHT,
         ROW_LEFT,
     }
+
+    @Override
+    public AnimatePacket clone() {
+        try {
+            return (AnimatePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

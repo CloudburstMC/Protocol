@@ -23,4 +23,14 @@ public class AvailableCommandsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AVAILABLE_COMMANDS;
     }
+
+    @Override
+    public AvailableCommandsPacket clone() {
+        try {
+            return (AvailableCommandsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

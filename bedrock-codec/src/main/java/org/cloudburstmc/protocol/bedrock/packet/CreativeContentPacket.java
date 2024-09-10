@@ -32,4 +32,14 @@ public class CreativeContentPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CREATIVE_CONTENT;
     }
+
+    @Override
+    public CreativeContentPacket clone() {
+        try {
+            return (CreativeContentPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

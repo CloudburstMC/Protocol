@@ -25,4 +25,13 @@ public class RequestNetworkSettingsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REQUEST_NETWORK_SETTINGS;
     }
+
+    @Override
+    public RequestNetworkSettingsPacket clone() {
+        try {
+            return (RequestNetworkSettingsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

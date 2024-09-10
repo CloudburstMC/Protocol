@@ -24,4 +24,14 @@ public class EntityPickRequestPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ENTITY_PICK_REQUEST;
     }
+
+    @Override
+    public EntityPickRequestPacket clone() {
+        try {
+            return (EntityPickRequestPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

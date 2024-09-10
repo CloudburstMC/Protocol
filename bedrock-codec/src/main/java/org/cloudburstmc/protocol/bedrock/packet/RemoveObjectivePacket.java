@@ -19,4 +19,14 @@ public class RemoveObjectivePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REMOVE_OBJECTIVE;
     }
+
+    @Override
+    public RemoveObjectivePacket clone() {
+        try {
+            return (RemoveObjectivePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -26,4 +26,14 @@ public class PlayerSkinPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_SKIN;
     }
+
+    @Override
+    public PlayerSkinPacket clone() {
+        try {
+            return (PlayerSkinPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

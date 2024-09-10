@@ -23,4 +23,14 @@ public class RequestChunkRadiusPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.REQUEST_CHUNK_RADIUS;
     }
+
+    @Override
+    public RequestChunkRadiusPacket clone() {
+        try {
+            return (RequestChunkRadiusPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -30,4 +30,14 @@ public class ChangeMobPropertyPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CHANGE_MOB_PROPERTY;
     }
+
+    @Override
+    public ChangeMobPropertyPacket clone() {
+        try {
+            return (ChangeMobPropertyPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

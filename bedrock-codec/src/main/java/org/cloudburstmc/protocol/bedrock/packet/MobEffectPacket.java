@@ -35,4 +35,14 @@ public class MobEffectPacket implements BedrockPacket {
         MODIFY,
         REMOVE,
     }
+
+    @Override
+    public MobEffectPacket clone() {
+        try {
+            return (MobEffectPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

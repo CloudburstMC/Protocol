@@ -19,4 +19,14 @@ public class SetPlayerGameTypePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_PLAYER_GAME_TYPE;
     }
+
+    @Override
+    public SetPlayerGameTypePacket clone() {
+        try {
+            return (SetPlayerGameTypePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

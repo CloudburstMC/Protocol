@@ -57,4 +57,14 @@ public class MovePlayerPacket implements BedrockPacket {
             return UNKNOWN;
         }
     }
+
+    @Override
+    public MovePlayerPacket clone() {
+        try {
+            return (MovePlayerPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

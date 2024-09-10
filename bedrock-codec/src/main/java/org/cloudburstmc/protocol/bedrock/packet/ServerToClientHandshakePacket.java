@@ -22,4 +22,14 @@ public class ServerToClientHandshakePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SERVER_TO_CLIENT_HANDSHAKE;
     }
+
+    @Override
+    public ServerToClientHandshakePacket clone() {
+        try {
+            return (ServerToClientHandshakePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

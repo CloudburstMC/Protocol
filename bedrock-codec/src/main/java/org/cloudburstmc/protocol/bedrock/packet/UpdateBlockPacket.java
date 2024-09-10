@@ -40,4 +40,14 @@ public class UpdateBlockPacket implements BedrockPacket {
         UNUSED,
         PRIORITY
     }
+
+    @Override
+    public UpdateBlockPacket clone() {
+        try {
+            return (UpdateBlockPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

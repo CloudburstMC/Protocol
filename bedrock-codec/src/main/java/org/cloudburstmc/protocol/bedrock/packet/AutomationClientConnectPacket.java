@@ -19,4 +19,14 @@ public class AutomationClientConnectPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.AUTOMATION_CLIENT_CONNECT;
     }
+
+    @Override
+    public AutomationClientConnectPacket clone() {
+        try {
+            return (AutomationClientConnectPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

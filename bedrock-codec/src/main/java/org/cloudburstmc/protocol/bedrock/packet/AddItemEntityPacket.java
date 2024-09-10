@@ -28,4 +28,14 @@ public class AddItemEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_ITEM_ENTITY;
     }
+
+    @Override
+    public AddItemEntityPacket clone() {
+        try {
+            return (AddItemEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

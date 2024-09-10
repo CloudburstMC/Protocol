@@ -27,4 +27,14 @@ public class LecternUpdatePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.LECTERN_UPDATE;
     }
+
+    @Override
+    public LecternUpdatePacket clone() {
+        try {
+            return (LecternUpdatePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

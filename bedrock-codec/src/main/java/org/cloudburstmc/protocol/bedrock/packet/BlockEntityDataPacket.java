@@ -22,4 +22,14 @@ public class BlockEntityDataPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.BLOCK_ENTITY_DATA;
     }
+
+    @Override
+    public BlockEntityDataPacket clone() {
+        try {
+            return (BlockEntityDataPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

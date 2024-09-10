@@ -26,4 +26,14 @@ public class DisconnectPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.DISCONNECT;
     }
+
+    @Override
+    public DisconnectPacket clone() {
+        try {
+            return (DisconnectPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

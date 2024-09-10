@@ -81,4 +81,14 @@ public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_PLAYER;
     }
+
+    @Override
+    public AddPlayerPacket clone() {
+        try {
+            return (AddPlayerPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

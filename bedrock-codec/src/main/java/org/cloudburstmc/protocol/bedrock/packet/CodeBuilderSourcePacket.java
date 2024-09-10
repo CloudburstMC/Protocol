@@ -33,4 +33,14 @@ public class CodeBuilderSourcePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CODE_BUILDER_SOURCE;
     }
+
+    @Override
+    public CodeBuilderSourcePacket clone() {
+        try {
+            return (CodeBuilderSourcePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

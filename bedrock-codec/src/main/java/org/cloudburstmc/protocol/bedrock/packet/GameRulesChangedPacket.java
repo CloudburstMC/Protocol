@@ -23,4 +23,14 @@ public class GameRulesChangedPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.GAME_RULES_CHANGED;
     }
+
+    @Override
+    public GameRulesChangedPacket clone() {
+        try {
+            return (GameRulesChangedPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

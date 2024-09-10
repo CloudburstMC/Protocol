@@ -20,4 +20,13 @@ public class CurrentStructureFeaturePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CURRENT_STRUCTURE_FEATURE;
     }
+
+    @Override
+    public CurrentStructureFeaturePacket clone() {
+        try {
+            return (CurrentStructureFeaturePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }

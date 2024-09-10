@@ -22,4 +22,14 @@ public class UpdateSoftEnumPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.UPDATE_SOFT_ENUM;
     }
+
+    @Override
+    public UpdateSoftEnumPacket clone() {
+        try {
+            return (UpdateSoftEnumPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

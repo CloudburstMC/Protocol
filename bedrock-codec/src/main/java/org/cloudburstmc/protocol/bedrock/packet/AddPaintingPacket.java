@@ -19,4 +19,9 @@ public class AddPaintingPacket extends AddHangingEntityPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_PAINTING;
     }
+
+    @Override
+    public AddPaintingPacket clone() {
+        return (AddPaintingPacket) super.clone();
+    }
 }

@@ -28,4 +28,14 @@ public class VideoStreamConnectPacket implements BedrockPacket {
         OPEN,
         CLOSE
     }
+
+    @Override
+    public VideoStreamConnectPacket clone() {
+        try {
+            return (VideoStreamConnectPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

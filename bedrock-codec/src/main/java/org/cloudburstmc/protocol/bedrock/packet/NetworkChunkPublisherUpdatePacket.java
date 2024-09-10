@@ -32,4 +32,14 @@ public class NetworkChunkPublisherUpdatePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.NETWORK_CHUNK_PUBLISHER_UPDATE;
     }
+
+    @Override
+    public NetworkChunkPublisherUpdatePacket clone() {
+        try {
+            return (NetworkChunkPublisherUpdatePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

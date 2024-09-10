@@ -38,4 +38,14 @@ public class PhotoTransferPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PHOTO_TRANSFER;
     }
+
+    @Override
+    public PhotoTransferPacket clone() {
+        try {
+            return (PhotoTransferPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -25,4 +25,14 @@ public class PacketViolationWarningPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PACKET_VIOLATION_WARNING;
     }
+
+    @Override
+    public PacketViolationWarningPacket clone() {
+        try {
+            return (PacketViolationWarningPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

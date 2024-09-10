@@ -28,4 +28,14 @@ public class PlayerActionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.PLAYER_ACTION;
     }
+
+    @Override
+    public PlayerActionPacket clone() {
+        try {
+            return (PlayerActionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

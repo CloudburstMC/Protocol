@@ -25,4 +25,14 @@ public class ShowCreditsPacket implements BedrockPacket {
         START_CREDITS,
         END_CREDITS
     }
+
+    @Override
+    public ShowCreditsPacket clone() {
+        try {
+            return (ShowCreditsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

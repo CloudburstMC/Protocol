@@ -53,4 +53,14 @@ public class MoveEntityDeltaPacket implements BedrockPacket {
         TELEPORTING,
         FORCE_MOVE_LOCAL_ENTITY
     }
+
+    @Override
+    public MoveEntityDeltaPacket clone() {
+        try {
+            return (MoveEntityDeltaPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

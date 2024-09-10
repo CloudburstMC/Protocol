@@ -27,4 +27,14 @@ public class SetPlayerInventoryOptionsPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.SET_PLAYER_INVENTORY_OPTIONS;
     }
+
+    @Override
+    public SetPlayerInventoryOptionsPacket clone() {
+        try {
+            return (SetPlayerInventoryOptionsPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -49,4 +49,14 @@ public class CameraShakePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CAMERA_SHAKE;
     }
+
+    @Override
+    public CameraShakePacket clone() {
+        try {
+            return (CameraShakePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+
