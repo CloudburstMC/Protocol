@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.inventory.FullContainerName;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -18,7 +19,11 @@ public class InventoryContentPacket implements BedrockPacket {
     /**
      * @since v712
      */
-    private int dynamicContainerId;
+    private FullContainerName containerNameData;
+    /**
+     * @since v729
+     */
+    private int dynamicContainerSize;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

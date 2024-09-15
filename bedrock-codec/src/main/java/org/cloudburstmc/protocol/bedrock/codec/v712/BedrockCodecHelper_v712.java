@@ -157,12 +157,14 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
         packet.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[VarInts.readUnsignedInt(buffer)]);
     }
 
-    protected void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
+    @Override
+    public void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
         this.writeContainerSlotType(buffer, containerName.getContainer());
         buffer.writeIntLE(containerName.getDynamicId());
     }
 
-    protected FullContainerName readFullContainerName(ByteBuf buffer) {
+    @Override
+    public FullContainerName readFullContainerName(ByteBuf buffer) {
         return new FullContainerName(this.readContainerSlotType(buffer), buffer.readIntLE());
     }
 }

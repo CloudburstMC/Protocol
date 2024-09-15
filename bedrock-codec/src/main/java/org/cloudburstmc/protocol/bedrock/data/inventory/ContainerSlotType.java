@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.data.inventory;
 
 public enum ContainerSlotType {
+    UNKNOWN, // used internally only
+
     ANVIL_INPUT,
     ANVIL_MATERIAL,
     ANVIL_RESULT,

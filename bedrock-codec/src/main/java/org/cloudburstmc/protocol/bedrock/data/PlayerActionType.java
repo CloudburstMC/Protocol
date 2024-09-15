@@ -24,6 +24,9 @@ public enum PlayerActionType {
     SET_ENCHANTMENT_SEED,
     START_SWIMMING,
     STOP_SWIMMING,
+    /**
+     * @deprecated since v729
+     */
     START_SPIN_ATTACK,
     STOP_SPIN_ATTACK,
     BLOCK_INTERACT,

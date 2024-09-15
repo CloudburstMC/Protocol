@@ -14,6 +14,8 @@ public class AttributeData {
     float minimum;
     float maximum;
     float value;
+    float defaultMinimum;
+    float defaultMaximum;
     float defaultValue;
     List<AttributeModifierData> modifiers;
 
@@ -23,5 +25,9 @@ public class AttributeData {
 
     public AttributeData(String name, float minimum, float maximum, float value, float defaultValue) {
         this(name, minimum, maximum, value, defaultValue, Collections.emptyList());
+    }
+
+    public AttributeData(String name, float minimum, float maximum, float value, float defaultValue, List<AttributeModifierData> modifiers) {
+        this(name, minimum, maximum, value, defaultValue, minimum, maximum, modifiers);
     }
 }

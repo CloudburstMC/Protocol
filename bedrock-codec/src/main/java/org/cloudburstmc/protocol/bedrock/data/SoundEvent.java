@@ -152,6 +152,7 @@ public enum SoundEvent {
     IMITATE_ELDER_GUARDIAN,
     IMITATE_ENDER_DRAGON,
     IMITATE_ENDERMAN,
+    IMITATE_ENDERMITE,
     IMITATE_EVOCATION_ILLAGER,
     IMITATE_GHAST,
     IMITATE_HUSK,
@@ -741,6 +742,14 @@ public enum SoundEvent {
      * @since v712
      */
     VAULT_REJECT_REWARDED_PLAYER,
+    /**
+     * @since v729
+     */
+    IMITATE_DROWNED,
+    /**
+     * @since v729
+     */
+    BUNDLE_INSERT_FAILED,
 
     UNDEFINED
 }

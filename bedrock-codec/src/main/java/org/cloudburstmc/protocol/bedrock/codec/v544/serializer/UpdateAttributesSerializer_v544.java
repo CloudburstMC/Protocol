@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v544.serializer;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.UpdateAttributesSerializer_v419;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
@@ -10,9 +12,11 @@ import org.cloudburstmc.protocol.bedrock.data.attribute.AttributeOperation;
 
 import java.util.List;
 
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAttributesSerializer_v544 extends UpdateAttributesSerializer_v419 {
-
     protected static final AttributeOperation[] VALUES = AttributeOperation.values();
+
+    public static final UpdateAttributesSerializer_v544 INSTANCE = new UpdateAttributesSerializer_v544();
 
     @Override
     public void writeAttribute(ByteBuf buffer, BedrockCodecHelper helper, AttributeData attribute) {

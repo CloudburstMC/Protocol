@@ -15,12 +15,12 @@ public class InventoryContentSerializer_v407 implements BedrockPacketSerializer<
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryContentPacket packet) {
         VarInts.writeUnsignedInt(buffer, packet.getContainerId());
-        helper.writeArray(buffer, packet.getContents(), (buf, item) -> helper.writeNetItem(buf, item));
+        helper.writeArray(buffer, packet.getContents(), helper::writeNetItem);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryContentPacket packet) {
         packet.setContainerId(VarInts.readUnsignedInt(buffer));
-        helper.readArray(buffer, packet.getContents(), buf -> helper.readNetItem(buf));
+        helper.readArray(buffer, packet.getContents(), helper::readNetItem);
     }
 }

@@ -469,6 +469,7 @@ public class Bedrock_v291 {
             .insert(148, SoundEvent.IMITATE_ELDER_GUARDIAN)
             .insert(149, SoundEvent.IMITATE_ENDER_DRAGON)
             .insert(150, SoundEvent.IMITATE_ENDERMAN)
+            .insert(151, SoundEvent.IMITATE_ENDERMITE)
             .insert(152, SoundEvent.IMITATE_EVOCATION_ILLAGER)
             .insert(153, SoundEvent.IMITATE_GHAST)
             .insert(154, SoundEvent.IMITATE_HUSK)

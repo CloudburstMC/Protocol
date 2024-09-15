@@ -1,6 +1,8 @@
 package org.cloudburstmc.protocol.bedrock.codec.v618.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
@@ -9,7 +11,9 @@ import org.cloudburstmc.protocol.bedrock.data.camera.CameraPreset;
 import org.cloudburstmc.protocol.bedrock.packet.CameraPresetsPacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CameraPresetsSerializer_v618 implements BedrockPacketSerializer<CameraPresetsPacket> {
+    public static final CameraPresetsSerializer_v618 INSTANCE = new CameraPresetsSerializer_v618();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraPresetsPacket packet) {
@@ -48,6 +52,6 @@ public class CameraPresetsSerializer_v618 implements BedrockPacketSerializer<Cam
 
         CameraAudioListener listener = helper.readOptional(buffer, null, buf -> CameraAudioListener.values()[buf.readUnsignedByte()]);
         OptionalBoolean effects = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
-        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, null, null, listener, effects);
+        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, null, null, listener, effects, null, null, null);
     }
 }

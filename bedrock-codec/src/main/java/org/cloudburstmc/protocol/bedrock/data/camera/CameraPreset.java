@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.camera;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector2f;
@@ -8,6 +9,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CameraPreset {
@@ -27,4 +29,16 @@ public class CameraPreset {
     private Float radius;
     private CameraAudioListener listener;
     private OptionalBoolean playEffect;
+    /**
+     * @since v729
+     */
+    private Float rotationSpeed;
+    /**
+     * @since v729
+     */
+    private OptionalBoolean snapToTarget = OptionalBoolean.empty();
+    /**
+     * @since v729
+     */
+    private Vector3f entityOffset;
 }
