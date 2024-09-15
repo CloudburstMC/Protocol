@@ -62,6 +62,11 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      */
     private Vector2f vehicleRotation;
 
+    /**
+     * @since v712
+     */
+    private Float vehicleAngularVelocity;
+
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
