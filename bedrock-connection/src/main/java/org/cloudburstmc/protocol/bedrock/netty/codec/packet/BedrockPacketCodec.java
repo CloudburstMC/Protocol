@@ -54,6 +54,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
                 if (log.isDebugEnabled()) {
                     log.debug("Error encoding packet {}", msg.getPacket(), t);
                 }
+                throw t;
             } finally {
                 buf.release();
             }
