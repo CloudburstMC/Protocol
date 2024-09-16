@@ -160,7 +160,7 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
     @Override
     public void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
         this.writeContainerSlotType(buffer, containerName.getContainer());
-        buffer.writeIntLE(containerName.getDynamicId());
+        buffer.writeIntLE(containerName.getDynamicId() == null ? 0 : containerName.getDynamicId());
     }
 
     @Override
