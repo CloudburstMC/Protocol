@@ -14,7 +14,7 @@ public class InventoryContentSerializer_v712 extends InventoryContentSerializer_
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, InventoryContentPacket packet) {
         super.serialize(buffer, helper, packet);
-        VarInts.writeUnsignedInt(buffer, packet.getContainerNameData() == null ? 0 : packet.getContainerNameData().getDynamicId());
+        VarInts.writeUnsignedInt(buffer, packet.getContainerNameData() == null || packet.getContainerNameData().getDynamicId() == null ? 0 : packet.getContainerNameData().getDynamicId());
     }
 
     @Override
