@@ -28,6 +28,6 @@ public class AttributeData {
     }
 
     public AttributeData(String name, float minimum, float maximum, float value, float defaultValue, List<AttributeModifierData> modifiers) {
-        this(name, minimum, maximum, value, defaultValue, minimum, maximum, modifiers);
+        this(name, minimum, maximum, value, minimum, maximum, defaultValue, modifiers);
     }
 }
