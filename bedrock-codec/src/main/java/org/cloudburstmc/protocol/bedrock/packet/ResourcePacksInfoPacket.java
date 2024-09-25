@@ -31,6 +31,7 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
     private boolean forcingServerPacksEnabled;
     /**
      * @since v618
+     * @deprecated since v748
      */
     private List<CDNEntry> CDNEntries = new ObjectArrayList<>();
 
