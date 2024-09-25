@@ -47,6 +47,7 @@ public class ContainerId {
     public static final int CONTAINER_ID_REGISTRY = 125;
     /**
      * @since v729
+     * @deprecated since v748
      */
     public static final int CONTAINER_ID_REGISTRY_INVENTORY = 126;
 }

@@ -57,6 +57,10 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
          * @since v712
          */
         private final boolean addonPack;
+        /**
+         * @since v748
+         */
+        private final String cdnUrl;
     }
 
     @Value

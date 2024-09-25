@@ -41,4 +41,20 @@ public class CameraPreset {
      * @since v729
      */
     private Vector3f entityOffset;
+    /**
+     * @since v748
+     */
+    private Vector2f horizontalRotationLimit;
+    /**
+     * @since v748
+     */
+    private Vector2f verticalRotationLimit;
+    /**
+     * @since v748
+     */
+    private OptionalBoolean continueTargeting;
+    /**
+     * @since v748
+     */
+    private OptionalBoolean alignTargetAndCameraForward;
 }

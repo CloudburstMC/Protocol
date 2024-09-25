@@ -26,6 +26,6 @@ public class CorrectPlayerMovePredictionSerializer_v419 implements BedrockPacket
         packet.setPosition(helper.readVector3f(buffer));
         packet.setDelta(helper.readVector3f(buffer));
         packet.setOnGround(buffer.readBoolean());
-        packet.setTick(VarInts.readUnsignedInt(buffer));
+        packet.setTick(VarInts.readUnsignedLong(buffer));
     }
 }
