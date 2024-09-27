@@ -51,10 +51,10 @@ public class CameraPresetsSerializer_v748 extends CameraPresetsSerializer_v729 {
         Float pitch = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
         Float yaw = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
         Float rotationSpeed = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
+        OptionalBoolean snapToTarget = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
         Vector2f horizontalRotationLimit = helper.readOptional(buffer, null, helper::readVector2f);
         Vector2f verticalRotationLimit = helper.readOptional(buffer, null, helper::readVector2f);
         OptionalBoolean continueTargeting = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
-        OptionalBoolean snapToTarget = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
         Vector2f viewOffset = helper.readOptional(buffer, null, helper::readVector2f);
         Vector3f entityOffset = helper.readOptional(buffer, null, helper::readVector3f);
         Float radius = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
