@@ -20,8 +20,13 @@ public class InventorySlotPacket implements BedrockPacket {
     private FullContainerName containerNameData;
     /**
      * @since v729
+     * @deprecated since v748
      */
     private int dynamicContainerSize;
+    /**
+     * @since v748
+     */
+    private ItemData storageItem;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

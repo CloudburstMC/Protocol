@@ -15,7 +15,7 @@ public class UpdatePlayerGameTypePacket implements BedrockPacket {
     /**
      * @since v671
      */
-    private int tick;
+    private long tick;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

@@ -3,21 +3,17 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector2f;
+import org.cloudburstmc.protocol.bedrock.data.MovementEffectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class CameraAimAssistPacket implements BedrockPacket {
-    private Vector2f viewAngle;
-    private float distance;
-    private TargetMode targetMode;
-    private Action action;
-    /**
-     * @since v757
-     */
-    private String presetId;
+public class MovementEffectPacket implements BedrockPacket {
+    private long targetRuntimeID;
+    private MovementEffectType effectType;
+    private int effectDuration;
+    private long tick;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -26,25 +22,15 @@ public class CameraAimAssistPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CAMERA_AIM_ASSIST;
+        return BedrockPacketType.MOVEMENT_EFFECT;
     }
 
     @Override
-    public CameraAimAssistPacket clone() {
+    public MovementEffectPacket clone() {
         try {
-            return (CameraAimAssistPacket) super.clone();
+            return (MovementEffectPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
-    }
-
-    public enum TargetMode {
-        ANGLE,
-        DISTANCE
-    }
-
-    public enum Action {
-        SET,
-        CLEAR
     }
 }

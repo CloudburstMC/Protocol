@@ -69,6 +69,8 @@ Check out [EXAMPLES.md](EXAMPLES.md) for examples on how to use this library.
 | Bedrock_v685 |       1.21.0        |
 | Bedrock_v686 |       1.21.2        |
 | Bedrock_v712 |       1.21.20       |
+| Bedrock_v729 |       1.21.30       |
+| Bedrock_v748 |       1.21.40       |
 
 ##### Repository:
 

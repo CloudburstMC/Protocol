@@ -3,21 +3,13 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class CameraAimAssistPacket implements BedrockPacket {
-    private Vector2f viewAngle;
-    private float distance;
-    private TargetMode targetMode;
-    private Action action;
-    /**
-     * @since v757
-     */
-    private String presetId;
+public class SetMovementAuthorityPacket implements BedrockPacket {
+    private Mode newAuthMovementMode;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -26,25 +18,21 @@ public class CameraAimAssistPacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.CAMERA_AIM_ASSIST;
+        return BedrockPacketType.SET_MOVEMENT_AUTHORITY;
     }
 
     @Override
-    public CameraAimAssistPacket clone() {
+    public SetMovementAuthorityPacket clone() {
         try {
-            return (CameraAimAssistPacket) super.clone();
+            return (SetMovementAuthorityPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
 
-    public enum TargetMode {
-        ANGLE,
-        DISTANCE
-    }
-
-    public enum Action {
-        SET,
-        CLEAR
+    public enum Mode {
+        LEGACY_CLIENT_AUTHORITATIVE_V1,
+        CLIENT_AUTHORITATIVE_V2,
+        SERVER_AUTHORITATIVE_V3
     }
 }
