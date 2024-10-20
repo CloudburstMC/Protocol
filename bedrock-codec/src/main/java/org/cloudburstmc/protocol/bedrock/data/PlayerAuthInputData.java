@@ -105,4 +105,24 @@ public enum PlayerAuthInputData {
      * @since v729
      */
     DOWN_RIGHT,
+    /**
+     * @since v748
+     */
+    START_USING_ITEM,
+    /**
+     * @since v748
+     */
+    CAMERA_RELATIVE_MOVEMENT_ENABLED,
+    /**
+     * @since v748
+     */
+    ROT_CONTROLLED_BY_MOVE_DIRECTION,
+    /**
+     * @since v748
+     */
+    START_SPIN_ATTACK,
+    /**
+     * @since v748
+     */
+    STOP_SPIN_ATTACK
 }

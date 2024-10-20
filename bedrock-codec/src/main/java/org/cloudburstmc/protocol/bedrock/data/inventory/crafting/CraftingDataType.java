@@ -6,7 +6,7 @@ public enum CraftingDataType {
     FURNACE,
     FURNACE_DATA,
     MULTI,
-    SHULKER_BOX,
+    SHULKER_BOX, // USER_DATA_SHAPELESS
     SHAPELESS_CHEMISTRY,
     SHAPED_CHEMISTRY,
     /**

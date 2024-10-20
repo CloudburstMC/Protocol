@@ -3,19 +3,14 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.AuthoritativeMovementMode;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class UpdatePlayerGameTypePacket implements BedrockPacket {
-    private GameType gameType;
-    private long entityId;
-    /**
-     * @since v671
-     */
-    private long tick;
+public class SetMovementAuthorityPacket implements BedrockPacket {
+    private AuthoritativeMovementMode movementMode;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -24,16 +19,15 @@ public class UpdatePlayerGameTypePacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_PLAYER_GAME_TYPE;
+        return BedrockPacketType.SET_MOVEMENT_AUTHORITY;
     }
 
     @Override
-    public UpdatePlayerGameTypePacket clone() {
+    public SetMovementAuthorityPacket clone() {
         try {
-            return (UpdatePlayerGameTypePacket) super.clone();
+            return (SetMovementAuthorityPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
 }
-

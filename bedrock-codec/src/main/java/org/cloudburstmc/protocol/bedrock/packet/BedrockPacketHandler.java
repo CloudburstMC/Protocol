@@ -867,4 +867,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ContainerRegistryCleanupPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(MovementEffectPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(SetMovementAuthorityPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

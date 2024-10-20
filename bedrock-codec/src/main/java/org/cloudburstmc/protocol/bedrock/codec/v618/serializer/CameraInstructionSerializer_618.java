@@ -107,6 +107,6 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
         Vector2f rot = helper.readOptional(buf, null, helper::readVector2f);
         Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);
         OptionalBoolean defaultPreset = helper.readOptional(buf, OptionalBoolean.empty(), b -> OptionalBoolean.of(b.readBoolean()));
-        return new CameraSetInstruction(definition, ease, pos, rot, facing, null, defaultPreset);
+        return new CameraSetInstruction(definition, ease, pos, rot, facing, null, null, defaultPreset);
     }
 }

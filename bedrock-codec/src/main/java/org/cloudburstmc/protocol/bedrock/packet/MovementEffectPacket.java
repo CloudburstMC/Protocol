@@ -3,18 +3,16 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.MovementEffectType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class UpdatePlayerGameTypePacket implements BedrockPacket {
-    private GameType gameType;
-    private long entityId;
-    /**
-     * @since v671
-     */
+public class MovementEffectPacket implements BedrockPacket {
+    private long entityRuntimeId;
+    private MovementEffectType effectType;
+    private int duration;
     private long tick;
 
     @Override
@@ -24,16 +22,15 @@ public class UpdatePlayerGameTypePacket implements BedrockPacket {
 
     @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.UPDATE_PLAYER_GAME_TYPE;
+        return BedrockPacketType.MOVEMENT_EFFECT;
     }
 
     @Override
-    public UpdatePlayerGameTypePacket clone() {
+    public MovementEffectPacket clone() {
         try {
-            return (UpdatePlayerGameTypePacket) super.clone();
+            return (MovementEffectPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
 }
-

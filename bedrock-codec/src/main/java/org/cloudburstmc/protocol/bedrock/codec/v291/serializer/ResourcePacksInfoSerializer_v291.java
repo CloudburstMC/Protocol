@@ -36,7 +36,7 @@ public class ResourcePacksInfoSerializer_v291 implements BedrockPacketSerializer
         String contentKey = helper.readString(buffer);
         String subPackName = helper.readString(buffer);
         String contentId = helper.readString(buffer);
-        return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId, false, false, false);
+        return new ResourcePacksInfoPacket.Entry(packId, packVersion, packSize, contentKey, subPackName, contentId, false, false, false, null);
     }
 
     protected void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {

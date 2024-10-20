@@ -22,8 +22,13 @@ public class InventoryContentPacket implements BedrockPacket {
     private FullContainerName containerNameData;
     /**
      * @since v729
+     * @deprecated since v748. Use storageItem ItemData size instead.
      */
     private int dynamicContainerSize;
+    /**
+     * @since v748
+     */
+    private ItemData storageItem;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -52,6 +52,6 @@ public class CameraPresetsSerializer_v618 implements BedrockPacketSerializer<Cam
 
         CameraAudioListener listener = helper.readOptional(buffer, null, buf -> CameraAudioListener.values()[buf.readUnsignedByte()]);
         OptionalBoolean effects = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
-        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, null, null, listener, effects, null, null, null);
+        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, null, null, listener, effects, null, null, null, null, null, null, null);
     }
 }

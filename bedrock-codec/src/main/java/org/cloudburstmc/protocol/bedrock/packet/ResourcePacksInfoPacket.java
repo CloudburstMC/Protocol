@@ -1,10 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -29,10 +26,6 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
      * @deprecated since v729
      */
     private boolean forcingServerPacksEnabled;
-    /**
-     * @since v618
-     */
-    private List<CDNEntry> CDNEntries = new ObjectArrayList<>();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -43,26 +36,25 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
         return BedrockPacketType.RESOURCE_PACKS_INFO;
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     public static class Entry {
-        private final String packId;
-        private final String packVersion;
-        private final long packSize;
-        private final String contentKey;
-        private final String subPackName;
-        private final String contentId;
-        private final boolean scripting;
-        private final boolean raytracingCapable;
+        private String packId;
+        private String packVersion;
+        private long packSize;
+        private String contentKey;
+        private String subPackName;
+        private String contentId;
+        private boolean scripting;
+        private boolean raytracingCapable;
         /**
          * @since v712
          */
-        private final boolean addonPack;
-    }
-
-    @Value
-    public static class CDNEntry {
-        private final String packId;
-        private final String remoteUrl;
+        private boolean addonPack;
+        /**
+         * @since v748
+         */
+        private String cdnUrl;
     }
 
     @Override

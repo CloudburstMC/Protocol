@@ -25,6 +25,9 @@ public class PlayerAuthInputPacket implements BedrockPacket {
     private final Set<PlayerAuthInputData> inputData = EnumSet.noneOf(PlayerAuthInputData.class);
     private InputMode inputMode;
     private ClientPlayMode playMode;
+    /**
+     * @deprecated since v748
+     */
     private Vector3f vrGazeDirection;
     private long tick;
     private Vector3f delta;
@@ -51,6 +54,10 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      */
     private InputInteractionModel inputInteractionModel;
     /**
+     * @since v748
+     */
+    private Vector2f interactRotation;
+    /**
      * @since 575
      */
     private Vector2f analogMoveVector;
@@ -62,6 +69,10 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      * @since 662
      */
     private Vector2f vehicleRotation;
+    /**
+     * @since v748
+     */
+    private Vector3f cameraOrientation;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
