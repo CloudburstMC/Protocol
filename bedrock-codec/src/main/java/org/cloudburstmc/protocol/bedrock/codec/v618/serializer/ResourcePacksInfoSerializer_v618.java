@@ -13,6 +13,8 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerializer_v448 {
     private static final InternalLogger log = InternalLoggerFactory.getInstance(ResourcePacksInfoSerializer_v618.class);
@@ -54,9 +56,7 @@ public class ResourcePacksInfoSerializer_v618 extends ResourcePacksInfoSerialize
 
     protected void readCDNEntries(ByteBuf buffer, ResourcePacksInfoPacket packet, BedrockCodecHelper helper) {
         int size = VarInts.readUnsignedInt(buffer);
-        if (size > helper.getEncodingSettings().maxListSize()) {
-            throw new IllegalArgumentException("CDN entries size exceeds maximum size " + size);
-        }
+        checkArgument(helper.getEncodingSettings().maxListSize() <= 0 || size <= helper.getEncodingSettings().maxListSize(), "CDN entries size is too big: %s", size);
 
         if (size == 0 || packet.getResourcePackInfos().isEmpty()) {
             return;
