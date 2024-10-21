@@ -28,7 +28,7 @@ public class CameraPreset {
      */
     private Float radius;
     private CameraAudioListener listener;
-    private OptionalBoolean playEffect;
+    private OptionalBoolean playEffect = OptionalBoolean.empty();
     /**
      * @since v729
      */
@@ -52,9 +52,9 @@ public class CameraPreset {
     /**
      * @since v748
      */
-    private OptionalBoolean continueTargeting;
+    private OptionalBoolean continueTargeting = OptionalBoolean.empty();
     /**
      * @since v748
      */
-    private OptionalBoolean alignTargetAndCameraForward;
+    private OptionalBoolean alignTargetAndCameraForward = OptionalBoolean.empty();
 }
