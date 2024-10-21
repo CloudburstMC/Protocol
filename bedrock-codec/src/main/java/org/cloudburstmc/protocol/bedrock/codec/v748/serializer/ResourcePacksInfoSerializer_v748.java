@@ -30,7 +30,7 @@ public class ResourcePacksInfoSerializer_v748 extends ResourcePacksInfoSerialize
     @Override
     public void writeEntry(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket.Entry entry, boolean resource) {
         super.writeEntry(buffer, helper, entry, resource);
-        helper.writeString(buffer, entry.getCdnUrl());
+        helper.writeString(buffer, entry.getCdnUrl() == null ? "" : entry.getCdnUrl());
     }
 
     @Override
