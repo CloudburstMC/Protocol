@@ -43,11 +43,10 @@ public class Bedrock_v685 extends Bedrock_v671 {
 
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = Bedrock_v671.COMMAND_PARAMS.toBuilder()
             .remove(134217728)//remove CommandParam.CHAINED_COMMAND
-            .shift(86, 4)
-            .insert(86, CommandParam.CODE_BUILDER_ARG)
-            .insert(87, CommandParam.CODE_BUILDER_ARGS)
-            .insert(88, CommandParam.CODE_BUILDER_SELECT_PARAM)
-            .insert(89, CommandParam.CODE_BUILDER_SELECTOR)
+            .insert(88, CommandParam.CODE_BUILDER_ARG)
+            .insert(89, CommandParam.CODE_BUILDER_ARGS)
+            .insert(90, CommandParam.CODE_BUILDER_SELECT_PARAM)
+            .insert(91, CommandParam.CODE_BUILDER_SELECTOR)
             .insert(134217728, CommandParam.CHAINED_COMMAND)//reinsert, avoid shift
             .build();
 
