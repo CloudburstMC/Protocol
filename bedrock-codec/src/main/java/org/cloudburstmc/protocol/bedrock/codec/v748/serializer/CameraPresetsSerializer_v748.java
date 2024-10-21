@@ -37,7 +37,7 @@ public class CameraPresetsSerializer_v748 extends CameraPresetsSerializer_v729 {
         helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
         helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
-        helper.writeOptionalNull(buffer, preset.getAlignTargetAndCameraForward(),
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getAlignTargetAndCameraForward(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
     }
 
