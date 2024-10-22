@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.camera;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector2f;
@@ -9,6 +10,7 @@ import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CameraSetInstruction {
@@ -25,6 +27,7 @@ public class CameraSetInstruction {
      * @since v748
      */
     private Vector3f entityOffset;
+    @Builder.Default
     private OptionalBoolean defaultPreset = OptionalBoolean.empty();
 
     @Data

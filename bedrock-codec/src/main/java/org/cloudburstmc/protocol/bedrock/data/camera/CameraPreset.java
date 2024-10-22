@@ -14,6 +14,7 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 @NoArgsConstructor
 public class CameraPreset {
     private String identifier;
+    @Builder.Default
     private String parentPreset = "";
     // All the values below are optional, and will not be encoded if null is used
     private Vector3f pos;
@@ -28,6 +29,7 @@ public class CameraPreset {
      */
     private Float radius;
     private CameraAudioListener listener;
+    @Builder.Default
     private OptionalBoolean playEffect = OptionalBoolean.empty();
     /**
      * @since v729
@@ -36,6 +38,7 @@ public class CameraPreset {
     /**
      * @since v729
      */
+    @Builder.Default
     private OptionalBoolean snapToTarget = OptionalBoolean.empty();
     /**
      * @since v729
@@ -52,9 +55,11 @@ public class CameraPreset {
     /**
      * @since v748
      */
+    @Builder.Default
     private OptionalBoolean continueTargeting = OptionalBoolean.empty();
     /**
      * @since v748
      */
+    @Builder.Default
     private OptionalBoolean alignTargetAndCameraForward = OptionalBoolean.empty();
 }
