@@ -4,8 +4,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategoriesDefinition;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetDefinition;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistCategories;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistPreset;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -14,8 +14,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistPresetsPacket implements BedrockPacket {
-    private final List<CameraAimAssistCategoriesDefinition> categories = new ObjectArrayList<>();
-    private final List<CameraAimAssistPresetDefinition> presets = new ObjectArrayList<>();
+    private final List<CameraAimAssistCategories> categories = new ObjectArrayList<>();
+    private final List<CameraAimAssistPreset> presets = new ObjectArrayList<>();
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

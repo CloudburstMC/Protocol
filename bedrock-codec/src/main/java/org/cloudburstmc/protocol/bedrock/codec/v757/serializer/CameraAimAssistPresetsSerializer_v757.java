@@ -3,10 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v757.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategoriesDefinition;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategoryDefinition;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategoryPriorities;
-import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetDefinition;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistCategories;
+import org.cloudburstmc.protocol.bedrock.data.camera.aimassist.CameraAimAssistPreset;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
 
 public class CameraAimAssistPresetsSerializer_v757 implements BedrockPacketSerializer<CameraAimAssistPresetsPacket> {
@@ -24,65 +22,83 @@ public class CameraAimAssistPresetsSerializer_v757 implements BedrockPacketSeria
         helper.readArray(buffer, packet.getPresets(), this::readPreset);
     }
 
-    protected void writeCategories(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategoriesDefinition categories) {
+    protected void writeCategories(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategories categories) {
         helper.writeString(buffer, categories.getIdentifier());
         helper.writeArray(buffer, categories.getCategories(), this::writeCategory);
     }
 
-    protected CameraAimAssistCategoriesDefinition readCategories(ByteBuf buffer, BedrockCodecHelper helper) {
-        final CameraAimAssistCategoriesDefinition categories = new CameraAimAssistCategoriesDefinition();
+    protected CameraAimAssistCategories readCategories(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraAimAssistCategories categories = new CameraAimAssistCategories();
         categories.setIdentifier(helper.readString(buffer));
         helper.readArray(buffer, categories.getCategories(), this::readCategory);
         return categories;
     }
 
-    protected void writeCategory(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategoryDefinition category) {
+    protected void writeCategory(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategories.Category category) {
         helper.writeString(buffer, category.getName());
-        helper.writeArray(buffer, category.getPriorities(), this::writePriorities);
+        this.writePriorities(buffer, helper, category.getPriorities());
     }
 
-    protected CameraAimAssistCategoryDefinition readCategory(ByteBuf buffer, BedrockCodecHelper helper) {
-        final CameraAimAssistCategoryDefinition category = new CameraAimAssistCategoryDefinition();
+    protected CameraAimAssistCategories.Category readCategory(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraAimAssistCategories.Category category = new CameraAimAssistCategories.Category();
         category.setName(helper.readString(buffer));
-        helper.readArray(buffer, category.getPriorities(), this::readPriorities);
+        category.setPriorities(this.readPriorities(buffer, helper));
         return category;
     }
 
-    protected void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPresetDefinition preset) {
+    protected void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPreset preset) {
         helper.writeString(buffer, preset.getIdentifier());
         helper.writeString(buffer, preset.getCategories());
         helper.writeArray(buffer, preset.getExclusionList(), helper::writeString);
         helper.writeArray(buffer, preset.getLiquidTargetingList(), helper::writeString);
-        helper.writeArray(buffer, preset.getItemSettings(), helper::writeString);
+        helper.writeArray(buffer, preset.getItemSettings(), (buf, h, itemSettings) -> {
+            h.writeString(buf, itemSettings.getItemIdentifier());
+            h.writeString(buf, itemSettings.getCategoryName());
+        });
         helper.writeOptionalNull(buffer, preset.getDefaultItemSettings(), helper::writeString);
         helper.writeOptionalNull(buffer, preset.getHandSettings(), helper::writeString);
     }
 
-    protected CameraAimAssistPresetDefinition readPreset(ByteBuf buffer, BedrockCodecHelper helper) {
-        final CameraAimAssistPresetDefinition preset = new CameraAimAssistPresetDefinition();
+    protected CameraAimAssistPreset readPreset(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraAimAssistPreset preset = new CameraAimAssistPreset();
         preset.setIdentifier(helper.readString(buffer));
         preset.setCategories(helper.readString(buffer));
         helper.readArray(buffer, preset.getExclusionList(), helper::readString);
         helper.readArray(buffer, preset.getLiquidTargetingList(), helper::readString);
-        helper.readArray(buffer, preset.getItemSettings(), helper::readString);
+        helper.readArray(buffer, preset.getItemSettings(), (buf, h) ->
+                new CameraAimAssistPreset.ItemSettings(h.readString(buf), h.readString(buf)));
         preset.setDefaultItemSettings(helper.readOptional(buffer, null, helper::readString));
         preset.setHandSettings(helper.readOptional(buffer, null, helper::readString));
         return preset;
     }
 
-    protected void writePriorities(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategoryPriorities priorities) {
-        buffer.writeByte(priorities.getEntities());
-        buffer.writeByte(priorities.getBlocks());
-        buffer.writeByte(priorities.getEntityDefault());
-        buffer.writeByte(priorities.getBlockDefault());
+    protected void writePriorities(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistCategories.Category.Priorities priorities) {
+        helper.writeArray(buffer, priorities.getEntities(), (buf, h, entity) -> {
+            h.writeString(buf, entity.getIdentifier());
+            buf.writeIntLE(entity.getEntityDefault());
+        });
+        helper.writeArray(buffer, priorities.getBlocks(), (buf, h, block) -> {
+            h.writeString(buf, block.getIdentifier());
+            buf.writeIntLE(block.getBlockDefault());
+        });
+        helper.writeOptionalNull(buffer, priorities.getEntityDefault(), ByteBuf::writeIntLE);
+        helper.writeOptionalNull(buffer, priorities.getBlockDefault(), ByteBuf::writeIntLE);
     }
 
-    protected CameraAimAssistCategoryPriorities readPriorities(ByteBuf buffer, BedrockCodecHelper helper) {
-        final CameraAimAssistCategoryPriorities priorities = new CameraAimAssistCategoryPriorities();
-        priorities.setEntities(buffer.readUnsignedByte());
-        priorities.setBlocks(buffer.readUnsignedByte());
-        priorities.setEntityDefault(buffer.readUnsignedByte());
-        priorities.setBlockDefault(buffer.readUnsignedByte());
+    protected CameraAimAssistCategories.Category.Priorities readPriorities(ByteBuf buffer, BedrockCodecHelper helper) {
+        final CameraAimAssistCategories.Category.Priorities priorities = new CameraAimAssistCategories.Category.Priorities();
+        helper.readArray(buffer, priorities.getEntities(), (buf, h) -> {
+            final String identifier = h.readString(buf);
+            final int entityDefault = buf.readIntLE();
+            return new CameraAimAssistCategories.Category.Priorities.Entity(identifier, entityDefault);
+        });
+        helper.readArray(buffer, priorities.getBlocks(), (buf, h) -> {
+            final String identifier = h.readString(buf);
+            final int blockDefault = buf.readIntLE();
+            return new CameraAimAssistCategories.Category.Priorities.Block(identifier, blockDefault);
+        });
+        priorities.setEntityDefault(helper.readOptional(buffer, null, ByteBuf::readIntLE));
+        priorities.setBlockDefault(helper.readOptional(buffer, null, ByteBuf::readIntLE));
         return priorities;
     }
 }
