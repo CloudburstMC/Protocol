@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v765;
+package org.cloudburstmc.protocol.bedrock.codec.v766;
 
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LevelEventSerializer_v291;
@@ -7,12 +7,12 @@ import org.cloudburstmc.protocol.bedrock.codec.v313.serializer.LevelSoundEvent2S
 import org.cloudburstmc.protocol.bedrock.codec.v332.serializer.LevelSoundEventSerializer_v332;
 import org.cloudburstmc.protocol.bedrock.codec.v361.serializer.LevelEventGenericSerializer_v361;
 import org.cloudburstmc.protocol.bedrock.codec.v748.Bedrock_v748;
-import org.cloudburstmc.protocol.bedrock.codec.v765.serializer.*;
+import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.*;
 import org.cloudburstmc.protocol.bedrock.data.*;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
-public class Bedrock_v765 extends Bedrock_v748 {
+public class Bedrock_v766 extends Bedrock_v748 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v748.SOUND_EVENTS
             .toBuilder()
@@ -45,18 +45,18 @@ public class Bedrock_v765 extends Bedrock_v748 {
 
     public static final BedrockCodec CODEC = Bedrock_v748.CODEC.toBuilder()
             .raknetProtocolVersion(11)
-            .protocolVersion(765)
+            .protocolVersion(766)
             .minecraftVersion("1.21.50")
-            .helper(() -> new BedrockCodecHelper_v765(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v766(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))
             .updateSerializer(LevelEventGenericPacket.class, new LevelEventGenericSerializer_v361(LEVEL_EVENTS))
             .updateSerializer(LevelSoundEvent1Packet.class, new LevelSoundEvent1Serializer_v291(SOUND_EVENTS))
             .updateSerializer(LevelSoundEvent2Packet.class, new LevelSoundEvent2Serializer_v313(SOUND_EVENTS))
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v332(SOUND_EVENTS))
-            .updateSerializer(CameraAimAssistPacket.class, CameraAimAssistSerializer_v765.INSTANCE)
-            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v765.INSTANCE)
-            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v765.INSTANCE)
-            .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v765.INSTANCE)
-            .registerPacket(CameraAimAssistPresetsPacket::new, CameraAimAssistPresetsSerializer_v765.INSTANCE, 320, PacketRecipient.CLIENT)
+            .updateSerializer(CameraAimAssistPacket.class, CameraAimAssistSerializer_v766.INSTANCE)
+            .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v766.INSTANCE)
+            .updateSerializer(PlayerAuthInputPacket.class, PlayerAuthInputSerializer_v766.INSTANCE)
+            .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v766.INSTANCE)
+            .registerPacket(CameraAimAssistPresetsPacket::new, CameraAimAssistPresetsSerializer_v766.INSTANCE, 320, PacketRecipient.CLIENT)
             .build();
 }

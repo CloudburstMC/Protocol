@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v765;
+package org.cloudburstmc.protocol.bedrock.codec.v766;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
@@ -15,9 +15,9 @@ import java.math.BigInteger;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BedrockCodecHelper_v765 extends BedrockCodecHelper_v729 {
+public class BedrockCodecHelper_v766 extends BedrockCodecHelper_v729 {
 
-    public BedrockCodecHelper_v765(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
+    public BedrockCodecHelper_v766(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
     }

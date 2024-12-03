@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v765.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v766.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -6,8 +6,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.camera.*;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
 
-public class CameraAimAssistPresetsSerializer_v765 implements BedrockPacketSerializer<CameraAimAssistPresetsPacket> {
-    public static final CameraAimAssistPresetsSerializer_v765 INSTANCE = new CameraAimAssistPresetsSerializer_v765();
+public class CameraAimAssistPresetsSerializer_v766 implements BedrockPacketSerializer<CameraAimAssistPresetsPacket> {
+    public static final CameraAimAssistPresetsSerializer_v766 INSTANCE = new CameraAimAssistPresetsSerializer_v766();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPresetsPacket packet) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v765.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v766.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import org.cloudburstmc.protocol.bedrock.data.camera.CameraPreset;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CameraPresetsSerializer_v765 extends CameraPresetsSerializer_v729 {
-    public static final CameraPresetsSerializer_v765 INSTANCE = new CameraPresetsSerializer_v765();
+public class CameraPresetsSerializer_v766 extends CameraPresetsSerializer_v729 {
+    public static final CameraPresetsSerializer_v766 INSTANCE = new CameraPresetsSerializer_v766();
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {

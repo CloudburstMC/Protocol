@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v765.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v766.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -8,8 +8,8 @@ import org.cloudburstmc.protocol.bedrock.packet.ResourcePacksInfoPacket;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ResourcePacksInfoSerializer_v765 extends ResourcePacksInfoSerializer_v748 {
-    public static final ResourcePacksInfoSerializer_v765 INSTANCE = new ResourcePacksInfoSerializer_v765();
+public class ResourcePacksInfoSerializer_v766 extends ResourcePacksInfoSerializer_v748 {
+    public static final ResourcePacksInfoSerializer_v766 INSTANCE = new ResourcePacksInfoSerializer_v766();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ResourcePacksInfoPacket packet) {
