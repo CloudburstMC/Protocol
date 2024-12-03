@@ -15,7 +15,7 @@ public class CameraAimAssistPacket implements BedrockPacket {
     private TargetMode targetMode;
     private Action action;
     /**
-     * @since v765
+     * @since v766
      */
     private String presetId;
 

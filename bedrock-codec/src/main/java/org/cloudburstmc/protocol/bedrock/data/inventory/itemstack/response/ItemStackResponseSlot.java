@@ -30,7 +30,7 @@ public class ItemStackResponseSlot {
      */
     private int durabilityCorrection;
     /**
-     * @since v765
+     * @since v766
      */
     private String filteredCustomName = "";
 }

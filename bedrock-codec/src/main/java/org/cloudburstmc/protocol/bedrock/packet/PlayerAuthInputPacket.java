@@ -74,7 +74,7 @@ public class PlayerAuthInputPacket implements BedrockPacket {
      */
     private Vector3f cameraOrientation;
     /**
-     * @since v765
+     * @since v766
      */
     private Vector2f rawMoveVector;
 

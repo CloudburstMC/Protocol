@@ -28,11 +28,11 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
      */
     private boolean forcingServerPacksEnabled;
     /**
-     * @since v765
+     * @since v766
      */
     private UUID worldTemplateId;
     /**
-     * @since v765
+     * @since v766
      */
     private String worldTemplateVersion;
 
