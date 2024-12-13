@@ -34,7 +34,7 @@ public class BedrockCodecHelper_v766 extends BedrockCodecHelper_v729 {
 
     @Override
     public <T extends Enum<?>> void writeLargeVarIntFlags(ByteBuf buffer, Set<T> flags, Class<T> clazz) {
-        BigInteger flagsInt = new BigInteger(clazz.getEnumConstants().length, ThreadLocalRandom.current());
+        BigInteger flagsInt = BigInteger.ZERO;
         for (T flag : flags) {
             flagsInt = flagsInt.setBit(flag.ordinal());
         }
