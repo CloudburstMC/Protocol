@@ -35,6 +35,7 @@ public class Bedrock_v786 extends Bedrock_v776 {
             .helper(() -> new BedrockCodecHelper_v776(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(MovementPredictionSyncPacket.class, MovementPredictionSyncSerializer_v786.INSTANCE)
             .updateSerializer(LevelSoundEventPacket.class, new LevelSoundEventSerializer_v786(SOUND_EVENTS))
+            .updateSerializer(SetHudPacket.class, SetHudSerializer_v786.INSTANCE)
             .registerPacket(UpdateClientOptionsPacket::new, UpdateClientOptionsSerializer_v786.INSTANCE, 323, PacketRecipient.SERVER)
             .registerPacket(PlayerVideoCapturePacket::new, PlayerVideoCaptureSerializer_v786.INSTANCE, 324, PacketRecipient.CLIENT)
             .registerPacket(PlayerUpdateEntityOverridesPacket::new, PlayerUpdateEntityOverridesSerializer_v786.INSTANCE, 325, PacketRecipient.CLIENT)
