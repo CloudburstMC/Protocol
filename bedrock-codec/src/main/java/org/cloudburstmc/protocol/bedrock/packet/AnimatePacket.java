@@ -28,7 +28,13 @@ public class AnimatePacket implements BedrockPacket {
         WAKE_UP,
         CRITICAL_HIT,
         MAGIC_CRITICAL_HIT,
+        /**
+         * @deprecated v800 (1.21.80)
+         */
         ROW_RIGHT,
+        /**
+         * @deprecated v800 (1.21.80)
+         */
         ROW_LEFT,
     }
 

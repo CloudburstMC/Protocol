@@ -284,4 +284,12 @@ public class EntityDataTypes {
      * @since v776
      */
     public static final EntityDataType<Vector3f> BED_ENTER_POSITION = new EntityDataType<>(Vector3f.class, "BED_ENTER_POSITION");
+    /**
+     * @since v800
+     */
+    public static final EntityDataType<Float> SEAT_THIRD_PERSON_CAMERA_RADIUS = new EntityDataType<>(Float.class, "SEAT_THIRD_PERSON_CAMERA_RADIUS");
+    /**
+     * @since v800
+     */
+    public static final EntityDataType<Float> SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING = new EntityDataType<>(Float.class, "SEAT_CAMERA_RELAX_DISTANCE_SMOOTHING");
 }

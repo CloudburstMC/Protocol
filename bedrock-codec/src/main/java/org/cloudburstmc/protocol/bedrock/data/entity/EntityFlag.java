@@ -165,5 +165,9 @@ public enum EntityFlag {
     /**
      * @since v786
      */
-    WASD_AIR_CONTROLLED
+    WASD_AIR_CONTROLLED,
+    /**
+     * @since v800
+     */
+    DOES_SERVER_AUTH_ONLY_DISMOUNT
 }

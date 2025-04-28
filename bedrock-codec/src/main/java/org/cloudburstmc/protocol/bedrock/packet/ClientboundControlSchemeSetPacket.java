@@ -3,38 +3,32 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionData;
+import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.Map;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class BiomeDefinitionListPacket implements BedrockPacket {
-    /**
-     * @deprecated As of v800 (1.21.80) the biomes are no longer sent as NBT. Use {@link #biomes} instead.
-     */
-    private NbtMap definitions;
-    private Map<String, BiomeDefinitionData> biomes;
+public class ClientboundControlSchemeSetPacket implements BedrockPacket {
+
+    private ControlScheme scheme;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.BIOME_DEFINITIONS_LIST;
+        return BedrockPacketType.CLIENTBOUND_CONTROL_SCHEME_SET;
     }
 
     @Override
-    public BiomeDefinitionListPacket clone() {
+    public BedrockPacket clone() {
         try {
-            return (BiomeDefinitionListPacket) super.clone();
+            return (ClientboundControlSchemeSetPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
 }
-

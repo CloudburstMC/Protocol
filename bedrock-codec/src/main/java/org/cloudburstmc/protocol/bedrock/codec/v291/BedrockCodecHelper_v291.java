@@ -9,6 +9,7 @@ import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
 import org.cloudburstmc.protocol.bedrock.codec.BaseBedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.data.GameRuleData;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandEnumConstraint;
@@ -22,6 +23,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
+import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStream;
@@ -29,6 +31,7 @@ import org.cloudburstmc.protocol.common.util.stream.LittleEndianByteBufOutputStr
 import java.io.IOException;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -375,6 +378,14 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
+    public <O> O readOptional(ByteBuf buffer, O emptyValue, BiFunction<ByteBuf, BedrockCodecHelper, O> function) {
+        if (buffer.readBoolean()) {
+            return function.apply(buffer, this);
+        }
+        return emptyValue;
+    }
+
+    @Override
     public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer) {
         checkNotNull(consumer, "read consumer");
         boolean exists = isPresent.test(object);
@@ -385,7 +396,22 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
+    public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
+        checkNotNull(consumer, "read consumer");
+        boolean exists = isPresent.test(object);
+        buffer.writeBoolean(exists);
+        if (exists) {
+            consumer.accept(buffer, this, object);
+        }
+    }
+
+    @Override
     public <T> void writeOptionalNull(ByteBuf buffer, T object, BiConsumer<ByteBuf, T> consumer) {
+        this.writeOptional(buffer, Objects::nonNull, object, consumer);
+    }
+
+    @Override
+    public <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
         this.writeOptional(buffer, Objects::nonNull, object, consumer);
     }
 }

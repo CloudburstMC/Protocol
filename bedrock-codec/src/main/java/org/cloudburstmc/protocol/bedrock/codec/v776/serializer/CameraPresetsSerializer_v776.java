@@ -76,7 +76,7 @@ public class CameraPresetsSerializer_v776 extends CameraPresetsSerializer_v766 {
         OptionalBoolean alignTargetAndCameraForward = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
         CameraAimAssistPreset aimAssist = helper.readOptional(buffer, null, buf -> readCameraAimAssist(buf, helper));
 
-        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, minYawLimit, maxYawLimit, listener, effects, rotationSpeed, snapToTarget, entityOffset, horizontalRotationLimit, verticalRotationLimit, continueTargeting, alignTargetAndCameraForward, blockListeningRadius, aimAssist);
+        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, minYawLimit, maxYawLimit, listener, effects, rotationSpeed, snapToTarget, entityOffset, horizontalRotationLimit, verticalRotationLimit, continueTargeting, alignTargetAndCameraForward, blockListeningRadius, aimAssist, null);
     }
 
     protected CameraAimAssistPreset readCameraAimAssist(ByteBuf buffer, BedrockCodecHelper helper) {

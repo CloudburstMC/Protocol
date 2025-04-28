@@ -13,9 +13,11 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
+import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -132,12 +134,27 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     }
 
     @Override
+    public <T> T readOptional(ByteBuf buffer, T emptyValue, BiFunction<ByteBuf, BedrockCodecHelper, T> function) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    public <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public <T> void writeOptionalNull(ByteBuf buffer, T object, BiConsumer<ByteBuf, T> consumer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer) {
         throw new UnsupportedOperationException();
     }
 

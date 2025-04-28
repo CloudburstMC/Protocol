@@ -32,10 +32,7 @@ import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.*;
 
 public interface BedrockCodecHelper {
@@ -218,9 +215,15 @@ public interface BedrockCodecHelper {
 
     <O> O readOptional(ByteBuf buffer, O emptyValue, Function<ByteBuf, O> function);
 
+    <T> T readOptional(ByteBuf buffer, T emptyValue, BiFunction<ByteBuf, BedrockCodecHelper, T> function);
+
     <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, BiConsumer<ByteBuf, T> consumer);
 
+    <T> void writeOptional(ByteBuf buffer, Predicate<T> isPresent, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer);
+
     <T> void writeOptionalNull(ByteBuf buffer, T object, BiConsumer<ByteBuf, T> consumer);
+
+    <T> void writeOptionalNull(ByteBuf buffer, T object, TriConsumer<ByteBuf, BedrockCodecHelper, T> consumer);
 
     void readEntityProperties(ByteBuf buffer, EntityProperties properties);
 

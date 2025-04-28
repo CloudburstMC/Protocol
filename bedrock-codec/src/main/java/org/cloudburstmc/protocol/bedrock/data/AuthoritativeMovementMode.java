@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 public enum AuthoritativeMovementMode {
     /**
      * Movement is completely controlled by the client and does not send {@link PlayerAuthInputPacket}
+     * @deprecated v800
      */
     CLIENT,
     /**

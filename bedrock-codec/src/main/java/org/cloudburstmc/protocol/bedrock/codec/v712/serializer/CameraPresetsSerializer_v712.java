@@ -48,6 +48,6 @@ public class CameraPresetsSerializer_v712 extends CameraPresetsSerializer_v618 {
 
         CameraAudioListener listener = helper.readOptional(buffer, null, buf -> CameraAudioListener.values()[buf.readUnsignedByte()]);
         OptionalBoolean effects = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
-        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, null, null, listener, effects, null, null, null, null, null, null, null, null, null);
+        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, null, null, listener, effects, null, null, null, null, null, null, null, null, null, null);
     }
 }

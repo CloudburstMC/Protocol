@@ -6,6 +6,9 @@ import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
+/**
+ * @deprecated Removed as of v800 (1.21.80). Server authoritative input is handled by {@link PlayerAuthInputPacket}
+ */
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)

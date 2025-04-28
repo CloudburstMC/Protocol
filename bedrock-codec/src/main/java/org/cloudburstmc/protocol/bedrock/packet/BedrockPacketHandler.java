@@ -899,4 +899,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(PlayerUpdateEntityOverridesPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(PlayerLocationPacket playerLocationPacket) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ClientboundControlSchemeSetPacket clientboundControlSchemeSetPacket) {
+        return PacketSignal.UNHANDLED;
+    }
 }

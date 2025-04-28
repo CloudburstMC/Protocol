@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 @Data
@@ -78,4 +80,9 @@ public class CameraPreset {
      * @since v766
      */
     private CameraAimAssistPreset aimAssistPreset;
+    /**
+     * @since v800
+     */
+    @Nullable
+    private ControlScheme controlScheme;
 }

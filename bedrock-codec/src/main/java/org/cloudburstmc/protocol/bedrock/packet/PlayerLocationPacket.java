@@ -3,38 +3,39 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cloudburstmc.nbt.NbtMap;
-import org.cloudburstmc.protocol.bedrock.data.biome.BiomeDefinitionData;
+import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.common.PacketSignal;
-
-import java.util.Map;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
-public class BiomeDefinitionListPacket implements BedrockPacket {
-    /**
-     * @deprecated As of v800 (1.21.80) the biomes are no longer sent as NBT. Use {@link #biomes} instead.
-     */
-    private NbtMap definitions;
-    private Map<String, BiomeDefinitionData> biomes;
+public class PlayerLocationPacket implements BedrockPacket {
+
+    private Type type;
+    private long targetEntityId;
+    private Vector3f position;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
     }
 
+    @Override
     public BedrockPacketType getPacketType() {
-        return BedrockPacketType.BIOME_DEFINITIONS_LIST;
+        return BedrockPacketType.PLAYER_LOCATION;
     }
 
     @Override
-    public BiomeDefinitionListPacket clone() {
+    public BedrockPacket clone() {
         try {
-            return (BiomeDefinitionListPacket) super.clone();
+            return (PlayerLocationPacket) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
-}
 
+    public enum Type {
+        COORDINATES,
+        HIDE
+    }
+}

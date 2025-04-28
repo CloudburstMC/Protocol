@@ -124,5 +124,9 @@ public enum DisconnectFailReason {
     /**
      * @since v729
      */
-    DEEP_LINK_TRYING_TO_OPEN_DEMO_WORLD_WHILE_SIGNED_IN
+    DEEP_LINK_TRYING_TO_OPEN_DEMO_WORLD_WHILE_SIGNED_IN,
+    /**
+     * @since v800
+     */
+    ASYNC_JOIN_TASK_DENIED
 }
