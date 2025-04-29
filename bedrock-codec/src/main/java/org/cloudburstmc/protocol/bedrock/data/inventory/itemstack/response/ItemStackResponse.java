@@ -52,6 +52,6 @@ public class ItemStackResponse {
         this.result = result;
         this.requestId = requestId;
         this.containers = containers;
-        this.success = false;
+        this.success = result == ItemStackResponseStatus.OK;
     }
 }
