@@ -798,6 +798,41 @@ public enum SoundEvent {
      * @since v766
      */
     CLOSE_LONG,
-
+    /**
+     * @since v800
+     */
+    IMITATE_PHANTOM,
+    /**
+     * @since v800
+     */
+    IMITATE_ZOGLIN,
+    /**
+     * @since v800
+     */
+    IMITATE_GUARDIAN,
+    /**
+     * @since v800
+     */
+    IMITATE_RAVAGER,
+    /**
+     * @since v800
+     */
+    IMITATE_PILLAGER,
+    /**
+     * @since v800
+     */
+    PLACE_IN_WATER,
+    /**
+     * @since v800
+     */
+    STATE_CHANGE,
+    /**
+     * @since v800
+     */
+    IMITATE_HAPPY_GHAST,
+    /**
+     * @since v800
+     */
+    UNEQUIP_GENERIC,
     UNDEFINED
 }

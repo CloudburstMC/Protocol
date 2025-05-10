@@ -82,6 +82,16 @@ public class SequencedHashSet<E> implements List<E> {
         return false;
     }
 
+    public int addAndGetIndex(E e) {
+        if (!this.map.containsKey(e)) {
+            int index = this.index++;
+            this.map.put(e, index);
+            this.inverse.put(index, e);
+            return index;
+        }
+        return this.map.getInt(e);
+    }
+
     @Override
     public boolean remove(Object o) {
         throw new UnsupportedOperationException();

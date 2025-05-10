@@ -1,11 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.data.biome;
 
 import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
 @Value
 public class BiomeMountainParamsData {
 
-    int steepBlock;
+    BlockDefinition steepBlock;
     boolean northSlopes;
     boolean southSlopes;
     boolean westSlopes;

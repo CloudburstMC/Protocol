@@ -5,6 +5,6 @@ import lombok.Value;
 @Value
 public class BiomeWeightedTemperatureData {
 
-    int temperature;
+    BiomeTemperatureCategory temperature;
     long weight;
 }

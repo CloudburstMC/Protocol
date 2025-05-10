@@ -6,22 +6,22 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.cloudburstmc.protocol.common.util.index.Indexable;
-import org.cloudburstmc.protocol.common.util.index.Unindexed;
+
+import java.util.Map;
 
 @Value
 @RequiredArgsConstructor(onConstructor_ = { @Deprecated })
-public class BiomeWeightedData {
+public class BiomeDefinitions {
+
     @Getter(AccessLevel.NONE)
-    transient Indexable<String> biome;
-    int weight;
+    transient Indexable<Map<String, BiomeDefinitionData>> definitions;
 
     @JsonCreator
-    public BiomeWeightedData(String biome, int weight) {
-        this.biome = new Unindexed<>(biome);
-        this.weight = weight;
+    public BiomeDefinitions(Map<String, BiomeDefinitionData> definitions) {
+        this.definitions = new UnindexedBiomes(definitions);
     }
 
-    public String getBiome() {
-        return biome.get();
+    public Map<String, BiomeDefinitionData> getDefinitions() {
+        return definitions.get();
     }
 }

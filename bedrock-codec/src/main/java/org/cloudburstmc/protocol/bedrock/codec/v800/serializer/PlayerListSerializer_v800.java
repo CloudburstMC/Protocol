@@ -9,6 +9,8 @@ import java.awt.*;
 
 public class PlayerListSerializer_v800 extends PlayerListSerializer_v649 {
 
+    public static final PlayerListSerializer_v800 INSTANCE = new PlayerListSerializer_v800();
+
     @Override
     protected void writeEntryBase(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket.Entry entry) {
         super.writeEntryBase(buffer, helper, entry);

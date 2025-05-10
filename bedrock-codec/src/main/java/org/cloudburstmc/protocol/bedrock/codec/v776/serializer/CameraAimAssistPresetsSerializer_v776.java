@@ -3,12 +3,14 @@ package org.cloudburstmc.protocol.bedrock.codec.v776.serializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.CameraAimAssistPresetsSerializer_v766;
 import org.cloudburstmc.protocol.bedrock.data.camera.*;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CameraAimAssistPresetsSerializer_v776 extends CameraAimAssistPresetsSerializer_v766 {
     public static final CameraAimAssistPresetsSerializer_v776 INSTANCE = new CameraAimAssistPresetsSerializer_v776();

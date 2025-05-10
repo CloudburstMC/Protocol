@@ -11,5 +11,5 @@ public class BiomeSurfaceMaterialData {
     BlockDefinition seaFloorBlock;
     BlockDefinition foundationBlock;
     BlockDefinition seaBlock;
-    BlockDefinition seaFloorDepth;
+    int seaFloorDepth;
 }

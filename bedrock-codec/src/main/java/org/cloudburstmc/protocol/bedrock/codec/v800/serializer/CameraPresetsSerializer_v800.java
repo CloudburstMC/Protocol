@@ -4,14 +4,14 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v766.serializer.CameraPresetsSerializer_v766;
+import org.cloudburstmc.protocol.bedrock.codec.v776.serializer.CameraPresetsSerializer_v776;
 import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPreset;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAudioListener;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraPreset;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
-public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v766 {
+public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v776 {
 
     public static final CameraPresetsSerializer_v800 INSTANCE = new CameraPresetsSerializer_v800();
 
@@ -44,6 +44,8 @@ public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v766 {
         Vector2f viewOffset = helper.readOptional(buffer, null, helper::readVector2f);
         Vector3f entityOffset = helper.readOptional(buffer, null, helper::readVector3f);
         Float radius = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
+        Float minYawLimit = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
+        Float maxYawLimit = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
 
         CameraAudioListener listener = helper.readOptional(buffer, null, buf -> CameraAudioListener.values()[buf.readUnsignedByte()]);
         OptionalBoolean effects = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
@@ -51,6 +53,6 @@ public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v766 {
         CameraAimAssistPreset aimAssist = helper.readOptional(buffer, null, buf -> readCameraAimAssist(buf, helper));
         ControlScheme controlScheme = helper.readOptional(buffer, null, buf -> VALUES[buf.readUnsignedByte()]);
 
-        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, null, null, listener, effects, rotationSpeed, snapToTarget, entityOffset, horizontalRotationLimit, verticalRotationLimit, continueTargeting, alignTargetAndCameraForward, blockListeningRadius, aimAssist, controlScheme);
+        return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, minYawLimit, maxYawLimit, listener, effects, rotationSpeed, snapToTarget, entityOffset, horizontalRotationLimit, verticalRotationLimit, continueTargeting, alignTargetAndCameraForward, blockListeningRadius, aimAssist, controlScheme);
     }
 }

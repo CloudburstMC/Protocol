@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategories;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistCategory;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPresetDefinition;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -15,7 +16,14 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class CameraAimAssistPresetsPacket implements BedrockPacket {
+    /**
+     * @deprecated since v800 (1.21.80). Use {@link #categoryDefinitions} instead.
+     */
     private final List<CameraAimAssistCategories> categories = new ObjectArrayList<>();
+    /**
+     * @since v800 (1.21.80)
+     */
+    private final List<CameraAimAssistCategory> categoryDefinitions = new ObjectArrayList<>();
     private final List<CameraAimAssistPresetDefinition> presets = new ObjectArrayList<>();
     /**
      * @since v776

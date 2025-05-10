@@ -1,11 +1,16 @@
 package org.cloudburstmc.protocol.bedrock.codec.v766.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.camera.*;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
 
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CameraAimAssistPresetsSerializer_v766 implements BedrockPacketSerializer<CameraAimAssistPresetsPacket> {
     public static final CameraAimAssistPresetsSerializer_v766 INSTANCE = new CameraAimAssistPresetsSerializer_v766();
 

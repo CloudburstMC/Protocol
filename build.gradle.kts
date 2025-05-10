@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.compileJava
+import org.gradle.kotlin.dsl.invoke
+
 @Suppress("DSL_SCOPE_VIOLATION") // https://youtrack.jetbrains.com/issue/IDEA-262280
 
 plugins {
@@ -25,6 +28,7 @@ subprojects {
     tasks {
         compileJava {
             options.encoding = Charsets.UTF_8.name();
+            options.compilerArgs.add("-parameters")
         }
         test {
             useJUnitPlatform()

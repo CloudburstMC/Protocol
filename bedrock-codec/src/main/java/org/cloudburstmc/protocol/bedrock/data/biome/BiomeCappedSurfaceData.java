@@ -7,7 +7,6 @@ import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Value
 public class BiomeCappedSurfaceData {
     List<BlockDefinition> floorBlocks;
