@@ -8,9 +8,14 @@ import io.netty.channel.ChannelHandlerContext;
 import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 
+import java.util.zip.DataFormatException;
+
 import static sun.misc.Unsafe.ARRAY_BYTE_BASE_OFFSET;
 
 public class SnappyCompression implements BatchCompression {
+
+    private static final int MAX_DECOMPRESSED_BYTES = Integer.getInteger("bedrock.maxDecompressedBytes", 1024 * 1024 * 10);
+
     private static final ThreadLocal<short[]> TABLE = ThreadLocal.withInitial(() -> new short[16384]);
 
     @Override
@@ -69,7 +74,12 @@ public class SnappyCompression implements BatchCompression {
         try {
             long inputAddress = direct.memoryAddress() + direct.readerIndex();
             long inputEndAddress = inputAddress + direct.readableBytes();
-            output.ensureWritable(SnappyRawDecompressor.getUncompressedLength(null, inputAddress, inputEndAddress));
+
+            int uncompressedLength = SnappyRawDecompressor.getUncompressedLength(null, inputAddress, inputEndAddress);
+            if (uncompressedLength > MAX_DECOMPRESSED_BYTES) {
+                throw new DataFormatException("Inflated data exceeds maximum size");
+            }
+            output.ensureWritable(uncompressedLength);
 
             long outputAddress;
             long outputEndAddress;
