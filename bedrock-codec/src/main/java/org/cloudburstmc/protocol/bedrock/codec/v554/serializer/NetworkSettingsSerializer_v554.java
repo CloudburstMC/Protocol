@@ -22,7 +22,7 @@ public class NetworkSettingsSerializer_v554 extends NetworkSettingsSerializer_v3
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkSettingsPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        buffer.writeShortLE(packet.getCompressionAlgorithm().ordinal());
+        buffer.writeShortLE(packet.getCompressionAlgorithm().getNetworkId());
         buffer.writeBoolean(packet.isClientThrottleEnabled());
         buffer.writeByte(packet.getClientThrottleThreshold());
         buffer.writeFloatLE(packet.getClientThrottleScalar());
