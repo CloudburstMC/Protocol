@@ -6,8 +6,17 @@ import org.cloudburstmc.protocol.bedrock.codec.v388.serializer.NetworkSettingsSe
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.packet.NetworkSettingsPacket;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NetworkSettingsSerializer_v554 extends NetworkSettingsSerializer_v388 {
-    protected static final PacketCompressionAlgorithm[] ALGORITHMS = PacketCompressionAlgorithm.values();
+    protected static final Map<Integer, PacketCompressionAlgorithm> ALGORITHMS = new HashMap<>(PacketCompressionAlgorithm.values().length);
+
+    static {
+        for (PacketCompressionAlgorithm algorithm : PacketCompressionAlgorithm.values()) {
+            ALGORITHMS.put(algorithm.getNetworkId(), algorithm);
+        }
+    }
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkSettingsPacket packet) {
@@ -23,7 +32,7 @@ public class NetworkSettingsSerializer_v554 extends NetworkSettingsSerializer_v3
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, NetworkSettingsPacket packet) {
         super.deserialize(buffer, helper, packet);
 
-        packet.setCompressionAlgorithm(ALGORITHMS[buffer.readUnsignedShortLE()]);
+        packet.setCompressionAlgorithm(ALGORITHMS.get(buffer.readUnsignedShortLE()));
         packet.setClientThrottleEnabled(buffer.readBoolean());
         packet.setClientThrottleThreshold(buffer.readUnsignedByte());
         packet.setClientThrottleScalar(buffer.readFloatLE());
