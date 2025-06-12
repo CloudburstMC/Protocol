@@ -35,6 +35,12 @@ public class ResourcePacksInfoPacket implements BedrockPacket {
      * @since v766
      */
     private String worldTemplateVersion;
+    /**
+     * Force the client to disable vibrant visuals, even if the client supports it.
+     *
+     * @since v818
+     */
+    private boolean vibrantVisualsForceDisabled;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

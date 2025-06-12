@@ -69,6 +69,7 @@ public class CameraPreset {
     private OptionalBoolean continueTargeting = OptionalBoolean.empty();
     /**
      * @since v748
+     * @deprecated v818
      */
     @Builder.Default
     private OptionalBoolean alignTargetAndCameraForward = OptionalBoolean.empty();

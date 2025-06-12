@@ -169,5 +169,9 @@ public enum EntityFlag {
     /**
      * @since v800
      */
-    DOES_SERVER_AUTH_ONLY_DISMOUNT
+    DOES_SERVER_AUTH_ONLY_DISMOUNT,
+    /**
+     * @since v818
+     */
+    BODY_ROTATION_ALWAYS_FOLLOWS_HEAD
 }

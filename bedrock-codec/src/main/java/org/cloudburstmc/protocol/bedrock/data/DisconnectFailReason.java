@@ -128,5 +128,17 @@ public enum DisconnectFailReason {
     /**
      * @since v800
      */
-    ASYNC_JOIN_TASK_DENIED
+    ASYNC_JOIN_TASK_DENIED,
+    /**
+     * @since v818
+     */
+    REALMS_TIMELINE_REQUIRED,
+    /**
+     * @since v818
+     */
+    GUEST_WITHOUT_HOST,
+    /**
+     * @since v818
+     */
+    FAILED_TO_JOIN_EXPERIENCE,
 }

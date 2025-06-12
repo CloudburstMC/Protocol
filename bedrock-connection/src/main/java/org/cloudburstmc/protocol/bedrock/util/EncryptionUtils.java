@@ -1,13 +1,27 @@
 package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.experimental.UtilityClass;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
+import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
+import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
+import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
+import org.jose4j.json.internal.json_simple.parser.JSONParser;
+import org.jose4j.json.internal.json_simple.parser.ParseException;
 import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jwa.AlgorithmConstraints.ConstraintType;
+import org.jose4j.jwk.HttpsJwks;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.jwt.consumer.JwtContext;
 import org.jose4j.jwx.HeaderParameterNames;
+import org.jose4j.jwx.JsonWebStructure;
+import org.jose4j.keys.resolvers.HttpsJwksVerificationKeyResolver;
 import org.jose4j.lang.JoseException;
 
 import javax.crypto.Cipher;
@@ -16,15 +30,18 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @UtilityClass
 public class EncryptionUtils {
@@ -39,6 +56,28 @@ public class EncryptionUtils {
     private static final AlgorithmConstraints ALGORITHM_CONSTRAINTS =
             new AlgorithmConstraints(ConstraintType.PERMIT, ALGORITHM_TYPE);
 
+    private static final String DISCOVERY_ENDPOINT =
+            "https://client.discovery.minecraft-services.net/api/v1.0/discovery/MinecraftPE/builds/1.0.0.0";
+    private static final JSONParser JSON_PARSER = new JSONParser();
+
+    private static final Map<String, Object> DISCOVERY_DATA = getDiscoveryData();
+    private static final String AUTH_ENDPOINT = getIssuerEndpoint();
+    private static final String CERT_URL = AUTH_ENDPOINT + "/.well-known/jwks.json";
+    private static final HttpsJwks JWKS = new HttpsJwks(CERT_URL);
+    private static final HttpsJwksVerificationKeyResolver RESOLVER = new HttpsJwksVerificationKeyResolver(JWKS);
+    private static final JwtConsumer MOJANG_CONSUMER = new JwtConsumerBuilder()
+            .setVerificationKeyResolver(RESOLVER)
+            .setRequireExpirationTime()
+            .setRequireSubject()
+            .setExpectedAudience(true, "api://auth-minecraft-services/multiplayer")
+            .build();
+
+    private static final JwtConsumer OFFLINE_CONSUMER = new JwtConsumerBuilder()
+            .setSkipAllValidators()
+            .setRequireExpirationTime()
+            .setSkipDefaultAudienceValidation()
+            .build();
+
     static {
         // DO NOT REMOVE THIS
         // Since Java 8u231, secp384r1 is deprecated and will throw an exception.
@@ -52,6 +91,58 @@ public class EncryptionUtils {
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeySpecException e) {
             throw new AssertionError("Unable to initialize required encryption", e);
         }
+    }
+
+    private static Map<String, Object> getDiscoveryData() {
+        try {
+            URL url = new URL(DISCOVERY_ENDPOINT);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            if (connection.getResponseCode() != 200) {
+                throw new IOException("Failed to fetch discovery data: " + connection.getResponseMessage());
+            }
+            try(InputStream stream = connection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                //noinspection unchecked
+                return (Map<String, Object>) JSON_PARSER.parse(reader);
+            }
+        } catch (ParseException | IOException e) {
+            throw new AssertionError("Unable to fetch discovery data from " + DISCOVERY_ENDPOINT, e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> getAuthEnvironment() {
+        Map<String, Object> result = (Map<String, Object>) DISCOVERY_DATA.get("result");
+
+        if (result == null) {
+            throw new AssertionError("Discovery data does not contain 'result' key" + DISCOVERY_DATA);
+        }
+        Map<String, Object> environments = (Map<String, Object>) result.get("serviceEnvironments");
+        if (environments == null) {
+            throw new AssertionError("Discovery data does not contain 'serviceEnvironments' key" + result);
+        }
+        Map<String, Object> authEnv = (Map<String, Object>) environments.get("auth");
+        if (authEnv == null) {
+            throw new AssertionError("Discovery data does not contain 'auth' environment" + environments);
+        }
+        Map<String, Object> prodEnv = (Map<String, Object>) authEnv.get("prod");
+        if (prodEnv == null) {
+            throw new AssertionError("Discovery data does not contain 'prod' environment" + authEnv);
+        }
+        return prodEnv;
+    }
+
+    private static String getIssuerEndpoint() {
+        String issuer = (String) getAuthEnvironment().get("issuer");
+        if (issuer == null) {
+            throw new AssertionError("Discovery data does not contain 'issuer' key in 'prod' environment");
+        }
+        return issuer;
     }
 
     /**
@@ -88,6 +179,41 @@ public class EncryptionUtils {
             return null;
         }
         return clientData.getUnverifiedPayloadBytes();
+    }
+    
+    @Nullable
+    private static List<String> getChain(String certificateJson) throws JoseException {
+        Map<String, Object> certificate = JsonUtil.parseJson(certificateJson);
+        Object chainObj = certificate.get("chain");
+        if (chainObj instanceof List) {
+            List<String> chain = (List<String>) chainObj;
+            if (chain.isEmpty()) {
+                throw new IllegalStateException("Certificate chain is empty");
+            }
+            return chain;
+        }
+        return null;
+    }
+
+    public static ChainValidationResult validatePayload(AuthPayload payload)
+            throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
+        if (payload instanceof TokenPayload) {
+            TokenPayload tokenPayload = (TokenPayload) payload;
+            String token = tokenPayload.getToken();
+            if (token == null || token.isEmpty()) {
+                throw new IllegalStateException("Token is empty");
+            }
+            return validateToken(payload.getAuthType(), token);
+        } else if (payload instanceof CertificateChainPayload) {
+            CertificateChainPayload chainPayload = (CertificateChainPayload) payload;
+            List<String> chain = chainPayload.getChain();
+            if (chain == null || chain.isEmpty()) {
+                throw new IllegalStateException("Certificate chain is empty");
+            }
+            return validateChain(chain);
+        } else {
+            throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
+        }
     }
 
     public static ChainValidationResult validateChain(List<String> chain)
@@ -132,6 +258,17 @@ public class EncryptionUtils {
             default:
                 throw new IllegalStateException("Unexpected login chain length");
         }
+    }
+
+    public static ChainValidationResult validateToken(AuthType type, String token) throws InvalidJwtException, JoseException {
+        if (type == AuthType.FULL || type == AuthType.GUEST) {
+            JwtContext context = MOJANG_CONSUMER.process(token);
+            return new ChainValidationResult(true, context);
+        } else if (type == AuthType.SELF_SIGNED) {
+            JwtContext context = OFFLINE_CONSUMER.process(token);
+            return new ChainValidationResult(false, context);
+        }
+        throw new JoseException("Unsupported AuthType: " + type);
     }
 
     /**

@@ -15,11 +15,34 @@ public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v776 {
 
     public static final CameraPresetsSerializer_v800 INSTANCE = new CameraPresetsSerializer_v800();
 
-    private static final ControlScheme[] VALUES = ControlScheme.values();
+    protected static final ControlScheme[] VALUES = ControlScheme.values();
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
-        super.writePreset(buffer, helper, preset);
+        helper.writeString(buffer, preset.getIdentifier());
+        helper.writeString(buffer, preset.getParentPreset());
+        helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getX()));
+        helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getY()));
+        helper.writeOptionalNull(buffer, preset.getPos(), (buf, pos) -> buf.writeFloatLE(pos.getZ()));
+        helper.writeOptionalNull(buffer, preset.getPitch(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getYaw(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getRotationSpeed(), ByteBuf::writeFloatLE);
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getSnapToTarget(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
+        helper.writeOptionalNull(buffer, preset.getHorizontalRotationLimit(), helper::writeVector2f);
+        helper.writeOptionalNull(buffer, preset.getVerticalRotationLimit(), helper::writeVector2f);
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getContinueTargeting(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
+        helper.writeOptionalNull(buffer, preset.getBlockListeningRadius(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getViewOffset(), helper::writeVector2f);
+        helper.writeOptionalNull(buffer, preset.getEntityOffset(), helper::writeVector3f);
+        helper.writeOptionalNull(buffer, preset.getRadius(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getMinYawLimit(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getMaxYawLimit(), ByteBuf::writeFloatLE);
+        helper.writeOptionalNull(buffer, preset.getListener(), (buf, listener) -> buf.writeByte(listener.ordinal()));
+        helper.writeOptional(buffer, OptionalBoolean::isPresent, preset.getPlayEffect(),
+                (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
+        helper.writeOptionalNull(buffer, preset.getAimAssistPreset(), (buf, aimAssist) -> writeCameraAimAssist(buf, helper, aimAssist));
         helper.writeOptionalNull(buffer, preset.getControlScheme(), (buf, scheme) -> buf.writeByte(scheme.ordinal()));
     }
 

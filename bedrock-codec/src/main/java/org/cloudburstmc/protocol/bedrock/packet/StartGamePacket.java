@@ -95,6 +95,9 @@ public class StartGamePacket implements BedrockPacket {
     private String premiumWorldTemplateId;
     private boolean trial;
     // SyncedPlayerMovementSettings start
+    /**
+     * @deprecated since v818. {@link AuthoritativeMovementMode#SERVER_WITH_REWIND} is now the default movement mode.
+     */
     private AuthoritativeMovementMode authoritativeMovementMode;
     private int rewindHistorySize;
     boolean serverAuthoritativeBlockBreaking;
@@ -185,6 +188,10 @@ public class StartGamePacket implements BedrockPacket {
      * @since v685
      */
     private String scenarioId;
+    /**
+     * @since v818
+     */
+    private String ownerId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

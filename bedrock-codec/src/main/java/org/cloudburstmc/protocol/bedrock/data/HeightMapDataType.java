@@ -4,5 +4,6 @@ public enum HeightMapDataType {
     NO_DATA,
     HAS_DATA,
     TOO_HIGH,
-    TOO_LOW
+    TOO_LOW,
+    COPIED
 }

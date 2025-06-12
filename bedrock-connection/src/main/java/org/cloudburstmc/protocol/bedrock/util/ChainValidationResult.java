@@ -2,6 +2,8 @@ package org.cloudburstmc.protocol.bedrock.util;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jose4j.json.JsonUtil;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.consumer.JwtContext;
 import org.jose4j.lang.JoseException;
 
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +19,7 @@ import static org.cloudburstmc.protocol.bedrock.util.JsonUtils.childAsType;
 public final class ChainValidationResult {
     private final boolean signed;
     private final Map<String, Object> parsedPayload;
+    private final JwtContext jwtContext;
 
     private IdentityClaims identityClaims;
 
@@ -27,6 +30,13 @@ public final class ChainValidationResult {
     public ChainValidationResult(boolean signed, Map<String, Object> parsedPayload) {
         this.signed = signed;
         this.parsedPayload = Objects.requireNonNull(parsedPayload);
+        this.jwtContext = null;
+    }
+
+    public ChainValidationResult(boolean signed, JwtContext context) {
+        this.signed = signed;
+        this.jwtContext = Objects.requireNonNull(context);
+        this.parsedPayload = null;
     }
 
     public boolean signed() {
@@ -34,32 +44,58 @@ public final class ChainValidationResult {
     }
 
     public Map<String, Object> rawIdentityClaims() {
-        return new HashMap<>(parsedPayload);
+        if (parsedPayload == null) {
+            return jwtContext.getJwtClaims().getClaimsMap();
+        } else {
+            return new HashMap<>(parsedPayload);
+        }
     }
 
     public IdentityClaims identityClaims() throws IllegalStateException {
         if (identityClaims == null) {
-            String identityPublicKey = childAsType(parsedPayload, "identityPublicKey", String.class);
-            Map<?, ?> extraData = childAsType(parsedPayload, "extraData", Map.class);
-
-            String displayName = childAsType(extraData, "displayName", String.class);
-            String identityString = childAsType(extraData, "identity", String.class);
-            String xuid = childAsType(extraData, "XUID", String.class);
-            Object titleId = extraData.get("titleId");
-
-            UUID identity;
-            try {
-                identity = UUID.fromString(identityString);
-            } catch (Exception exception) {
-                throw new IllegalStateException("identity node is an invalid UUID");
+            if (parsedPayload == null) {
+                identityClaims = createClaims();
+            } else {
+                identityClaims = createLegacyClaims();
             }
-
-            identityClaims = new IdentityClaims(
-                    new IdentityData(displayName, identity, xuid, (String) titleId),
-                    identityPublicKey
-            );
         }
         return identityClaims;
+    }
+
+    private IdentityClaims createLegacyClaims() {
+        String identityPublicKey = childAsType(parsedPayload, "identityPublicKey", String.class);
+        Map<?, ?> extraData = childAsType(parsedPayload, "extraData", Map.class);
+
+        String displayName = childAsType(extraData, "displayName", String.class);
+        String identityString = childAsType(extraData, "identity", String.class);
+        String xuid = childAsType(extraData, "XUID", String.class);
+        Object titleId = extraData.get("titleId");
+
+        UUID identity;
+        try {
+            identity = UUID.fromString(identityString);
+        } catch (Exception exception) {
+            throw new IllegalStateException("identity node is an invalid UUID");
+        }
+
+        return new IdentityClaims(
+                new IdentityData(displayName, identity, xuid, (String) titleId, null),
+                identityPublicKey
+        );
+    }
+
+    private IdentityClaims createClaims() {
+        JwtClaims claims = jwtContext.getJwtClaims();
+
+        String identityPublicKey = claims.getClaimValueAsString("cpk");
+        String displayName = claims.getClaimValueAsString("xname");
+        String xuid = claims.getClaimValueAsString("xuid");
+        String minecraftId = claims.getClaimValueAsString("mid");
+
+        return new IdentityClaims(
+                new IdentityData(displayName, null, xuid, null, minecraftId),
+                identityPublicKey
+        );
     }
 
     public static final class IdentityClaims {
@@ -82,15 +118,27 @@ public final class ChainValidationResult {
 
     public static final class IdentityData {
         public final String displayName;
+        /**
+         * Identity UUID, derived from the XUID when online, or from the username when offline.
+         * @deprecated v818: Use {@link #minecraftId} instead.
+         */
+        @Nullable
         public final UUID identity;
         public final String xuid;
         public final @Nullable String titleId;
+        /**
+         * The player's Minecraft PlayFab ID
+         * @since v818
+         */
+        @Nullable
+        public final String minecraftId;
 
-        private IdentityData(String displayName, UUID identity, String xuid, @Nullable String titleId) {
+        private IdentityData(String displayName, UUID identity, String xuid, @Nullable String titleId, @Nullable String minecraftId) {
             this.displayName = displayName;
             this.identity = identity;
             this.xuid = xuid;
             this.titleId = titleId;
+            this.minecraftId = minecraftId;
         }
     }
 }

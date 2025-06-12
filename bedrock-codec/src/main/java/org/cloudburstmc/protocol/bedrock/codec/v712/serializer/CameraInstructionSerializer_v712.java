@@ -65,6 +65,6 @@ public class CameraInstructionSerializer_v712 extends CameraInstructionSerialize
         Vector3f facing = helper.readOptional(buf, null, helper::readVector3f);
         Vector2f viewOffset = helper.readOptional(buf, null, helper::readVector2f);
         OptionalBoolean defaultPreset = helper.readOptional(buf, OptionalBoolean.empty(), b -> OptionalBoolean.of(b.readBoolean()));
-        return new CameraSetInstruction(definition, ease, pos, rot, facing, viewOffset, null, defaultPreset);
+        return new CameraSetInstruction(definition, ease, pos, rot, facing, viewOffset, null, defaultPreset, false);
     }
 }

@@ -834,5 +834,29 @@ public enum SoundEvent {
      * @since v800
      */
     UNEQUIP_GENERIC,
+    /**
+     * @since v818
+     */
+    RECORD_TEARS,
+    /**
+     * @since v818
+     */
+    THE_END_LIGHT_FLASH,
+    /**
+     * @since v818
+     */
+    LEAD_LEASH,
+    /**
+     * @since v818
+     */
+    LEAD_UNLEASH,
+    /**
+     * @since v818
+     */
+    LEAD_BREAK,
+    /**
+     * @since v818
+     */
+    UNSADDLE,
     UNDEFINED
 }

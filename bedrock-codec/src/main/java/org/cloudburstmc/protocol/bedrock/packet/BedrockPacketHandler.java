@@ -900,11 +900,15 @@ public interface BedrockPacketHandler extends PacketHandler {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(PlayerLocationPacket playerLocationPacket) {
+    default PacketSignal handle(PlayerLocationPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 
-    default PacketSignal handle(ClientboundControlSchemeSetPacket clientboundControlSchemeSetPacket) {
+    default PacketSignal handle(ClientboundControlSchemeSetPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerScriptDebugDrawerPacket packet) {
         return PacketSignal.UNHANDLED;
     }
 }
