@@ -49,11 +49,11 @@ public class AvailableCommandsSerializer_v594 extends AvailableCommandsSerialize
 
                 subCommandData.add(subcommand);
                 for (ChainedSubCommandData.Value value : subcommand.getValues()) {
-                    if (subCommandValues.contains(value.getFirst())) {
+                    if (!subCommandValues.contains(value.getFirst())) {
                         subCommandValues.add(value.getFirst());
                     }
 
-                    if (subCommandValues.contains(value.getSecond())) {
+                    if (!subCommandValues.contains(value.getSecond())) {
                         subCommandValues.add(value.getSecond());
                     }
                 }
