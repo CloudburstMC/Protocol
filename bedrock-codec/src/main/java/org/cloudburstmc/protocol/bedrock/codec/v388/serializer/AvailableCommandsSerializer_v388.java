@@ -11,6 +11,7 @@ import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,7 +85,7 @@ public class AvailableCommandsSerializer_v388 extends AvailableCommandsSerialize
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {
         SequencedHashSet<String> enumValues = new SequencedHashSet<>();
         SequencedHashSet<String> postFixes = new SequencedHashSet<>();
-        SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
+        ArrayList<CommandEnumData> enums = new ArrayList<>(); // Allow duplicates
         SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
         Set<Consumer<List<CommandEnumData>>> softEnumParameters = new HashSet<>();
 

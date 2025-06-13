@@ -92,7 +92,7 @@ public class AvailableCommandsSerializer_v291 implements BedrockPacketSerializer
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, AvailableCommandsPacket packet) {
         SequencedHashSet<String> enumValues = new SequencedHashSet<>();
         SequencedHashSet<String> postFixes = new SequencedHashSet<>();
-        SequencedHashSet<CommandEnumData> enums = new SequencedHashSet<>();
+        ArrayList<CommandEnumData> enums = new ArrayList<>(); // Allow duplicates
         SequencedHashSet<CommandEnumData> softEnums = new SequencedHashSet<>();
         Set<Consumer<List<CommandEnumData>>> softEnumParameters = new HashSet<>();
 
