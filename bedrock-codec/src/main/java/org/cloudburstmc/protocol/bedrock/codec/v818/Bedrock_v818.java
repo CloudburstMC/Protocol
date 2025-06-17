@@ -51,6 +51,7 @@ public class Bedrock_v818 extends Bedrock_v800 {
             .updateSerializer(ResourcePacksInfoPacket.class, ResourcePacksInfoSerializer_v818.INSTANCE)
             .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v818.INSTANCE)
             .updateSerializer(CameraPresetsPacket.class, CameraPresetsSerializer_v818.INSTANCE)
+            .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v818.INSTANCE)
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v818.INSTANCE)
             .registerPacket(ServerScriptDebugDrawerPacket::new, ServerScriptDebugDrawerSerializer_v818.INSTANCE, 328, PacketRecipient.CLIENT)
             .build();
