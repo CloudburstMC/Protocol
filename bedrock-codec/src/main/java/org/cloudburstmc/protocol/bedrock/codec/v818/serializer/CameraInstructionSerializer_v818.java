@@ -13,6 +13,8 @@ import org.cloudburstmc.protocol.common.util.Preconditions;
 
 public class CameraInstructionSerializer_v818 extends CameraInstructionSerializer_v748 {
 
+    public static final CameraInstructionSerializer_v818 INSTANCE = new CameraInstructionSerializer_v818();
+
     @Override
     protected void writeSetInstruction(BedrockCodecHelper helper, ByteBuf buf, CameraSetInstruction set) {
         super.writeSetInstruction(helper, buf, set);
