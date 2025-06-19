@@ -90,7 +90,7 @@ public final class ChainValidationResult {
 
         String identityPublicKey = claims.getClaimValueAsString("cpk");
         String displayName = claims.getClaimValueAsString("xname");
-        String xuid = claims.getClaimValueAsString("xuid");
+        String xuid = claims.getClaimValueAsString("xid");
         String minecraftId = claims.getClaimValueAsString("mid");
         UUID identity = UUID.nameUUIDFromBytes(xuid.getBytes(StandardCharsets.UTF_8));
 
