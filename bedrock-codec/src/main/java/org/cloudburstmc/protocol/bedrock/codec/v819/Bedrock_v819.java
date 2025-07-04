@@ -7,9 +7,6 @@ import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.bedrock.packet.LevelSoundEventPacket;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
-/**
- * @author daoge_cmd
- */
 public class Bedrock_v819 extends Bedrock_v818 {
 
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v818.SOUND_EVENTS
