@@ -54,6 +54,9 @@ public class EntityDataTypes {
     public static final EntityDataType<Integer> OLD_SWELL = new EntityDataType<>(Integer.class, "OLD_SWELL");
     public static final EntityDataType<Integer> SWELL_DIRECTION = new EntityDataType<>(Integer.class, "SWELL_DIRECTION");
     public static final EntityDataType<Byte> CHARGE_AMOUNT = new EntityDataType<>(Byte.class, "CHARGE_AMOUNT");
+    /**
+     * @deprecated since v827
+     */
     public static final EntityDataType<BlockDefinition> CARRY_BLOCK_STATE = new EntityDataType<>(BlockDefinition.class, "CARRY_BLOCK_STATE");
     public static final EntityDataType<Byte> CLIENT_EVENT = new EntityDataType<>(Byte.class, "CLIENT_EVENT");
     public static final EntityDataType<Boolean> USING_ITEM = new EntityDataType<>(Boolean.class, "USING_ITEM");

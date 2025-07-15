@@ -19,6 +19,10 @@ public class CameraAimAssistPacket implements BedrockPacket {
      * @since v766
      */
     private String presetId;
+    /**
+     * @since v827
+     */
+    private boolean showDebugRender;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

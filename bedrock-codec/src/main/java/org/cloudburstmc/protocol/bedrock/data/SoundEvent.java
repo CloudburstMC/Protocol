@@ -862,5 +862,9 @@ public enum SoundEvent {
      * @since v819
      */
     RECORD_LAVA_CHICKEN,
+    /**
+     * @since v827
+     */
+    EQUIP_COPPER,
     UNDEFINED
 }

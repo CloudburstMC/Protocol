@@ -1,0 +1,15 @@
+package org.cloudburstmc.protocol.bedrock.data.camera;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CameraFovInstruction {
+    private float fov;
+    private float easeTime;
+    private int easeType;
+    private boolean clear;
+}

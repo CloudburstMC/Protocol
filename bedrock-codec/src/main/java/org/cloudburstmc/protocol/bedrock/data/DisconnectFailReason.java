@@ -141,4 +141,8 @@ public enum DisconnectFailReason {
      * @since v818
      */
     FAILED_TO_JOIN_EXPERIENCE,
+    /**
+     * @since v827
+     */
+    NETHER_NET_DATA_CHANNEL_CLOSED,
 }
