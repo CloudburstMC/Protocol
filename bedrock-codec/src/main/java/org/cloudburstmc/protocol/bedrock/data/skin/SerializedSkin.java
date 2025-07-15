@@ -170,12 +170,12 @@ public class SerializedSkin {
     }
 
     public Builder toBuilder() {
-        return new Builder().skinId(this.skinId).geometryData(this.geometryName)
+        return new Builder().skinId(this.skinId).playFabId(this.playFabId).geometryData(this.geometryName)
                 .skinResourcePatch(this.skinResourcePatch).skinData(this.skinData).animations(this.animations)
-                .capeData(this.capeData).geometryData(this.geometryData).animationData(this.animationData)
-                .premium(this.premium).persona(this.persona).capeOnClassic(this.capeOnClassic).capeId(this.capeId)
-                .fullSkinId(this.fullSkinId).armSize(this.armSize).skinColor(this.skinColor)
-                .personaPieces(this.personaPieces).tintColors(this.tintColors);
+                .capeData(this.capeData).geometryData(this.geometryData).geometryDataEngineVersion(this.geometryDataEngineVersion)
+                .animationData(this.animationData).premium(this.premium).persona(this.persona).capeOnClassic(this.capeOnClassic)
+                .primaryUser(this.primaryUser).capeId(this.capeId).fullSkinId(this.fullSkinId).armSize(this.armSize).skinColor(this.skinColor)
+                .personaPieces(this.personaPieces).tintColors(this.tintColors).overridingPlayerAppearance(this.overridingPlayerAppearance);
     }
 
     public static class Builder {
@@ -199,6 +199,7 @@ public class SerializedSkin {
         private List<PersonaPieceTintData> tintColors;
         private String geometryDataEngineVersion;
         private boolean primaryUser;
+        private boolean overridingPlayerAppearance;
 
         Builder() {
         }
@@ -303,6 +304,11 @@ public class SerializedSkin {
             return this;
         }
 
+        public Builder overridingPlayerAppearance(boolean overridingPlayerAppearance) {
+            this.overridingPlayerAppearance = overridingPlayerAppearance;
+            return this;
+        }
+
         public SerializedSkin build() {
             if (playFabId == null) playFabId = "";
             if (animations == null) animations = Collections.emptyList();
@@ -321,7 +327,7 @@ public class SerializedSkin {
                         animationData, premium, persona, capeOnClassic, capeId, fullSkinId);
             } else {
                 return SerializedSkin.of(skinId, playFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataEngineVersion,
-                        animationData, premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors);
+                        animationData, premium, persona, capeOnClassic, primaryUser, capeId, fullSkinId, armSize, skinColor, personaPieces, tintColors, overridingPlayerAppearance);
             }
         }
 
@@ -344,6 +350,9 @@ public class SerializedSkin {
                     ", skinColor=" + this.skinColor +
                     ", personaPieces=" + this.personaPieces +
                     ", tintColors=" + this.tintColors +
+                    ", geometryDataEngineVersion=" + this.geometryDataEngineVersion +
+                    ", primaryUser=" + this.primaryUser +
+                    ", overridingPlayerAppearance=" + this.overridingPlayerAppearance +
                     ")";
         }
     }
