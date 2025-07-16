@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v827.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v748.serializer.CameraInstructionSerializer_v748;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraFovInstruction;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
 
@@ -16,7 +17,7 @@ public class CameraInstructionSerializer_v827 extends CameraInstructionSerialize
         helper.writeOptionalNull(buffer, packet.getFovInstruction(), (buf, fovInstruction) -> {
             buf.writeFloatLE(fovInstruction.getFov());
             buf.writeFloatLE(fovInstruction.getEaseTime());
-            buf.writeIntLE(fovInstruction.getEaseType());
+            buf.writeByte(fovInstruction.getEaseType().ordinal());
             buf.writeBoolean(fovInstruction.isClear());
         });
     }
@@ -27,7 +28,7 @@ public class CameraInstructionSerializer_v827 extends CameraInstructionSerialize
         packet.setFovInstruction(helper.readOptional(buffer, null, buf -> {
             float fow = buf.readFloatLE();
             float easeTime = buf.readFloatLE();
-            int easeType = buf.readIntLE();
+            CameraEase easeType = CameraEase.values()[buf.readUnsignedByte()];
             boolean fovClear = buf.readBoolean();
             return new CameraFovInstruction(fow, easeTime, easeType, fovClear);
         }));

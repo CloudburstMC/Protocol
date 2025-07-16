@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class CameraFovInstruction {
     private float fov;
     private float easeTime;
-    private int easeType;
+    private CameraEase easeType;
     private boolean clear;
 }
