@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock;
 
+import io.netty.channel.Channel;
 import io.netty.util.internal.SystemPropertyUtil;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
@@ -27,6 +28,10 @@ public class BedrockServerSession extends BedrockSession {
         }
         packet.setKickMessage(finalReason);
         this.sendPacketImmediately(packet);
+
+        if (!this.isSubClient()) {
+            this.getPeer().blackholeInboundPackets();
+        }
 
         this.getPeer().channel.eventLoop().schedule(() -> {
             if (this.isConnected()) {
