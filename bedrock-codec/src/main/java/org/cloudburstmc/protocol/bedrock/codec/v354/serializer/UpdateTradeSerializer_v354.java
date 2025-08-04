@@ -23,7 +23,7 @@ public class UpdateTradeSerializer_v354 implements BedrockPacketSerializer<Updat
         VarInts.writeInt(buffer, packet.getTradeTier());
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
-        helper.writeString(buffer, packet.getDisplayName());
+        helper.writeComponent(buffer, packet.getDisplayName(), true);
         buffer.writeBoolean(packet.isNewTradingUi());
         buffer.writeBoolean(packet.isUsingEconomyTrade());
         helper.writeTag(buffer, packet.getOffers());
@@ -37,7 +37,7 @@ public class UpdateTradeSerializer_v354 implements BedrockPacketSerializer<Updat
         packet.setTradeTier(VarInts.readInt(buffer));
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
-        packet.setDisplayName(helper.readString(buffer));
+        packet.setDisplayName(helper.readComponent(buffer, false, true));
         packet.setNewTradingUi(buffer.readBoolean());
         packet.setUsingEconomyTrade(buffer.readBoolean());
         packet.setOffers(helper.readTag(buffer, NbtMap.class));

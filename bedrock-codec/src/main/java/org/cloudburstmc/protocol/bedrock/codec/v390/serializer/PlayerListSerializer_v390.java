@@ -60,7 +60,7 @@ public class PlayerListSerializer_v390 implements BedrockPacketSerializer<Player
         helper.writeUuid(buffer, entry.getUuid());
 
         VarInts.writeLong(buffer, entry.getEntityId());
-        helper.writeString(buffer, entry.getName());
+        helper.writeComponent(buffer, entry.getName(), true);
         helper.writeString(buffer, entry.getXuid());
         helper.writeString(buffer, entry.getPlatformChatId());
         buffer.writeIntLE(entry.getBuildPlatform());
@@ -72,7 +72,7 @@ public class PlayerListSerializer_v390 implements BedrockPacketSerializer<Player
     protected Entry readEntryBase(ByteBuf buffer, BedrockCodecHelper helper) {
         Entry entry = new Entry(helper.readUuid(buffer));
         entry.setEntityId(VarInts.readLong(buffer));
-        entry.setName(helper.readString(buffer));
+        entry.setName(helper.readComponent(buffer, false, true));
         entry.setXuid(helper.readString(buffer));
         entry.setPlatformChatId(helper.readString(buffer));
         entry.setBuildPlatform(buffer.readIntLE());

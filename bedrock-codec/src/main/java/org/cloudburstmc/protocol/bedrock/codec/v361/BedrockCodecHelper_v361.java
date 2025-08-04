@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v361;
 
 import io.netty.buffer.ByteBuf;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
@@ -55,6 +56,9 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
                     break;
                 case STRING:
                     value = readString(buffer);
+                    break;
+                case COMPONENT:
+                    value = readComponent(buffer, false, true);
                     break;
                 case NBT:
                     value = this.readTag(buffer, Object.class);
@@ -120,6 +124,9 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
                         break;
                     case STRING:
                         writeString(buffer, (String) value);
+                        break;
+                    case COMPONENT:
+                        writeComponent(buffer, (Component) value, true);
                         break;
                     case NBT:
                         this.writeTag(buffer, value);

@@ -15,7 +15,7 @@ public class DisconnectSerializer_v291 implements BedrockPacketSerializer<Discon
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
         buffer.writeBoolean(packet.isMessageSkipped());
         if (!packet.isMessageSkipped()) {
-            helper.writeString(buffer, packet.getKickMessage());
+            helper.writeComponent(buffer, packet.getKickMessage(), true);
         }
     }
 
@@ -23,7 +23,7 @@ public class DisconnectSerializer_v291 implements BedrockPacketSerializer<Discon
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, DisconnectPacket packet) {
         packet.setMessageSkipped(buffer.readBoolean());
         if (!packet.isMessageSkipped()) {
-            packet.setKickMessage(helper.readString(buffer));
+            packet.setKickMessage(helper.readComponent(buffer, false, true));
         }
     }
 }

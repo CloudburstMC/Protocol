@@ -16,8 +16,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
     @Override
     protected void serializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
         if (packet.getAction() == BossEventPacket.Action.CREATE) {
-            helper.writeString(buffer, packet.getTitle());
-            helper.writeString(buffer, packet.getFilteredTitle());
+            helper.writeComponent(buffer, packet.getTitle(), true);
+            helper.writeComponent(buffer, packet.getFilteredTitle(), true);
             buffer.writeFloatLE(packet.getHealthPercentage());
             // fall through to UPDATE_PROPERTIES
             buffer.writeShortLE(packet.getDarkenSky());
@@ -25,8 +25,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
             VarInts.writeUnsignedInt(buffer, packet.getColor());
             VarInts.writeUnsignedInt(buffer, packet.getOverlay());
         } else if (packet.getAction() == BossEventPacket.Action.UPDATE_NAME) {
-            helper.writeString(buffer, packet.getTitle());
-            helper.writeString(buffer, packet.getFilteredTitle());
+            helper.writeComponent(buffer, packet.getTitle(), true);
+            helper.writeComponent(buffer, packet.getFilteredTitle(), true);
         } else {
             super.serializeAction(buffer, helper, packet);
         }
@@ -35,8 +35,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
     @Override
     protected void deserializeAction(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {
         if (packet.getAction() == BossEventPacket.Action.CREATE) {
-            packet.setTitle(helper.readString(buffer));
-            packet.setFilteredTitle(helper.readString(buffer));
+            packet.setTitle(helper.readComponent(buffer, false, true));
+            packet.setFilteredTitle(helper.readComponent(buffer, false, true));
             packet.setHealthPercentage(buffer.readFloatLE());
             // fall through to UPDATE_PROPERTIES
             packet.setDarkenSky(buffer.readUnsignedShortLE());
@@ -44,8 +44,8 @@ public class BossEventSerializer_v776 extends BossEventSerializer_v486 {
             packet.setColor(VarInts.readUnsignedInt(buffer));
             packet.setOverlay(VarInts.readUnsignedInt(buffer));
         } else if (packet.getAction() == BossEventPacket.Action.UPDATE_NAME) {
-            packet.setTitle(helper.readString(buffer));
-            packet.setFilteredTitle(helper.readString(buffer));
+            packet.setTitle(helper.readComponent(buffer, false, true));
+            packet.setFilteredTitle(helper.readComponent(buffer, false, true));
         } else {
             super.deserializeAction(buffer, helper, packet);
         }

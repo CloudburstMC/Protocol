@@ -17,7 +17,7 @@ public class SetDisplayObjectiveSerializer_v291 implements BedrockPacketSerializ
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
         helper.writeString(buffer, packet.getDisplaySlot());
         helper.writeString(buffer, packet.getObjectiveId());
-        helper.writeString(buffer, packet.getDisplayName());
+        helper.writeComponent(buffer, packet.getDisplayName(), true);
         helper.writeString(buffer, packet.getCriteria());
         VarInts.writeInt(buffer, packet.getSortOrder());
     }
@@ -26,7 +26,7 @@ public class SetDisplayObjectiveSerializer_v291 implements BedrockPacketSerializ
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
         packet.setDisplaySlot(helper.readString(buffer));
         packet.setObjectiveId(helper.readString(buffer));
-        packet.setDisplayName(helper.readString(buffer));
+        packet.setDisplayName(helper.readComponent(buffer, false, true));
         packet.setCriteria(helper.readString(buffer));
         packet.setSortOrder(VarInts.readInt(buffer));
     }

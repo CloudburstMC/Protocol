@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v291;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NBTInputStream;
@@ -252,6 +253,9 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
                 case STRING:
                     value = readString(buffer);
                     break;
+                case COMPONENT:
+                    value = readComponent(buffer, false, true);
+                    break;
                 case NBT:
                     value = this.readItem(buffer).getTag();
                     break;
@@ -316,6 +320,9 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
                         break;
                     case STRING:
                         writeString(buffer, (String) value);
+                        break;
+                    case COMPONENT:
+                        writeComponent(buffer, (Component) value, true);
                         break;
                     case NBT:
                         this.writeItem(buffer, ItemData.builder()

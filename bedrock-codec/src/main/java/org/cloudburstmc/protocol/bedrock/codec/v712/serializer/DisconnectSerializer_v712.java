@@ -15,8 +15,8 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
         VarInts.writeInt(buffer, packet.getReason().ordinal());
         buffer.writeBoolean(packet.isMessageSkipped());
         if (!packet.isMessageSkipped()) {
-            helper.writeString(buffer, packet.getKickMessage());
-            helper.writeString(buffer, packet.getFilteredMessage());
+            helper.writeComponent(buffer, packet.getKickMessage(), true);
+            helper.writeComponent(buffer, packet.getFilteredMessage(), true);
         }
     }
 
@@ -25,8 +25,8 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
         packet.setReason(DisconnectFailReason.values()[VarInts.readInt(buffer)]);
         packet.setMessageSkipped(buffer.readBoolean());
         if (!packet.isMessageSkipped()) {
-            packet.setKickMessage(helper.readString(buffer));
-            packet.setFilteredMessage(helper.readString(buffer));
+            packet.setKickMessage(helper.readComponent(buffer, false, true));
+            packet.setFilteredMessage(helper.readComponent(buffer, false, true));
         }
     }
 }

@@ -27,7 +27,7 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
         this.writeLevelSettings(buffer, helper, packet);
 
         helper.writeString(buffer, packet.getLevelId());
-        helper.writeString(buffer, packet.getLevelName());
+        helper.writeComponent(buffer, packet.getLevelName(), true);
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
         buffer.writeBoolean(packet.getAuthoritativeMovementMode() != AuthoritativeMovementMode.CLIENT);
@@ -55,7 +55,7 @@ public class StartGameSerializer_v388 extends StartGameSerializer_v361 {
         this.readLevelSettings(buffer, helper, packet);
 
         packet.setLevelId(helper.readString(buffer));
-        packet.setLevelName(helper.readString(buffer));
+        packet.setLevelName(helper.readComponent(buffer, false, true));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
         packet.setAuthoritativeMovementMode(buffer.readBoolean() ? AuthoritativeMovementMode.SERVER : AuthoritativeMovementMode.CLIENT);

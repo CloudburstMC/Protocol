@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -10,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class SetTitlePacket implements BedrockPacket {
     private Type type;
-    private String text;
+    private Component text;
     private int fadeInTime;
     private int stayTime;
     private int fadeOutTime;
@@ -25,7 +26,7 @@ public class SetTitlePacket implements BedrockPacket {
     /**
      * @since v712
      */
-    private String filteredTitleText = "";
+    private Component filteredTitleText = Component.empty();
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

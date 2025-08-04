@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v291.serializer;
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import net.kyori.adventure.text.TranslatableComponent;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
@@ -15,7 +16,7 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         TextPacket.Type type = packet.getType();
         buffer.writeByte(type.ordinal());
-        buffer.writeBoolean(packet.isNeedsTranslation());
+        buffer.writeBoolean(packet.getMessage() instanceof TranslatableComponent);
 
         switch (type) {
             case CHAT:
@@ -25,13 +26,12 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
             case RAW:
             case TIP:
             case SYSTEM:
-                helper.writeString(buffer, packet.getMessage());
+                helper.writeComponent(buffer, packet.getMessage(), true);
                 break;
             case TRANSLATION:
             case POPUP:
             case JUKEBOX_POPUP:
-                helper.writeString(buffer, packet.getMessage());
-                helper.writeArray(buffer, packet.getParameters(), helper::writeString);
+                helper.writeComponentWithArguments(buffer, packet.getMessage(), true);
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported TextType " + type);
@@ -45,7 +45,7 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         TextPacket.Type type = TextPacket.Type.values()[buffer.readUnsignedByte()];
         packet.setType(type);
-        packet.setNeedsTranslation(buffer.readBoolean());
+        boolean needsTranslation = buffer.readBoolean();
 
         switch (type) {
             case CHAT:
@@ -55,13 +55,12 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
             case RAW:
             case TIP:
             case SYSTEM:
-                packet.setMessage(helper.readString(buffer));
+                packet.setMessage(helper.readComponent(buffer, needsTranslation, true));
                 break;
             case TRANSLATION:
             case POPUP:
             case JUKEBOX_POPUP:
-                packet.setMessage(helper.readString(buffer));
-                helper.readArray(buffer, packet.getParameters(), helper::readString);
+                packet.setMessage(helper.readComponentWithArguments(buffer, needsTranslation, true));
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported TextType " + type);

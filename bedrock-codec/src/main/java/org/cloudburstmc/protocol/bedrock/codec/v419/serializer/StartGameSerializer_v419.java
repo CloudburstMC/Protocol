@@ -36,7 +36,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         this.writeLevelSettings(buffer, helper, packet);
 
         helper.writeString(buffer, packet.getLevelId());
-        helper.writeString(buffer, packet.getLevelName());
+        helper.writeComponent(buffer, packet.getLevelName(), true);
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
         VarInts.writeInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
@@ -65,7 +65,7 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         this.readLevelSettings(buffer, helper, packet);
 
         packet.setLevelId(helper.readString(buffer));
-        packet.setLevelName(helper.readString(buffer));
+        packet.setLevelName(helper.readComponent(buffer, false, true));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
         packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readInt(buffer)]);

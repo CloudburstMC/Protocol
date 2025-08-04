@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -17,7 +18,7 @@ public class UpdateTradePacket implements BedrockPacket {
     private int tradeTier;
     private long traderUniqueEntityId;
     private long playerUniqueEntityId;
-    private String displayName;
+    private Component displayName;
     private NbtMap offers;
     private boolean newTradingUi;
     private boolean recipeAddedOnUpdate;

@@ -33,7 +33,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
                 VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
                 break;
             case CREATE:
-                helper.writeString(buffer, packet.getTitle());
+                helper.writeComponent(buffer, packet.getTitle(), true);
                 buffer.writeFloatLE(packet.getHealthPercentage());
                 // fall through
             case UPDATE_PROPERTIES:
@@ -47,7 +47,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
                 buffer.writeFloatLE(packet.getHealthPercentage());
                 break;
             case UPDATE_NAME:
-                helper.writeString(buffer, packet.getTitle());
+                helper.writeComponent(buffer, packet.getTitle(), true);
                 break;
             case REMOVE:
                 break;
@@ -63,7 +63,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
                 packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
                 break;
             case CREATE:
-                packet.setTitle(helper.readString(buffer));
+                packet.setTitle(helper.readComponent(buffer, false, true));
                 packet.setHealthPercentage(buffer.readFloatLE());
                 // fall through
             case UPDATE_PROPERTIES:
@@ -77,7 +77,7 @@ public class BossEventSerializer_v291 implements BedrockPacketSerializer<BossEve
                 packet.setHealthPercentage(buffer.readFloatLE());
                 break;
             case UPDATE_NAME:
-                packet.setTitle(helper.readString(buffer));
+                packet.setTitle(helper.readComponent(buffer, false, true));
                 break;
         }
     }

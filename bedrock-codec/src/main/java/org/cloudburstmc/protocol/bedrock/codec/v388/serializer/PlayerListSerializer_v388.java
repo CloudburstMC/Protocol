@@ -25,7 +25,7 @@ public class PlayerListSerializer_v388 implements BedrockPacketSerializer<Player
 
             if (packet.getAction() == Action.ADD) {
                 VarInts.writeLong(buffer, entry.getEntityId());
-                helper.writeString(buffer, entry.getName());
+                helper.writeComponent(buffer, entry.getName(), true);
                 helper.writeString(buffer, entry.getXuid());
                 helper.writeString(buffer, entry.getPlatformChatId());
                 buffer.writeIntLE(entry.getBuildPlatform());
@@ -47,7 +47,7 @@ public class PlayerListSerializer_v388 implements BedrockPacketSerializer<Player
 
             if (action == PlayerListPacket.Action.ADD) {
                 entry.setEntityId(VarInts.readLong(buffer));
-                entry.setName(helper.readString(buffer));
+                entry.setName(helper.readComponent(buffer, false, true));
                 entry.setXuid(helper.readString(buffer));
                 entry.setPlatformChatId(helper.readString(buffer));
                 entry.setBuildPlatform(buffer.readIntLE());

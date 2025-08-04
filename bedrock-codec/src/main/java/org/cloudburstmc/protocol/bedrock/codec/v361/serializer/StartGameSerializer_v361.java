@@ -32,7 +32,7 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
         this.writeLevelSettings(buffer, helper, packet);
 
         helper.writeString(buffer, packet.getLevelId());
-        helper.writeString(buffer, packet.getLevelName());
+        helper.writeComponent(buffer, packet.getLevelName(), true);
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
         buffer.writeLongLE(packet.getCurrentTick());
@@ -64,7 +64,7 @@ public class StartGameSerializer_v361 extends StartGameSerializer_v332 {
         this.readLevelSettings(buffer, helper, packet);
 
         packet.setLevelId(helper.readString(buffer));
-        packet.setLevelName(helper.readString(buffer));
+        packet.setLevelName(helper.readComponent(buffer, false, true));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
         packet.setCurrentTick(buffer.readLongLE());

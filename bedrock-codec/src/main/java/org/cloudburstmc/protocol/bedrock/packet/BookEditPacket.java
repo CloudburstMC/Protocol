@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -13,10 +14,10 @@ public class BookEditPacket implements BedrockPacket {
     private int inventorySlot;
     private int pageNumber;
     private int secondaryPageNumber;
-    private String text;
+    private Component text;
     private String photoName;
-    private String title;
-    private String author;
+    private Component title;
+    private Component author;
     private String xuid;
 
     @Override

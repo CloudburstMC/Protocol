@@ -1,5 +1,7 @@
 package org.cloudburstmc.protocol.bedrock;
 
+import net.kyori.adventure.text.Component;
+
 public class BedrockClientSession extends BedrockSession {
 
     public BedrockClientSession(BedrockPeer peer, int subClientId) {
@@ -7,7 +9,7 @@ public class BedrockClientSession extends BedrockSession {
     }
 
     @Override
-    public void disconnect(String reason, boolean hideReason) {
+    public void disconnect(Component reason, boolean hideReason) {
         this.close(reason);
     }
 }

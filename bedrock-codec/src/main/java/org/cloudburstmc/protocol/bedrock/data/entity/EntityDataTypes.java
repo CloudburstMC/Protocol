@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.data.entity;
 
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.nbt.NbtMap;
@@ -24,7 +25,7 @@ public class EntityDataTypes {
     public static final EntityDataType<Integer> VARIANT = new EntityDataType<>(Integer.class, "VARIANT");
     public static final EntityDataType<BlockDefinition> BLOCK = new EntityDataType<>(BlockDefinition.class, "BLOCK");
     public static final EntityDataType<Byte> COLOR = new EntityDataType<>(Byte.class, "COLOR");
-    public static final EntityDataType<String> NAME = new EntityDataType<>(String.class, "NAME");
+    public static final EntityDataType<Component> NAME = new EntityDataType<>(Component.class, "NAME");
     /**
      * Unique ID of the entity that owns or created this entity.
      */
@@ -163,8 +164,8 @@ public class EntityDataTypes {
     public static final EntityDataType<Integer> END_CRYSTAL_TICK_OFFSET = new EntityDataType<>(Integer.class, "END_CRYSTAL_TICK_OFFSET");
     public static final EntityDataType<Byte> NAMETAG_ALWAYS_SHOW = new EntityDataType<>(Byte.class, "NAMETAG_ALWAYS_SHOW");
     public static final EntityDataType<Byte> COLOR_2 = new EntityDataType<>(Byte.class, "COLOR_2");
-    public static final EntityDataType<String> NAME_AUTHOR = new EntityDataType<>(String.class, "NAME_AUTHOR");
-    public static final EntityDataType<String> SCORE = new EntityDataType<>(String.class, "SCORE");
+    public static final EntityDataType<Component> NAME_AUTHOR = new EntityDataType<>(Component.class, "NAME_AUTHOR");
+    public static final EntityDataType<Component> SCORE = new EntityDataType<>(Component.class, "SCORE");
     /**
      * Unique entity ID that the balloon string is attached to.
      * Disable by setting value to -1.
@@ -191,7 +192,7 @@ public class EntityDataTypes {
     public static final EntityDataType<Float> AREA_EFFECT_CLOUD_CHANGE_RATE = new EntityDataType<>(Float.class, "AREA_EFFECT_CLOUD_CHANGE_RATE");
     public static final EntityDataType<Float> AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP = new EntityDataType<>(Float.class, "AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_PICKUP_COUNT = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_PICKUP_COUNT");
-    public static final EntityDataType<String> INTERACT_TEXT = new EntityDataType<>(String.class, "INTERACT_TEXT");
+    public static final EntityDataType<Component> INTERACT_TEXT = new EntityDataType<>(Component.class, "INTERACT_TEXT");
     public static final EntityDataType<Integer> TRADE_TIER = new EntityDataType<>(Integer.class, "TRADE_TIER");
     public static final EntityDataType<Integer> MAX_TRADE_TIER = new EntityDataType<>(Integer.class, "MAX_TRADE_TIER");
     public static final EntityDataType<Integer> TRADE_EXPERIENCE = new EntityDataType<>(Integer.class, "TRADE_EXPERIENCE");
@@ -282,7 +283,7 @@ public class EntityDataTypes {
     /**
      * @since v776
      */
-    public static final EntityDataType<String> FILTERED_NAME = new EntityDataType<>(String.class, "FILTERED_NAME");
+    public static final EntityDataType<Component> FILTERED_NAME = new EntityDataType<>(Component.class, "FILTERED_NAME");
     /**
      * @since v776
      */

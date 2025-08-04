@@ -17,7 +17,6 @@ import static org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket.Entry;
 public class PlayerListSerializer_v291 implements BedrockPacketSerializer<PlayerListPacket> {
     public static final PlayerListSerializer_v291 INSTANCE = new PlayerListSerializer_v291();
 
-
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerListPacket packet) {
         buffer.writeByte(packet.getAction().ordinal());
@@ -28,7 +27,7 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
             if (packet.getAction() == Action.ADD) {
                 VarInts.writeLong(buffer, entry.getEntityId());
-                helper.writeString(buffer, entry.getName());
+                helper.writeComponent(buffer, entry.getName(), true);
                 SerializedSkin skin = entry.getSkin();
                 helper.writeString(buffer, skin.getSkinId());
                 skin.getSkinData().checkLegacySkinSize();
@@ -54,7 +53,7 @@ public class PlayerListSerializer_v291 implements BedrockPacketSerializer<Player
 
             if (action == Action.ADD) {
                 entry.setEntityId(VarInts.readLong(buffer));
-                entry.setName(helper.readString(buffer));
+                entry.setName(helper.readComponent(buffer, false, true));
                 String skinId = helper.readString(buffer);
                 ImageData skinData = ImageData.of(helper.readByteArray(buffer));
                 ImageData capeData = ImageData.of(64, 32, helper.readByteArray(buffer));

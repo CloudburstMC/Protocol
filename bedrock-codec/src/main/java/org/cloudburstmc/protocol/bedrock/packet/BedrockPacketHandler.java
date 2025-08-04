@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketHandler;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -9,7 +10,7 @@ public interface BedrockPacketHandler extends PacketHandler {
         return packet.handle(this);
     }
 
-    default void onDisconnect(String reason) {
+    default void onDisconnect(Component reason) {
     }
 
     default PacketSignal handle(AdventureSettingsPacket packet) {
