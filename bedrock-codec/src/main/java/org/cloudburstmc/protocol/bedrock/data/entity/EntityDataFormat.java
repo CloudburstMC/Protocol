@@ -9,7 +9,6 @@ public enum EntityDataFormat {
     INT,
     FLOAT,
     STRING,
-    COMPONENT,
     NBT,
     VECTOR3I,
     LONG,
