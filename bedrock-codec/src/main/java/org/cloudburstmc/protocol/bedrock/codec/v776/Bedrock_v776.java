@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
+import org.cloudburstmc.protocol.bedrock.transformer.ComponentTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -21,7 +22,7 @@ public class Bedrock_v776 extends Bedrock_v766 {
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v766.ENTITY_DATA
             .toBuilder()
-            .insert(EntityDataTypes.FILTERED_NAME, 132, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.FILTERED_NAME, 132, EntityDataFormat.STRING, ComponentTransformer.INSTANCE)
             .insert(EntityDataTypes.BED_ENTER_POSITION, 133, EntityDataFormat.VECTOR3F)
             .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))

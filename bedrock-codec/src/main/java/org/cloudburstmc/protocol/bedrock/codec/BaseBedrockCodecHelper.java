@@ -157,7 +157,6 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     public Component readComponent(ByteBuf buffer, boolean translatable, boolean legacy) {
         checkNotNull(buffer, "buffer");
         String message = this.readString(buffer);
-        System.out.println("res " + message + " trans " + translatable + " leg " + legacy);
         if (message.isEmpty()) {
             return Component.empty();
         }
@@ -173,6 +172,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
                 if (content.matches("^[a-zA-Z0-9_.]+$")) {
                     component = Component.translatable(content).style(component.style());
                 }
+            }
+        } else {
+            // We have a translatable component, but it is not supported here. Turn it back
+            // into a generic text component with the percentage signs intact
+            if (component instanceof TranslatableComponent) {
+                TranslatableComponent translatableComponent = (TranslatableComponent) component;
+                component = Component.text(translatableComponent.fallback() != null ? requireNonNull(translatableComponent.fallback()) : "%" + translatableComponent.key())
+                        .style(translatableComponent.style());
             }
         }
 

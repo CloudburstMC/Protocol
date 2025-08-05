@@ -51,7 +51,38 @@ public final class BedrockLegacyTextSerializer implements ComponentSerializer<Co
 
     @Override
     public @NotNull String serialize(@NotNull Component component) {
-        return this.serializer.serialize(component);
+        String serialize = this.serializer.serialize(component);
+        
+        if (serialize.length() < 2 || !serialize.contains(String.valueOf(LegacyComponentSerializer.SECTION_CHAR))) {
+            return serialize;
+        }
+        
+        StringBuilder builder = new StringBuilder(serialize.length() + 8); // Pre-allocate a bit extra for potential reset codes
+        boolean needsReset = false;
+        
+        for (int i = 0; i < serialize.length(); i++) {
+            char stringChar = serialize.charAt(i);
+            
+            // Only process section characters
+            if (stringChar == LegacyComponentSerializer.SECTION_CHAR && i + 1 < serialize.length()) {
+                char formatChar = serialize.charAt(i + 1);
+                
+                // Check for style codes that will need reset
+                if (formatChar == 'l' || formatChar == 'k' || formatChar == 'o') {
+                    needsReset = true;
+                } else if (needsReset) {
+                    // Reset the style if we encounter a color code after a style code
+                    if (Character.isDigit(formatChar) || (formatChar >= 'a' && formatChar <= 'u')) {
+                        builder.append(LegacyComponentSerializer.SECTION_CHAR).append('r');
+                        needsReset = false;
+                    }
+                }
+            }
+            
+            builder.append(stringChar);
+        }
+        
+        return builder.toString();
     }
 
     private static List<CharacterAndFormat> bedrockFormats() {

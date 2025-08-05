@@ -8,6 +8,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockLegacyTextSerializer;
 import org.cloudburstmc.protocol.bedrock.codec.compat.NoopBedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.TextSerializer_v685;
@@ -103,5 +104,34 @@ public class TextSerializationTest {
         Component deserializedMessage = deserializedPacket.getMessage();
 
         assertEquals(translatable, deserializedMessage);
+    }
+
+    @Test
+    public void testResetTextDecorations() {
+        String legacyText = "§cA test string §e§lBold §r§acontinue";
+        Component component = Component.text("A test string ", NamedTextColor.RED)
+                .append(Component.text("Bold ", NamedTextColor.YELLOW, TextDecoration.BOLD))
+                .append(Component.text("continue", NamedTextColor.GREEN));
+
+        String serializedComponent = BedrockLegacyTextSerializer.getInstance().serialize(component);
+
+        // Verify that the reset character is added before the green color
+        assertEquals(legacyText, serializedComponent);
+    }
+
+    @Test
+    public void testResetMultiTextDecorations() {
+        String legacyText = "§cA test string §e§k§l§oBold §r§acontinue §bnon-reset §c§oitalic §r§cempty";
+        Component component = Component.text("A test string ", NamedTextColor.RED)
+                .append(Component.text("Bold ", NamedTextColor.YELLOW, TextDecoration.BOLD, TextDecoration.OBFUSCATED, TextDecoration.ITALIC))
+                .append(Component.text("continue ", NamedTextColor.GREEN))
+                .append(Component.text("non-reset ", NamedTextColor.AQUA))
+                .append(Component.text("italic ").decorate(TextDecoration.ITALIC))
+                .append(Component.text("empty"));
+
+        String serializedComponent = BedrockLegacyTextSerializer.getInstance().serialize(component);
+
+        // Verify that the reset character is added before the green color
+        assertEquals(legacyText, serializedComponent);
     }
 }

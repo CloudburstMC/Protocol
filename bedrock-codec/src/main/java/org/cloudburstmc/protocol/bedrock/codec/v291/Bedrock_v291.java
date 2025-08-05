@@ -14,6 +14,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BlockDefinitionTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.ComponentTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.TypeMapTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
@@ -139,7 +140,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.VARIANT, 2, EntityDataFormat.INT)
             .insert(EntityDataTypes.BLOCK, 2, EntityDataFormat.INT, new BlockDefinitionTransformer())
             .insert(EntityDataTypes.COLOR, 3, EntityDataFormat.BYTE)
-            .insert(EntityDataTypes.NAME, 4, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.NAME, 4, EntityDataFormat.STRING, ComponentTransformer.INSTANCE)
             .insert(EntityDataTypes.OWNER_EID, 5, EntityDataFormat.LONG)
             .insert(EntityDataTypes.TARGET_EID, 6, EntityDataFormat.LONG)
             .insert(EntityDataTypes.AIR_SUPPLY, 7, EntityDataFormat.SHORT)
@@ -177,7 +178,7 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.AUX_VALUE_DATA, 36, EntityDataFormat.SHORT)
             .insert(EntityDataTypes.LEASH_HOLDER, 37, EntityDataFormat.LONG)
             .insert(EntityDataTypes.SCALE, 38, EntityDataFormat.FLOAT)
-            .insert(EntityDataTypes.INTERACT_TEXT, 39, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.INTERACT_TEXT, 39, EntityDataFormat.STRING, ComponentTransformer.INSTANCE)
             .insert(EntityDataTypes.SKIN_ID, 40, EntityDataFormat.INT)
             .insert(EntityDataTypes.ACTIONS, 41, EntityDataFormat.STRING)
             .insert(EntityDataTypes.AIR_SUPPLY_MAX, 42, EntityDataFormat.SHORT)
@@ -220,8 +221,8 @@ public class Bedrock_v291 {
             .insert(EntityDataTypes.END_CRYSTAL_TICK_OFFSET, 79, EntityDataFormat.INT)
             .insert(EntityDataTypes.NAMETAG_ALWAYS_SHOW, 80, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.COLOR_2, 81, EntityDataFormat.BYTE)
-            .insert(EntityDataTypes.NAME_AUTHOR, 82, EntityDataFormat.STRING)
-            .insert(EntityDataTypes.SCORE, 83, EntityDataFormat.STRING)
+            .insert(EntityDataTypes.NAME_AUTHOR, 82, EntityDataFormat.STRING, ComponentTransformer.INSTANCE)
+            .insert(EntityDataTypes.SCORE, 83, EntityDataFormat.STRING, ComponentTransformer.INSTANCE)
             .insert(EntityDataTypes.BALLOON_ANCHOR_EID, 84, EntityDataFormat.LONG)
             .insert(EntityDataTypes.PUFFED_STATE, 85, EntityDataFormat.BYTE)
             .insert(EntityDataTypes.BOAT_BUBBLE_TIME, 86, EntityDataFormat.INT)
