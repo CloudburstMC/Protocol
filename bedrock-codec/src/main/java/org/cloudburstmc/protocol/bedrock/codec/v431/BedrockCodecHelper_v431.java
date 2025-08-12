@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
 
@@ -63,13 +64,19 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
                 compoundTag = (NbtMap) nbtStream.readTag();
             }
 
-            canPlace = new String[stream.readInt()];
+            int maxLength = this.encodingSettings.maxListSize();
+            int length = stream.readInt();
+            checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s can place entries, but maximum is %s", length, maxLength);
+            canPlace = new String[length];
             for (int i = 0; i < canPlace.length; i++) {
-                canPlace[i] = stream.readUTF();
+                canPlace[i] = stream.readUTFMaxLen(this.encodingSettings.maxItemStackTagLength());
             }
-            canBreak = new String[stream.readInt()];
+
+            length = stream.readInt();
+            checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s can break entries, but maximum is %s", length, maxLength);
+            canBreak = new String[length];
             for (int i = 0; i < canBreak.length; i++) {
-                canBreak[i] = stream.readUTF();
+                canBreak[i] = stream.readUTFMaxLen(this.encodingSettings.maxItemStackTagLength());
             }
 
             if (definition != null && BLOCKING_ID.equals(definition.getIdentifier())) {
@@ -133,13 +140,19 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
                 compoundTag = (NbtMap) nbtStream.readTag();
             }
 
-            canPlace = new String[stream.readInt()];
+            int maxLength = this.encodingSettings.maxListSize();
+            int length = stream.readInt();
+            checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s can place entries, but maximum is %s", length, maxLength);
+            canPlace = new String[length];
             for (int i = 0; i < canPlace.length; i++) {
-                canPlace[i] = stream.readUTF();
+                canPlace[i] = stream.readUTFMaxLen(this.encodingSettings.maxItemStackTagLength());
             }
-            canBreak = new String[stream.readInt()];
+
+            length = stream.readInt();
+            checkArgument(maxLength <= 0 || length <= maxLength, "Tried to read %s can break entries, but maximum is %s", length, maxLength);
+            canBreak = new String[length];
             for (int i = 0; i < canBreak.length; i++) {
-                canBreak[i] = stream.readUTF();
+                canBreak[i] = stream.readUTFMaxLen(this.encodingSettings.maxItemStackTagLength());
             }
 
             if (definition != null && BLOCKING_ID.equals(definition.getIdentifier())) {
@@ -304,7 +317,7 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             ItemData toItem = helper.readItem(buf);
 
             return new InventoryActionData(source, slot, fromItem, toItem);
-        }, 64); // 64 should be enough
+        }, this.encodingSettings.maxInventoryActionsOrRequests());
         return false;
     }
 

@@ -20,6 +20,9 @@ public class EncodingSettings {
             .maxNetworkNBTSize(1024 * 1024 * 512) // 1.5MB
             .maxItemNBTSize(1024 * 100) // 100KB
             .maxStringLength(1024 * 32) // 32KB
+            .maxGeometryDataSize(1024 * 512)
+            .maxItemStackTagLength(64)
+            .maxInventoryActionsOrRequests(64)
             .build();
 
     /**
@@ -33,6 +36,9 @@ public class EncodingSettings {
             .maxNetworkNBTSize(1024 * 1024 * 10) // 10MB
             .maxItemNBTSize(1024 * 1024 * 5) // 5MB
             .maxStringLength(1024 * 1024 * 2) // 2MB
+            .maxGeometryDataSize(1024 * 512)
+            .maxItemStackTagLength(64)
+            .maxInventoryActionsOrRequests(64)
             .build();
 
     /**
@@ -46,6 +52,9 @@ public class EncodingSettings {
             .maxNetworkNBTSize(1024 * 512) // 500KB
             .maxItemNBTSize(1024 * 100) // 100KB
             .maxStringLength(1024 * 32) // 32KB
+            .maxGeometryDataSize(1024 * 256)
+            .maxItemStackTagLength(64)
+            .maxInventoryActionsOrRequests(64)
             .build();
 
     /**
@@ -60,6 +69,9 @@ public class EncodingSettings {
             .maxNetworkNBTSize(-1)
             .maxItemNBTSize(-1)
             .maxStringLength(-1)
+            .maxItemStackTagLength(-1)
+            .maxGeometryDataSize(-1)
+            .maxInventoryActionsOrRequests(-1)
             .build();
 
     private final int maxListSize;
@@ -67,4 +79,7 @@ public class EncodingSettings {
     private final int maxNetworkNBTSize;
     private final int maxItemNBTSize;
     private final int maxStringLength;
+    private final int maxItemStackTagLength;
+    private final int maxGeometryDataSize;
+    private final int maxInventoryActionsOrRequests;
 }

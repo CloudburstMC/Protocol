@@ -32,7 +32,7 @@ public class BedrockCodecHelper_v465 extends BedrockCodecHelper_v448 {
         this.readArray(buffer, animations, ByteBuf::readIntLE, (b, h) -> this.readAnimationData(b));
 
         ImageData capeData = this.readImage(buffer, ImageData.SINGLE_SKIN_SIZE);
-        String geometryData = this.readStringMaxLen(buffer, 1024 * 256); // Allow larger geometry data
+        String geometryData = this.readStringMaxLen(buffer, this.encodingSettings.maxGeometryDataSize());
         String geometryDataEngineVersion = this.readString(buffer);
         String animationData = this.readString(buffer);
         String capeId = this.readString(buffer);

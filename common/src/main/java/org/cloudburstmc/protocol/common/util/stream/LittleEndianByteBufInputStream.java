@@ -6,6 +6,8 @@ import io.netty.buffer.ByteBufInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 public class LittleEndianByteBufInputStream extends ByteBufInputStream {
     private final ByteBuf buffer;
 
@@ -52,6 +54,13 @@ public class LittleEndianByteBufInputStream extends ByteBufInputStream {
     @Override
     public String readUTF() throws IOException {
         int length = this.readUnsignedShort();
+        return (String) buffer.readCharSequence(length, StandardCharsets.UTF_8);
+    }
+
+    public String readUTFMaxLen(int maxLength) throws IOException {
+        int length = this.readUnsignedShort();
+        checkArgument(maxLength <= 0 || length <= maxLength,
+                "Tried to read %s bytes but maximum is %s", length, maxLength);
         return (String) buffer.readCharSequence(length, StandardCharsets.UTF_8);
     }
 }

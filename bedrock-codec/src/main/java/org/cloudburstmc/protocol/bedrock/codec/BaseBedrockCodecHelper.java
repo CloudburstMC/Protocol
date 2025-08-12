@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -427,7 +426,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
             ItemData toItem = helper.readItem(buf);
 
             return new InventoryActionData(source, slot, fromItem, toItem);
-        }, 64); // 64 should be enough
+        }, this.encodingSettings.maxInventoryActionsOrRequests());
         return false;
     }
 

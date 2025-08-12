@@ -78,7 +78,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
             }
 
             return new InventoryActionData(source, slot, fromItem, toItem, networkStackId);
-        }, 64); // 64 should be enough
+        }, this.encodingSettings.maxInventoryActionsOrRequests());
         return hasNetworkIds;
     }
 
