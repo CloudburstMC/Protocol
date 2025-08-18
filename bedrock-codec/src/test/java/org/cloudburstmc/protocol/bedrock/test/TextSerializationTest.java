@@ -9,13 +9,26 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockLegacyTextSerializer;
-import org.cloudburstmc.protocol.bedrock.codec.compat.NoopBedrockCodecHelper;
+import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializer_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.TextSerializer_v685;
+import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
+import org.cloudburstmc.protocol.bedrock.data.Ability;
+import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
+import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
+import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -23,8 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class TextSerializationTest {
-    private static final NoopBedrockCodecHelper CODEC_HELPER = NoopBedrockCodecHelper.INSTANCE;
-    private static final TextSerializer_v685 SERIALIZER = TextSerializer_v685.INSTANCE;
+    private static final BedrockCodecHelper CODEC_HELPER = Bedrock_v776.CODEC.createHelper();
+    private static final TextSerializer_v685 TEXT_SERIALIZER = TextSerializer_v685.INSTANCE;
+    private static final AddPlayerSerializer_v557 PLAYER_SERIALIZER = new AddPlayerSerializer_v557();
 
     @Test
     public void testLegacyTranslationSerialization() {
@@ -65,10 +79,10 @@ public class TextSerializationTest {
         packet.setPlatformChatId("");
 
         ByteBuf buf = Unpooled.buffer();
-        SERIALIZER.serialize(buf, CODEC_HELPER, packet);
+        TEXT_SERIALIZER.serialize(buf, CODEC_HELPER, packet);
 
         TextPacket deserializedPacket = new TextPacket();
-        SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
+        TEXT_SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
 
         List<Component> components = StreamSupport.stream(result.iterable(ComponentIteratorType.DEPTH_FIRST).spliterator(), false).collect(Collectors.toList());
 
@@ -96,10 +110,10 @@ public class TextSerializationTest {
         packet.setPlatformChatId("");
 
         ByteBuf buf = Unpooled.buffer();
-        SERIALIZER.serialize(buf, CODEC_HELPER, packet);
+        TEXT_SERIALIZER.serialize(buf, CODEC_HELPER, packet);
 
         TextPacket deserializedPacket = new TextPacket();
-        SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
+        TEXT_SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
 
         Component deserializedMessage = deserializedPacket.getMessage();
 
@@ -133,5 +147,53 @@ public class TextSerializationTest {
 
         // Verify that the reset character is added before the green color
         assertEquals(legacyText, serializedComponent);
+    }
+
+    @Test
+    public void testComplexMetadataSerialization() {
+        UUID uuid = new UUID(0, 0);
+
+        AddPlayerPacket packet = new AddPlayerPacket();
+        packet.setUsername("Test Username");
+        packet.setRuntimeEntityId(0);
+        packet.setUniqueEntityId(0);
+        packet.setUuid(uuid);
+        packet.setPosition(Vector3f.ZERO);
+        packet.setMotion(Vector3f.ZERO);
+        packet.setRotation(Vector3f.ZERO);
+        packet.setDeviceId("");
+        packet.setHand(ItemData.AIR);
+        packet.setGameType(GameType.SURVIVAL);
+
+        packet.setUuid(uuid);
+        packet.setPlatformChatId("");
+        packet.setDeviceId(Integer.toString(0));
+
+        AbilityLayer layer = new AbilityLayer();
+        layer.setLayerType(AbilityLayer.Type.BASE);
+        layer.setWalkSpeed(0.0F);
+        layer.setFlySpeed(0.0F);
+        layer.getAbilitiesSet().addAll(Arrays.asList(Ability.values()));
+        layer.getAbilityValues().add(Ability.BUILD);
+        layer.getAbilityValues().add(Ability.MINE);
+        layer.getAbilityValues().add(Ability.DOORS_AND_SWITCHES);
+        packet.getAbilityLayers().add(layer);
+
+        packet.getMetadata().put(EntityDataTypes.NAME, Component.text("Custom Name"));
+        packet.getMetadata().put(EntityDataTypes.SCALE, 1.0f);
+
+        packet.getMetadata().put(EntityDataTypes.WIDTH, 1.8f);
+        packet.getMetadata().put(EntityDataTypes.HEIGHT, 0.6f);
+        packet.getMetadata().put(EntityDataTypes.NAMETAG_ALWAYS_SHOW, (byte) 0);
+
+        packet.getMetadata().putFlags(EnumSet.of(EntityFlag.SILENT));
+
+        ByteBuf buf = Unpooled.buffer();
+        PLAYER_SERIALIZER.serialize(buf, CODEC_HELPER, packet);
+
+        AddPlayerPacket deserializedPacket = new AddPlayerPacket();
+        PLAYER_SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
+
+        assertEquals(Component.text("Custom Name"), deserializedPacket.getMetadata().get(EntityDataTypes.NAME));
     }
 }

@@ -7,11 +7,9 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.CharacterAndFormat;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.util.Index;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -21,19 +19,25 @@ public final class BedrockLegacyTextSerializer implements ComponentSerializer<Co
 
     private static final BedrockLegacyTextSerializer INSTANCE = new BedrockLegacyTextSerializer();
 
-    private final LegacyComponentSerializer serializer = LegacyComponentSerializer.builder()
-            .character(LegacyComponentSerializer.SECTION_CHAR)
-            .formats(BEDROCK_FORMATS)
-            .flattener(ComponentFlattener.basic().toBuilder()
-                    .mapper(TranslatableComponent.class, component -> {
-                        String fallback = component.fallback();
-                        return fallback != null ? fallback : "%" + component.key();
-                    })
-                    .build()
-            )
-            .build();
+    private final LegacyComponentSerializer serializer;
 
     private BedrockLegacyTextSerializer() {
+        this(LegacyComponentSerializer.builder()
+                .character(LegacyComponentSerializer.SECTION_CHAR)
+                .formats(BEDROCK_FORMATS)
+                .flattener(ComponentFlattener.basic().toBuilder()
+                        .mapper(TranslatableComponent.class, component -> {
+                            String fallback = component.fallback();
+                            return fallback != null ? fallback : "%" + component.key();
+                        })
+                        .build()
+                )
+                .build()
+        );
+    }
+
+    public BedrockLegacyTextSerializer(LegacyComponentSerializer serializer) {
+        this.serializer = serializer;
     }
 
     @Override
@@ -124,9 +128,6 @@ public final class BedrockLegacyTextSerializer implements ComponentSerializer<Co
         public static final BedrockNamedTextColor MATERIAL_DIAMOND = new BedrockNamedTextColor("material_diamond", TextColor.color(44, 186, 168));
         public static final BedrockNamedTextColor MATERIAL_LAPIS = new BedrockNamedTextColor("material_lapis", TextColor.color(33, 73, 123));
         public static final BedrockNamedTextColor MATERIAL_AMETHYST = new BedrockNamedTextColor("material_amethyst", TextColor.color(154, 92, 198));
-
-        private static final List<BedrockNamedTextColor> VALUES = Arrays.asList(MINECOIN_GOLD, MATERIAL_QUARTZ, MATERIAL_IRON, MATERIAL_NETHERITE, MATERIAL_REDSTONE, MATERIAL_COPPER, MATERIAL_GOLD, MATERIAL_EMERALD, MATERIAL_DIAMOND, MATERIAL_LAPIS, MATERIAL_AMETHYST);
-        public static final Index<String, BedrockNamedTextColor> NAMES = Index.create(constant -> constant.name, VALUES);
 
         private final String name;
         private final TextColor color;
