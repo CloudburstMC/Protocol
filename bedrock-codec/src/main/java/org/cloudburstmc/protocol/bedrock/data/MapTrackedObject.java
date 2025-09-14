@@ -1,11 +1,13 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3i;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 public class MapTrackedObject {
     private final Type type;
     private long entityId;

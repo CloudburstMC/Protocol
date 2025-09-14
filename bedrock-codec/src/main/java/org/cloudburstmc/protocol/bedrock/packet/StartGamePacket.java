@@ -143,7 +143,7 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * @since v534
      */
-    private boolean worldEditor;
+    private int editorWorldType;
     /**
      * Enables client side chunk generation
      *

@@ -866,5 +866,17 @@ public enum SoundEvent {
      * @since v827
      */
     EQUIP_COPPER,
+    /**
+     * @since v843
+     */
+    PLACE_ITEM,
+    /**
+     * @since v843
+     */
+    SINGLE_ITEM_SWAP,
+    /**
+     * @since v843
+     */
+    MULTI_ITEM_SWAP,
     UNDEFINED
 }

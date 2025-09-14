@@ -36,7 +36,7 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
         VarInts.writeUnsignedInt(buffer, type);
         buffer.writeByte(packet.getDimensionId());
         buffer.writeBoolean(packet.isLocked());
-        helper.writeBlockPosition(buffer, packet.getOrigin());
+        helper.writeVector3i(buffer, packet.getOrigin());
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.writeMapCreation(buffer, helper, packet);
@@ -61,7 +61,7 @@ public class ClientboundMapItemDataSerializer_v544 extends ClientboundMapItemDat
         int type = VarInts.readUnsignedInt(buffer);
         packet.setDimensionId(buffer.readUnsignedByte());
         packet.setLocked(buffer.readBoolean());
-        packet.setOrigin(helper.readBlockPosition(buffer));
+        packet.setOrigin(helper.readVector3i(buffer));
 
         if ((type & FLAG_MAP_CREATION) != 0) {
             this.readMapCreation(buffer, helper, packet);

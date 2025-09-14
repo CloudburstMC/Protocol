@@ -225,6 +225,16 @@ public class BedrockCodecHelper_v291 extends BaseBedrockCodecHelper {
     }
 
     @Override
+    public GameRuleData<?> readGameRuleInStartGame(ByteBuf buffer) {
+        return readGameRule(buffer);
+    }
+
+    @Override
+    public void writeGameRuleInStartGame(ByteBuf buffer, GameRuleData<?> gameRule) {
+        writeGameRule(buffer, gameRule);
+    }
+
+    @Override
     public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
         checkNotNull(entityDataMap, "entityDataDictionary");
 

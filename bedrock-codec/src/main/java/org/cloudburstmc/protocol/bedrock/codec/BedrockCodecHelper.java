@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec;
 
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
@@ -140,6 +139,10 @@ public interface BedrockCodecHelper {
     GameRuleData<?> readGameRule(ByteBuf buffer);
 
     void writeGameRule(ByteBuf buffer, GameRuleData<?> gameRule);
+
+    void writeGameRuleInStartGame(ByteBuf buffer, GameRuleData<?> gameRule);
+
+    GameRuleData<?> readGameRuleInStartGame(ByteBuf buffer);
 
     void readEntityData(ByteBuf buffer, EntityDataMap entityData);
 

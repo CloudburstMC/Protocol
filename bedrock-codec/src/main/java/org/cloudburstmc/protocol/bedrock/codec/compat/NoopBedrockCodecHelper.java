@@ -89,6 +89,16 @@ public class NoopBedrockCodecHelper extends BaseBedrockCodecHelper {
     }
 
     @Override
+    public GameRuleData<?> readGameRuleInStartGame(ByteBuf buffer) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeGameRuleInStartGame(ByteBuf buffer, GameRuleData<?> gameRule) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void readEntityData(ByteBuf buffer, EntityDataMap entityData) {
         throw new UnsupportedOperationException();
     }

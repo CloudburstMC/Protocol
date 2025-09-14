@@ -138,4 +138,8 @@ public enum ParticleType implements LevelEventType {
      * @since 766
      */
     EYEBLOSSOM_CLOSE,
+    /**
+     * @since v843
+     */
+    GREEN_FLAME
 }
