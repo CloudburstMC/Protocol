@@ -26,7 +26,7 @@ public class StartGameSerializer_v671 extends StartGameSerializer_v589 {
         VarInts.writeInt(buffer, packet.getDifficulty());
         helper.writeBlockPosition(buffer, packet.getDefaultSpawn());
         buffer.writeBoolean(packet.isAchievementsDisabled());
-        VarInts.writeInt(buffer, packet.getEditorWorldType());
+        VarInts.writeInt(buffer, packet.getEditorWorldType().ordinal());
         buffer.writeBoolean(packet.isCreatedInEditor());
         buffer.writeBoolean(packet.isExportedFromEditor());
         VarInts.writeInt(buffer, packet.getDayCycleStopTime());
@@ -83,7 +83,7 @@ public class StartGameSerializer_v671 extends StartGameSerializer_v589 {
         packet.setDifficulty(VarInts.readInt(buffer));
         packet.setDefaultSpawn(helper.readBlockPosition(buffer));
         packet.setAchievementsDisabled(buffer.readBoolean());
-        packet.setEditorWorldType(VarInts.readInt(buffer));
+        packet.setEditorWorldType(WorldType.values()[VarInts.readInt(buffer)]);
         packet.setCreatedInEditor(buffer.readBoolean());
         packet.setExportedFromEditor(buffer.readBoolean());
         packet.setDayCycleStopTime(VarInts.readInt(buffer));
