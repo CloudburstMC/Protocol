@@ -74,6 +74,7 @@ public class EncryptionUtils {
 
     private static final JwtConsumer OFFLINE_CONSUMER = new JwtConsumerBuilder()
             .setSkipAllValidators()
+            .setSkipSignatureVerification()
             .setRequireExpirationTime()
             .setSkipDefaultAudienceValidation()
             .build();
