@@ -92,7 +92,7 @@ public final class ChainValidationResult {
         String displayName = claims.getClaimValueAsString("xname");
         String xuid = claims.getClaimValueAsString("xid");
         String minecraftId = claims.getClaimValueAsString("mid");
-        UUID identity = UUID.nameUUIDFromBytes(xuid.getBytes(StandardCharsets.UTF_8));
+        UUID identity = UUID.nameUUIDFromBytes(("pocket-auth-1-xuid:" + xuid).getBytes(StandardCharsets.UTF_8));
 
         return new IdentityClaims(
                 new IdentityData(displayName, identity, xuid, null, minecraftId),
