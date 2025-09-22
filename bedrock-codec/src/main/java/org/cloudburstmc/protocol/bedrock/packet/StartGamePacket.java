@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
@@ -92,7 +91,7 @@ public class StartGamePacket implements BedrockPacket {
     private boolean disablingCustomSkins;
     // Level settings end
     private String levelId;
-    private Component levelName;
+    private String levelName;
     private String premiumWorldTemplateId;
     private boolean trial;
     // SyncedPlayerMovementSettings start

@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -13,11 +12,11 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class DisconnectPacket implements BedrockPacket {
     private DisconnectFailReason reason = DisconnectFailReason.UNKNOWN;
     private boolean messageSkipped;
-    private Component kickMessage;
+    private String kickMessage;
     /**
      * @since v712
      */
-    private Component filteredMessage = Component.empty();
+    private String filteredMessage = "";
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

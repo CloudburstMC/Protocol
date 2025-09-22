@@ -24,7 +24,7 @@ public class UpdateTradeSerializer_v291 implements BedrockPacketSerializer<Updat
         buffer.writeBoolean(packet.isRecipeAddedOnUpdate());
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
-        helper.writeComponent(buffer, packet.getDisplayName(), true);
+        helper.writeString(buffer, packet.getDisplayName());
         helper.writeTag(buffer, packet.getOffers());
     }
 
@@ -37,7 +37,7 @@ public class UpdateTradeSerializer_v291 implements BedrockPacketSerializer<Updat
         packet.setRecipeAddedOnUpdate(buffer.readBoolean());
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
-        packet.setDisplayName(helper.readComponent(buffer, false, true));
+        packet.setDisplayName(helper.readString(buffer));
         packet.setOffers(helper.readTag(buffer, NbtMap.class));
     }
 }

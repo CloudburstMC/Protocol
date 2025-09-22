@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class SetDisplayObjectivePacket implements BedrockPacket {
     private String displaySlot;
     private String objectiveId;
-    private Component displayName;
+    private String displayName;
     private String criteria;
     private int sortOrder;
 

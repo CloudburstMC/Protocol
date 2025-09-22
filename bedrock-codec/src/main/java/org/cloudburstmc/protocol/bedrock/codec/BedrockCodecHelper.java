@@ -1,8 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec;
 
 import io.netty.buffer.ByteBuf;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.ComponentSerializer;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
@@ -59,14 +58,6 @@ public interface BedrockCodecHelper {
     DefinitionRegistry<NamedDefinition> getCameraPresetDefinitions();
 
     EncodingSettings getEncodingSettings();
-
-    ComponentSerializer<Component, Component, String> getComponentSerializer();
-
-    void setComponentSerializer(ComponentSerializer<Component, Component, String> serializer);
-
-    ComponentSerializer<Component, Component, String> getLegacyComponentSerializer();
-
-    void setLegacyComponentSerializer(ComponentSerializer<Component, Component, String> serializer);
 
     void setEncodingSettings(EncodingSettings settings);
 
@@ -175,14 +166,6 @@ public interface BedrockCodecHelper {
     String readStringMaxLen(ByteBuf buffer, int maxLength);
 
     void writeString(ByteBuf buffer, String string);
-
-    Component readComponent(ByteBuf buffer, boolean translatable, boolean legacy);
-
-    void writeComponent(ByteBuf buffer, Component component, boolean legacy);
-
-    Component readComponentWithArguments(ByteBuf buffer, boolean translatable, boolean legacy);
-
-    void writeComponentWithArguments(ByteBuf buffer, Component component, boolean legacy);
 
     UUID readUuid(ByteBuf buffer);
 

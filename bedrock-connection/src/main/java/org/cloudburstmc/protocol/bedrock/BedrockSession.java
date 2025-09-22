@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
-import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
@@ -24,7 +23,7 @@ public abstract class BedrockSession {
     protected final int subClientId;
     protected BedrockPacketHandler packetHandler;
     protected boolean logging;
-    protected Component disconnectReason = BedrockDisconnectReasons.UNKNOWN;
+    protected String disconnectReason = BedrockDisconnectReasons.UNKNOWN;
 
     public BedrockSession(BedrockPeer peer, int subClientId) {
         this.peer = peer;
@@ -85,7 +84,7 @@ public abstract class BedrockSession {
         this.peer.enableEncryption(key);
     }
 
-    public void close(Component reason) {
+    public void close(String reason) {
         checkForClosed();
 
         if (isSubClient()) {
@@ -152,23 +151,23 @@ public abstract class BedrockSession {
         this.logging = logging;
     }
 
-    public Component getDisconnectReason() {
+    public String getDisconnectReason() {
         return disconnectReason;
     }
 
-    public void setDisconnectReason(Component disconnectReason) {
+    public void setDisconnectReason(String disconnectReason) {
         this.disconnectReason = disconnectReason;
     }
 
     public final void disconnect() {
-        disconnect(Component.translatable("disconnect.disconnected"));
+        disconnect("disconnect.disconnected");
     }
 
-    public final void disconnect(Component reason) {
+    public final void disconnect(String reason) {
         this.disconnect(reason, false);
     }
 
-    public abstract void disconnect(Component reason, boolean hideReason);
+    public abstract void disconnect(String reason, boolean hideReason);
 
     public boolean isConnected() {
         return !this.closed.get();

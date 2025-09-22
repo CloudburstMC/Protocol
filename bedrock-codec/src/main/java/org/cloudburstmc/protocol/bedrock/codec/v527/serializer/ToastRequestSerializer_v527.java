@@ -11,13 +11,13 @@ public class ToastRequestSerializer_v527 implements BedrockPacketSerializer<Toas
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ToastRequestPacket packet) {
-        helper.writeComponent(buffer, packet.getTitle(), true);
-        helper.writeComponent(buffer, packet.getContent(), true);
+        helper.writeString(buffer, packet.getTitle());
+        helper.writeString(buffer, packet.getContent());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ToastRequestPacket packet) {
-        packet.setTitle(helper.readComponent(buffer, false, true));
-        packet.setContent(helper.readComponent(buffer, false, true));
+        packet.setTitle(helper.readString(buffer));
+        packet.setContent(helper.readString(buffer));
     }
 }

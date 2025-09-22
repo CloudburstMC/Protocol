@@ -1,24 +1,28 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class TextPacket implements BedrockPacket {
     private Type type;
+    private boolean needsTranslation;
     private String sourceName;
-    private Component message;
+    private String message;
+    private List<String> parameters = new ObjectArrayList<>();
     private String xuid;
     private String platformChatId = "";
     /**
      * @since v685
      */
-    private Component filteredMessage = Component.empty();
+    private String filteredMessage = "";
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

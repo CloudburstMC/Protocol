@@ -6,12 +6,7 @@ dependencies {
     api(libs.fastutil.long.`object`.maps)
     api(libs.jose4j)
     api(libs.nbt)
-    api(libs.adventure.text.serializer.legacy)
-    api(libs.adventure.text.serializer.json)
     implementation(libs.jackson.annotations)
-
-    // Tests
-    testImplementation(libs.junit)
 }
 
 tasks.jar {

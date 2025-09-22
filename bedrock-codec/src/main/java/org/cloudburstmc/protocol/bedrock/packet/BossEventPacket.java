@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -13,8 +12,8 @@ public class BossEventPacket implements BedrockPacket {
     private long bossUniqueEntityId;
     private Action action;
     private long playerUniqueEntityId;
-    private Component title;
-    private Component filteredTitle = Component.empty();
+    private String title;
+    private String filteredTitle = "";
     private float healthPercentage;
     private int darkenSky;
     private int color;

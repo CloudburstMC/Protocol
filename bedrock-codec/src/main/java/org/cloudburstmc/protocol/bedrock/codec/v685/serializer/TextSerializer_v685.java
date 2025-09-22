@@ -11,14 +11,12 @@ public class TextSerializer_v685 extends TextSerializer_v554 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeComponent(buffer, packet.getFilteredMessage(), true);
+        helper.writeString(buffer, packet.getFilteredMessage());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
-        int readerIndex = buffer.readerIndex();
         super.deserialize(buffer, helper, packet);
-        boolean needsTranslation = buffer.getBoolean(readerIndex + 1);
-        packet.setFilteredMessage(helper.readComponent(buffer, needsTranslation, true));
+        packet.setFilteredMessage(helper.readString(buffer));
     }
 }
