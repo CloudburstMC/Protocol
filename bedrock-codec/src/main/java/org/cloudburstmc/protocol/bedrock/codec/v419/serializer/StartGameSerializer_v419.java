@@ -12,6 +12,7 @@ import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemVersion;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.List;
@@ -36,7 +37,8 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         this.writeLevelSettings(buffer, helper, packet);
 
         helper.writeString(buffer, packet.getLevelId());
-        helper.writeComponent(buffer, packet.getLevelName(), true);
+        TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, converter.serialize(packet.getLevelName(CharSequence.class)));
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
         VarInts.writeInt(buffer, packet.getAuthoritativeMovementMode().ordinal());
@@ -65,7 +67,8 @@ public class StartGameSerializer_v419 implements BedrockPacketSerializer<StartGa
         this.readLevelSettings(buffer, helper, packet);
 
         packet.setLevelId(helper.readString(buffer));
-        packet.setLevelName(helper.readComponent(buffer, false, true));
+        TextConverter converter = helper.getTextConverter();
+        packet.setLevelName(converter.deserialize(helper.readString(buffer)));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
         packet.setAuthoritativeMovementMode(MOVEMENT_MODES[VarInts.readInt(buffer)]);

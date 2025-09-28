@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerType;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateTradePacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +24,8 @@ public class UpdateTradeSerializer_v354 implements BedrockPacketSerializer<Updat
         VarInts.writeInt(buffer, packet.getTradeTier());
         VarInts.writeLong(buffer, packet.getTraderUniqueEntityId());
         VarInts.writeLong(buffer, packet.getPlayerUniqueEntityId());
-        helper.writeComponent(buffer, packet.getDisplayName(), true);
+        TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, converter.serialize(packet.getDisplayName(CharSequence.class)));
         buffer.writeBoolean(packet.isNewTradingUi());
         buffer.writeBoolean(packet.isUsingEconomyTrade());
         helper.writeTag(buffer, packet.getOffers());
@@ -37,7 +39,8 @@ public class UpdateTradeSerializer_v354 implements BedrockPacketSerializer<Updat
         packet.setTradeTier(VarInts.readInt(buffer));
         packet.setTraderUniqueEntityId(VarInts.readLong(buffer));
         packet.setPlayerUniqueEntityId(VarInts.readLong(buffer));
-        packet.setDisplayName(helper.readComponent(buffer, false, true));
+        TextConverter converter = helper.getTextConverter();
+        packet.setDisplayName(converter.deserialize(helper.readString(buffer)));
         packet.setNewTradingUi(buffer.readBoolean());
         packet.setUsingEconomyTrade(buffer.readBoolean());
         packet.setOffers(helper.readTag(buffer, NbtMap.class));

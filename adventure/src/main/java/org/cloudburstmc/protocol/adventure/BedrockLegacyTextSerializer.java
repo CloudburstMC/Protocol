@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec;
+package org.cloudburstmc.protocol.adventure;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;

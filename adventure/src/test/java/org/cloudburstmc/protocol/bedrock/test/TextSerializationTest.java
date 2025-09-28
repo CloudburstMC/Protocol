@@ -9,9 +9,11 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.cloudburstmc.protocol.adventure.AdventureTextConverter;
+import org.cloudburstmc.protocol.adventure.BedrockComponent;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockLegacyTextSerializer;
+import org.cloudburstmc.protocol.adventure.BedrockLegacyTextSerializer;
 import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializer_v557;
 import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.TextSerializer_v685;
 import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
@@ -39,6 +41,10 @@ public class TextSerializationTest {
     private static final BedrockCodecHelper CODEC_HELPER = Bedrock_v776.CODEC.createHelper();
     private static final TextSerializer_v685 TEXT_SERIALIZER = TextSerializer_v685.INSTANCE;
     private static final AddPlayerSerializer_v557 PLAYER_SERIALIZER = new AddPlayerSerializer_v557();
+
+    static {
+        CODEC_HELPER.setTextConverter(new AdventureTextConverter());
+    }
 
     @Test
     public void testLegacyTranslationSerialization() {
@@ -69,7 +75,7 @@ public class TextSerializationTest {
     @Test
     public void testLegacyTranslationNetworkSerialization() {
         String legacyText = "§c%accessibility.play.editRealm Not translated - §e%record.nowPlaying";
-        Component result = BedrockLegacyTextSerializer.getInstance().deserialize(legacyText);
+        BedrockComponent result = new BedrockComponent(BedrockLegacyTextSerializer.getInstance().deserialize(legacyText));
 
         TextPacket packet = new TextPacket();
         packet.setType(TextPacket.Type.SYSTEM);
@@ -84,7 +90,7 @@ public class TextSerializationTest {
         TextPacket deserializedPacket = new TextPacket();
         TEXT_SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
 
-        List<Component> components = StreamSupport.stream(result.iterable(ComponentIteratorType.DEPTH_FIRST).spliterator(), false).collect(Collectors.toList());
+        List<Component> components = StreamSupport.stream(result.asComponent().iterable(ComponentIteratorType.DEPTH_FIRST).spliterator(), false).collect(Collectors.toList());
 
         assertEquals(5, components.size());
         assertInstanceOf(TextComponent.class, components.get(0));
@@ -93,14 +99,14 @@ public class TextSerializationTest {
         assertInstanceOf(TextComponent.class, components.get(3));
         assertInstanceOf(TranslatableComponent.class, components.get(4));
 
-        Component deserializedMessage = deserializedPacket.getMessage();
-        String serializedComponent = BedrockLegacyTextSerializer.getInstance().serialize(deserializedMessage);
+        BedrockComponent deserializedMessage = deserializedPacket.getMessage(BedrockComponent.class);
+        String serializedComponent = BedrockLegacyTextSerializer.getInstance().serialize(deserializedMessage.asComponent());
         assertEquals(legacyText, serializedComponent);
     }
 
     @Test
     public void testLegacyTranslationArguments() {
-        Component translatable = Component.translatable("record.nowPlaying", Component.text("%item.record_11.desc", NamedTextColor.RED));
+        BedrockComponent translatable = new BedrockComponent(Component.translatable("record.nowPlaying", Component.text("%item.record_11.desc", NamedTextColor.RED)));
 
         TextPacket packet = new TextPacket();
         packet.setType(TextPacket.Type.TRANSLATION);
@@ -115,7 +121,7 @@ public class TextSerializationTest {
         TextPacket deserializedPacket = new TextPacket();
         TEXT_SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
 
-        Component deserializedMessage = deserializedPacket.getMessage();
+        BedrockComponent deserializedMessage = deserializedPacket.getMessage(BedrockComponent.class);
 
         assertEquals(translatable, deserializedMessage);
     }
@@ -179,7 +185,7 @@ public class TextSerializationTest {
         layer.getAbilityValues().add(Ability.DOORS_AND_SWITCHES);
         packet.getAbilityLayers().add(layer);
 
-        packet.getMetadata().put(EntityDataTypes.NAME, Component.text("Custom Name"));
+        packet.getMetadata().put(EntityDataTypes.NAME, new BedrockComponent(Component.text("Custom Name")));
         packet.getMetadata().put(EntityDataTypes.SCALE, 1.0f);
 
         packet.getMetadata().put(EntityDataTypes.WIDTH, 1.8f);
@@ -194,6 +200,7 @@ public class TextSerializationTest {
         AddPlayerPacket deserializedPacket = new AddPlayerPacket();
         PLAYER_SERIALIZER.deserialize(buf, CODEC_HELPER, deserializedPacket);
 
-        assertEquals(Component.text("Custom Name"), deserializedPacket.getMetadata().get(EntityDataTypes.NAME));
+        BedrockComponent bedrockComponent = deserializedPacket.getMetadata().get(EntityDataTypes.NAME, BedrockComponent.class);
+        assertEquals(Component.text("Custom Name"), bedrockComponent.asComponent());
     }
 }

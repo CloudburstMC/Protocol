@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.BookEditPacket;
 import org.cloudburstmc.protocol.common.util.Int2ObjectBiMap;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 
 import static org.cloudburstmc.protocol.bedrock.packet.BookEditPacket.Action;
 
@@ -27,11 +28,12 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         buffer.writeByte(packet.getAction().ordinal());
         buffer.writeByte(packet.getInventorySlot());
+        TextConverter converter = helper.getTextConverter();
         switch (packet.getAction()) {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 buffer.writeByte(packet.getPageNumber());
-                helper.writeComponent(buffer, packet.getText(), true);
+                helper.writeString(buffer, converter.serialize(packet.getText(CharSequence.class)));
                 helper.writeString(buffer, packet.getPhotoName());
                 break;
             case DELETE_PAGE:
@@ -42,8 +44,8 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
                 buffer.writeByte(packet.getSecondaryPageNumber());
                 break;
             case SIGN_BOOK:
-                helper.writeComponent(buffer, packet.getTitle(), true);
-                helper.writeComponent(buffer, packet.getAuthor(), true);
+                helper.writeString(buffer, converter.serialize(packet.getTitle(CharSequence.class)));
+                helper.writeString(buffer, converter.serialize(packet.getAuthor(CharSequence.class)));
                 helper.writeString(buffer, packet.getXuid());
                 break;
         }
@@ -53,11 +55,12 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         packet.setAction(types.get(buffer.readUnsignedByte()));
         packet.setInventorySlot(buffer.readUnsignedByte());
+        TextConverter converter = helper.getTextConverter();
         switch (packet.getAction()) {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 packet.setPageNumber(buffer.readUnsignedByte());
-                packet.setText(helper.readComponent(buffer, false, true));
+                packet.setText(converter.deserialize(helper.readString(buffer)));
                 packet.setPhotoName(helper.readString(buffer));
                 break;
             case DELETE_PAGE:
@@ -68,8 +71,8 @@ public class BookEditSerializer_v291 implements BedrockPacketSerializer<BookEdit
                 packet.setSecondaryPageNumber(buffer.readUnsignedByte());
                 break;
             case SIGN_BOOK:
-                packet.setTitle(helper.readComponent(buffer, false, true));
-                packet.setAuthor(helper.readComponent(buffer, false, true));
+                packet.setTitle(converter.deserialize(helper.readString(buffer)));
+                packet.setAuthor(converter.deserialize(helper.readString(buffer)));
                 packet.setXuid(helper.readString(buffer));
                 break;
         }

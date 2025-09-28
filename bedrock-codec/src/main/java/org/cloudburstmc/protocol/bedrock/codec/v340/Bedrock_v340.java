@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.packet.*;
 import org.cloudburstmc.protocol.bedrock.transformer.BooleanTransformer;
-import org.cloudburstmc.protocol.bedrock.transformer.ComponentTransformer;
+import org.cloudburstmc.protocol.bedrock.transformer.StringTransformer;
 import org.cloudburstmc.protocol.bedrock.transformer.FlagTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
@@ -42,7 +42,7 @@ public class Bedrock_v340 extends Bedrock_v332 {
             .update(EntityDataTypes.FLAGS, new FlagTransformer(ENTITY_FLAGS, 0))
             .update(EntityDataTypes.FLAGS_2, new FlagTransformer(ENTITY_FLAGS, 1))
             .replace(EntityDataTypes.HAS_NPC, 39, EntityDataFormat.BYTE, BooleanTransformer.INSTANCE)
-            .insert(EntityDataTypes.INTERACT_TEXT, 99, EntityDataFormat.STRING, ComponentTransformer.INSTANCE)
+            .insert(EntityDataTypes.INTERACT_TEXT, 99, EntityDataFormat.STRING, StringTransformer.INSTANCE)
             .insert(EntityDataTypes.TRADE_TIER, 100, EntityDataFormat.INT)
             .insert(EntityDataTypes.MAX_TRADE_TIER, 101, EntityDataFormat.INT)
             .build();

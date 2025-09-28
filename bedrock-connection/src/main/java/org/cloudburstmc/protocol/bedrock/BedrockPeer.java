@@ -12,7 +12,6 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
@@ -97,7 +96,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     private void onRakNetDisconnect(ChannelHandlerContext ctx, RakDisconnectReason reason) {
-        Component disconnectReason = BedrockDisconnectReasons.getReason(reason);
+        CharSequence disconnectReason = BedrockDisconnectReasons.getReason(reason);
         for (BedrockSession session : this.sessions.values()) {
             session.disconnectReason = disconnectReason;
         }
@@ -178,7 +177,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         this.channel.pipeline().get(BedrockPacketCodec.class).setCodec(codec);
     }
 
-    public void close(Component reason) {
+    public void close(CharSequence reason) {
         for (BedrockSession session : this.sessions.values()) {
             session.disconnectReason = reason;
         }

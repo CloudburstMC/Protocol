@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v554.serializer.TextSerializer_v554;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 
 public class TextSerializer_v685 extends TextSerializer_v554 {
     public static final TextSerializer_v685 INSTANCE = new TextSerializer_v685();
@@ -11,7 +12,8 @@ public class TextSerializer_v685 extends TextSerializer_v554 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         super.serialize(buffer, helper, packet);
-        helper.writeComponent(buffer, packet.getFilteredMessage(), true);
+        TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, converter.serialize(packet.getFilteredMessage(CharSequence.class)));
     }
 
     @Override
@@ -19,6 +21,7 @@ public class TextSerializer_v685 extends TextSerializer_v554 {
         int readerIndex = buffer.readerIndex();
         super.deserialize(buffer, helper, packet);
         boolean needsTranslation = buffer.getBoolean(readerIndex + 1);
-        packet.setFilteredMessage(helper.readComponent(buffer, needsTranslation, true));
+        TextConverter converter = helper.getTextConverter();
+        packet.setFilteredMessage(converter.deserialize(helper.readString(buffer), needsTranslation));
     }
 }

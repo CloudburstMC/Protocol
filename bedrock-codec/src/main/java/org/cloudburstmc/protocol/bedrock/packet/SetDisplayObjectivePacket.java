@@ -3,7 +3,6 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 @Data
@@ -12,7 +11,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class SetDisplayObjectivePacket implements BedrockPacket {
     private String displaySlot;
     private String objectiveId;
-    private Component displayName;
+    private CharSequence displayName;
     private String criteria;
     private int sortOrder;
 
@@ -32,6 +31,14 @@ public class SetDisplayObjectivePacket implements BedrockPacket {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
+    }
+
+    public String getDisplayName() {
+        return getDisplayName(String.class);
+    }
+
+    public <T extends CharSequence> T getDisplayName(Class<T> type) {
+        return type.cast(displayName);
     }
 }
 

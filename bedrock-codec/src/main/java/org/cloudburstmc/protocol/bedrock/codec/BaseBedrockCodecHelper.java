@@ -11,14 +11,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentIteratorType;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.TranslatableComponent;
-import net.kyori.adventure.text.TranslationArgument;
-import net.kyori.adventure.text.serializer.ComponentSerializer;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.kyori.adventure.text.serializer.json.JSONOptions;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
@@ -45,6 +37,7 @@ import org.cloudburstmc.protocol.bedrock.data.skin.ImageData;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -55,7 +48,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -89,13 +81,7 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
 
     @Getter
     @Setter
-    protected ComponentSerializer<Component, Component, String> componentSerializer = JSONComponentSerializer.builder()
-            .editOptions(builder -> builder.value(JSONOptions.EMIT_RGB, false))
-            .build();
-
-    @Getter
-    @Setter
-    protected ComponentSerializer<Component, Component, String> legacyComponentSerializer = BedrockLegacyTextSerializer.getInstance();
+    protected TextConverter textConverter = TextConverter.DEFAULT;
 
     protected static boolean isAir(ItemDefinition definition) {
         return definition == null || "minecraft:air".equals(definition.getIdentifier());
@@ -151,104 +137,6 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
         checkNotNull(string, "string");
         VarInts.writeUnsignedInt(buffer, ByteBufUtil.utf8Bytes(string));
         buffer.writeCharSequence(string, StandardCharsets.UTF_8);
-    }
-
-    @Override
-    public Component readComponent(ByteBuf buffer, boolean translatable, boolean legacy) {
-        checkNotNull(buffer, "buffer");
-        String message = this.readString(buffer);
-        if (message.isEmpty()) {
-            return Component.empty();
-        }
-
-        Component component = (legacy ? this.legacyComponentSerializer : this.componentSerializer).deserialize(message);
-        if (translatable) {
-            if (component instanceof TextComponent) {
-                TextComponent textComponent = (TextComponent) component;
-                String content = textComponent.content();
-
-                // If the content is a text component, but contains no percentage signs
-                // treat the whole thing as a translatable string (i.e. record.nowPlaying)
-                if (content.matches("^[a-zA-Z0-9_.]+$")) {
-                    component = Component.translatable(content).style(component.style());
-                }
-            }
-        } else {
-            // We have a translatable component, but it is not supported here. Turn it back
-            // into a generic text component with the percentage signs intact
-            if (component instanceof TranslatableComponent) {
-                TranslatableComponent translatableComponent = (TranslatableComponent) component;
-                component = Component.text(translatableComponent.fallback() != null ? requireNonNull(translatableComponent.fallback()) : "%" + translatableComponent.key())
-                        .style(translatableComponent.style());
-            }
-        }
-
-        return component;
-    }
-
-    @Override
-    public void writeComponent(ByteBuf buffer, Component component, boolean legacy) {
-        checkNotNull(component, "component");
-        String serialized = (legacy ? this.legacyComponentSerializer : this.componentSerializer).serialize(component);
-        this.writeString(buffer, serialized);
-    }
-
-    @Override
-    public Component readComponentWithArguments(ByteBuf buffer, boolean translatable, boolean legacy) {
-        Component component = this.readComponent(buffer, translatable, legacy);
-        int argumentCount = VarInts.readUnsignedInt(buffer);
-        if (argumentCount == 0) {
-            return component; // No arguments, return the component as is
-        }
-
-        List<Component> arguments = new ArrayList<>(argumentCount);
-        for (int i = 0; i < argumentCount; i++) {
-            // Assume every argument is a Component
-            arguments.add(this.readComponent(buffer, false, true));
-        }
-
-        if (component instanceof TranslatableComponent) {
-            TranslatableComponent translatableComponent = (TranslatableComponent) component;
-            component = Component.translatable(translatableComponent.key(), translatableComponent.style(), arguments);
-        }
-
-        return component;
-    }
-
-    @Override
-    public void writeComponentWithArguments(ByteBuf buffer, Component component, boolean legacy) {
-        if (component instanceof TranslatableComponent) {
-            TranslatableComponent translatableComponent = (TranslatableComponent) component;
-            if (translatableComponent.style().isEmpty()) {
-                // If the translatable component has no style, we can write it directly
-                this.writeString(buffer, translatableComponent.key());
-            } else {
-                // If it has a style, we need to serialize it as a full component
-                this.writeComponent(buffer, component, legacy);
-            }
-        } else {
-            this.writeComponent(buffer, component, legacy);
-        }
-
-        List<Object> arguments = new ArrayList<>();
-        for (Component next : component.iterable(ComponentIteratorType.DEPTH_FIRST)) {
-            if (next instanceof TranslatableComponent) {
-                TranslatableComponent translatableComponent = (TranslatableComponent) next;
-                for (TranslationArgument argument : translatableComponent.arguments()) {
-                    arguments.add(argument.value());
-                }
-            }
-        }
-
-        VarInts.writeUnsignedInt(buffer, arguments.size());
-        for (Object argument : arguments) {
-            if (argument instanceof Component) {
-                this.writeComponent(buffer, (Component) argument, true);
-            } else {
-                // If the argument is not a Component, we assume it's a String
-                this.writeString(buffer, argument.toString());
-            }
-        }
     }
 
     public UUID readUuid(ByteBuf buffer) {

@@ -1,10 +1,12 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
 import org.cloudburstmc.protocol.common.PacketSignal;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -12,13 +14,15 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class TextPacket implements BedrockPacket {
     private Type type;
     private String sourceName;
-    private Component message;
+    private CharSequence message;
+    private List<String> parameters = new ObjectArrayList<>();
+    private boolean needsTranslation;
     private String xuid;
     private String platformChatId = "";
     /**
      * @since v685
      */
-    private Component filteredMessage = Component.empty();
+    private CharSequence filteredMessage = "";
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -54,6 +58,22 @@ public class TextPacket implements BedrockPacket {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
+    }
+
+    public String getMessage() {
+        return getMessage(String.class);
+    }
+
+    public <T extends CharSequence> T getMessage(Class<T> type) {
+        return type.cast(message);
+    }
+
+    public String getFilteredMessage() {
+        return getFilteredMessage(String.class);
+    }
+
+    public <T extends CharSequence> T getFilteredMessage(Class<T> type) {
+        return type.cast(filteredMessage);
     }
 }
 

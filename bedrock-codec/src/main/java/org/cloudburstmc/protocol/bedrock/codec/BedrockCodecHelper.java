@@ -1,8 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec;
 
 import io.netty.buffer.ByteBuf;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.ComponentSerializer;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
@@ -28,6 +26,7 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.InventoryAct
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.bedrock.data.structure.StructureSettings;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.DefinitionRegistry;
 import org.cloudburstmc.protocol.common.NamedDefinition;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
@@ -60,13 +59,9 @@ public interface BedrockCodecHelper {
 
     EncodingSettings getEncodingSettings();
 
-    ComponentSerializer<Component, Component, String> getComponentSerializer();
+    TextConverter getTextConverter();
 
-    void setComponentSerializer(ComponentSerializer<Component, Component, String> serializer);
-
-    ComponentSerializer<Component, Component, String> getLegacyComponentSerializer();
-
-    void setLegacyComponentSerializer(ComponentSerializer<Component, Component, String> serializer);
+    void setTextConverter(TextConverter textConverter);
 
     void setEncodingSettings(EncodingSettings settings);
 
@@ -175,14 +170,6 @@ public interface BedrockCodecHelper {
     String readStringMaxLen(ByteBuf buffer, int maxLength);
 
     void writeString(ByteBuf buffer, String string);
-
-    Component readComponent(ByteBuf buffer, boolean translatable, boolean legacy);
-
-    void writeComponent(ByteBuf buffer, Component component, boolean legacy);
-
-    Component readComponentWithArguments(ByteBuf buffer, boolean translatable, boolean legacy);
-
-    void writeComponentWithArguments(ByteBuf buffer, Component component, boolean legacy);
 
     UUID readUuid(ByteBuf buffer);
 

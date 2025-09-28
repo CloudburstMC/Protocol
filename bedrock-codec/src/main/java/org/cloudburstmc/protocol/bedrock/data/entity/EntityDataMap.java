@@ -55,6 +55,10 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         return (T) this.map.get(type);
     }
 
+    public <T, U extends T> U get(EntityDataType<T> type, Class<U> clazz) {
+        return clazz.cast(this.map.get(type));
+    }
+
     @NonNull
     @SuppressWarnings("unchecked")
     private <T> T getOrDefault(EntityDataType<T> type, T defaultValue) {

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.SetDisplayObjectivePacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,7 +18,8 @@ public class SetDisplayObjectiveSerializer_v291 implements BedrockPacketSerializ
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
         helper.writeString(buffer, packet.getDisplaySlot());
         helper.writeString(buffer, packet.getObjectiveId());
-        helper.writeComponent(buffer, packet.getDisplayName(), true);
+        TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, converter.serialize(packet.getDisplayName(CharSequence.class)));
         helper.writeString(buffer, packet.getCriteria());
         VarInts.writeInt(buffer, packet.getSortOrder());
     }
@@ -26,7 +28,8 @@ public class SetDisplayObjectiveSerializer_v291 implements BedrockPacketSerializ
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetDisplayObjectivePacket packet) {
         packet.setDisplaySlot(helper.readString(buffer));
         packet.setObjectiveId(helper.readString(buffer));
-        packet.setDisplayName(helper.readComponent(buffer, false, true));
+        TextConverter converter = helper.getTextConverter();
+        packet.setDisplayName(converter.deserialize(helper.readString(buffer)));
         packet.setCriteria(helper.readString(buffer));
         packet.setSortOrder(VarInts.readInt(buffer));
     }
