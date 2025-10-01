@@ -1,5 +1,7 @@
 package org.cloudburstmc.protocol.adventure;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
@@ -15,19 +17,23 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
 public class AdventureTextConverter implements TextConverter {
 
-    private static final BedrockLegacyTextSerializer LEGACY_SERIALIZER = BedrockLegacyTextSerializer.getInstance();
-    private static final ComponentSerializer<Component, Component, String> JSON_SERIALIZER = JSONComponentSerializer.builder()
+    @Setter
+    @Getter
+    private BedrockLegacyTextSerializer legacySerializer = BedrockLegacyTextSerializer.getInstance();
+
+    @Setter
+    @Getter
+    private ComponentSerializer<Component, Component, String> jsonSerializer = JSONComponentSerializer.builder()
             .editOptions(builder -> builder.value(JSONOptions.EMIT_RGB, false))
             .build();
-    private static final BedrockComponent EMPTY = new BedrockComponent(Component.empty());
 
     @Override
     public BedrockComponent deserialize(String text, boolean translatable) {
         if (text.isEmpty()) {
-            return EMPTY;
+            return BedrockComponent.EMPTY;
         }
 
-        Component component = deserialize(LEGACY_SERIALIZER, text, translatable);
+        Component component = deserialize(legacySerializer, text, translatable);
 
         return new BedrockComponent(component);
     }
@@ -35,10 +41,10 @@ public class AdventureTextConverter implements TextConverter {
     @Override
     public BedrockComponent deserializeJson(String text, boolean translatable) {
         if (text.isEmpty()) {
-            return EMPTY;
+            return BedrockComponent.EMPTY;
         }
 
-        Component component = deserialize(JSON_SERIALIZER, text, translatable);
+        Component component = deserialize(jsonSerializer, text, translatable);
 
         return new BedrockComponent(component);
     }
@@ -71,7 +77,7 @@ public class AdventureTextConverter implements TextConverter {
 
     @Override
     public BedrockComponent deserializeWithArguments(String text, List<String> parameters, boolean translatable) {
-        Component component = this.deserialize(LEGACY_SERIALIZER, text, translatable);
+        Component component = this.deserialize(legacySerializer, text, translatable);
         if (parameters == null || parameters.isEmpty()) {
             return new BedrockComponent(component);
         }
@@ -79,7 +85,7 @@ public class AdventureTextConverter implements TextConverter {
         List<Component> arguments = new ArrayList<>(parameters.size());
         for (String parameter : parameters) {
             // Assume every argument is a Component
-            arguments.add(deserialize(LEGACY_SERIALIZER, parameter, false));
+            arguments.add(deserialize(legacySerializer, parameter, false));
         }
 
         if (component instanceof TranslatableComponent) {
@@ -96,7 +102,7 @@ public class AdventureTextConverter implements TextConverter {
             return (String) text;
         }
         checkArgument(text);
-        return LEGACY_SERIALIZER.serialize(((BedrockComponent) text).asComponent());
+        return legacySerializer.serialize(((BedrockComponent) text).asComponent());
     }
 
     @Override
@@ -105,7 +111,7 @@ public class AdventureTextConverter implements TextConverter {
             return (String) text;
         }
         checkArgument(text);
-        return JSON_SERIALIZER.serialize(((BedrockComponent) text).asComponent());
+        return jsonSerializer.serialize(((BedrockComponent) text).asComponent());
     }
 
     @Override

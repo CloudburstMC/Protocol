@@ -8,6 +8,8 @@ import java.util.Objects;
 
 public class BedrockComponent implements CharSequence, ComponentLike {
 
+    public static final BedrockComponent EMPTY = new BedrockComponent(Component.empty());
+
     private final Component component;
     private transient volatile String serialized;
 
