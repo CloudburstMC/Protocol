@@ -12,38 +12,48 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
 
+    public static EnumMap<EntityFlag, Boolean> flagsOf(EntityFlag... flags) {
+        EnumMap<EntityFlag, Boolean> map = new EnumMap<>(EntityFlag.class);
+        for (EntityFlag flag : flags) {
+            map.put(flag, true);
+        }
+        return map;
+    }
+
     private final Map<EntityDataType<?>, Object> map = new LinkedHashMap<>();
 
     @NonNull
-    public EnumSet<EntityFlag> getOrCreateFlags() {
-        EnumSet<EntityFlag> flags = get(FLAGS);
+    public EnumMap<EntityFlag, Boolean> getOrCreateFlags() {
+        EnumMap<EntityFlag, Boolean> flags = get(FLAGS);
         if (flags == null) {
             flags = get(FLAGS_2);
             if (flags == null) {
-                flags = EnumSet.noneOf(EntityFlag.class);
+                flags = new EnumMap<>(EntityFlag.class);
             }
             this.putFlags(flags);
         }
         return flags;
     }
 
-    public EnumSet<EntityFlag> getFlags() {
+    public EnumMap<EntityFlag, Boolean> getFlags() {
         return get(FLAGS);
+    }
+
+    public EntityFlag clearFlag(EntityFlag flag) {
+        Objects.requireNonNull(flag, "flag");
+        EnumMap<EntityFlag, Boolean> flags = this.getOrCreateFlags();
+        flags.remove(flag);
+        return flag;
     }
 
     public EntityFlag setFlag(EntityFlag flag, boolean value) {
         Objects.requireNonNull(flag, "flag");
-        EnumSet<EntityFlag> flags = this.getOrCreateFlags();
-        if (value) {
-            flags.add(flag);
-        } else {
-            flags.remove(flag);
-        }
-
+        EnumMap<EntityFlag, Boolean> flags = this.getOrCreateFlags();
+        flags.put(flag, value);
         return flag;
     }
 
-    public EnumSet<EntityFlag> putFlags(EnumSet<EntityFlag> flags) {
+    public EnumMap<EntityFlag, Boolean> putFlags(EnumMap<EntityFlag, Boolean> flags) {
         Objects.requireNonNull(flags, "flags");
         this.map.put(FLAGS, flags);
         this.map.put(FLAGS_2, flags);
@@ -107,7 +117,7 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         checkNotNull(value, "value was null for %s", key);
         checkArgument(key.isInstance(value), "value with type %s is not an instance of %s", value.getClass(), key);
         if (key == FLAGS || key == FLAGS_2) {
-            return this.putFlags((EnumSet<EntityFlag>) value);
+            return this.putFlags((EnumMap<EntityFlag, Boolean>) value);
         }
         return this.map.put(key, value);
     }

@@ -7,17 +7,19 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.data.ParticleType;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 
+import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Set;
 
 @UtilityClass
 public class EntityDataTypes {
 
-    public static final EntityDataType<EnumSet<EntityFlag>> FLAGS = new EntityDataType<EnumSet<EntityFlag>>(EnumSet.class, "FLAGS") {
+    public static final EntityDataType<EnumMap<EntityFlag, Boolean>> FLAGS = new EntityDataType<EnumMap<EntityFlag, Boolean>>(EnumMap.class, "FLAGS") {
         @Override
         public boolean isInstance(Object value) {
-            return value instanceof EnumSet &&
-                    (((EnumSet<?>) value).isEmpty() || ((Set<?>) value).iterator().next() instanceof EntityFlag);
+            return value instanceof EnumMap &&
+                    (((EnumMap<?, ?>) value).isEmpty() || ((Map<?, ?>) value).keySet().iterator().next() instanceof EntityFlag);
         }
     };
     public static final EntityDataType<Integer> STRUCTURAL_INTEGRITY = new EntityDataType<>(Integer.class, "STRUCTURAL_INTEGRITY");
@@ -179,7 +181,13 @@ public class EntityDataTypes {
     public static final EntityDataType<Float> SITTING_AMOUNT = new EntityDataType<>(Float.class, "SITTING_AMOUNT");
     public static final EntityDataType<Float> SITTING_AMOUNT_PREVIOUS = new EntityDataType<>(Float.class, "SITTING_AMOUNT_PREVIOUS");
     public static final EntityDataType<Integer> EATING_COUNTER = new EntityDataType<>(Integer.class, "EATING_COUNTER");
-    public static final EntityDataType<EnumSet<EntityFlag>> FLAGS_2 = new EntityDataType<>(EnumSet.class, "FLAGS_2");
+    public static final EntityDataType<EnumMap<EntityFlag, Boolean>> FLAGS_2 = new EntityDataType<EnumMap<EntityFlag, Boolean>>(EnumMap.class, "FLAGS_2") {
+        @Override
+        public boolean isInstance(Object value) {
+            return value instanceof EnumMap &&
+                    (((EnumMap<?, ?>) value).isEmpty() || ((Map<?, ?>) value).keySet().iterator().next() instanceof EntityFlag);
+        }
+    };
     public static final EntityDataType<Float> LAYING_AMOUNT = new EntityDataType<>(Float.class, "LAYING_AMOUNT");
     public static final EntityDataType<Float> LAYING_AMOUNT_PREVIOUS = new EntityDataType<>(Float.class, "LAYING_AMOUNT_PREVIOUS");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_DURATION = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_DURATION");

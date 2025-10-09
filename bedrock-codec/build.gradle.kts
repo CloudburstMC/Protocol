@@ -7,6 +7,9 @@ dependencies {
     api(libs.jose4j)
     api(libs.nbt)
     implementation(libs.jackson.annotations)
+
+    // Tests
+    testImplementation(libs.junit)
 }
 
 tasks.jar {

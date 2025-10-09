@@ -8,47 +8,122 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
-import java.util.EnumSet;
+import java.util.EnumMap;
+import java.util.Map;
 
-
+/**
+ * Transforms entity flags between their EnumMap representation and a packed long value.
+ * <p>
+ * Entity flags are split into multiple groups of 64 flags each (FLAGS, FLAGS_2).
+ * Each transformer instance handles one group, identified by its index:
+ * - index 0 = FLAGS (flags 0-63)
+ * - index 1 = FLAGS_2 (flags 64-127)
+ * <p>
+ */
 @RequiredArgsConstructor
-public final class FlagTransformer implements EntityDataTransformer<Long, EnumSet<EntityFlag>> {
+public final class FlagTransformer implements EntityDataTransformer<Long, EnumMap<EntityFlag, Boolean>> {
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(FlagTransformer.class);
 
     private final TypeMap<EntityFlag> typeMap;
+    /**
+     * The index of this flag group (0 for FLAGS, 1 for FLAGS_2)
+     */
     private final int index;
 
+    /**
+     * Serializes entity flags into a packed long value for network transmission.
+     * <p>
+     * Only flags within this transformer's range (determined by index) are processed.
+     * For example, if index=0, only flags 0-63 are handled; flags 64+ are ignored.
+     * <p>
+     * Returns null if no flags in this group are present, preventing unnecessary
+     * serialization of empty flag groups. This fixes the issue where missing flag
+     * groups would be written as zero, causing clients to incorrectly clear flags.
+     *
+     * @param helper the codec helper
+     * @param map the entity data map
+     * @param flags the complete flag map
+     * @return the packed long value containing flags for this group, or null if no flags exist
+     */
     @Override
-    public Long serialize(BedrockCodecHelper helper, EntityDataMap map, EnumSet<EntityFlag> flags) {
+    public Long serialize(BedrockCodecHelper helper, EntityDataMap map, EnumMap<EntityFlag, Boolean> flags) {
         long value = 0;
+        // Calculate the range of flag indices this transformer handles
         int lower = this.index * 64;
         int upper = lower + 64;
-        for (EntityFlag flag : flags) {
+        // Track whether any flags in this range exist (even if set to false)
+        boolean exists = false;
+
+        for (Map.Entry<EntityFlag, Boolean> entry : flags.entrySet()) {
+            EntityFlag flag = entry.getKey();
+            Boolean data = entry.getValue();
+            if (data == null) {
+                continue;
+            }
+
             int flagIndex = this.typeMap.getId(flag);
-            if (flagIndex >= lower && flagIndex < upper) {
+            if (flagIndex < lower || flagIndex >= upper) {
+                // This flag belongs to a different transformer (different index)
+                continue;
+            }
+
+            // Mark that at least one flag in this range exists
+            // This ensures we return a value (even if 0) rather than null
+            exists = true;
+
+            if (data) {
+                // Set the bit at the appropriate position (0-63 within this group)
+                // The & 0x3f masks the flag index to get its position within the 64-bit range
                 value |= 1L << (flagIndex & 0x3f);
             }
+            // If data is false, the bit remains 0 (default), but we still write the group
         }
 
-        return value;
+        // Return null if no flags in this range exist
+        // This prevents writing unnecessary flag groups and fixes unintentional flag resets on client
+        if (exists) {
+            return value;
+        }
+        return null;
     }
 
+    /**
+     * Deserializes a packed long value into individual entity flags.
+     * <p>
+     * Reads all 64 possible flag positions for this group, setting each flag
+     * to true or false based on the corresponding bit in the value.
+     *
+     * @param helper the codec helper
+     * @param map the entity data map to populate
+     * @param value the packed long value containing flag states
+     * @return the updated flag map
+     */
     @Override
-    public EnumSet<EntityFlag> deserialize(BedrockCodecHelper helper, EntityDataMap map, Long value) {
-        EnumSet<EntityFlag> flags = map.getOrCreateFlags();
+    public EnumMap<EntityFlag, Boolean> deserialize(BedrockCodecHelper helper, EntityDataMap map, Long value) {
+        EnumMap<EntityFlag, Boolean> flags = map.getOrCreateFlags();
 
-        int lower = index * 64;
+        // Calculate the range of flag indices this transformer handles
+        int lower = this.index * 64;
         int upper = lower + 64;
+
+        // Iterate through all 64 possible flags in this group
         for (int i = lower; i < upper; i++) {
+            EntityFlag flag = this.typeMap.getTypeUnsafe(i);
+            if (flag == null) {
+                // Flag index exists in the protocol but isn't mapped to an EntityFlag enum value
+                log.debug("Unknown entity flag detected with index {}", i);
+                continue;
+            }
+
+            // Get the bit position within this 64-bit group (0-63)
             int idx = i & 0x3f;
+
+            // Check if the bit at this position is set
             if ((value & (1L << idx)) != 0) {
-                EntityFlag flag = this.typeMap.getType(i);
-                if (flag != null) {
-                    flags.add(flag);
-                } else {
-                    log.debug("Unknown entity flag detected with index {}", i);
-                }
+                flags.put(flag, true);
+            } else {
+                flags.put(flag, false);
             }
         }
 

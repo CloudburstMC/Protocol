@@ -20,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
 import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -27,10 +28,7 @@ import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -192,7 +190,7 @@ public class TextSerializationTest {
         packet.getMetadata().put(EntityDataTypes.HEIGHT, 0.6f);
         packet.getMetadata().put(EntityDataTypes.NAMETAG_ALWAYS_SHOW, (byte) 0);
 
-        packet.getMetadata().putFlags(EnumSet.of(EntityFlag.SILENT));
+        packet.getMetadata().putFlags(EntityDataMap.flagsOf(EntityFlag.SILENT));
 
         ByteBuf buf = Unpooled.buffer();
         PLAYER_SERIALIZER.serialize(buf, CODEC_HELPER, packet);

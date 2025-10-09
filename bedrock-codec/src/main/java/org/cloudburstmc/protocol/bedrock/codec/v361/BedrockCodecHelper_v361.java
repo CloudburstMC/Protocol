@@ -16,7 +16,7 @@ import org.cloudburstmc.protocol.bedrock.transformer.EntityDataTransformer;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.Map;
+import java.util.*;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
@@ -29,7 +29,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
 
     @Override
     public void readEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataDictionary");
+        checkNotNull(entityDataMap, "entityDataMap");
 
         int length = VarInts.readUnsignedInt(buffer);
         checkArgument(this.encodingSettings.maxListSize() <= 0 || length <= this.encodingSettings.maxListSize(), "Entity data size is too big: %s", length);
@@ -79,7 +79,7 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
                     EntityDataTransformer<Object, ?> transformer = (EntityDataTransformer<Object, ?>) definition.getTransformer();
                     Object transformedValue = transformer.deserialize(this, entityDataMap, value);
                     if (transformedValue != null) {
-                        entityDataMap.put(definition.getType(), transformer.deserialize(this, entityDataMap, value));
+                        entityDataMap.put(definition.getType(), transformedValue);
                     }
                 }
             } else {
@@ -91,53 +91,67 @@ public class BedrockCodecHelper_v361 extends BedrockCodecHelper_v340 {
     @SuppressWarnings("unchecked")
     @Override
     public void writeEntityData(ByteBuf buffer, EntityDataMap entityDataMap) {
-        checkNotNull(entityDataMap, "entityDataDictionary");
+        checkNotNull(entityDataMap, "entityDataMap");
 
-        VarInts.writeUnsignedInt(buffer, entityDataMap.size());
+        // Collect serialized entries first
+        List<Map.Entry<EntityDataTypeMap.Definition<?>, Object>> serializedEntries = new LinkedList<>();
 
         for (Map.Entry<EntityDataType<?>, Object> entry : entityDataMap.entrySet()) {
             EntityDataTypeMap.Definition<?> definition = this.entityData.fromType(entry.getKey());
-
-            VarInts.writeUnsignedInt(buffer, definition.getId());
-            VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
 
             try {
                 Object value = ((EntityDataTransformer<?, Object>) definition.getTransformer())
                         .serialize(this, entityDataMap, entry.getValue());
 
-                switch (definition.getFormat()) {
-                    case BYTE:
-                        buffer.writeByte((byte) value);
-                        break;
-                    case SHORT:
-                        buffer.writeShortLE((short) value);
-                        break;
-                    case INT:
-                        VarInts.writeInt(buffer, (int) value);
-                        break;
-                    case FLOAT:
-                        buffer.writeFloatLE((float) value);
-                        break;
-                    case STRING:
-                        writeString(buffer, (String) value);
-                        break;
-                    case NBT:
-                        this.writeTag(buffer, value);
-                        break;
-                    case VECTOR3I:
-                        writeVector3i(buffer, (Vector3i) value);
-                        break;
-                    case LONG:
-                        VarInts.writeLong(buffer, (long) value);
-                        break;
-                    case VECTOR3F:
-                        writeVector3f(buffer, (Vector3f) value);
-                        break;
-                    default:
-                        throw new UnsupportedOperationException("Unknown entity data type " + definition.getFormat());
+                // Skip if transformer returns null (indicating this entry shouldn't be serialized)
+                if (value == null) {
+                    continue;
                 }
+
+                serializedEntries.add(new AbstractMap.SimpleEntry<>(definition, value));
             } catch (Exception e) {
                 throw new IllegalArgumentException("Failed to encode EntityData " + definition.getId() + " of " + definition.getType().getTypeName(), e);
+            }
+        }
+
+        VarInts.writeUnsignedInt(buffer, serializedEntries.size());
+
+        for (Map.Entry<EntityDataTypeMap.Definition<?>, Object> entry : serializedEntries) {
+            EntityDataTypeMap.Definition<?> definition = entry.getKey();
+            Object value = entry.getValue();
+            VarInts.writeUnsignedInt(buffer, definition.getId());
+            VarInts.writeUnsignedInt(buffer, definition.getFormat().ordinal());
+
+            switch (definition.getFormat()) {
+                case BYTE:
+                    buffer.writeByte((byte) value);
+                    break;
+                case SHORT:
+                    buffer.writeShortLE((short) value);
+                    break;
+                case INT:
+                    VarInts.writeInt(buffer, (int) value);
+                    break;
+                case FLOAT:
+                    buffer.writeFloatLE((float) value);
+                    break;
+                case STRING:
+                    writeString(buffer, (String) value);
+                    break;
+                case NBT:
+                    this.writeTag(buffer, value);
+                    break;
+                case VECTOR3I:
+                    writeVector3i(buffer, (Vector3i) value);
+                    break;
+                case LONG:
+                    VarInts.writeLong(buffer, (long) value);
+                    break;
+                case VECTOR3F:
+                    writeVector3f(buffer, (Vector3f) value);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown entity data type " + definition.getFormat());
             }
         }
     }
