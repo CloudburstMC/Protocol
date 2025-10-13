@@ -14,7 +14,6 @@ import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.BiomeDefinitionListPacket;
 import org.cloudburstmc.protocol.common.util.*;
-import org.cloudburstmc.protocol.common.util.index.Indexable;
 import org.cloudburstmc.protocol.common.util.index.Indexed;
 import org.cloudburstmc.protocol.common.util.index.IndexedList;
 
@@ -172,7 +171,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
                 hasFrozenOceanSurface, hasTheEndSurface,
                 mesaSurface, cappedSurface,
                 overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules);
+                legacyWorldGenRules, null);
     }
 
     protected void writeClimate(ByteBuf buffer, BedrockCodecHelper helper, BiomeClimateData climate) {

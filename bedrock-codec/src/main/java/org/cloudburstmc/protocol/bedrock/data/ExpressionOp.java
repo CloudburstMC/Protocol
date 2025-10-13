@@ -78,5 +78,132 @@ public enum ExpressionOp {
     RETURN,
     COMMA,
     THIS,
-    NON_EVALUATED_ARRAY
+    /**
+     * @since v859
+     */
+    NON_EVALUATED_ARRAY,
+    /**
+     * @since v859
+     */
+    INVERSE_LERP,
+    /**
+     * @since v859
+     */
+    EASE_IN_QUAD,
+    /**
+     * @since v859
+     */
+    EASE_OUT_QUAD,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_QUAD,
+    /**
+     * @since v859
+     */
+    EASE_IN_CUBIC,
+    /**
+     * @since v859
+     */
+    EASE_OUT_CUBIC,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_CUBIC,
+    /**
+     * @since v859
+     */
+    EASE_IN_QUART,
+    /**
+     * @since v859
+     */
+    EASE_OUT_QUART,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_QUART,
+    /**
+     * @since v859
+     */
+    EASE_IN_QUINT,
+    /**
+     * @since v859
+     */
+    EASE_OUT_QUINT,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_QUINT,
+    /**
+     * @since v859
+     */
+    EASE_IN_SINE,
+    /**
+     * @since v859
+     */
+    EASE_OUT_SINE,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_SINE,
+    /**
+     * @since v859
+     */
+    EASE_IN_EXPO,
+    /**
+     * @since v859
+     */
+    EASE_OUT_EXPO,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_EXPO,
+    /**
+     * @since v859
+     */
+    EASE_IN_CIRC,
+    /**
+     * @since v859
+     */
+    EASE_OUT_CIRC,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_CIRC,
+    /**
+     * @since v859
+     */
+    EASE_IN_BOUNCE,
+    /**
+     * @since v859
+     */
+    EASE_OUT_BOUNCE,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_BOUNCE,
+    /**
+     * @since v859
+     */
+    EASE_IN_BACK,
+    /**
+     * @since v859
+     */
+    EASE_OUT_BACK,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_BACK,
+    /**
+     * @since v859
+     */
+    EASE_IN_ELASTIC,
+    /**
+     * @since v859
+     */
+    EASE_OUT_ELASTIC,
+    /**
+     * @since v859
+     */
+    EASE_IN_OUT_ELASTIC
 }

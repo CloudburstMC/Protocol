@@ -116,7 +116,7 @@ public class BiomeDefinitionListSerializer_v844 extends BiomeDefinitionListSeria
                 hasFrozenOceanSurface, hasTheEndSurface,
                 mesaSurface, cappedSurface,
                 overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules);
+                legacyWorldGenRules, null);
     }
 
     @Override

@@ -17,6 +17,9 @@ public class BiomeDefinitionChunkGenData {
     BiomeSurfaceMaterialAdjustmentData surfaceMaterialAdjustment;
     @Nullable
     BiomeSurfaceMaterialData surfaceMaterial;
+    /**
+     * @since v844
+     */
     boolean hasDefaultOverworldSurface;
     boolean hasSwampSurface;
     boolean hasFrozenOceanSurface;
@@ -31,4 +34,6 @@ public class BiomeDefinitionChunkGenData {
     BiomeMultinoiseGenRulesData multinoiseGenRules;
     @Nullable
     BiomeLegacyWorldGenRulesData legacyWorldGenRules;
+    @Nullable
+    BiomeReplacementData biomeReplacementData;
 }
