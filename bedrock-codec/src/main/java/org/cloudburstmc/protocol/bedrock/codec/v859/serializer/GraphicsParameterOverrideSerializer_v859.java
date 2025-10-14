@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.GraphicsOverrideParameterType;
 import org.cloudburstmc.protocol.bedrock.packet.GraphicsParameterOverridePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -39,7 +40,7 @@ public class GraphicsParameterOverrideSerializer_v859 implements BedrockPacketSe
         }
         packet.setValues(values);
         packet.setBiomeIdentifier(helper.readString(buffer));
-        packet.setParameterType(GraphicsParameterOverridePacket.Type.values()[buffer.readUnsignedByte()]);
+        packet.setParameterType(GraphicsOverrideParameterType.values()[buffer.readUnsignedByte()]);
         packet.setReset(buffer.readBoolean());
     }
 }

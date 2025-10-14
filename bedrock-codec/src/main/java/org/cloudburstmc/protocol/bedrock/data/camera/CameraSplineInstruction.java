@@ -12,7 +12,7 @@ import java.util.List;
 public class CameraSplineInstruction {
 
     private float totalTime;
-    private int type;
+    private CameraSplineType type;
     private List<Vector3f> curve;
     private List<Vector2f> progressKeyFrames;
     private List<SplineRotationOption> rotationOption;

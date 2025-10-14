@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v827.serializer.CameraInstructionSerializer_v827;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAttachToEntityInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineInstruction;
+import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineType;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
@@ -22,7 +23,7 @@ public class CameraInstructionSerializer_v859 extends CameraInstructionSerialize
         super.serialize(buffer, helper, packet);
         helper.writeOptionalNull(buffer, packet.getSplineInstruction(), (buf, splineInstruction) -> {
             buf.writeFloatLE(splineInstruction.getTotalTime());
-            buf.writeByte(splineInstruction.getType());
+            buf.writeByte(splineInstruction.getType().ordinal());
             helper.writeArray(buf, splineInstruction.getCurve(), helper::writeVector3f);
             helper.writeArray(buf, splineInstruction.getProgressKeyFrames(), helper::writeVector2f);
             helper.writeArray(buf, splineInstruction.getRotationOption(), (buf2, rotationOption) -> {
@@ -39,7 +40,7 @@ public class CameraInstructionSerializer_v859 extends CameraInstructionSerialize
         super.deserialize(buffer, helper, packet);
         packet.setSplineInstruction(helper.readOptional(buffer, null, buf -> {
             float totalTime = buf.readFloatLE();
-            int type = buf.readUnsignedByte();
+            CameraSplineType type = CameraSplineType.values()[buf.readUnsignedByte()];
             List<Vector3f> curve = new ArrayList<>();
             helper.readArray(buf, curve, helper::readVector3f);
             List<Vector2f> progressKeyFrames = new ArrayList<>();

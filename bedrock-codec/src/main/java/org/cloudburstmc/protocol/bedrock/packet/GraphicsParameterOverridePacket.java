@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
+import org.cloudburstmc.protocol.bedrock.data.GraphicsOverrideParameterType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class GraphicsParameterOverridePacket implements BedrockPacket {
 
     private String biomeIdentifier;
-    private Type parameterType;
+    private GraphicsOverrideParameterType parameterType;
     private Map<Float, Vector3f> values;
     private boolean reset;
 
@@ -39,9 +40,5 @@ public class GraphicsParameterOverridePacket implements BedrockPacket {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
-    }
-
-    public enum Type {
-        SKY_ZENITH_COLOR
     }
 }
