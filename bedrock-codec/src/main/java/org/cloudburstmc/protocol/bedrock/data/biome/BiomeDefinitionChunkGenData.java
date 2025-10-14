@@ -34,6 +34,9 @@ public class BiomeDefinitionChunkGenData {
     BiomeMultinoiseGenRulesData multinoiseGenRules;
     @Nullable
     BiomeLegacyWorldGenRulesData legacyWorldGenRules;
+    /**
+     * @since v859
+     */
     @Nullable
     BiomeReplacementData biomeReplacementData;
 }
