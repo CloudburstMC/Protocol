@@ -12,6 +12,9 @@ import java.awt.*;
 public class DebugShape {
 
     private final long id;
+    /**
+     * @since v859
+     */
     private final int dimension;
 
     @Nullable

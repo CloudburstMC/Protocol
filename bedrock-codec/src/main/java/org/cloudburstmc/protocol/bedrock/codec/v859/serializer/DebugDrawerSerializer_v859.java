@@ -13,11 +13,27 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
 
     public static final DebugDrawerSerializer_v859 INSTANCE = new DebugDrawerSerializer_v859();
 
+    protected int toPayloadType(DebugShape.Type type) {
+        if (type == null) {
+            return 0;
+        }
+
+        switch (type) {
+            case ARROW: return 1;
+            case TEXT: return 2;
+            case BOX: return 3;
+            case LINE: return 4;
+            case SPHERE: return 5;
+            default: throw new IllegalStateException("Unknown debug shape type");
+        }
+    }
+
     @Override
     protected void writeShape(ByteBuf buffer, BedrockCodecHelper helper, DebugShape shape) {
         VarInts.writeUnsignedLong(buffer, shape.getId());
         writeCommonShapeData(buffer, helper, shape);
         VarInts.writeInt(buffer, shape.getDimension());
+        VarInts.writeUnsignedInt(buffer, toPayloadType(shape.getType()));
 
         switch (shape.getType()) {
             case ARROW:
@@ -29,23 +45,23 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
                 break;
             case BOX:
                 DebugBox box = (DebugBox) shape;
-                helper.writeOptionalNull(buffer, box.getBoxBounds(), WRITE_VECTOR3F);
+                helper.writeVector3f(buffer, box.getBoxBounds());
                 break;
             case CIRCLE:
                 DebugCircle circle = (DebugCircle) shape;
-                helper.writeOptionalNull(buffer, circle.getSegments(), ByteBuf::writeByte);
+                buffer.writeByte(circle.getSegments());
                 break;
             case LINE:
                 DebugLine line = (DebugLine) shape;
-                helper.writeOptionalNull(buffer, line.getLineEndPosition(), WRITE_VECTOR3F);
+                helper.writeVector3f(buffer, line.getLineEndPosition());
                 break;
             case SPHERE:
                 DebugSphere sphere = (DebugSphere) shape;
-                helper.writeOptionalNull(buffer, sphere.getSegments(), ByteBuf::writeByte);
+                buffer.writeByte(sphere.getSegments());
                 break;
             case TEXT:
                 DebugText text = (DebugText) shape;
-                helper.writeOptionalNull(buffer, text.getText(), WRITE_STRING);
+                helper.writeString(buffer, text.getText());
                 break;
         }
     }
@@ -63,6 +79,7 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
         Color color = helper.readOptional(buffer, null, READ_COLOR);
 
         int dimension = VarInts.readInt(buffer);
+        int payloadType = VarInts.readUnsignedInt(buffer); // Unused
 
         if (type == null) {
             return new DebugShape(id, dimension);
