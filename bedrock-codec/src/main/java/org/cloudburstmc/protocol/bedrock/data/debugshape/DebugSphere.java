@@ -11,10 +11,9 @@ import java.awt.*;
 @EqualsAndHashCode(callSuper = true)
 public class DebugSphere extends DebugShape {
 
-    @Nullable
     Integer segments;
 
-    public DebugSphere(long id, int dimension, @Nullable Vector3f position, @Nullable Float scale, @Nullable Vector3f rotation, @Nullable Float totalTimeLeft, @Nullable Color color, @Nullable Integer segments) {
+    public DebugSphere(long id, int dimension, @Nullable Vector3f position, @Nullable Float scale, @Nullable Vector3f rotation, @Nullable Float totalTimeLeft, @Nullable Color color, Integer segments) {
         super(id, dimension, position, scale, rotation, totalTimeLeft, color);
         this.segments = segments;
     }
