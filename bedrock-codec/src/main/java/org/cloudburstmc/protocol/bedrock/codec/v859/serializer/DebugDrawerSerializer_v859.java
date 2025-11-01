@@ -23,7 +23,8 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
             case TEXT: return 2;
             case BOX: return 3;
             case LINE: return 4;
-            case SPHERE: return 5;
+            case SPHERE:
+            case CIRCLE: return 5;
             default: throw new IllegalStateException("Unknown debug shape type");
         }
     }
