@@ -95,19 +95,19 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
                 return new DebugArrow(id, dimension, position, scale, rotation, totalTimeLeft, color, arrowEndPosition,
                         arrowHeadLength, arrowHeadRadius, arrowHeadSegments);
             case BOX:
-                Vector3f boxBounds = helper.readOptional(buffer, null, READ_VECTOR3F);
+                Vector3f boxBounds = helper.readVector3f(buffer);
                 return new DebugBox(id, dimension, position, scale, rotation, totalTimeLeft, color, boxBounds);
             case CIRCLE:
-                Integer circleSegments = helper.readOptional(buffer, null, buf -> (int) buf.readUnsignedByte());
+                Integer circleSegments = (int) buffer.readUnsignedByte();
                 return new DebugCircle(id, dimension, position, scale, rotation, totalTimeLeft, color, circleSegments);
             case LINE:
-                Vector3f lineEndPosition = helper.readOptional(buffer, null, READ_VECTOR3F);
+                Vector3f lineEndPosition = helper.readVector3f(buffer);
                 return new DebugLine(id, dimension, position, scale, rotation, totalTimeLeft, color, lineEndPosition);
             case SPHERE:
-                Integer sphereSegments = helper.readOptional(buffer, null, buf -> (int) buf.readUnsignedByte());
+                Integer sphereSegments = (int) buffer.readUnsignedByte();
                 return new DebugSphere(id, dimension, position, scale, rotation, totalTimeLeft, color, sphereSegments);
             case TEXT:
-                String text = helper.readOptional(buffer, null, READ_STRING);
+                String text = helper.readString(buffer);
                 return new DebugText(id, dimension, position, scale, rotation, totalTimeLeft, color, text);
             default:
                 throw new IllegalStateException("Unknown debug shape type");
