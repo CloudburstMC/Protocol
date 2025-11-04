@@ -55,5 +55,8 @@ This library supports multiple versions of the Bedrock protocol. Below is a list
 | Bedrock_v776 |       1.21.60       |
 | Bedrock_v786 |       1.21.70       |
 | Bedrock_v800 |       1.21.80       |
-| Bedrock_v818 |       1.21.90       |
-| Bedrock_v819 |       1.21.93       |
+| Bedrock_v818 |  1.21.90 - 1.21.92  |
+| Bedrock_v819 |  1.21.93 - 1.21.94  |
+| Bedrock_v827 | 1.21.100 - 1.21.101 |
+| Bedrock_v844 | 1.21.111 - 1.21.114 |
+| Bedrock_v859 |       1.21.120      |
