@@ -39,6 +39,11 @@ public final class EntityDataMap implements Map<EntityDataType<?>, Object> {
         return get(FLAGS);
     }
 
+    public boolean getFlag(EntityFlag flag) {
+        EnumMap<EntityFlag, Boolean> flags = this.getFlags();
+        return flags != null && Boolean.TRUE.equals(flags.get(flag));
+    }
+
     public EntityFlag clearFlag(EntityFlag flag) {
         Objects.requireNonNull(flag, "flag");
         EnumMap<EntityFlag, Boolean> flags = this.getOrCreateFlags();
