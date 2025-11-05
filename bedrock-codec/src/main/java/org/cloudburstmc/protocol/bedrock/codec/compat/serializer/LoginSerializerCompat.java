@@ -2,20 +2,18 @@ package org.cloudburstmc.protocol.bedrock.codec.compat.serializer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.util.AsciiString;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
-import org.jose4j.json.internal.json_simple.JSONArray;
-import org.jose4j.json.internal.json_simple.JSONObject;
-import org.jose4j.json.internal.json_simple.JSONValue;
+import org.jose4j.json.JsonUtil;
+import org.jose4j.lang.JoseException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 
@@ -34,20 +32,22 @@ public class LoginSerializerCompat implements BedrockPacketSerializer<LoginPacke
 
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
-        Object json = JSONValue.parse(readString(jwt).toString());
-        checkArgument(json instanceof JSONObject && ((JSONObject) json).containsKey("chain"), "Invalid login chain");
-        Object chain = ((JSONObject) json).get("chain");
-        checkArgument(chain instanceof JSONArray, "Expected JSON array for login chain");
+        try {
+            Map<String, Object> json = JsonUtil.parseJson(readString(jwt).toString());
+            checkArgument(json != null && json.containsKey("chain") && json.get("chain") instanceof List,
+                    "Invalid login chain");
+            List<?> chain = (List<?>) json.get("chain");
 
-        List<String> chainList = new ObjectArrayList<>(3);
-        for (Object node : (JSONArray) chain) {
-            checkArgument(node instanceof String, "Expected String in login chain");
-            chainList.add((String) node);
+            for (Object node : chain) {
+                checkArgument(node instanceof String, "Expected String in login certificate chain");
+                packet.getCertificateChain().add((String) node);
+            }
+
+            String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
+            packet.setClientJwt(value);
+        } catch (JoseException e) {
+            throw new IllegalArgumentException("Failed to parse auth payload", e);
         }
-        packet.setAuthPayload(new CertificateChainPayload(chainList));
-
-        String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
-        packet.setClientJwt(value);
     }
 
     protected AsciiString readString(ByteBuf buffer) {
