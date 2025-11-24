@@ -109,18 +109,25 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumMa
 
         // Iterate through all 64 possible flags in this group
         for (int i = lower; i < upper; i++) {
-            EntityFlag flag = this.typeMap.getTypeUnsafe(i);
-            if (flag == null) {
-                // Flag index exists in the protocol but isn't mapped to an EntityFlag enum value
-                log.debug("Unknown entity flag detected with index {}", i);
-                continue;
-            }
-
             // Get the bit position within this 64-bit group (0-63)
             int idx = i & 0x3f;
 
+            EntityFlag flag = this.typeMap.getTypeUnsafe(i);
+
             // Check if the bit at this position is set
-            if ((value & (1L << idx)) != 0) {
+            boolean set = (value & (1L << idx)) != 0;
+
+            if (flag == null) {
+                // Only log "Unknown entity flag" if the bit is actually set (1).
+                // If the bit is 0, it is likely just unused padding at the end of the long 
+                // (e.g., indices 100-127 when only 100 flags are defined).
+                if (set) {
+                    log.debug("Unknown entity flag set to true detected with index {}", i);
+                }
+                continue;
+            }
+
+            if (set) {
                 flags.put(flag, true);
             } else {
                 flags.put(flag, false);
