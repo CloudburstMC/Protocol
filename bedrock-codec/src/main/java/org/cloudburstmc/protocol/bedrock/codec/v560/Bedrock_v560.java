@@ -25,6 +25,7 @@ public class Bedrock_v560 extends Bedrock_v557 {
     protected static final TypeMap<EntityFlag> ENTITY_FLAGS = Bedrock_v557.ENTITY_FLAGS.toBuilder()
             .shift(46, 1)
             .insert(46, EntityFlag.CAN_DASH)
+            .insert(96, EntityFlag.OUT_OF_CONTROL)
             .insert(108, EntityFlag.HAS_DASH_COOLDOWN)
             .insert(109, EntityFlag.PUSH_TOWARDS_CLOSEST_SPACE)
             .build();

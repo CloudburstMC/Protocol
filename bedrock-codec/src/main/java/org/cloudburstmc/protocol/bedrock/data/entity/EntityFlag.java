@@ -178,5 +178,9 @@ public enum EntityFlag {
     /**
      * @since v843
      */
-    CAN_USE_VERTICAL_MOVEMENT_ACTION
+    CAN_USE_VERTICAL_MOVEMENT_ACTION,
+    /**
+     * @since v859
+     */
+    BODY_ROTATION_LOCKED_TO_VEHICLE
 }
