@@ -66,11 +66,10 @@ public class Zlib {
                     throw new DataFormatException("Inflated data exceeds maximum size");
                 }
             }
+            decompressed.retain();
             return decompressed;
-        } catch (DataFormatException e) {
-            decompressed.release();
-            throw e;
         } finally {
+            decompressed.release();
             if (source != null && source != buffer) {
                 source.release();
             }
