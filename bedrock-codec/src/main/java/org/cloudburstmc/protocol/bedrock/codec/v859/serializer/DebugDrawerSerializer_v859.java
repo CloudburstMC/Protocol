@@ -34,9 +34,14 @@ public class DebugDrawerSerializer_v859 extends DebugDrawerSerializer_v818 {
         VarInts.writeUnsignedLong(buffer, shape.getId());
         writeCommonShapeData(buffer, helper, shape);
         VarInts.writeInt(buffer, shape.getDimension());
-        VarInts.writeUnsignedInt(buffer, toPayloadType(shape.getType()));
 
-        switch (shape.getType()) {
+        DebugShape.Type type = shape.getType();
+        VarInts.writeUnsignedInt(buffer, toPayloadType(type));
+        if (type == null) {
+            return;
+        }
+
+        switch (type) {
             case ARROW:
                 DebugArrow arrow = (DebugArrow) shape;
                 helper.writeOptionalNull(buffer, arrow.getArrowEndPosition(), WRITE_VECTOR3F);
