@@ -45,7 +45,7 @@ public class ItemStackResponse {
         this.success = success;
         this.requestId = requestId;
         this.containers = containers;
-        this.result = success ? ItemStackResponseStatus.Success : ItemStackResponseStatus.Error;
+        this.result = success ? ItemStackResponseStatus.OK : ItemStackResponseStatus.ERROR;
     }
 
     public ItemStackResponse(ItemStackResponseStatus result, int requestId, List<ItemStackResponseContainer> containers) {

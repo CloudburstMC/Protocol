@@ -23,7 +23,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
             buf.writeByte(response.getResult().ordinal());
             VarInts.writeInt(buffer, response.getRequestId());
 
-            if (response.getResult() != ItemStackResponseStatus.Success)
+            if (response.getResult() != ItemStackResponseStatus.OK)
                 return;
 
             helper.writeArray(buf, response.getContainers(), helper::writeItemStackResponseContainer);
@@ -37,7 +37,7 @@ public class ItemStackResponseSerializer_v419 extends ItemStackResponseSerialize
             ItemStackResponseStatus result = ItemStackResponseStatus.values()[buf.readByte()];
             int requestId = VarInts.readInt(buf);
 
-            if (result != ItemStackResponseStatus.Success)
+            if (result != ItemStackResponseStatus.OK)
                 return new ItemStackResponse(result, requestId, Collections.emptyList());
 
             List<ItemStackResponseContainer> containerEntries = new ArrayList<>();
