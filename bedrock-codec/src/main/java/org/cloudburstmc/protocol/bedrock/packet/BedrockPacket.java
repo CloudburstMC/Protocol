@@ -5,21 +5,9 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 
 public interface BedrockPacket extends MinecraftPacket, Cloneable {
 
-    /**
-     * @deprecated Packet-specific handle methods are deprecated. Use {@link BedrockPacketHandler#handlePacket(BedrockPacket)} instead.
-     */
-    @Deprecated
-    default PacketSignal handle(BedrockPacketHandler handler) {
-        return PacketSignal.UNHANDLED;
-    }
+    PacketSignal handle(BedrockPacketHandler handler);
 
-    /**
-     * @deprecated {@link BedrockPacketType} enum is deprecated as it cannot be extended for custom packets.
-     */
-    @Deprecated
-    default BedrockPacketType getPacketType() {
-        return BedrockPacketType.UNKNOWN;
-    }
+    BedrockPacketType getPacketType();
 
     /**
      * Creates a new instance of this packet using Object.clone()

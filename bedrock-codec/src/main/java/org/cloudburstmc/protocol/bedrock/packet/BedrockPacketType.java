@@ -1,248 +1,256 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec.Builder;
+import lombok.Getter;
 
-/**
- * @deprecated This enum cannot be extended for custom packets registered via {@link Builder#registerPacket}.
- */
-@Deprecated
-public enum BedrockPacketType {
-    ADD_BEHAVIOR_TREE,
-    ADD_ENTITY,
-    ADD_HANGING_ENTITY,
-    ADD_ITEM_ENTITY,
-    ADD_PAINTING,
-    ADD_PLAYER,
-    ADD_VOLUME_ENTITY,
-    ADVENTURE_SETTINGS,
-    AGENT_ACTION_EVENT,
-    ANIMATE,
-    ANIMATE_ENTITY,
-    ANVIL_DAMAGE,
-    AUTOMATION_CLIENT_CONNECT,
-    AVAILABLE_COMMANDS,
-    AVAILABLE_ENTITY_IDENTIFIERS,
-    BIOME_DEFINITIONS_LIST,
-    BLOCK_ENTITY_DATA,
-    BLOCK_EVENT,
-    BLOCK_PICK_REQUEST,
-    BOOK_EDIT,
-    BOSS_EVENT,
-    CAMERA,
-    CAMERA_SHAKE,
-    CHANGE_DIMENSION,
-    CHANGE_MOB_PROPERTY,
-    CHUNK_RADIUS_UPDATED,
-    CLIENTBOUND_DEBUG_RENDERER,
-    CLIENTBOUND_MAP_ITEM_DATA,
-    CLIENT_CACHE_BLOB_STATUS,
-    CLIENT_CACHE_MISS_RESPONSE,
-    CLIENT_CACHE_STATUS,
-    CLIENT_CHEAT_ABILITY,
-    CLIENT_TO_SERVER_HANDSHAKE,
-    CODE_BUILDER,
-    CODE_BUILDER_SOURCE,
-    COMMAND_BLOCK_UPDATE,
-    COMMAND_OUTPUT,
-    COMMAND_REQUEST,
-    COMPLETED_USING_ITEM,
-    CONTAINER_CLOSE,
-    CONTAINER_OPEN,
-    CONTAINER_SET_DATA,
-    CORRECT_PLAYER_MOVE_PREDICTION,
-    CRAFTING_DATA,
-    CRAFTING_EVENT,
-    CREATE_PHOTO,
-    CREATIVE_CONTENT,
-    DEATH_INFO,
-    DEBUG_INFO,
-    DIMENSION_DATA,
-    DISCONNECT,
-    EDITOR_NETWORK,
-    EDUCATION_SETTINGS,
-    EDU_URI_RESOURCE,
-    EMOTE,
-    EMOTE_LIST,
-    ENTITY_EVENT,
-    ENTITY_FALL,
-    ENTITY_PICK_REQUEST,
-    EVENT,
-    EXPLODE,
-    FEATURE_REGISTRY,
-    FILTER_TEXT,
-    GAME_RULES_CHANGED,
-    GAME_TEST_REQUEST,
-    GAME_TEST_RESULTS,
-    GUI_DATA_PICK_ITEM,
-    HURT_ARMOR,
-    INTERACT,
-    INVENTORY_CONTENT,
-    INVENTORY_SLOT,
-    INVENTORY_TRANSACTION,
-    ITEM_COMPONENT,
-    ITEM_FRAME_DROP_ITEM,
-    ITEM_STACK_REQUEST,
-    ITEM_STACK_RESPONSE,
-    LAB_TABLE,
-    LECTERN_UPDATE,
-    LESSON_PROGRESS,
-    LEVEL_CHUNK,
-    LEVEL_EVENT_GENERIC,
-    LEVEL_EVENT,
-    LEVEL_SOUND_EVENT,
-    LEVEL_SOUND_EVENT_1,
-    LEVEL_SOUND_EVENT_2,
-    LOGIN,
-    MAP_CREATE_LOCKED_COPY,
-    MAP_INFO_REQUEST,
-    MOB_ARMOR_EQUIPMENT,
-    MOB_EFFECT,
-    MOB_EQUIPMENT,
-    MODAL_FORM_REQUEST,
-    MODAL_FORM_RESPONSE,
-    MOVE_ENTITY_ABSOLUTE,
-    MOVE_ENTITY_DELTA,
-    MOVE_PLAYER,
-    MULTIPLAYER_SETTINGS,
-    NETWORK_CHUNK_PUBLISHER_UPDATE,
-    NETWORK_SETTINGS,
-    NETWORK_STACK_LATENCY,
-    NPC_DIALOGUE,
-    NPC_REQUEST,
-    ON_SCREEN_TEXTURE_ANIMATION,
-    PACKET_VIOLATION_WARNING,
-    PHOTO_INFO_REQUEST,
-    PHOTO_TRANSFER,
-    PLAYER_ACTION,
-    PLAYER_ARMOR_DAMAGE,
-    PLAYER_AUTH_INPUT,
-    PLAYER_ENCHANT_OPTIONS,
-    PLAYER_FOG,
-    PLAYER_HOTBAR,
-    PLAYER_INPUT,
-    PLAYER_LIST,
-    PLAYER_SKIN,
-    PLAYER_START_ITEM_COOLDOWN,
-    PLAY_SOUND,
-    PLAY_STATUS,
-    PURCHASE_RECEIPT,
-    POSITION_TRACKING_DB_SERVER_BROADCAST,
-    POSITION_TRACKING_DB_CLIENT_REQUEST,
-    REMOVE_ENTITY,
-    REMOVE_OBJECTIVE,
-    REMOVE_VOLUME_ENTITY,
-    REQUEST_ABILITY,
-    REQUEST_CHUNK_RADIUS,
-    REQUEST_NETWORK_SETTINGS,
-    REQUEST_PERMISSIONS,
-    RESOURCE_PACK_CHUNK_DATA,
-    RESOURCE_PACK_CHUNK_REQUEST,
-    RESOURCE_PACK_CLIENT_RESPONSE,
-    RESOURCE_PACK_DATA_INFO,
-    RESOURCE_PACKS_INFO,
-    RESOURCE_PACK_STACK,
-    RESPAWN,
-    RIDER_JUMP,
-    SCRIPT_CUSTOM_EVENT,
-    SCRIPT_MESSAGE,
-    SERVER_SETTINGS_REQUEST,
-    SERVER_SETTINGS_RESPONSE,
-    SERVER_STATS,
-    SERVER_TO_CLIENT_HANDSHAKE,
-    SET_COMMANDS_ENABLED,
-    SET_DEFAULT_GAME_TYPE,
-    SET_DIFFICULTY,
-    SET_DISPLAY_OBJECTIVE,
-    SET_ENTITY_DATA,
-    SET_ENTITY_LINK,
-    SET_ENTITY_MOTION,
-    SET_ENTITY_MOTION_PLUS,
-    SET_HEALTH,
-    SET_LAST_HURT_BY,
-    SET_LOCAL_PLAYER_AS_INITIALIZED,
-    SET_PLAYER_GAME_TYPE,
-    SET_SCOREBOARD_IDENTITY,
-    SET_SCORE,
-    SET_SPAWN_POSITION,
-    SET_TIME,
-    SETTINGS_COMMAND,
-    SET_TITLE,
-    SHOW_CREDITS,
-    SHOW_PROFILE,
-    SHOW_STORE_OFFER,
-    SIMPLE_EVENT,
-    SIMULATION_TYPE,
-    SPAWN_EXPERIENCE_ORB,
-    SPAWN_PARTICLE_EFFECT,
-    START_GAME,
-    STOP_SOUND,
-    STRUCTURE_BLOCK_UPDATE,
-    STRUCTURE_TEMPLATE_DATA_EXPORT_REQUEST,
-    STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE,
-    SUB_CHUNK,
-    SUB_CHUNK_REQUEST,
-    SUB_CLIENT_LOGIN,
-    SYNC_ENTITY_PROPERTY,
-    TAKE_ITEM_ENTITY,
-    TEXT,
-    TICK_SYNC,
-    TICKING_AREAS_LOAD_STATUS,
-    TOAST_REQUEST,
-    TRANSFER,
-    UNKNOWN,
-    UPDATE_ABILITIES,
-    UPDATE_ADVENTURE_SETTINGS,
-    UPDATE_ATTRIBUTES,
-    UPDATE_BLOCK,
-    UPDATE_BLOCK_PROPERTIES,
-    UPDATE_BLOCK_SYNCED,
-    UPDATE_EQUIP,
-    UPDATE_PLAYER_GAME_TYPE,
-    UPDATE_SOFT_ENUM,
-    UPDATE_SUB_CHUNK_BLOCKS,
-    UPDATE_TRADE,
-    VIDEO_STREAM_CONNECT,
-    UPDATE_CLIENT_INPUT_LOCKS,
-    CAMERA_PRESETS,
-    UNLOCKED_RECIPES,
-    CAMERA_INSTRUCTION,
-    COMPRESSED_BIOME_DEFINITIONS_LIST,
-    TRIM_DATA,
-    OPEN_SIGN,
-    AGENT_ANIMATION,
-    REFRESH_ENTITLEMENTS,
-    TOGGLE_CRAFTER_SLOT_REQUEST,
-    SET_PLAYER_INVENTORY_OPTIONS,
-    SET_HUD,
-    AWARD_ACHIEVEMENT,
-    CLIENTBOUND_CLOSE_FORM,
-    SERVERBOUND_LOADING_SCREEN,
-    JIGSAW_STRUCTURE_DATA,
-    CURRENT_STRUCTURE_FEATURE,
-    SERVERBOUND_DIAGNOSTICS,
-    CAMERA_AIM_ASSIST,
-    CONTAINER_REGISTRY_CLEANUP,
-    MOVEMENT_EFFECT,
-    SET_MOVEMENT_AUTHORITY,
-    CAMERA_AIM_ASSIST_PRESETS,
-    CAMERA_AIM_ASSIST_INSTRUCTION,
-    MOVEMENT_PREDICTION_SYNC,
-    UPDATE_CLIENT_OPTIONS,
-    PLAYER_VIDEO_CAPTURE,
-    PLAYER_UPDATE_ENTITY_OVERRIDES,
-    PLAYER_LOCATION,
-    CLIENTBOUND_CONTROL_SCHEME_SET,
-    DEBUG_DRAWER,
-    SERVERBOUND_PACK_SETTING_CHANGE,
-    GRAPHICS_PARAMETER_OVERRIDE_PACKET,
-    SERVER_PLAYER_POST_MOVE_POSITION,
-    SERVERBOUND_DATA_STORE,
-    CLIENTBOUND_DATA_STORE,
-    CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN,
-    CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_ALL_SCREENS,
-    CLIENTBOUND_DATA_DRIVEN_UI_RELOAD,
-    CLIENTBOUND_TEXTURE_SHIFT,
-    VOXEL_SHAPES,
-    CAMERA_SPLINE,
-    CAMERA_AIM_ASSIST_ACTOR_PRIORITY
+public class BedrockPacketType {
+    public static final BedrockPacketType ADD_BEHAVIOR_TREE = new BedrockPacketType("ADD_BEHAVIOR_TREE");
+    public static final BedrockPacketType ADD_ENTITY = new BedrockPacketType("ADD_ENTITY");
+    public static final BedrockPacketType ADD_HANGING_ENTITY = new BedrockPacketType("ADD_HANGING_ENTITY");
+    public static final BedrockPacketType ADD_ITEM_ENTITY = new BedrockPacketType("ADD_ITEM_ENTITY");
+    public static final BedrockPacketType ADD_PAINTING = new BedrockPacketType("ADD_PAINTING");
+    public static final BedrockPacketType ADD_PLAYER = new BedrockPacketType("ADD_PLAYER");
+    public static final BedrockPacketType ADD_VOLUME_ENTITY = new BedrockPacketType("ADD_VOLUME_ENTITY");
+    public static final BedrockPacketType ADVENTURE_SETTINGS = new BedrockPacketType("ADVENTURE_SETTINGS");
+    public static final BedrockPacketType AGENT_ACTION_EVENT = new BedrockPacketType("AGENT_ACTION_EVENT");
+    public static final BedrockPacketType ANIMATE = new BedrockPacketType("ANIMATE");
+    public static final BedrockPacketType ANIMATE_ENTITY = new BedrockPacketType("ANIMATE_ENTITY");
+    public static final BedrockPacketType ANVIL_DAMAGE = new BedrockPacketType("ANVIL_DAMAGE");
+    public static final BedrockPacketType AUTOMATION_CLIENT_CONNECT = new BedrockPacketType("AUTOMATION_CLIENT_CONNECT");
+    public static final BedrockPacketType AVAILABLE_COMMANDS = new BedrockPacketType("AVAILABLE_COMMANDS");
+    public static final BedrockPacketType AVAILABLE_ENTITY_IDENTIFIERS = new BedrockPacketType("AVAILABLE_ENTITY_IDENTIFIERS");
+    public static final BedrockPacketType BIOME_DEFINITIONS_LIST = new BedrockPacketType("BIOME_DEFINITIONS_LIST");
+    public static final BedrockPacketType BLOCK_ENTITY_DATA = new BedrockPacketType("BLOCK_ENTITY_DATA");
+    public static final BedrockPacketType BLOCK_EVENT = new BedrockPacketType("BLOCK_EVENT");
+    public static final BedrockPacketType BLOCK_PICK_REQUEST = new BedrockPacketType("BLOCK_PICK_REQUEST");
+    public static final BedrockPacketType BOOK_EDIT = new BedrockPacketType("BOOK_EDIT");
+    public static final BedrockPacketType BOSS_EVENT = new BedrockPacketType("BOSS_EVENT");
+    public static final BedrockPacketType CAMERA = new BedrockPacketType("CAMERA");
+    public static final BedrockPacketType CAMERA_SHAKE = new BedrockPacketType("CAMERA_SHAKE");
+    public static final BedrockPacketType CHANGE_DIMENSION = new BedrockPacketType("CHANGE_DIMENSION");
+    public static final BedrockPacketType CHANGE_MOB_PROPERTY = new BedrockPacketType("CHANGE_MOB_PROPERTY");
+    public static final BedrockPacketType CHUNK_RADIUS_UPDATED = new BedrockPacketType("CHUNK_RADIUS_UPDATED");
+    public static final BedrockPacketType CLIENTBOUND_DEBUG_RENDERER = new BedrockPacketType("CLIENTBOUND_DEBUG_RENDERER");
+    public static final BedrockPacketType CLIENTBOUND_MAP_ITEM_DATA = new BedrockPacketType("CLIENTBOUND_MAP_ITEM_DATA");
+    public static final BedrockPacketType CLIENT_CACHE_BLOB_STATUS = new BedrockPacketType("CLIENT_CACHE_BLOB_STATUS");
+    public static final BedrockPacketType CLIENT_CACHE_MISS_RESPONSE = new BedrockPacketType("CLIENT_CACHE_MISS_RESPONSE");
+    public static final BedrockPacketType CLIENT_CACHE_STATUS = new BedrockPacketType("CLIENT_CACHE_STATUS");
+    public static final BedrockPacketType CLIENT_CHEAT_ABILITY = new BedrockPacketType("CLIENT_CHEAT_ABILITY");
+    public static final BedrockPacketType CLIENT_TO_SERVER_HANDSHAKE = new BedrockPacketType("CLIENT_TO_SERVER_HANDSHAKE");
+    public static final BedrockPacketType CODE_BUILDER = new BedrockPacketType("CODE_BUILDER");
+    public static final BedrockPacketType CODE_BUILDER_SOURCE = new BedrockPacketType("CODE_BUILDER_SOURCE");
+    public static final BedrockPacketType COMMAND_BLOCK_UPDATE = new BedrockPacketType("COMMAND_BLOCK_UPDATE");
+    public static final BedrockPacketType COMMAND_OUTPUT = new BedrockPacketType("COMMAND_OUTPUT");
+    public static final BedrockPacketType COMMAND_REQUEST = new BedrockPacketType("COMMAND_REQUEST");
+    public static final BedrockPacketType COMPLETED_USING_ITEM = new BedrockPacketType("COMPLETED_USING_ITEM");
+    public static final BedrockPacketType CONTAINER_CLOSE = new BedrockPacketType("CONTAINER_CLOSE");
+    public static final BedrockPacketType CONTAINER_OPEN = new BedrockPacketType("CONTAINER_OPEN");
+    public static final BedrockPacketType CONTAINER_SET_DATA = new BedrockPacketType("CONTAINER_SET_DATA");
+    public static final BedrockPacketType CORRECT_PLAYER_MOVE_PREDICTION = new BedrockPacketType("CORRECT_PLAYER_MOVE_PREDICTION");
+    public static final BedrockPacketType CRAFTING_DATA = new BedrockPacketType("CRAFTING_DATA");
+    public static final BedrockPacketType CRAFTING_EVENT = new BedrockPacketType("CRAFTING_EVENT");
+    public static final BedrockPacketType CREATE_PHOTO = new BedrockPacketType("CREATE_PHOTO");
+    public static final BedrockPacketType CREATIVE_CONTENT = new BedrockPacketType("CREATIVE_CONTENT");
+    public static final BedrockPacketType DEATH_INFO = new BedrockPacketType("DEATH_INFO");
+    public static final BedrockPacketType DEBUG_INFO = new BedrockPacketType("DEBUG_INFO");
+    public static final BedrockPacketType DIMENSION_DATA = new BedrockPacketType("DIMENSION_DATA");
+    public static final BedrockPacketType DISCONNECT = new BedrockPacketType("DISCONNECT");
+    public static final BedrockPacketType EDITOR_NETWORK = new BedrockPacketType("EDITOR_NETWORK");
+    public static final BedrockPacketType EDUCATION_SETTINGS = new BedrockPacketType("EDUCATION_SETTINGS");
+    public static final BedrockPacketType EDU_URI_RESOURCE = new BedrockPacketType("EDU_URI_RESOURCE");
+    public static final BedrockPacketType EMOTE = new BedrockPacketType("EMOTE");
+    public static final BedrockPacketType EMOTE_LIST = new BedrockPacketType("EMOTE_LIST");
+    public static final BedrockPacketType ENTITY_EVENT = new BedrockPacketType("ENTITY_EVENT");
+    public static final BedrockPacketType ENTITY_FALL = new BedrockPacketType("ENTITY_FALL");
+    public static final BedrockPacketType ENTITY_PICK_REQUEST = new BedrockPacketType("ENTITY_PICK_REQUEST");
+    public static final BedrockPacketType EVENT = new BedrockPacketType("EVENT");
+    public static final BedrockPacketType EXPLODE = new BedrockPacketType("EXPLODE");
+    public static final BedrockPacketType FEATURE_REGISTRY = new BedrockPacketType("FEATURE_REGISTRY");
+    public static final BedrockPacketType FILTER_TEXT = new BedrockPacketType("FILTER_TEXT");
+    public static final BedrockPacketType GAME_RULES_CHANGED = new BedrockPacketType("GAME_RULES_CHANGED");
+    public static final BedrockPacketType GAME_TEST_REQUEST = new BedrockPacketType("GAME_TEST_REQUEST");
+    public static final BedrockPacketType GAME_TEST_RESULTS = new BedrockPacketType("GAME_TEST_RESULTS");
+    public static final BedrockPacketType GUI_DATA_PICK_ITEM = new BedrockPacketType("GUI_DATA_PICK_ITEM");
+    public static final BedrockPacketType HURT_ARMOR = new BedrockPacketType("HURT_ARMOR");
+    public static final BedrockPacketType INTERACT = new BedrockPacketType("INTERACT");
+    public static final BedrockPacketType INVENTORY_CONTENT = new BedrockPacketType("INVENTORY_CONTENT");
+    public static final BedrockPacketType INVENTORY_SLOT = new BedrockPacketType("INVENTORY_SLOT");
+    public static final BedrockPacketType INVENTORY_TRANSACTION = new BedrockPacketType("INVENTORY_TRANSACTION");
+    public static final BedrockPacketType ITEM_COMPONENT = new BedrockPacketType("ITEM_COMPONENT");
+    public static final BedrockPacketType ITEM_FRAME_DROP_ITEM = new BedrockPacketType("ITEM_FRAME_DROP_ITEM");
+    public static final BedrockPacketType ITEM_STACK_REQUEST = new BedrockPacketType("ITEM_STACK_REQUEST");
+    public static final BedrockPacketType ITEM_STACK_RESPONSE = new BedrockPacketType("ITEM_STACK_RESPONSE");
+    public static final BedrockPacketType LAB_TABLE = new BedrockPacketType("LAB_TABLE");
+    public static final BedrockPacketType LECTERN_UPDATE = new BedrockPacketType("LECTERN_UPDATE");
+    public static final BedrockPacketType LESSON_PROGRESS = new BedrockPacketType("LESSON_PROGRESS");
+    public static final BedrockPacketType LEVEL_CHUNK = new BedrockPacketType("LEVEL_CHUNK");
+    public static final BedrockPacketType LEVEL_EVENT_GENERIC = new BedrockPacketType("LEVEL_EVENT_GENERIC");
+    public static final BedrockPacketType LEVEL_EVENT = new BedrockPacketType("LEVEL_EVENT");
+    public static final BedrockPacketType LEVEL_SOUND_EVENT = new BedrockPacketType("LEVEL_SOUND_EVENT");
+    public static final BedrockPacketType LEVEL_SOUND_EVENT_1 = new BedrockPacketType("LEVEL_SOUND_EVENT_1");
+    public static final BedrockPacketType LEVEL_SOUND_EVENT_2 = new BedrockPacketType("LEVEL_SOUND_EVENT_2");
+    public static final BedrockPacketType LOGIN = new BedrockPacketType("LOGIN");
+    public static final BedrockPacketType MAP_CREATE_LOCKED_COPY = new BedrockPacketType("MAP_CREATE_LOCKED_COPY");
+    public static final BedrockPacketType MAP_INFO_REQUEST = new BedrockPacketType("MAP_INFO_REQUEST");
+    public static final BedrockPacketType MOB_ARMOR_EQUIPMENT = new BedrockPacketType("MOB_ARMOR_EQUIPMENT");
+    public static final BedrockPacketType MOB_EFFECT = new BedrockPacketType("MOB_EFFECT");
+    public static final BedrockPacketType MOB_EQUIPMENT = new BedrockPacketType("MOB_EQUIPMENT");
+    public static final BedrockPacketType MODAL_FORM_REQUEST = new BedrockPacketType("MODAL_FORM_REQUEST");
+    public static final BedrockPacketType MODAL_FORM_RESPONSE = new BedrockPacketType("MODAL_FORM_RESPONSE");
+    public static final BedrockPacketType MOVE_ENTITY_ABSOLUTE = new BedrockPacketType("MOVE_ENTITY_ABSOLUTE");
+    public static final BedrockPacketType MOVE_ENTITY_DELTA = new BedrockPacketType("MOVE_ENTITY_DELTA");
+    public static final BedrockPacketType MOVE_PLAYER = new BedrockPacketType("MOVE_PLAYER");
+    public static final BedrockPacketType MULTIPLAYER_SETTINGS = new BedrockPacketType("MULTIPLAYER_SETTINGS");
+    public static final BedrockPacketType NETWORK_CHUNK_PUBLISHER_UPDATE = new BedrockPacketType("NETWORK_CHUNK_PUBLISHER_UPDATE");
+    public static final BedrockPacketType NETWORK_SETTINGS = new BedrockPacketType("NETWORK_SETTINGS");
+    public static final BedrockPacketType NETWORK_STACK_LATENCY = new BedrockPacketType("NETWORK_STACK_LATENCY");
+    public static final BedrockPacketType NPC_DIALOGUE = new BedrockPacketType("NPC_DIALOGUE");
+    public static final BedrockPacketType NPC_REQUEST = new BedrockPacketType("NPC_REQUEST");
+    public static final BedrockPacketType ON_SCREEN_TEXTURE_ANIMATION = new BedrockPacketType("ON_SCREEN_TEXTURE_ANIMATION");
+    public static final BedrockPacketType PACKET_VIOLATION_WARNING = new BedrockPacketType("PACKET_VIOLATION_WARNING");
+    public static final BedrockPacketType PHOTO_INFO_REQUEST = new BedrockPacketType("PHOTO_INFO_REQUEST");
+    public static final BedrockPacketType PHOTO_TRANSFER = new BedrockPacketType("PHOTO_TRANSFER");
+    public static final BedrockPacketType PLAYER_ACTION = new BedrockPacketType("PLAYER_ACTION");
+    public static final BedrockPacketType PLAYER_ARMOR_DAMAGE = new BedrockPacketType("PLAYER_ARMOR_DAMAGE");
+    public static final BedrockPacketType PLAYER_AUTH_INPUT = new BedrockPacketType("PLAYER_AUTH_INPUT");
+    public static final BedrockPacketType PLAYER_ENCHANT_OPTIONS = new BedrockPacketType("PLAYER_ENCHANT_OPTIONS");
+    public static final BedrockPacketType PLAYER_FOG = new BedrockPacketType("PLAYER_FOG");
+    public static final BedrockPacketType PLAYER_HOTBAR = new BedrockPacketType("PLAYER_HOTBAR");
+    public static final BedrockPacketType PLAYER_INPUT = new BedrockPacketType("PLAYER_INPUT");
+    public static final BedrockPacketType PLAYER_LIST = new BedrockPacketType("PLAYER_LIST");
+    public static final BedrockPacketType PLAYER_SKIN = new BedrockPacketType("PLAYER_SKIN");
+    public static final BedrockPacketType PLAYER_START_ITEM_COOLDOWN = new BedrockPacketType("PLAYER_START_ITEM_COOLDOWN");
+    public static final BedrockPacketType PLAY_SOUND = new BedrockPacketType("PLAY_SOUND");
+    public static final BedrockPacketType PLAY_STATUS = new BedrockPacketType("PLAY_STATUS");
+    public static final BedrockPacketType PURCHASE_RECEIPT = new BedrockPacketType("PURCHASE_RECEIPT");
+    public static final BedrockPacketType POSITION_TRACKING_DB_SERVER_BROADCAST = new BedrockPacketType("POSITION_TRACKING_DB_SERVER_BROADCAST");
+    public static final BedrockPacketType POSITION_TRACKING_DB_CLIENT_REQUEST = new BedrockPacketType("POSITION_TRACKING_DB_CLIENT_REQUEST");
+    public static final BedrockPacketType REMOVE_ENTITY = new BedrockPacketType("REMOVE_ENTITY");
+    public static final BedrockPacketType REMOVE_OBJECTIVE = new BedrockPacketType("REMOVE_OBJECTIVE");
+    public static final BedrockPacketType REMOVE_VOLUME_ENTITY = new BedrockPacketType("REMOVE_VOLUME_ENTITY");
+    public static final BedrockPacketType REQUEST_ABILITY = new BedrockPacketType("REQUEST_ABILITY");
+    public static final BedrockPacketType REQUEST_CHUNK_RADIUS = new BedrockPacketType("REQUEST_CHUNK_RADIUS");
+    public static final BedrockPacketType REQUEST_NETWORK_SETTINGS = new BedrockPacketType("REQUEST_NETWORK_SETTINGS");
+    public static final BedrockPacketType REQUEST_PERMISSIONS = new BedrockPacketType("REQUEST_PERMISSIONS");
+    public static final BedrockPacketType RESOURCE_PACK_CHUNK_DATA = new BedrockPacketType("RESOURCE_PACK_CHUNK_DATA");
+    public static final BedrockPacketType RESOURCE_PACK_CHUNK_REQUEST = new BedrockPacketType("RESOURCE_PACK_CHUNK_REQUEST");
+    public static final BedrockPacketType RESOURCE_PACK_CLIENT_RESPONSE = new BedrockPacketType("RESOURCE_PACK_CLIENT_RESPONSE");
+    public static final BedrockPacketType RESOURCE_PACK_DATA_INFO = new BedrockPacketType("RESOURCE_PACK_DATA_INFO");
+    public static final BedrockPacketType RESOURCE_PACKS_INFO = new BedrockPacketType("RESOURCE_PACKS_INFO");
+    public static final BedrockPacketType RESOURCE_PACK_STACK = new BedrockPacketType("RESOURCE_PACK_STACK");
+    public static final BedrockPacketType RESPAWN = new BedrockPacketType("RESPAWN");
+    public static final BedrockPacketType RIDER_JUMP = new BedrockPacketType("RIDER_JUMP");
+    public static final BedrockPacketType SCRIPT_CUSTOM_EVENT = new BedrockPacketType("SCRIPT_CUSTOM_EVENT");
+    public static final BedrockPacketType SCRIPT_MESSAGE = new BedrockPacketType("SCRIPT_MESSAGE");
+    public static final BedrockPacketType SERVER_SETTINGS_REQUEST = new BedrockPacketType("SERVER_SETTINGS_REQUEST");
+    public static final BedrockPacketType SERVER_SETTINGS_RESPONSE = new BedrockPacketType("SERVER_SETTINGS_RESPONSE");
+    public static final BedrockPacketType SERVER_STATS = new BedrockPacketType("SERVER_STATS");
+    public static final BedrockPacketType SERVER_TO_CLIENT_HANDSHAKE = new BedrockPacketType("SERVER_TO_CLIENT_HANDSHAKE");
+    public static final BedrockPacketType SET_COMMANDS_ENABLED = new BedrockPacketType("SET_COMMANDS_ENABLED");
+    public static final BedrockPacketType SET_DEFAULT_GAME_TYPE = new BedrockPacketType("SET_DEFAULT_GAME_TYPE");
+    public static final BedrockPacketType SET_DIFFICULTY = new BedrockPacketType("SET_DIFFICULTY");
+    public static final BedrockPacketType SET_DISPLAY_OBJECTIVE = new BedrockPacketType("SET_DISPLAY_OBJECTIVE");
+    public static final BedrockPacketType SET_ENTITY_DATA = new BedrockPacketType("SET_ENTITY_DATA");
+    public static final BedrockPacketType SET_ENTITY_LINK = new BedrockPacketType("SET_ENTITY_LINK");
+    public static final BedrockPacketType SET_ENTITY_MOTION = new BedrockPacketType("SET_ENTITY_MOTION");
+    public static final BedrockPacketType SET_ENTITY_MOTION_PLUS = new BedrockPacketType("SET_ENTITY_MOTION_PLUS");
+    public static final BedrockPacketType SET_HEALTH = new BedrockPacketType("SET_HEALTH");
+    public static final BedrockPacketType SET_LAST_HURT_BY = new BedrockPacketType("SET_LAST_HURT_BY");
+    public static final BedrockPacketType SET_LOCAL_PLAYER_AS_INITIALIZED = new BedrockPacketType("SET_LOCAL_PLAYER_AS_INITIALIZED");
+    public static final BedrockPacketType SET_PLAYER_GAME_TYPE = new BedrockPacketType("SET_PLAYER_GAME_TYPE");
+    public static final BedrockPacketType SET_SCOREBOARD_IDENTITY = new BedrockPacketType("SET_SCOREBOARD_IDENTITY");
+    public static final BedrockPacketType SET_SCORE = new BedrockPacketType("SET_SCORE");
+    public static final BedrockPacketType SET_SPAWN_POSITION = new BedrockPacketType("SET_SPAWN_POSITION");
+    public static final BedrockPacketType SET_TIME = new BedrockPacketType("SET_TIME");
+    public static final BedrockPacketType SETTINGS_COMMAND = new BedrockPacketType("SETTINGS_COMMAND");
+    public static final BedrockPacketType SET_TITLE = new BedrockPacketType("SET_TITLE");
+    public static final BedrockPacketType SHOW_CREDITS = new BedrockPacketType("SHOW_CREDITS");
+    public static final BedrockPacketType SHOW_PROFILE = new BedrockPacketType("SHOW_PROFILE");
+    public static final BedrockPacketType SHOW_STORE_OFFER = new BedrockPacketType("SHOW_STORE_OFFER");
+    public static final BedrockPacketType SIMPLE_EVENT = new BedrockPacketType("SIMPLE_EVENT");
+    public static final BedrockPacketType SIMULATION_TYPE = new BedrockPacketType("SIMULATION_TYPE");
+    public static final BedrockPacketType SPAWN_EXPERIENCE_ORB = new BedrockPacketType("SPAWN_EXPERIENCE_ORB");
+    public static final BedrockPacketType SPAWN_PARTICLE_EFFECT = new BedrockPacketType("SPAWN_PARTICLE_EFFECT");
+    public static final BedrockPacketType START_GAME = new BedrockPacketType("START_GAME");
+    public static final BedrockPacketType STOP_SOUND = new BedrockPacketType("STOP_SOUND");
+    public static final BedrockPacketType STRUCTURE_BLOCK_UPDATE = new BedrockPacketType("STRUCTURE_BLOCK_UPDATE");
+    public static final BedrockPacketType STRUCTURE_TEMPLATE_DATA_EXPORT_REQUEST = new BedrockPacketType("STRUCTURE_TEMPLATE_DATA_EXPORT_REQUEST");
+    public static final BedrockPacketType STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE = new BedrockPacketType("STRUCTURE_TEMPLATE_DATA_EXPORT_RESPONSE");
+    public static final BedrockPacketType SUB_CHUNK = new BedrockPacketType("SUB_CHUNK");
+    public static final BedrockPacketType SUB_CHUNK_REQUEST = new BedrockPacketType("SUB_CHUNK_REQUEST");
+    public static final BedrockPacketType SUB_CLIENT_LOGIN = new BedrockPacketType("SUB_CLIENT_LOGIN");
+    public static final BedrockPacketType SYNC_ENTITY_PROPERTY = new BedrockPacketType("SYNC_ENTITY_PROPERTY");
+    public static final BedrockPacketType TAKE_ITEM_ENTITY = new BedrockPacketType("TAKE_ITEM_ENTITY");
+    public static final BedrockPacketType TEXT = new BedrockPacketType("TEXT");
+    public static final BedrockPacketType TICK_SYNC = new BedrockPacketType("TICK_SYNC");
+    public static final BedrockPacketType TICKING_AREAS_LOAD_STATUS = new BedrockPacketType("TICKING_AREAS_LOAD_STATUS");
+    public static final BedrockPacketType TOAST_REQUEST = new BedrockPacketType("TOAST_REQUEST");
+    public static final BedrockPacketType TRANSFER = new BedrockPacketType("TRANSFER");
+    public static final BedrockPacketType UNKNOWN = new BedrockPacketType("UNKNOWN");
+    public static final BedrockPacketType UPDATE_ABILITIES = new BedrockPacketType("UPDATE_ABILITIES");
+    public static final BedrockPacketType UPDATE_ADVENTURE_SETTINGS = new BedrockPacketType("UPDATE_ADVENTURE_SETTINGS");
+    public static final BedrockPacketType UPDATE_ATTRIBUTES = new BedrockPacketType("UPDATE_ATTRIBUTES");
+    public static final BedrockPacketType UPDATE_BLOCK = new BedrockPacketType("UPDATE_BLOCK");
+    public static final BedrockPacketType UPDATE_BLOCK_PROPERTIES = new BedrockPacketType("UPDATE_BLOCK_PROPERTIES");
+    public static final BedrockPacketType UPDATE_BLOCK_SYNCED = new BedrockPacketType("UPDATE_BLOCK_SYNCED");
+    public static final BedrockPacketType UPDATE_EQUIP = new BedrockPacketType("UPDATE_EQUIP");
+    public static final BedrockPacketType UPDATE_PLAYER_GAME_TYPE = new BedrockPacketType("UPDATE_PLAYER_GAME_TYPE");
+    public static final BedrockPacketType UPDATE_SOFT_ENUM = new BedrockPacketType("UPDATE_SOFT_ENUM");
+    public static final BedrockPacketType UPDATE_SUB_CHUNK_BLOCKS = new BedrockPacketType("UPDATE_SUB_CHUNK_BLOCKS");
+    public static final BedrockPacketType UPDATE_TRADE = new BedrockPacketType("UPDATE_TRADE");
+    public static final BedrockPacketType VIDEO_STREAM_CONNECT = new BedrockPacketType("VIDEO_STREAM_CONNECT");
+    public static final BedrockPacketType UPDATE_CLIENT_INPUT_LOCKS = new BedrockPacketType("UPDATE_CLIENT_INPUT_LOCKS");
+    public static final BedrockPacketType CAMERA_PRESETS = new BedrockPacketType("CAMERA_PRESETS");
+    public static final BedrockPacketType UNLOCKED_RECIPES = new BedrockPacketType("UNLOCKED_RECIPES");
+    public static final BedrockPacketType CAMERA_INSTRUCTION = new BedrockPacketType("CAMERA_INSTRUCTION");
+    public static final BedrockPacketType COMPRESSED_BIOME_DEFINITIONS_LIST = new BedrockPacketType("COMPRESSED_BIOME_DEFINITIONS_LIST");
+    public static final BedrockPacketType TRIM_DATA = new BedrockPacketType("TRIM_DATA");
+    public static final BedrockPacketType OPEN_SIGN = new BedrockPacketType("OPEN_SIGN");
+    public static final BedrockPacketType AGENT_ANIMATION = new BedrockPacketType("AGENT_ANIMATION");
+    public static final BedrockPacketType REFRESH_ENTITLEMENTS = new BedrockPacketType("REFRESH_ENTITLEMENTS");
+    public static final BedrockPacketType TOGGLE_CRAFTER_SLOT_REQUEST = new BedrockPacketType("TOGGLE_CRAFTER_SLOT_REQUEST");
+    public static final BedrockPacketType SET_PLAYER_INVENTORY_OPTIONS = new BedrockPacketType("SET_PLAYER_INVENTORY_OPTIONS");
+    public static final BedrockPacketType SET_HUD = new BedrockPacketType("SET_HUD");
+    public static final BedrockPacketType AWARD_ACHIEVEMENT = new BedrockPacketType("AWARD_ACHIEVEMENT");
+    public static final BedrockPacketType CLIENTBOUND_CLOSE_FORM = new BedrockPacketType("CLIENTBOUND_CLOSE_FORM");
+    public static final BedrockPacketType SERVERBOUND_LOADING_SCREEN = new BedrockPacketType("SERVERBOUND_LOADING_SCREEN");
+    public static final BedrockPacketType JIGSAW_STRUCTURE_DATA = new BedrockPacketType("JIGSAW_STRUCTURE_DATA");
+    public static final BedrockPacketType CURRENT_STRUCTURE_FEATURE = new BedrockPacketType("CURRENT_STRUCTURE_FEATURE");
+    public static final BedrockPacketType SERVERBOUND_DIAGNOSTICS = new BedrockPacketType("SERVERBOUND_DIAGNOSTICS");
+    public static final BedrockPacketType CAMERA_AIM_ASSIST = new BedrockPacketType("CAMERA_AIM_ASSIST");
+    public static final BedrockPacketType CONTAINER_REGISTRY_CLEANUP = new BedrockPacketType("CONTAINER_REGISTRY_CLEANUP");
+    public static final BedrockPacketType MOVEMENT_EFFECT = new BedrockPacketType("MOVEMENT_EFFECT");
+    public static final BedrockPacketType SET_MOVEMENT_AUTHORITY = new BedrockPacketType("SET_MOVEMENT_AUTHORITY");
+    public static final BedrockPacketType CAMERA_AIM_ASSIST_PRESETS = new BedrockPacketType("CAMERA_AIM_ASSIST_PRESETS");
+    public static final BedrockPacketType CAMERA_AIM_ASSIST_INSTRUCTION = new BedrockPacketType("CAMERA_AIM_ASSIST_INSTRUCTION");
+    public static final BedrockPacketType MOVEMENT_PREDICTION_SYNC = new BedrockPacketType("MOVEMENT_PREDICTION_SYNC");
+    public static final BedrockPacketType UPDATE_CLIENT_OPTIONS = new BedrockPacketType("UPDATE_CLIENT_OPTIONS");
+    public static final BedrockPacketType PLAYER_VIDEO_CAPTURE = new BedrockPacketType("PLAYER_VIDEO_CAPTURE");
+    public static final BedrockPacketType PLAYER_UPDATE_ENTITY_OVERRIDES = new BedrockPacketType("PLAYER_UPDATE_ENTITY_OVERRIDES");
+    public static final BedrockPacketType PLAYER_LOCATION = new BedrockPacketType("PLAYER_LOCATION");
+    public static final BedrockPacketType CLIENTBOUND_CONTROL_SCHEME_SET = new BedrockPacketType("CLIENTBOUND_CONTROL_SCHEME_SET");
+    public static final BedrockPacketType DEBUG_DRAWER = new BedrockPacketType("DEBUG_DRAWER");
+    public static final BedrockPacketType SERVERBOUND_PACK_SETTING_CHANGE = new BedrockPacketType("SERVERBOUND_PACK_SETTING_CHANGE");
+    public static final BedrockPacketType GRAPHICS_PARAMETER_OVERRIDE_PACKET = new BedrockPacketType("GRAPHICS_PARAMETER_OVERRIDE_PACKET");
+    public static final BedrockPacketType SERVER_PLAYER_POST_MOVE_POSITION = new BedrockPacketType("SERVER_PLAYER_POST_MOVE_POSITION");
+    public static final BedrockPacketType SERVERBOUND_DATA_STORE = new BedrockPacketType("SERVERBOUND_DATA_STORE");
+    public static final BedrockPacketType CLIENTBOUND_DATA_STORE = new BedrockPacketType("CLIENTBOUND_DATA_STORE");
+    public static final BedrockPacketType CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN = new BedrockPacketType("CLIENTBOUND_DATA_DRIVEN_UI_SHOW_SCREEN");
+    public static final BedrockPacketType CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_ALL_SCREENS = new BedrockPacketType("CLIENTBOUND_DATA_DRIVEN_UI_CLOSE_ALL_SCREENS");
+    public static final BedrockPacketType CLIENTBOUND_DATA_DRIVEN_UI_RELOAD = new BedrockPacketType("CLIENTBOUND_DATA_DRIVEN_UI_RELOAD");
+    public static final BedrockPacketType CLIENTBOUND_TEXTURE_SHIFT = new BedrockPacketType("CLIENTBOUND_TEXTURE_SHIFT");
+    public static final BedrockPacketType VOXEL_SHAPES = new BedrockPacketType("VOXEL_SHAPES");
+    public static final BedrockPacketType CAMERA_SPLINE = new BedrockPacketType("CAMERA_SPLINE");
+    public static final BedrockPacketType CAMERA_AIM_ASSIST_ACTOR_PRIORITY = new BedrockPacketType("CAMERA_AIM_ASSIST_ACTOR_PRIORITY");
+
+    @Getter
+    private final String name;
+
+    public BedrockPacketType(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
