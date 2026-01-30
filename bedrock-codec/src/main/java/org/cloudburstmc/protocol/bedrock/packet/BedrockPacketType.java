@@ -1,5 +1,11 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
+import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec.Builder;
+
+/**
+ * @deprecated This enum cannot be extended for custom packets registered via {@link Builder#registerPacket}.
+ */
+@Deprecated
 public enum BedrockPacketType {
     ADD_BEHAVIOR_TREE,
     ADD_ENTITY,
