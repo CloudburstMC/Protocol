@@ -24,7 +24,7 @@ jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-an
 jose4j = { group = "org.bitbucket.b_c", name = "jose4j", version = "0.9.6" }
 natives = { group = "com.nukkitx", name = "natives", version = "1.0.3" }
 math = { group = "org.cloudburstmc.math", name = "immutable", version = "2.0-SNAPSHOT" }
-nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.3.Final" }
+nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.4.Final" }
 lmbda = { group = "org.lanternpowered", name = "lmbda", version = "2.0.0" }
 
 snappy = { group = "io.airlift", name = "aircompressor", version = "0.27" }
