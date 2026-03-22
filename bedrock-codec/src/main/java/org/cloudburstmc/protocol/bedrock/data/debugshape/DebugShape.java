@@ -27,6 +27,9 @@ public class DebugShape {
     private final Float totalTimeLeft;
     @Nullable
     private final Color color;
+    /**
+     * @since v924
+     */
     @Nullable
     private final Long attachedToEntityId;
 
