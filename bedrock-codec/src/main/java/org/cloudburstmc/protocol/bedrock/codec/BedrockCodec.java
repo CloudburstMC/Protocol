@@ -153,6 +153,28 @@ public final class BedrockCodec {
             return this;
         }
 
+        public <T extends BedrockPacket> Builder updateFactory(Class<T> packetClass, Supplier<? extends T> factory) {
+            BedrockPacketDefinition<T> info = (BedrockPacketDefinition<T>) packets.get(packetClass);
+            checkArgument(info != null, "Packet does not exist");
+            BedrockPacketDefinition<T> updatedInfo = new BedrockPacketDefinition<>(info.getId(), (Supplier<T>) factory, info.getSerializer(), info.getRecipient());
+
+            packets.replace(packetClass, info, updatedInfo);
+
+            return this;
+        }
+
+        public <T extends BedrockPacket, A extends T> Builder aliasPacket(Class<A> packetClass, Class<T> aliasedClass) {
+            checkNotNull(packetClass, "packetClass");
+            checkNotNull(aliasedClass, "aliasedClass");
+            checkArgument(!packets.containsKey(packetClass), "Packet class already registered");
+
+            BedrockPacketDefinition<? extends BedrockPacket> info = packets.get(aliasedClass);
+            checkArgument(info != null, "Packet does not exist");
+
+            packets.put(packetClass, info);
+            return this;
+        }
+
         public Builder retainPackets(Class<? extends BedrockPacket>... packets) {
             this.packets.keySet().retainAll(Arrays.asList(packets));
 
