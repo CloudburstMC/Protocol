@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.PlayerAbilityHolder;
 import org.cloudburstmc.protocol.bedrock.data.PlayerPermission;
@@ -36,7 +37,7 @@ public class AddPlayerPacket implements BedrockPacket, PlayerAbilityHolder {
     private ItemData hand;
     private AdventureSettingsPacket adventureSettings = new AdventureSettingsPacket();
     private String deviceId;
-    private int buildPlatform;
+    private BuildPlatform buildPlatform;
     private GameType gameType;
 
     /**

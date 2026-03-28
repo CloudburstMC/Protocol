@@ -20,6 +20,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v685.serializer.TextSerializer_v6
 import org.cloudburstmc.protocol.bedrock.codec.v776.Bedrock_v776;
 import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes;
@@ -266,6 +267,7 @@ public class TextSerializationTest {
         packet.setRotation(Vector3f.ZERO);
         packet.setDeviceId("");
         packet.setHand(ItemData.AIR);
+        packet.setBuildPlatform(BuildPlatform.GOOGLE);
         packet.setGameType(GameType.SURVIVAL);
         packet.setPlatformChatId("");
 

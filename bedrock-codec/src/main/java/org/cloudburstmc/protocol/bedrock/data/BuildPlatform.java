@@ -1,15 +1,14 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
 public enum BuildPlatform {
-
-    UNDEFINED,
+    UNKNOWN,
     /**
      * Android
      */
     GOOGLE,
     IOS,
     /**
-     * Mac OS
+     * macOS
      */
     OSX,
     /**
@@ -23,16 +22,16 @@ public enum BuildPlatform {
      */
     UWP,
     /**
-     * Educational edition
+     * Education Edition
      */
-    WIN_32,
+    WIN32,
     DEDICATED,
     /**
      * Apple TV
      */
     TV_OS,
     /**
-     * Playstation
+     * PlayStation
      */
     SONY,
     /**

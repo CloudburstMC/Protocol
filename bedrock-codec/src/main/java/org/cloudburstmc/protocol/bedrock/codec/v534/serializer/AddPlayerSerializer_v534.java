@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v503.serializer.AddPlayerSerializer_v503;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -27,7 +28,7 @@ public class AddPlayerSerializer_v534 extends AddPlayerSerializer_v503 {
         helper.writePlayerAbilities(buffer, packet);
         helper.writeArray(buffer, packet.getEntityLinks(), helper::writeEntityLink);
         helper.writeString(buffer, packet.getDeviceId());
-        buffer.writeIntLE(packet.getBuildPlatform());
+        buffer.writeIntLE(packet.getBuildPlatform().ordinal());
     }
 
     @Override
@@ -45,6 +46,6 @@ public class AddPlayerSerializer_v534 extends AddPlayerSerializer_v503 {
         helper.readPlayerAbilities(buffer, packet);
         helper.readArray(buffer, packet.getEntityLinks(), helper::readEntityLink);
         packet.setDeviceId(helper.readString(buffer));
-        packet.setBuildPlatform(buffer.readIntLE());
+        packet.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
     }
 }

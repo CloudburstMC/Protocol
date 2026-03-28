@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -42,7 +43,7 @@ public class PlayerListPacket implements BedrockPacket {
         private CharSequence name;
         private String xuid;
         private String platformChatId;
-        private int buildPlatform;
+        private BuildPlatform buildPlatform;
         private SerializedSkin skin;
         private boolean teacher;
         private boolean host;

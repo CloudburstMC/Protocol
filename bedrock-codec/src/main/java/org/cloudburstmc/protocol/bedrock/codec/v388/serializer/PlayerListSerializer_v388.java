@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerListPacket;
 import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -30,7 +31,7 @@ public class PlayerListSerializer_v388 implements BedrockPacketSerializer<Player
                 helper.writeString(buffer, converter.serialize(entry.getName(CharSequence.class)));
                 helper.writeString(buffer, entry.getXuid());
                 helper.writeString(buffer, entry.getPlatformChatId());
-                buffer.writeIntLE(entry.getBuildPlatform());
+                buffer.writeIntLE(entry.getBuildPlatform().ordinal());
                 helper.writeSkin(buffer, entry.getSkin());
                 buffer.writeBoolean(entry.isTeacher());
                 buffer.writeBoolean(entry.isHost());
@@ -53,7 +54,7 @@ public class PlayerListSerializer_v388 implements BedrockPacketSerializer<Player
                 entry.setName(converter.deserialize(helper.readString(buffer)));
                 entry.setXuid(helper.readString(buffer));
                 entry.setPlatformChatId(helper.readString(buffer));
-                entry.setBuildPlatform(buffer.readIntLE());
+                entry.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
                 entry.setSkin(helper.readSkin(buffer));
                 entry.setTeacher(buffer.readBoolean());
                 entry.setHost(buffer.readBoolean());
