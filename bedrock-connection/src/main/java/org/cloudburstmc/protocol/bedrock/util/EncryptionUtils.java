@@ -1,10 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.util;
 
 import lombok.experimental.UtilityClass;
-import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
-import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
-import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
 import org.jose4j.json.internal.json_simple.parser.ParseException;
@@ -223,36 +220,28 @@ public class EncryptionUtils {
         return clientData.getUnverifiedPayloadBytes();
     }
 
-    public static ChainValidationResult validatePayload(AuthPayload payload)
-            throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
-        if (payload instanceof CertificateChainPayload) {
-            CertificateChainPayload chainPayload = (CertificateChainPayload) payload;
-            List<String> chain = chainPayload.getChain();
-            if (chain == null || chain.isEmpty()) {
-                throw new IllegalStateException("Certificate chain is empty");
-            }
-            return validateChain(chain);
-        } else if (payload instanceof TokenPayload) {
-            TokenPayload tokenPayload = (TokenPayload) payload;
-            String token = tokenPayload.getToken();
-            if (token == null || token.isEmpty()) {
-                throw new IllegalStateException("Token is empty");
-            }
-            return validateToken(payload.getAuthType(), token);
-        } else {
-            throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
-        }
+    public static ChainValidationResult validateChain(List<String> chain)
+            throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException {
+        return validateChain(null, chain);
     }
 
-    public static ChainValidationResult validateChain(List<String> chain)
+    public static ChainValidationResult validateChain(AuthType type, List<String> chain)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException {
         switch (chain.size()) {
             case 1:
+                if(type != null && type != AuthType.SELF_SIGNED && type != AuthType.GUEST) {
+                    throw new IllegalStateException("AuthType did not match sent chain length.");
+                }
+
                 // offline / proxied
                 JsonWebSignature identity = new JsonWebSignature();
                 identity.setCompactSerialization(chain.get(0));
                 return new ChainValidationResult(false, identity.getUnverifiedPayload());
             case 3:
+                if(type != null && type != AuthType.FULL && type != AuthType.GUEST) {
+                    throw new IllegalStateException("AuthType did not match sent chain length.");
+                }
+
                 ECPublicKey currentKey = null;
                 Map<String, Object> parsedPayload = null;
                 for (int i = 0; i < 3; i++) {
@@ -288,13 +277,24 @@ public class EncryptionUtils {
         }
     }
 
-    public static ChainValidationResult validateToken(AuthType type, String token) throws InvalidJwtException, JoseException {
-        if (type == AuthType.FULL || type == AuthType.GUEST) {
+    public static TokenValidationResult validateToken(AuthType type, String token) throws InvalidJwtException, JoseException {
+        if (type == AuthType.FULL) {
             JwtContext context = MOJANG_CONSUMER.process(token);
-            return new ChainValidationResult(true, context);
+            return new TokenValidationResult(true, context);
         } else if (type == AuthType.SELF_SIGNED) {
             JwtContext context = OFFLINE_CONSUMER.process(token);
-            return new ChainValidationResult(false, context);
+            return new TokenValidationResult(false, context);
+        } else if(type == AuthType.GUEST) {
+            JwtContext context;
+            boolean signed;
+            try {
+                context = MOJANG_CONSUMER.process(token);
+                signed = true;
+            } catch(InvalidJwtException e) {
+                context = OFFLINE_CONSUMER.process(token);
+                signed = false;
+            }
+            return new TokenValidationResult(signed, context);
         }
         throw new JoseException("Unsupported AuthType: " + type);
     }
