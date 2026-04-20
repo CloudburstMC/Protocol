@@ -39,15 +39,34 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @UtilityClass
 public class EncryptionUtils {
     private static final ECPublicKey MOJANG_PUBLIC_KEY;
 
+    /**
+     * Microsoft's public key for verifying Education Edition server tokens,
+     * retrieved from the MESS (Minecraft Education Server Services) endpoint:
+     * {@code https://dedicatedserver.minecrafteduservices.com/public_keys/signing}
+     * <p>
+     * Used to verify the RSA signature on pipe-separated server tokens:
+     * {@code tenantId|oid|expiry|signatureHex}
+     * <p>
+     * This key plays the same role for Education Edition that {@link #MOJANG_PUBLIC_KEY}
+     * plays for standard Bedrock. Both are trust anchors for player identity.
+     * Mojang's EC key verifies Xbox Live login chains; this RSA key verifies
+     * education tokens containing the player's Entra tenant ID and Object ID.
+     */
+    private static final PublicKey EDUCATION_PUBLIC_KEY;
+
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final String MOJANG_PUBLIC_KEY_BASE64 =
             "MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAECRXueJeTDqNRRgJi/vlRufByu/2G0i2Ebt6YMar5QX/R0DIIyrJMcUpruK4QveTfJSTp3Shlq4Gk34cD/4GUWwkv0DVuzeuB+tXija7HBxii03NHDbPAD0AKnLr2wdAp";
+    private static final String EDUCATION_PUBLIC_KEY_BASE64 =
+            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDsFCr3nD8N3TJxJZ7Y4g1Z20Son+fUWTSd2f/XyIil2mGGGx/yjRj6l0ntbROsec8MZoaLsBG0nWm9/WhJcdXvJewbdd+mCyy7WXyYQgJcJPZP3kgBDySZMUnaowlUmR9gxRr+LevCafZKQwb19nwJB0EUt+nQsWBbTe2SuIdCqQIDAQAB";
     private static final KeyPairGenerator KEY_PAIR_GEN;
 
     public static final String ALGORITHM_TYPE = AlgorithmIdentifiers.ECDSA_USING_P384_CURVE_AND_SHA384;
@@ -89,6 +108,8 @@ public class EncryptionUtils {
             KEY_PAIR_GEN = KeyPairGenerator.getInstance("EC");
             KEY_PAIR_GEN.initialize(new ECGenParameterSpec("secp384r1"));
             MOJANG_PUBLIC_KEY = parseKey(MOJANG_PUBLIC_KEY_BASE64);
+            EDUCATION_PUBLIC_KEY = KeyFactory.getInstance("RSA")
+                    .generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(EDUCATION_PUBLIC_KEY_BASE64)));
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeySpecException e) {
             throw new AssertionError("Unable to initialize required encryption", e);
         }
@@ -357,6 +378,24 @@ public class EncryptionUtils {
      * @throws JoseException invalid key pair provided
      */
     public static String createHandshakeJwt(KeyPair serverKeyPair, byte[] token) throws JoseException {
+        return createHandshakeJwt(serverKeyPair, token, null);
+    }
+
+    /**
+     * Create handshake JWS used in the {@link org.cloudburstmc.protocol.bedrock.packet.ServerToClientHandshakePacket}
+     * which completes the encryption handshake.
+     * <p>
+     * For Education Edition clients, the {@code signedToken} parameter must contain the
+     * education server token. Education clients verify this token during the handshake
+     * and reject the connection if it is missing or invalid.
+     *
+     * @param serverKeyPair used to sign the JWT
+     * @param token         salt for the encryption handshake
+     * @param signedToken   education server token, or null for standard Bedrock
+     * @return signed JWS object
+     * @throws JoseException invalid key pair provided
+     */
+    public static String createHandshakeJwt(KeyPair serverKeyPair, byte[] token, String signedToken) throws JoseException {
         JsonWebSignature signature = new JsonWebSignature();
         signature.setAlgorithmHeaderValue(ALGORITHM_TYPE);
         signature.setHeader(
@@ -367,6 +406,9 @@ public class EncryptionUtils {
 
         JwtClaims claims = new JwtClaims();
         claims.setClaim("salt", Base64.getEncoder().encodeToString(token));
+        if (signedToken != null) {
+            claims.setClaim("signedToken", signedToken);
+        }
         signature.setPayload(claims.toJson());
 
         return signature.getCompactSerialization();
@@ -390,6 +432,181 @@ public class EncryptionUtils {
      */
     public static ECPublicKey getMojangPublicKey() {
         return MOJANG_PUBLIC_KEY;
+    }
+
+    /**
+     * Microsoft's public key used to verify Education Edition server tokens.
+     *
+     * @return Education RSA public key
+     */
+    public static PublicKey getEducationPublicKey() {
+        return EDUCATION_PUBLIC_KEY;
+    }
+
+    /**
+     * Validate the Education Edition login JWT end-to-end.
+     * <p>
+     * Education Edition clients send an outer self-signed JWT (the EduTokenChain) in place
+     * of the standard Bedrock identity chain. Its payload carries a single {@code chain}
+     * field containing the MESS-signed server token that actually proves player identity.
+     * <p>
+     * This method plays the same role for Education Edition that {@link #validatePayload}
+     * plays for standard Bedrock. It is the top-level entry point: it unwraps the outer
+     * education JWT via {@link #extractServerTokenFromEduTokenChain} and then verifies the
+     * inner server token via {@link #validateEducationToken}.
+     *
+     * @param eduTokenChain the outer education login JWT as a compact serialization string
+     * @return the validation result; {@link EducationTokenValidationResult.Status#INVALID}
+     *         is returned if the JWT has no extractable server token
+     * @throws JoseException the outer JWT is malformed or its payload is not valid JSON
+     * @throws NoSuchAlgorithmException SHA256withRSA is not available
+     * @throws InvalidKeyException the education public key is not a valid RSA key
+     */
+    public static EducationTokenValidationResult validateEducationPayload(String eduTokenChain)
+            throws JoseException, NoSuchAlgorithmException, InvalidKeyException {
+        String serverToken = extractServerTokenFromEduTokenChain(eduTokenChain);
+        if (serverToken == null) {
+            return EducationTokenValidationResult.invalid();
+        }
+        return validateEducationToken(serverToken);
+    }
+
+    /**
+     * Extract the inner server token from an Education Edition login JWT (EduTokenChain).
+     * <p>
+     * The EduTokenChain payload contains a {@code chain} field whose value is the
+     * pipe-separated MESS-signed server token ({@code tenantId|oid|expiry|signatureHex}).
+     * This method peels the JWT structure and returns that value without verifying anything.
+     * <p>
+     * <b>Security:</b> the outer JWT's signature is intentionally NOT verified here.
+     * Education login JWTs are self-signed with an ephemeral client key, so verifying
+     * the outer signature only proves the client signed its own JWT and establishes
+     * nothing about player identity. The inner {@code chain} field is the load-bearing
+     * credential and carries its own MESS RSA signature, which is verified by
+     * {@link #validateEducationToken}. Any caller that extracts additional fields from
+     * the outer JWT must treat those fields as untrusted unless a separate verification
+     * path is established for them.
+     *
+     * @param eduTokenChain the outer education login JWT as a compact serialization string
+     * @return the inner server token, or {@code null} if the input is null/empty or the
+     *         {@code chain} field is absent or not a string
+     * @throws JoseException the input is not a valid JWT or its payload is not valid JSON
+     */
+    public static String extractServerTokenFromEduTokenChain(String eduTokenChain) throws JoseException {
+        if (eduTokenChain == null || eduTokenChain.isEmpty()) {
+            return null;
+        }
+        JsonWebSignature jws = new JsonWebSignature();
+        jws.setCompactSerialization(eduTokenChain);
+        Map<String, Object> payload = JsonUtil.parseJson(jws.getUnverifiedPayload());
+        Object chain = payload.get("chain");
+        return chain instanceof String ? (String) chain : null;
+    }
+
+    /**
+     * Validate an education server token signed by Microsoft's MESS service.
+     * <p>
+     * Token format: {@code tenantId|oid|expiry|signatureHex} where the signature
+     * is RSA PKCS#1 v1.5 SHA-256 over {@code tenantId|oid|expiry} as UTF-8 bytes.
+     * <p>
+     * This method plays the same role for Education Edition that
+     * {@link #validateChain(List)} plays for standard Bedrock. It verifies player
+     * identity against {@link #EDUCATION_PUBLIC_KEY} in the same manner that
+     * {@code validateChain} verifies identity against {@link #MOJANG_PUBLIC_KEY}.
+     * <p>
+     * This inner MESS signature is the sole cryptographic anchor for education
+     * player identity. Other apparent verification points in the education
+     * login flow do not provide identity proof:
+     * <ul>
+     *   <li>The Bedrock login chain for education clients is a single self-signed
+     *       JWT with an ephemeral per-session EC P-384 key. No Mojang root signs
+     *       it, so {@link ChainValidationResult#signed()} returns false and the
+     *       chain's claims prove only that the client holds the private half of
+     *       a public key they themselves generated.</li>
+     *   <li>The chain's {@code extraData.identity} is a client-generated
+     *       per-session UUID, unrelated to the Entra Object ID and unanchored
+     *       to any external authority.</li>
+     *   <li>The {@code EduTokenChain} JWT that wraps this token in the login
+     *       packet is itself signed with another client-generated key whose
+     *       public half is embedded inline via the {@code x5u} header, not
+     *       fetched from a remote trust anchor. Verifying the outer signature
+     *       proves only that the client signed its own wrapper. An attacker
+     *       who captures a valid inner token can re-wrap it with a fresh
+     *       ephemeral key and produce a structurally valid outer JWT without
+     *       Microsoft's involvement.</li>
+     * </ul>
+     * Only the inner signature over {@code tenantId|oid|expiry} binds the
+     * token to a fixed Microsoft-controlled trust anchor
+     * ({@link #EDUCATION_PUBLIC_KEY}).
+     * Verifying it is the only mechanism that attests to player identity
+     * against a party the client cannot impersonate.
+     *
+     * @param serverToken the pipe-separated education server token
+     * @return validation result with status, tenant ID, OID, and expiry
+     * @throws NoSuchAlgorithmException SHA256withRSA is not available
+     * @throws InvalidKeyException the education public key is not a valid RSA key
+     */
+    public static EducationTokenValidationResult validateEducationToken(String serverToken)
+            throws NoSuchAlgorithmException, InvalidKeyException {
+        if (serverToken == null) {
+            return EducationTokenValidationResult.invalid();
+        }
+
+        String[] parts = serverToken.split("\\|", -1);
+        if (parts.length != 4) {
+            return EducationTokenValidationResult.invalid();
+        }
+
+        byte[] signatureBytes;
+        try {
+            signatureBytes = hexToBytes(parts[3]);
+        } catch (IllegalArgumentException e) {
+            return EducationTokenValidationResult.invalid();
+        }
+
+        Signature sig = Signature.getInstance("SHA256withRSA");
+        sig.initVerify(EDUCATION_PUBLIC_KEY);
+        try {
+            sig.update((parts[0] + "|" + parts[1] + "|" + parts[2]).getBytes(StandardCharsets.UTF_8));
+            if (!sig.verify(signatureBytes)) {
+                return EducationTokenValidationResult.invalid();
+            }
+        } catch (SignatureException e) {
+            return EducationTokenValidationResult.invalid();
+        }
+
+        // Mirrors the Education client: parsed_expiry < now is expired;
+        // failed parse is also treated as expired (client forces value to 0).
+        Instant expiry;
+        try {
+            expiry = Instant.parse(parts[2]);
+        } catch (DateTimeParseException e) {
+            return EducationTokenValidationResult.expired(parts[0], parts[1], Instant.EPOCH);
+        }
+
+        if (Instant.now().isAfter(expiry)) {
+            return EducationTokenValidationResult.expired(parts[0], parts[1], expiry);
+        }
+
+        try {
+            UUID.fromString(parts[0]);
+            UUID.fromString(parts[1]);
+        } catch (IllegalArgumentException e) {
+            return EducationTokenValidationResult.invalid();
+        }
+
+        return EducationTokenValidationResult.valid(parts[0], parts[1], expiry);
+    }
+
+    private static byte[] hexToBytes(String hex) {
+        if ((hex.length() & 1) != 0) {
+            throw new IllegalArgumentException("odd-length hex string");
+        }
+        byte[] bytes = new byte[hex.length() / 2];
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) Integer.parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+        }
+        return bytes;
     }
 
     public static Cipher createCipher(boolean gcm, boolean encrypt, SecretKey key) {

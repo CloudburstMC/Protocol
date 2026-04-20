@@ -54,4 +54,15 @@ public class Bedrock_v898 extends Bedrock_v860 {
             .registerPacket(ClientboundDataStorePacket::new, ClientboundDataStoreSerializer_v898.INSTANCE, 330, PacketRecipient.CLIENT)
             .registerPacket(ServerboundDataStorePacket::new, ServerboundDataStoreSerializer_v898.INSTANCE, 332, PacketRecipient.SERVER)
             .build();
+
+    /**
+     * Education Edition codec variant for protocol 898 (Education 1.21.132).
+     * <p>
+     * Identical to {@link #CODEC} except the {@link StartGamePacket} serializer
+     * appends three Education-specific string fields at the end of LevelSettings.
+     * Use this codec for sessions with Minecraft Education Edition clients.
+     */
+    public static final BedrockCodec EDUCATION_CODEC = CODEC.toBuilder()
+            .updateSerializer(StartGamePacket.class, EducationStartGameSerializer_v898.INSTANCE)
+            .build();
 }

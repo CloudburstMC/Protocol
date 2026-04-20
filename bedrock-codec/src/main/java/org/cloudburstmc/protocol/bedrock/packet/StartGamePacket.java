@@ -193,6 +193,27 @@ public class StartGamePacket implements BedrockPacket {
      */
     private String ownerId;
     /**
+     * Education Edition referrer ID. Only present in the Education Edition wire format.
+     * Written after {@link #ownerId} in LevelSettings by the education codec variant.
+     *
+     * @since v898 (Education Edition)
+     */
+    private String educationReferrerId = "";
+    /**
+     * Education Edition creator world ID. Only present in the Education Edition wire format.
+     * Written after {@link #educationReferrerId} in LevelSettings by the education codec variant.
+     *
+     * @since v898 (Education Edition)
+     */
+    private String educationCreatorWorldId = "";
+    /**
+     * Education Edition creator ID. Only present in the Education Edition wire format.
+     * Written after {@link #educationCreatorWorldId} in LevelSettings by the education codec variant.
+     *
+     * @since v898 (Education Edition)
+     */
+    private String educationCreatorId = "";
+    /**
      * @since v827
      */
     private boolean tickDeathSystemsEnabled;
