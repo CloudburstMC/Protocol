@@ -12,6 +12,8 @@ import java.util.List;
 public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper, BedrockBatchWrapper> {
     public static final String NAME = "compression-codec";
 
+    private static final int MAX_DECOMPRESSED_SIZE = 2 * 1024 * 1024; // 2 MB
+
     private final CompressionStrategy strategy;
     private final boolean prefixed;
 
@@ -71,7 +73,16 @@ public class CompressionCodec extends MessageToMessageCodec<BedrockBatchWrapper,
         }
 
         msg.setAlgorithm(compression.getAlgorithm());
-        msg.setUncompressed(compression.decode(ctx, compressed.slice()));
+        ByteBuf decompressed = compression.decode(ctx, compressed.slice());
+
+        // Bug 10 fix: cap decompressed size to prevent zlib bomb attacks
+        if (decompressed.readableBytes() > MAX_DECOMPRESSED_SIZE) {
+            decompressed.release();
+            throw new IllegalStateException("Decompressed batch size " + decompressed.readableBytes()
+                    + " exceeds maximum allowed size of " + MAX_DECOMPRESSED_SIZE);
+        }
+
+        msg.setUncompressed(decompressed);
         this.onDecompressed(ctx, msg);
         out.add(msg.retain());
     }

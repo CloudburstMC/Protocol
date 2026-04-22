@@ -14,6 +14,8 @@ public class BedrockBatchDecoder extends MessageToMessageDecoder<BedrockBatchWra
 
     public static final String NAME = "bedrock-batch-decoder";
 
+    private static final int MAX_SUBPACKETS_PER_BATCH = 256;
+
     @Override
     protected void decode(ChannelHandlerContext ctx, BedrockBatchWrapper msg, List<Object> out) {
         if (msg.getUncompressed() == null) {
@@ -21,7 +23,13 @@ public class BedrockBatchDecoder extends MessageToMessageDecoder<BedrockBatchWra
         }
 
         ByteBuf buffer = msg.getUncompressed().slice();
+        int count = 0;
         while (buffer.isReadable()) {
+            // Bug 10 fix: cap sub-packet count to prevent decompression bomb amplification
+            if (++count > MAX_SUBPACKETS_PER_BATCH) {
+                throw new IllegalStateException("Batch contained " + count
+                        + " sub-packets, exceeding maximum of " + MAX_SUBPACKETS_PER_BATCH);
+            }
             int packetLength = VarInts.readUnsignedInt(buffer);
             ByteBuf packetBuf = buffer.readRetainedSlice(packetLength);
             out.add(packetBuf);
