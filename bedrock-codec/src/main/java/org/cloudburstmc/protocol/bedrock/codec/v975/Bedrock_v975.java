@@ -163,6 +163,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .updateSerializer(BiomeDefinitionListPacket.class, BiomeDefinitionListSerializer_v975.INSTANCE)
             .updateSerializer(ClientboundAttributeLayerSyncPacket.class, ClientboundAttributeLayerSyncSerializer_v975.INSTANCE)
             .updateSerializer(DebugDrawerPacket.class, DebugDrawerSerializer_v975.INSTANCE)
+            .updateSerializer(DimensionDataPacket.class, DimensionDataSerializer_v975.INSTANCE)
             .updateSerializer(DisconnectPacket.class, DisconnectSerializer_v975.INSTANCE)
             .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v975(ENTITY_EVENTS))
             .updateSerializer(InventorySlotPacket.class, InventorySlotSerializer_v975.INSTANCE)

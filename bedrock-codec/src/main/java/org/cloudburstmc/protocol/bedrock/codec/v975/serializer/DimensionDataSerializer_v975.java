@@ -1,13 +1,14 @@
-package org.cloudburstmc.protocol.bedrock.codec.v503.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.codec.v503.serializer.DimensionDataSerializer_v503;
 import org.cloudburstmc.protocol.bedrock.data.definitions.DimensionDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.DimensionDataPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class DimensionDataSerializer_v503 implements BedrockPacketSerializer<DimensionDataPacket> {
+public class DimensionDataSerializer_v975 extends DimensionDataSerializer_v503 {
+    public static final DimensionDataSerializer_v975 INSTANCE = new DimensionDataSerializer_v975();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, DimensionDataPacket packet) {
@@ -20,10 +21,8 @@ public class DimensionDataSerializer_v503 implements BedrockPacketSerializer<Dim
     }
 
     protected void writeDefinition(ByteBuf buffer, BedrockCodecHelper helper, DimensionDefinition definition) {
-        helper.writeString(buffer, definition.getId());
-        VarInts.writeInt(buffer, definition.getMaximumHeight());
-        VarInts.writeInt(buffer, definition.getMinimumHeight());
-        VarInts.writeInt(buffer, definition.getGeneratorType());
+        super.writeDefinition(buffer, helper, definition);
+        VarInts.writeInt(buffer, definition.getDimensionType());
     }
 
     protected DimensionDefinition readDefinition(ByteBuf buffer, BedrockCodecHelper helper) {
@@ -31,6 +30,7 @@ public class DimensionDataSerializer_v503 implements BedrockPacketSerializer<Dim
         int maximumHeight = VarInts.readInt(buffer);
         int minimumHeight = VarInts.readInt(buffer);
         int generatorType = VarInts.readInt(buffer);
-        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, 0);
+        int dimensionType = VarInts.readInt(buffer);
+        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType);
     }
 }
