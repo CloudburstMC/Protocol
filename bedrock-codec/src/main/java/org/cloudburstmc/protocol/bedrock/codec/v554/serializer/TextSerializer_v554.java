@@ -56,6 +56,7 @@ public class TextSerializer_v554 extends TextSerializer_v332 {
         packet.setType(type);
         TextConverter converter = helper.getTextConverter();
         boolean needsTranslation = buffer.readBoolean();
+        packet.setNeedsTranslation(needsTranslation);
 
         switch (type) {
             case CHAT:

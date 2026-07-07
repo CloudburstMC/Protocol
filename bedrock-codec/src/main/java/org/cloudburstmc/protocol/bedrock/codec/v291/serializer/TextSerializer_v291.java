@@ -54,6 +54,7 @@ public class TextSerializer_v291 implements BedrockPacketSerializer<TextPacket> 
         packet.setType(type);
         TextConverter converter = helper.getTextConverter();
         boolean needsTranslation = buffer.readBoolean();
+        packet.setNeedsTranslation(needsTranslation);
 
         switch (type) {
             case CHAT:

@@ -116,6 +116,7 @@ public class TextSerializer_v898 extends TextSerializer_v685 {
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TextPacket packet) {
         TextConverter converter = helper.getTextConverter();
         boolean needsTranslation = buffer.readBoolean();
+        packet.setNeedsTranslation(needsTranslation);
 
         switch (buffer.readByte()) {
             case 0: // MessageOnly
