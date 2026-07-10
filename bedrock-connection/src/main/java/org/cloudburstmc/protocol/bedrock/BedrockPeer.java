@@ -55,6 +55,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     protected final BedrockSessionFactory sessionFactory;
     protected ScheduledFuture<?> tickFuture;
     protected AtomicBoolean closed = new AtomicBoolean();
+    protected AtomicBoolean closing = new AtomicBoolean();
 
     public BedrockPeer(Channel channel, BedrockSessionFactory sessionFactory) {
         this.channel = channel;
@@ -62,6 +63,9 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     protected void onBedrockPacket(BedrockPacketWrapper wrapper) {
+        if (this.closing.get()) {
+            return;
+        }
         int targetId = wrapper.getTargetSubClientId();
         BedrockSession session = this.sessions.computeIfAbsent(targetId, this::onSessionCreated);
         session.onPacket(wrapper);
@@ -82,17 +86,21 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     protected void onTick() {
-        if (this.closed.get()) {
+        if (this.closing.get() || this.closed.get()) {
             return;
         }
+        flushQueue();
+    }
 
-        if (!this.packetQueue.isEmpty()) {
-            BedrockPacketWrapper packet;
-            while ((packet = this.packetQueue.poll()) != null) {
-                this.channel.write(packet);
-            }
-            this.channel.flush();
+    protected void flushQueue() {
+        if (this.packetQueue.isEmpty()) {
+            return;
         }
+        BedrockPacketWrapper packet;
+        while ((packet = this.packetQueue.poll()) != null) {
+            this.channel.write(packet);
+        }
+        this.channel.flush();
     }
 
     private void onRakNetDisconnect(ChannelHandlerContext ctx, RakDisconnectReason reason) {
@@ -109,14 +117,28 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     public void sendPacket(int senderClientId, int targetClientId, BedrockPacket packet) {
+        if (this.closing.get() || this.closed.get()) {
+            ReferenceCountUtil.safeRelease(packet); // queue is no longer drained
+            return;
+        }
         this.packetQueue.add(BedrockPacketWrapper.create(0, senderClientId, targetClientId, packet, null));
     }
 
     public void sendPacketImmediately(int senderClientId, int targetClientId, BedrockPacket packet) {
+        if (this.closing.get()) { // closed is covered by netty: writes to a closed channel are failed and released
+            ReferenceCountUtil.safeRelease(packet);
+            return;
+        }
         this.channel.writeAndFlush(BedrockPacketWrapper.create(0, senderClientId, targetClientId, packet, null));
     }
 
     public void sendPacketsImmediately(int senderClientId, int targetClientId, BedrockPacket... packets) {
+        if (this.closing.get()) {
+            for (BedrockPacket packet : packets) {
+                ReferenceCountUtil.safeRelease(packet);
+            }
+            return;
+        }
         for (BedrockPacket packet : packets) {
             this.channel.write(BedrockPacketWrapper.create(0, senderClientId, targetClientId, packet, null));
         }
@@ -185,10 +207,30 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     }
 
     public void close(CharSequence reason) {
+        if (this.channel.eventLoop().inEventLoop()) {
+            this.close0(reason, false);
+        } else {
+            this.channel.eventLoop().execute(() -> this.close0(reason, false));
+        }
+    }
+
+    protected void close0(CharSequence reason, boolean force) {
+        if (!this.closing.compareAndSet(false, true)) {
+            return;
+        }
+
+        this.blackholeInboundPackets(); // inbound stops either way
+
         for (BedrockSession session : this.sessions.values()) {
             session.disconnectReason = reason;
         }
-        this.channel.disconnect();
+
+        if (force) {
+            // If an exception is thrown or the peer is misbehaving, we close it immediately without notification
+            this.channel.close();
+        } else {
+            this.channel.disconnect();
+        }
     }
 
     protected void onClose() {
@@ -206,12 +248,13 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
             this.tickFuture = null;
         }
 
-        for (BedrockSession session : this.sessions.values())
+        for (BedrockSession session : this.sessions.values()) {
             try {
                 session.onClose();
             } catch (Exception e) {
                 log.error("Exception whilst closing session", e);
             }
+        }
 
         this.free();
     }
