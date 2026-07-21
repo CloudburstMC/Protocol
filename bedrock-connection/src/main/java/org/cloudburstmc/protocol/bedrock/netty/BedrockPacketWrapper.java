@@ -7,6 +7,7 @@ import io.netty.util.internal.ObjectPool;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
 import org.cloudburstmc.protocol.bedrock.util.PacketFlag;
 
@@ -24,7 +25,7 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
     private int headerLength;
     private BedrockPacket packet;
     private ByteBuf packetBuffer;
-    private Set<PacketFlag> flags = new ObjectOpenHashSet<>();
+    private Set<PacketFlag> flags;
 
     public static BedrockPacketWrapper create(int packetId, int senderSubClientId, int targetSubClientId, BedrockPacket packet, ByteBuf packetBuffer) {
         BedrockPacketWrapper wrapper = RECYCLER.get();
@@ -56,16 +57,33 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
         this.handle = handle;
     }
 
+    public Set<PacketFlag> getFlags() {
+        if (this.flags == null) {
+            this.flags = new ObjectOpenHashSet<>();
+        }
+        return flags;
+    }
+
+    @Nullable
+    public Set<PacketFlag> getFlagsRaw() {
+        return this.flags;
+    }
+
     public void setFlag(PacketFlag flag) {
+        if (this.flags == null) {
+            this.flags = new ObjectOpenHashSet<>();
+        }
         this.flags.add(flag);
     }
 
     public boolean hasFlag(PacketFlag flag) {
-        return this.flags.contains(flag);
+        return this.flags != null && this.flags.contains(flag);
     }
 
     public void unsetFlag(PacketFlag flag) {
-        this.flags.remove(flag);
+        if (this.flags != null) {
+            this.flags.remove(flag);
+        }
     }
 
     @Override
@@ -78,7 +96,9 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
         this.headerLength = 0;
         this.packet = null;
         this.packetBuffer = null;
-        this.flags.clear();
+        if (this.flags != null) {
+            this.flags.clear();
+        }
         this.handle.recycle(this);
     }
 

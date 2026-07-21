@@ -77,8 +77,8 @@ public class BedrockBatchWrapper extends AbstractReferenceCounted {
         this.packets.add(wrapper);
         this.modify();
 
-        if (!wrapper.getFlags().isEmpty()) {
-            for (PacketFlag flag : wrapper.getFlags()) {
+        if (wrapper.getFlagsRaw() != null && !wrapper.getFlagsRaw().isEmpty()) {
+            for (PacketFlag flag : wrapper.getFlagsRaw()) {
                 if (flag.canInherit()) {
                     this.flags.add(flag);
                 }
