@@ -15,7 +15,7 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
 @ToString(exclude = {"geometryData"})
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+@Builder(toBuilder = true, builderClassName = "Builder")
 public class SerializedSkin {
     private static final int PIXEL_SIZE = 4;
 
