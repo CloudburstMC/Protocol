@@ -29,7 +29,7 @@ public class AddPlayerSerializer_v503 extends AddPlayerSerializer_v388 {
         AdventureSettingsSerializer_v291.INSTANCE.serialize(buffer, helper, packet.getAdventureSettings());
         helper.writeArray(buffer, packet.getEntityLinks(), helper::writeEntityLink);
         helper.writeString(buffer, packet.getDeviceId());
-        buffer.writeIntLE(packet.getBuildPlatform().ordinal());
+        buffer.writeIntLE(packet.getBuildPlatform().getId());
     }
 
     @Override

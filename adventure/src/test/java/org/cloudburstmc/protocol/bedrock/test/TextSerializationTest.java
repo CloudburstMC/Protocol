@@ -267,7 +267,7 @@ public class TextSerializationTest {
         packet.setRotation(Vector3f.ZERO);
         packet.setDeviceId("");
         packet.setHand(ItemData.AIR);
-        packet.setBuildPlatform(BuildPlatform.GOOGLE);
+        packet.setBuildPlatform(BuildPlatform.UNKNOWN);
         packet.setGameType(GameType.SURVIVAL);
         packet.setPlatformChatId("");
 

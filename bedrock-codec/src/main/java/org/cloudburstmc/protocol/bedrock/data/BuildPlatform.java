@@ -1,50 +1,62 @@
 package org.cloudburstmc.protocol.bedrock.data;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum BuildPlatform {
-    UNKNOWN,
+    UNKNOWN(-1),
     /**
      * Android
      */
-    GOOGLE,
-    IOS,
+    GOOGLE(1),
+    IOS(2),
     /**
      * macOS
      */
-    OSX,
+    OSX(3),
     /**
      * Kindle, FireTV
      */
-    AMAZON,
-    GEAR_VR,
-    HOLOLENS,
+    AMAZON(4),
+    GEAR_VR(5),
+    HOLOLENS(6),
     /**
      * Windows Store version
      */
-    UWP,
+    UWP(7),
     /**
      * Education Edition
      */
-    WIN32,
-    DEDICATED,
+    WIN32(8),
+    DEDICATED(9),
     /**
      * Apple TV
      */
-    TV_OS,
+    TV_OS(10),
     /**
      * PlayStation
      */
-    SONY,
+    SONY(11),
     /**
      * Nintendo Switch
      */
-    NX,
-    XBOX,
-    WINDOWS_PHONE,
-    LINUX;
+    NX(12),
+    XBOX(13),
+    WINDOWS_PHONE(14),
+    LINUX(15);
 
     private static final BuildPlatform[] VALUES = values();
 
+    @Getter
+    private final int id;
+
     public static BuildPlatform from(int id) {
-        return id > 0 && id < VALUES.length ? VALUES[id] : VALUES[0];
+        for (BuildPlatform value : VALUES) {
+            if (value.getId() == id) {
+                return value;
+            }
+        }
+        return UNKNOWN;
     }
 }

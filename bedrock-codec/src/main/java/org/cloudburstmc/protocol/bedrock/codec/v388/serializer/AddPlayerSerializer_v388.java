@@ -16,7 +16,7 @@ public class AddPlayerSerializer_v388 extends AddPlayerSerializer_v291 {
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddPlayerPacket packet) {
         super.serialize(buffer, helper, packet);
 
-        buffer.writeIntLE(packet.getBuildPlatform().ordinal());
+        buffer.writeIntLE(packet.getBuildPlatform().getId());
     }
 
     @Override
