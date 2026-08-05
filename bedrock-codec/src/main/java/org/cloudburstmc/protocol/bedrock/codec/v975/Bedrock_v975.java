@@ -26,9 +26,9 @@ public class Bedrock_v975 extends Bedrock_v944 {
     protected static final TypeMap<CommandParam> COMMAND_PARAMS = TypeMap.builder(CommandParam.class)
             .insert(0, CommandParam.UNKNOWN)
             .insert(1, CommandParam.INT)
-            .insert(2, CommandParam.FLOAT)
-            .insert(3, CommandParam.VALUE)
-            .insert(4, CommandParam.R_VALUE)
+            // ID 2 is unused on the wire.
+            .insert(3, CommandParam.FLOAT)
+            .insert(4, CommandParam.VALUE)
             .insert(5, CommandParam.WILDCARD_INT)
             .insert(6, CommandParam.OPERATOR)
             .insert(7, CommandParam.COMPARE_OPERATOR)
