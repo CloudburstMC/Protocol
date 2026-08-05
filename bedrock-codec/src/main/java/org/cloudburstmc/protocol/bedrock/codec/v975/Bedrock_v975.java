@@ -28,7 +28,7 @@ public class Bedrock_v975 extends Bedrock_v944 {
             .insert(1, CommandParam.INT)
             // ID 2 is unused on the wire.
             .insert(3, CommandParam.FLOAT)
-            .insert(4, CommandParam.VALUE)
+            .insert(4, CommandParam.R_VALUE)
             .insert(5, CommandParam.WILDCARD_INT)
             .insert(6, CommandParam.OPERATOR)
             .insert(7, CommandParam.COMPARE_OPERATOR)
