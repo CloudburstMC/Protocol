@@ -8,6 +8,7 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import io.netty.util.internal.PlatformDependent;
+import io.netty.util.internal.SystemPropertyUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -51,7 +52,28 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     private static final InternalLogger log = InternalLoggerFactory.getInstance(BedrockPeer.class);
 
-    static final long BATCH_FLUSH_DELAY_NANOS = TimeUnit.MILLISECONDS.toNanos(1);
+    static final String BATCH_FLUSH_DELAY_PROPERTY = "org.cloudburstmc.protocol.bedrock.batchFlushDelayMillis";
+    static final int DEFAULT_BATCH_FLUSH_DELAY_MILLIS = 1;
+    static final int MAX_BATCH_FLUSH_DELAY_MILLIS = 50;
+
+    /**
+     * How long the first packet of a burst waits in the outbound queue for the rest
+     * of that burst to join its batch. A producer that hands its packets over
+     * together still gets a single batch at any positive delay; the wait only
+     * splits bursts that are emitted over a longer stretch than the window, and
+     * each resulting batch is then compressed on its own. A wider window trades
+     * latency for compression efficiency on such producers, while zero disables
+     * coalescing across event loop iterations. Configurable in milliseconds with
+     * the {@value #BATCH_FLUSH_DELAY_PROPERTY} system property, read once when this
+     * class is initialized.
+     * <p>
+     * Note that a window is not equivalent to the periodic flush this replaced: it
+     * starts at the first enqueue, so a burst handed over together always waits the
+     * full window, where a periodic tick of the same period waited half of it on
+     * average.
+     */
+    static final long BATCH_FLUSH_DELAY_NANOS = TimeUnit.MILLISECONDS.toNanos(
+            resolveFlushDelayMillis(SystemPropertyUtil.getInt(BATCH_FLUSH_DELAY_PROPERTY, DEFAULT_BATCH_FLUSH_DELAY_MILLIS)));
     static final long REJECTED_RETRY_DELAY_MILLIS = 10;
 
     protected final Int2ObjectMap<BedrockSession> sessions = new Int2ObjectOpenHashMap<>();
@@ -67,6 +89,20 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
     public BedrockPeer(Channel channel, BedrockSessionFactory sessionFactory) {
         this.channel = channel;
         this.sessionFactory = sessionFactory;
+    }
+
+    /**
+     * Returns the configured flush delay, falling back to the default when it is
+     * outside the supported range. Out of range values are rejected rather than
+     * saturated so a typo cannot silently pick the nearest bound.
+     */
+    static int resolveFlushDelayMillis(int delay) {
+        if (delay < 0 || delay > MAX_BATCH_FLUSH_DELAY_MILLIS) {
+            log.warn("Unable to use the flush delay system property '{}':{} - using the default value: {}",
+                    BATCH_FLUSH_DELAY_PROPERTY, delay, DEFAULT_BATCH_FLUSH_DELAY_MILLIS);
+            return DEFAULT_BATCH_FLUSH_DELAY_MILLIS;
+        }
+        return delay;
     }
 
     protected void onBedrockPacket(BedrockPacketWrapper wrapper) {
