@@ -11,7 +11,9 @@ import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataStorePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -112,8 +114,27 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
         }));
     }
 
+    /**
+     * The dynamic value is a {@code cereal::DynamicValue} variant; the type tag is the
+     * alternative index: 0 null, 1 bool, 2 int64, 3 double, 4 string, 5 list, 6 map.
+     */
     protected void writeDataStoreChange(ByteBuf buffer, BedrockCodecHelper helper, Object value) {
-        int type = value instanceof Boolean ? 1 : value instanceof Number ? 2 : value instanceof String ? 4 : value instanceof Map ? 6 : 0;
+        int type;
+        if (value instanceof Boolean) {
+            type = 1;
+        } else if (value instanceof Double || value instanceof Float) {
+            type = 3;
+        } else if (value instanceof Number) {
+            type = 2;
+        } else if (value instanceof String) {
+            type = 4;
+        } else if (value instanceof List) {
+            type = 5;
+        } else if (value instanceof Map) {
+            type = 6;
+        } else {
+            type = 0;
+        }
 
         buffer.writeIntLE(type);
 
@@ -126,8 +147,17 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
             case 2:
                 buffer.writeLongLE(((Number) value).longValue());
                 break;
+            case 3:
+                buffer.writeDoubleLE(((Number) value).doubleValue());
+                break;
             case 4:
                 helper.writeString(buffer, (String) value);
+                break;
+            case 5:
+                VarInts.writeUnsignedInt(buffer, ((List<?>) value).size());
+                for (Object item : (List<?>) value) {
+                    writeDataStoreChange(buffer, helper, item);
+                }
                 break;
             case 6:
                 VarInts.writeUnsignedInt(buffer, ((Map<?, ?>) value).size());
@@ -151,8 +181,17 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 return buffer.readBoolean();
             case 2:
                 return buffer.readLongLE();
+            case 3:
+                return buffer.readDoubleLE();
             case 4:
                 return helper.readString(buffer);
+            case 5:
+                int length = VarInts.readUnsignedInt(buffer);
+                List<Object> items = new ArrayList<>(length);
+                for (int i = 0; i < length; i++) {
+                    items.add(readDataStoreChange(buffer, helper));
+                }
+                return items;
             case 6:
                 int size = VarInts.readUnsignedInt(buffer);
                 Map<String, Object> values = new LinkedHashMap<>();
