@@ -264,6 +264,15 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         this.schedulePacketFlush();
     }
 
+    public void sendPacket(BedrockPacketWrapper wrapper) {
+        if (this.closing.get() || this.closed.get()) {
+            ReferenceCountUtil.safeRelease(wrapper); // queue is no longer drained
+            return;
+        }
+        this.packetQueue.add(wrapper);
+        this.schedulePacketFlush();
+    }
+
     public void sendPacketImmediately(int senderClientId, int targetClientId, BedrockPacket packet) {
         if (this.closing.get()) { // closed is covered by netty: writes to a closed channel are failed and released
             ReferenceCountUtil.safeRelease(packet);
