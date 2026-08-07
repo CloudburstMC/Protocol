@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DataStoreSerializationTest {
 
@@ -62,6 +63,27 @@ public class DataStoreSerializationTest {
         assertEquals(1.5d, roundTrip(1.5d));
         assertEquals("text", roundTrip("text"));
         assertEquals(Arrays.asList(1L, 2.5d, "three"), roundTrip(Arrays.asList(1L, 2.5d, "three")));
+    }
+
+    @Test
+    public void testHostileListLengthDoesNotPreAllocate() {
+        // A forged length prefix must not translate into an up-front allocation; the loop then
+        // fails on buffer underflow instead of exhausting memory.
+        ByteBuf buffer = Unpooled.buffer();
+        VarInts.writeUnsignedInt(buffer, 1); // update count
+        VarInts.writeUnsignedInt(buffer, 1); // action type: change
+        HELPER.writeString(buffer, "minecraft");
+        HELPER.writeString(buffer, "custom_form_data_1");
+        buffer.writeIntLE(1); // property update count
+        buffer.writeIntLE(5); // list tag
+        VarInts.writeUnsignedInt(buffer, Integer.MAX_VALUE);
+        try {
+            ClientboundDataStorePacket decoded = new ClientboundDataStorePacket();
+            assertThrows(Exception.class,
+                    () -> ClientboundDataStoreSerializer_v924.INSTANCE.deserialize(buffer, HELPER, decoded));
+        } finally {
+            buffer.release();
+        }
     }
 
     @Test

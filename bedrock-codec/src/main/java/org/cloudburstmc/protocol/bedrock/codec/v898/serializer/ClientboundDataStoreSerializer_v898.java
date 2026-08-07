@@ -187,7 +187,9 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 return helper.readString(buffer);
             case 5:
                 int length = VarInts.readUnsignedInt(buffer);
-                List<Object> items = new ArrayList<>(length);
+                // Each entry carries at least a 4-byte type tag, so cap the pre-sizing by what the
+                // buffer can actually hold instead of trusting the length prefix with an allocation.
+                List<Object> items = new ArrayList<>(Math.min(length, buffer.readableBytes() / 4));
                 for (int i = 0; i < length; i++) {
                     items.add(readDataStoreChange(buffer, helper));
                 }
