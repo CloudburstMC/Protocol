@@ -162,7 +162,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         }
     }
 
-    void schedulePacketFlush() {
+    protected void schedulePacketFlush() {
         if (this.closed.get()) {
             // sendPacket() can race the door gate, enqueueing after onClose() has
             // already drained the queue and leaving the wrapper with no flush
@@ -206,7 +206,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         }
     }
 
-    private void retryPacketFlush() {
+    protected void retryPacketFlush() {
         this.flushRetryScheduled.set(false);
         if (this.closing.get() || this.closed.get() || this.packetQueue.isEmpty()) {
             return;
@@ -214,23 +214,23 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         this.schedulePacketFlush();
     }
 
-    void scheduleFlushTask() {
+    protected void scheduleFlushTask() {
         this.channel.eventLoop().schedule(this::flushPacketQueue, BATCH_FLUSH_DELAY_NANOS, TimeUnit.NANOSECONDS);
     }
 
-    void executeOnEventLoop(Runnable task) {
+    protected void executeOnEventLoop(Runnable task) {
         this.channel.eventLoop().execute(task);
     }
 
-    boolean isOnEventLoop() {
+    protected boolean isOnEventLoop() {
         return this.channel.eventLoop().inEventLoop();
     }
 
-    void scheduleRejectedRetry(Runnable retry) {
+    protected void scheduleRejectedRetry(Runnable retry) {
         GlobalEventExecutor.INSTANCE.schedule(retry, REJECTED_RETRY_DELAY_MILLIS, TimeUnit.MILLISECONDS);
     }
 
-    private void onRakNetDisconnect(ChannelHandlerContext ctx, RakDisconnectReason reason) {
+    protected void onRakNetDisconnect(ChannelHandlerContext ctx, RakDisconnectReason reason) {
         CharSequence disconnectReason = BedrockDisconnectReasons.getReason(reason);
         for (BedrockSession session : this.sessions.values()) {
             session.disconnectReason = disconnectReason;
@@ -248,7 +248,7 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
      * safe because the drain is a destructive poll; iterating instead would
      * release the same wrappers twice.
      */
-    private synchronized void free() {
+    protected synchronized void free() {
         BedrockPacketWrapper wrapper;
         while ((wrapper = this.packetQueue.poll()) != null) {
             ReferenceCountUtil.safeRelease(wrapper);

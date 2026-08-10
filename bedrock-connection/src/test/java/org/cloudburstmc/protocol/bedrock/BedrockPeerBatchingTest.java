@@ -378,7 +378,7 @@ public class BedrockPeerBatchingTest {
         }
 
         @Override
-        void scheduleFlushTask() {
+        protected void scheduleFlushTask() {
             if (this.rejectFlushSchedules) {
                 throw new java.util.concurrent.RejectedExecutionException("rejected by test");
             }
@@ -386,7 +386,7 @@ public class BedrockPeerBatchingTest {
         }
 
         @Override
-        void executeOnEventLoop(Runnable task) {
+        protected void executeOnEventLoop(Runnable task) {
             if (this.rejectNextExecute) {
                 this.rejectNextExecute = false;
                 throw new java.util.concurrent.RejectedExecutionException("rejected by test");
@@ -395,12 +395,12 @@ public class BedrockPeerBatchingTest {
         }
 
         @Override
-        boolean isOnEventLoop() {
+        protected boolean isOnEventLoop() {
             return !this.simulateOffLoop && super.isOnEventLoop();
         }
 
         @Override
-        void scheduleRejectedRetry(Runnable retry) {
+        protected void scheduleRejectedRetry(Runnable retry) {
             this.retries.add(retry);
         }
     }
