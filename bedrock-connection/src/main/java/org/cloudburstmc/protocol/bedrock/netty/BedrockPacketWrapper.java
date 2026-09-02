@@ -23,6 +23,12 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
     private int senderSubClientId;
     private int targetSubClientId;
     private int headerLength;
+    /**
+     * Bytes reserved before the packet buffer's reader index for a length prefix, or 0 if none.
+     * Only set by the encoder that allocated the buffer, so the reservation is single-owner and
+     * safe to write into; wrappers carrying a caller-supplied buffer leave this at 0.
+     */
+    private int reservedPrefixBytes;
     private BedrockPacket packet;
     private ByteBuf packetBuffer;
     private Set<PacketFlag> flags;
@@ -55,6 +61,16 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
 
     private BedrockPacketWrapper(ObjectPool.Handle<BedrockPacketWrapper> handle) {
         this.handle = handle;
+    }
+
+    /**
+     * Swapping the buffer drops any prefix reservation with it. The reservation describes the
+     * buffer it was set alongside, and a replacement has no room reserved unless whoever encoded
+     * it says so, so {@link #setReservedPrefixBytes(int)} belongs after this call, never before.
+     */
+    public void setPacketBuffer(ByteBuf packetBuffer) {
+        this.packetBuffer = packetBuffer;
+        this.reservedPrefixBytes = 0;
     }
 
     public Set<PacketFlag> getFlags() {
@@ -94,6 +110,7 @@ public class BedrockPacketWrapper extends AbstractReferenceCounted {
         this.senderSubClientId = 0;
         this.targetSubClientId = 0;
         this.headerLength = 0;
+        this.reservedPrefixBytes = 0;
         this.packet = null;
         this.packetBuffer = null;
         if (this.flags != null) {
