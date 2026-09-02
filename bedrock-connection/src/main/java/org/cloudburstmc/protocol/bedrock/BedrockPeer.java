@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.DecoderException;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -145,8 +146,12 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         try {
             BedrockPacketWrapper packet;
             boolean wrotePacket = false;
+            // The per-write futures are never used here; the batch encoder completes them and
+            // drops them. A void promise skips allocating one per packet, and write failures
+            // still reach the pipeline as exceptions.
+            ChannelPromise voidPromise = this.channel.voidPromise();
             while ((packet = this.packetQueue.poll()) != null) {
-                this.channel.write(packet);
+                this.channel.write(packet, voidPromise);
                 wrotePacket = true;
             }
             if (wrotePacket) {
