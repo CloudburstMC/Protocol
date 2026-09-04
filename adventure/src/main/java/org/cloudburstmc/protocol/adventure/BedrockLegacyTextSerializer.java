@@ -76,7 +76,7 @@ public final class BedrockLegacyTextSerializer implements ComponentSerializer<Co
                     needsReset = true;
                 } else if (needsReset) {
                     // Reset the style if we encounter a color code after a style code
-                    if (Character.isDigit(formatChar) || (formatChar >= 'a' && formatChar <= 'v')) {
+                    if (Character.isDigit(formatChar) || (formatChar >= 'a' && formatChar <= 'w')) {
                         builder.append(LegacyComponentSerializer.SECTION_CHAR).append('r');
                         needsReset = false;
                     }
@@ -108,6 +108,7 @@ public final class BedrockLegacyTextSerializer implements ComponentSerializer<Co
         formats.add(CharacterAndFormat.characterAndFormat('t', BedrockNamedTextColor.MATERIAL_LAPIS)); // Lapis
         formats.add(CharacterAndFormat.characterAndFormat('u', BedrockNamedTextColor.MATERIAL_AMETHYST)); // Amethyst
         formats.add(CharacterAndFormat.characterAndFormat('v', BedrockNamedTextColor.MATERIAL_RESIN)); // Resin
+        formats.add(CharacterAndFormat.characterAndFormat('w', BedrockNamedTextColor.PARTY_BLUE));
         return formats;
     }
 
@@ -129,6 +130,7 @@ public final class BedrockLegacyTextSerializer implements ComponentSerializer<Co
         public static final BedrockNamedTextColor MATERIAL_LAPIS = new BedrockNamedTextColor("material_lapis", TextColor.color(33, 73, 123));
         public static final BedrockNamedTextColor MATERIAL_AMETHYST = new BedrockNamedTextColor("material_amethyst", TextColor.color(154, 92, 198));
         public static final BedrockNamedTextColor MATERIAL_RESIN = new BedrockNamedTextColor("material_resin", TextColor.color(235, 113, 20));
+        public static final BedrockNamedTextColor PARTY_BLUE = new BedrockNamedTextColor("party_blue", TextColor.color(140, 179, 255));
 
         private final String name;
         private final TextColor color;
