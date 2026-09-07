@@ -12,6 +12,7 @@ import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v975.BedrockCodecHelper_v975;
+import org.cloudburstmc.protocol.bedrock.data.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.GatheringsConfigurationJoinInfo;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
@@ -1243,5 +1244,15 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                 buffer.writeBoolean(false);
                 break;
         }
+    }
+
+    @Override
+    public void writePresenceConfiguration(ByteBuf buffer, PresenceConfiguration configuration) {
+        writeOptionalNull(buffer, configuration.getRichPresenceId(), this::writeString);
+    }
+
+    @Override
+    public PresenceConfiguration readPresenceConfiguration(ByteBuf buffer) {
+        return new PresenceConfiguration(null, null, readOptional(buffer, null, this::readString));
     }
 }
