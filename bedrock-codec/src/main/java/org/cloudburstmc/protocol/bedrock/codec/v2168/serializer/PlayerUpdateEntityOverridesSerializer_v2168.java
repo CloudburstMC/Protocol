@@ -10,12 +10,26 @@ public class PlayerUpdateEntityOverridesSerializer_v2168 extends PlayerUpdateEnt
 
     public static final PlayerUpdateEntityOverridesSerializer_v2168 INSTANCE = new PlayerUpdateEntityOverridesSerializer_v2168();
 
+    private static final String[] TYPE_NAMES = {
+            "clearoverrides",
+            "removeoverride",
+            "setintoverride",
+            "setfloatoverride"
+    };
+
+    private static String typeName(int ordinal) {
+        if (ordinal < 0 || ordinal >= TYPE_NAMES.length) {
+            throw new IllegalStateException("Unknown entity override type: " + ordinal);
+        }
+        return TYPE_NAMES[ordinal];
+    }
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerUpdateEntityOverridesPacket packet) {
         VarInts.writeLong(buffer, packet.getEntityUniqueId());
         VarInts.writeUnsignedInt(buffer, packet.getPropertyIndex());
         VarInts.writeUnsignedInt(buffer, packet.getUpdateType().ordinal());
-        buffer.writeByte(packet.getUpdateType().ordinal());
+        helper.writeString(buffer, typeName(packet.getUpdateType().ordinal()));
         if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_INT_OVERRIDE)) {
             buffer.writeIntLE(packet.getIntValue());
         } else if (packet.getUpdateType().equals(PlayerUpdateEntityOverridesPacket.UpdateType.SET_FLOAT_OVERRIDE)) {
@@ -29,8 +43,9 @@ public class PlayerUpdateEntityOverridesSerializer_v2168 extends PlayerUpdateEnt
         packet.setPropertyIndex(VarInts.readUnsignedInt(buffer));
 
         int type = VarInts.readUnsignedInt(buffer);
-        if (type != buffer.readUnsignedByte()) {
-            throw new IllegalStateException("type != legacy type");
+        String name = helper.readString(buffer);
+        if (!typeName(type).equals(name)) {
+            throw new IllegalStateException("type != type name (expected " + typeName(type) + ", got " + name + ")");
         }
 
         packet.setUpdateType(PlayerUpdateEntityOverridesPacket.UpdateType.values()[type]);
