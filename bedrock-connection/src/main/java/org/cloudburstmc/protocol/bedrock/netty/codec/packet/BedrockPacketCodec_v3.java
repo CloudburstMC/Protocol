@@ -19,7 +19,7 @@ public class BedrockPacketCodec_v3 extends BedrockPacketCodec {
     public void decodeHeader(ByteBuf buf, BedrockPacketWrapper msg) {
         int header = VarInts.readUnsignedInt(buf);
         msg.setPacketId(header & 0x3ff);
-        msg.setSenderSubClientId((header >> 10) & 3);
-        msg.setTargetSubClientId((header >> 12) & 3);
+        msg.setSenderSubClientId((byte) ((header >> 10) & 3));
+        msg.setTargetSubClientId((byte) ((header >> 12) & 3));
     }
 }
