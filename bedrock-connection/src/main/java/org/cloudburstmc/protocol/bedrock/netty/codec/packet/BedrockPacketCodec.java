@@ -26,7 +26,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
      * Bytes reserved ahead of an encoded packet so the batch encoder can write its length prefix
      * in place instead of prepending a separate buffer. Matches the largest unsigned VarInt.
      */
-    public static final int MAX_LENGTH_PREFIX_BYTES = 5;
+    public static final byte MAX_LENGTH_PREFIX_BYTES = 5;
 
     /**
      * Initial encode buffer size, reservation included. Sits exactly on a pooled size class so the
@@ -86,7 +86,7 @@ public abstract class BedrockPacketCodec extends MessageToMessageCodec<ByteBuf, 
         try {
             int index = msg.readerIndex();
             this.decodeHeader(msg, wrapper);
-            wrapper.setHeaderLength(msg.readerIndex() - index);
+            wrapper.setHeaderLength((byte) (msg.readerIndex() - index));
             wrapper.setPacket(this.codec.tryDecode(helper, msg, wrapper.getPacketId(), this.inboundRecipient));
             out.add(wrapper.retain());
         } catch (Throwable t) {
