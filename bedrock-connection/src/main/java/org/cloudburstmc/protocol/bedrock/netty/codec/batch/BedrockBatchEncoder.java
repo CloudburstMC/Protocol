@@ -48,10 +48,7 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
                     throw new IllegalArgumentException("BedrockPacket is not encoded");
                 }
 
-                ByteBuf header = ctx.alloc().ioBuffer(5);
-                VarInts.writeUnsignedInt(header, message.readableBytes());
-                buf.addComponent(true, header);
-                buf.addComponent(true, message.retain());
+                addPrefixed(ctx, buf, message, packet.getReservedPrefixBytes());
                 batch.addPacket(packet.retain());
             } finally {
                 packet.release();
@@ -65,6 +62,33 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
         }
 
         super.flush(ctx);
+    }
+
+    /**
+     * Appends {@code message} to {@code buf} behind its VarInt length.
+     *
+     * <p>When the encoder that produced the message reserved room ahead of it, the prefix is
+     * written into that gap and the whole thing goes in as a single component. Otherwise the
+     * prefix needs a buffer of its own, costing an allocation and a second component.
+     */
+    public static void addPrefixed(ChannelHandlerContext ctx, CompositeByteBuf buf, ByteBuf message,
+                                    int reservedPrefixBytes) {
+        int length = message.readableBytes();
+        int prefixSize = VarInts.sizeOfUnsignedInt(length);
+        // The gap is only intact while the buffer still starts where the encoder left it.
+        if (reservedPrefixBytes >= prefixSize && message.readerIndex() == reservedPrefixBytes) {
+            int prefixIndex = reservedPrefixBytes - prefixSize;
+            VarInts.setUnsignedInt(message, prefixIndex, length);
+            // Absolute-range slice: a cached packet's wrapper is broadcast to many channels, so
+            // this buffer's indices must never move, even briefly.
+            buf.addComponent(true, message.retainedSlice(prefixIndex, prefixSize + length));
+            return;
+        }
+
+        ByteBuf header = ctx.alloc().ioBuffer(prefixSize);
+        VarInts.writeUnsignedInt(header, length);
+        buf.addComponent(true, header);
+        buf.addComponent(true, message.retain());
     }
 
     @Override

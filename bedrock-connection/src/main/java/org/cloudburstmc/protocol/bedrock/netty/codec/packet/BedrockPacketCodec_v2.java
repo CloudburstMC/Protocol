@@ -15,7 +15,7 @@ public class BedrockPacketCodec_v2 extends BedrockPacketCodec {
     @Override
     public void decodeHeader(ByteBuf buf, BedrockPacketWrapper msg) {
         msg.setPacketId(buf.readUnsignedByte());
-        msg.setSenderSubClientId(buf.readUnsignedByte());
-        msg.setTargetSubClientId(buf.readUnsignedByte());
+        msg.setSenderSubClientId(buf.readByte());
+        msg.setTargetSubClientId(buf.readByte());
     }
 }
