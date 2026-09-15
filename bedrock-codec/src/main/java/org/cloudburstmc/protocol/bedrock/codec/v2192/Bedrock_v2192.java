@@ -25,7 +25,7 @@ public class Bedrock_v2192 extends Bedrock_v2169 {
             .updateSerializer(SubChunkPacket.class, SubChunkSerializer_v2192.INSTANCE)
             .updateSerializer(ServerboundDiagnosticsPacket.class, ServerboundDiagnosticsSerializer_v2192.INSTANCE)
             .updateSerializer(ServerboundPackSettingChangePacket.class, ServerboundPackSettingChangeSerializer_v2192.INSTANCE)
-            .registerPacket(SetPlayerFurnaceOptionsPacket::new, SetPlayerFurnaceOptionsSerializer_v2192.INSTANCE, 351, PacketRecipient.CLIENT)
+            .registerPacket(SetPlayerFurnaceOptionsPacket::new, SetPlayerFurnaceOptionsSerializer_v2192.INSTANCE, 351, PacketRecipient.BOTH)
             .registerPacket(RecordStartedPacket::new, RecordStartedSerializer_v2192.INSTANCE, 352, PacketRecipient.CLIENT)
             .build();
 }
