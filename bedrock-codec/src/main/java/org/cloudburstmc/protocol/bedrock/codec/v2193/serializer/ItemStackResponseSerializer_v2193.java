@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ItemStackResponseSerializer_v2192 extends ItemStackResponseSerializer_v2168 {
+public class ItemStackResponseSerializer_v2193 extends ItemStackResponseSerializer_v2168 {
 
-    public static final ItemStackResponseSerializer_v2192 INSTANCE = new ItemStackResponseSerializer_v2192();
+    public static final ItemStackResponseSerializer_v2193 INSTANCE = new ItemStackResponseSerializer_v2193();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ItemStackResponsePacket packet) {

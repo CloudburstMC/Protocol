@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -7,9 +7,9 @@ import org.cloudburstmc.protocol.bedrock.data.debugshape.*;
 
 import java.awt.Color;
 
-public class DebugDrawerSerializer_v2192 extends DebugDrawerSerializer_v1001 {
+public class DebugDrawerSerializer_v2193 extends DebugDrawerSerializer_v1001 {
 
-    public static final DebugDrawerSerializer_v2192 INSTANCE = new DebugDrawerSerializer_v2192();
+    public static final DebugDrawerSerializer_v2193 INSTANCE = new DebugDrawerSerializer_v2193();
 
     @Override
     protected DebugText readDebugText(ByteBuf buffer, BedrockCodecHelper helper, DebugText text) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -6,9 +6,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.BossEventSeriali
 import org.cloudburstmc.protocol.bedrock.packet.BossEventPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class BossEventSerializer_v2192 extends BossEventSerializer_v1001 {
+public class BossEventSerializer_v2193 extends BossEventSerializer_v1001 {
 
-    public static final BossEventSerializer_v2192 INSTANCE = new BossEventSerializer_v2192();
+    public static final BossEventSerializer_v2193 INSTANCE = new BossEventSerializer_v2193();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BossEventPacket packet) {

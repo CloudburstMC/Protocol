@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.math.vector.Vector2f;
@@ -13,9 +13,9 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.LegacySetIte
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class PlayerAuthInputSerializer_v2192 extends PlayerAuthInputSerializer_v944 {
+public class PlayerAuthInputSerializer_v2193 extends PlayerAuthInputSerializer_v944 {
 
-    public static final PlayerAuthInputSerializer_v2192 INSTANCE = new PlayerAuthInputSerializer_v2192();
+    public static final PlayerAuthInputSerializer_v2193 INSTANCE = new PlayerAuthInputSerializer_v2193();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {

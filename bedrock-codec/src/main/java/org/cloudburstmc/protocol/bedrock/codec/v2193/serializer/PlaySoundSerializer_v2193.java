@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -6,9 +6,9 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.PlaySoundSerializ
 import org.cloudburstmc.protocol.bedrock.packet.PlaySoundPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class PlaySoundSerializer_v2192 extends PlaySoundSerializer_v291 { // v291 intentional
+public class PlaySoundSerializer_v2193 extends PlaySoundSerializer_v291 { // v291 intentional
 
-    public static final PlaySoundSerializer_v2192 INSTANCE = new PlaySoundSerializer_v2192();
+    public static final PlaySoundSerializer_v2193 INSTANCE = new PlaySoundSerializer_v2193();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {

@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import lombok.AccessLevel;
@@ -8,9 +8,9 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.RecordStartedPacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecordStartedSerializer_v2192 implements BedrockPacketSerializer<RecordStartedPacket> {
+public class RecordStartedSerializer_v2193 implements BedrockPacketSerializer<RecordStartedPacket> {
 
-    public static final RecordStartedSerializer_v2192 INSTANCE = new RecordStartedSerializer_v2192();
+    public static final RecordStartedSerializer_v2193 INSTANCE = new RecordStartedSerializer_v2193();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, RecordStartedPacket packet) {

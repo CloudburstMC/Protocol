@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -9,9 +9,9 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerboundPackSettingChangeSerializer_v2192 extends ServerboundPackSettingChangeSerializer_v844 {
+public class ServerboundPackSettingChangeSerializer_v2193 extends ServerboundPackSettingChangeSerializer_v844 {
 
-    public static final ServerboundPackSettingChangeSerializer_v2192 INSTANCE = new ServerboundPackSettingChangeSerializer_v2192();
+    public static final ServerboundPackSettingChangeSerializer_v2193 INSTANCE = new ServerboundPackSettingChangeSerializer_v2193();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundPackSettingChangePacket packet) {

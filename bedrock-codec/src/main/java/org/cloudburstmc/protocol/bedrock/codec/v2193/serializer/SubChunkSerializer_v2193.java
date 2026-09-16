@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -7,9 +7,9 @@ import org.cloudburstmc.protocol.bedrock.data.HeightMapDataType;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class SubChunkSerializer_v2192 extends SubChunkSerializer_v2168 {
+public class SubChunkSerializer_v2193 extends SubChunkSerializer_v2168 {
 
-    public static final SubChunkSerializer_v2192 INSTANCE = new SubChunkSerializer_v2192();
+    public static final SubChunkSerializer_v2193 INSTANCE = new SubChunkSerializer_v2193();
 
     @Override
     protected void writeHeightMapData(ByteBuf buffer, BedrockCodecHelper helper, SubChunkData subChunk) {

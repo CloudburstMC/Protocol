@@ -1,13 +1,13 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.ServerboundDiagnosticsSerializer_v2168;
 import org.cloudburstmc.protocol.bedrock.data.diagnostics.EntityDiagnosticTimingInfo;
 
-public class ServerboundDiagnosticsSerializer_v2192 extends ServerboundDiagnosticsSerializer_v2168 {
+public class ServerboundDiagnosticsSerializer_v2193 extends ServerboundDiagnosticsSerializer_v2168 {
 
-    public static final ServerboundDiagnosticsSerializer_v2192 INSTANCE = new ServerboundDiagnosticsSerializer_v2192();
+    public static final ServerboundDiagnosticsSerializer_v2193 INSTANCE = new ServerboundDiagnosticsSerializer_v2193();
 
     @Override
     protected EntityDiagnosticTimingInfo readEntityDiagnosticTimingInfo(ByteBuf buf, BedrockCodecHelper helper) {

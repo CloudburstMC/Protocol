@@ -68,4 +68,4 @@ This library supports multiple versions of the Bedrock protocol. Below is a list
 | Bedrock_v1001 |  1.26.30 - 1.26.33  |
 | Bedrock_v2168 |       1.26.40       |
 | Bedrock_v2169 |       1.26.45       |
-| Bedrock_v2192 |       1.26.50       |
+| Bedrock_v2193 |       1.26.50       |

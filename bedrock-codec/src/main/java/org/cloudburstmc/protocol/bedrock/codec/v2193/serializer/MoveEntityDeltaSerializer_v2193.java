@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.codec.v2192.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -6,11 +6,11 @@ import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.MoveEntityDeltaS
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityDeltaPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class MoveEntityDeltaSerializer_v2192 extends MoveEntityDeltaSerializer_v2168 {
+public class MoveEntityDeltaSerializer_v2193 extends MoveEntityDeltaSerializer_v2168 {
 
-    public static final MoveEntityDeltaSerializer_v2192 INSTANCE = new MoveEntityDeltaSerializer_v2192();
+    public static final MoveEntityDeltaSerializer_v2193 INSTANCE = new MoveEntityDeltaSerializer_v2193();
 
-    protected MoveEntityDeltaSerializer_v2192() {
+    protected MoveEntityDeltaSerializer_v2193() {
         super();
     }
 
