@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v2193.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v1001.serializer.InventoryTransactionSerializer_v1001;
+import org.cloudburstmc.protocol.bedrock.data.inventory.HandSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.*;
 import org.cloudburstmc.protocol.bedrock.packet.InventoryTransactionPacket;
@@ -87,7 +88,7 @@ public class InventoryTransactionSerializer_v2193 extends InventoryTransactionSe
         helper.writeBlockPosition(buffer, packet.getBlockPosition());
         buffer.writeByte(packet.getBlockFace());
         VarInts.writeInt(buffer, packet.getHotbarSlot());
-        buffer.writeByte(packet.getHand()); // new
+        buffer.writeByte(packet.getHand().ordinal()); // new
         helper.writeNetworkItemStackDescriptor(buffer, packet.getItemInHand());
         helper.writeVector3f(buffer, packet.getPlayerPosition());
         helper.writeVector3f(buffer, packet.getClickPosition());
@@ -103,7 +104,7 @@ public class InventoryTransactionSerializer_v2193 extends InventoryTransactionSe
         packet.setBlockPosition(helper.readBlockPosition(buffer));
         packet.setBlockFace(buffer.readUnsignedByte());
         packet.setHotbarSlot(VarInts.readInt(buffer));
-        packet.setHand(buffer.readUnsignedByte()); // new
+        packet.setHand(HandSlot.values()[buffer.readUnsignedByte()]); // new
         packet.setItemInHand(helper.readNetworkItemStackDescriptor(buffer));
         packet.setPlayerPosition(helper.readVector3f(buffer));
         packet.setClickPosition(helper.readVector3f(buffer));

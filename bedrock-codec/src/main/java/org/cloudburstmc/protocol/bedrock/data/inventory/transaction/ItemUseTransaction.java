@@ -5,6 +5,7 @@ import lombok.Data;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
+import org.cloudburstmc.protocol.bedrock.data.inventory.HandSlot;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public class ItemUseTransaction {
     private Vector3i blockPosition;
     private int blockFace;
     private int hotbarSlot;
+    /**
+     * @since v2192
+     */
+    private HandSlot hand = HandSlot.MAINHAND;
     private ItemData itemInHand;
     private Vector3f playerPosition;
     private Vector3f clickPosition;

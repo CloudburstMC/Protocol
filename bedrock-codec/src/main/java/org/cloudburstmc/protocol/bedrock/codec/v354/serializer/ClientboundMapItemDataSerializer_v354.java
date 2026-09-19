@@ -83,7 +83,7 @@ public class ClientboundMapItemDataSerializer_v354 implements BedrockPacketSeria
         }
 
         if ((type & FLAG_DECORATION_UPDATE) != 0) {
-            this.writeMapDecorations(buffer, helper, packet);
+            this.readMapDecorations(buffer, helper, packet);
         }
 
         if ((type & FLAG_TEXTURE_UPDATE) != 0) {
