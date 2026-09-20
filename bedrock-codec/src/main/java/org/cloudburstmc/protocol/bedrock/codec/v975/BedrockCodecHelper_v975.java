@@ -141,7 +141,8 @@ public class BedrockCodecHelper_v975 extends BedrockCodecHelper_v944 {
             VarInts.writeInt(buffer, item.getNetId());
         }
 
-        VarInts.writeUnsignedInt(buffer, air || item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
+        BlockDefinition blockDefinition;
+        VarInts.writeUnsignedInt(buffer, air || (blockDefinition = item.getBlockDefinition()) == null ? 0 : blockDefinition.getRuntimeId());
 
         if (air) {
             VarInts.writeUnsignedInt(buffer, 0);

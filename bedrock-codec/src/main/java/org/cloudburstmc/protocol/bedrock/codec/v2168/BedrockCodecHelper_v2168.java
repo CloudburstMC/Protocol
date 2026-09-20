@@ -15,6 +15,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v975.BedrockCodecHelper_v975;
 import org.cloudburstmc.protocol.bedrock.data.PresenceConfiguration;
 import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.GatheringsConfigurationJoinInfo;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataFormat;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
@@ -365,7 +366,8 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         buffer.writeShortLE(item.getCount());
         VarInts.writeUnsignedInt(buffer, item.getDamage());
 
-        VarInts.writeInt(buffer, air || item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
+        BlockDefinition blockDefinition;
+        VarInts.writeInt(buffer, air || (blockDefinition = item.getBlockDefinition()) == null ? 0 : blockDefinition.getRuntimeId());
 
         if (air) {
             VarInts.writeUnsignedInt(buffer, 0);
@@ -423,7 +425,8 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
             VarInts.writeInt(buffer, item.getNetId());
         }
 
-        VarInts.writeUnsignedInt(buffer, air || item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
+        BlockDefinition blockDefinition;
+        VarInts.writeUnsignedInt(buffer, air || (blockDefinition = item.getBlockDefinition()) == null ? 0 : blockDefinition.getRuntimeId());
 
         if (air) {
             VarInts.writeUnsignedInt(buffer, 0);
@@ -1121,7 +1124,8 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
         buffer.writeShortLE(item.getCount());
 
-        VarInts.writeUnsignedInt(buffer, air || item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
+        BlockDefinition blockDefinition;
+        VarInts.writeUnsignedInt(buffer, air || (blockDefinition = item.getBlockDefinition()) == null ? 0 : blockDefinition.getRuntimeId());
 
         if (air) {
             VarInts.writeUnsignedInt(buffer, 0);

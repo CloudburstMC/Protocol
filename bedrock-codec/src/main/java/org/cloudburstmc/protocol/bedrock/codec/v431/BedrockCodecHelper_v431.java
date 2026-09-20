@@ -8,6 +8,7 @@ import org.cloudburstmc.nbt.NBTOutputStream;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v428.BedrockCodecHelper_v428;
+import org.cloudburstmc.protocol.bedrock.data.definitions.BlockDefinition;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
@@ -205,7 +206,9 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
         // Write damage and count
         buffer.writeShortLE(item.getCount());
         VarInts.writeUnsignedInt(buffer, item.getDamage());
-        VarInts.writeInt(buffer, item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
+
+        BlockDefinition blockDefinition;
+        VarInts.writeInt(buffer, (blockDefinition = item.getBlockDefinition()) == null ? 0 : blockDefinition.getRuntimeId());
 
         ByteBuf userDataBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         try (LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream(userDataBuf);
@@ -265,7 +268,8 @@ public class BedrockCodecHelper_v431 extends BedrockCodecHelper_v428 {
             VarInts.writeInt(buffer, item.getNetId());
         }
 
-        VarInts.writeInt(buffer, item.getBlockDefinition() == null ? 0 : item.getBlockDefinition().getRuntimeId());
+        BlockDefinition blockDefinition;
+        VarInts.writeInt(buffer, (blockDefinition = item.getBlockDefinition()) == null ? 0 : blockDefinition.getRuntimeId());
 
         ByteBuf userDataBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         try (LittleEndianByteBufOutputStream stream = new LittleEndianByteBufOutputStream(userDataBuf);
