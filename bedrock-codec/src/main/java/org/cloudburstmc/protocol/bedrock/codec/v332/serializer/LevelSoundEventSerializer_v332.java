@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.codec.v332.serializer;
 
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
@@ -11,6 +12,7 @@ import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor
 public class LevelSoundEventSerializer_v332 implements BedrockPacketSerializer<LevelSoundEventPacket> {
+    @Getter
     private final TypeMap<SoundEvent> typeMap;
 
     @Override
