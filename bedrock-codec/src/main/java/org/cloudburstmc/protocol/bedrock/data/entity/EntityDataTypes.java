@@ -189,11 +189,11 @@ public class EntityDataTypes {
     public static final EntityDataType<Float> LAYING_AMOUNT = new EntityDataType<>(Float.class, "LAYING_AMOUNT");
     public static final EntityDataType<Float> LAYING_AMOUNT_PREVIOUS = new EntityDataType<>(Float.class, "LAYING_AMOUNT_PREVIOUS");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_DURATION = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_DURATION");
-    public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_SPAWN_TIME = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_SPAWN_TIME");
     /**
      * @deprecated since v685
      */
     @Deprecated
+    public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_SPAWN_TIME = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_SPAWN_TIME");
     public static final EntityDataType<Float> AREA_EFFECT_CLOUD_CHANGE_RATE = new EntityDataType<>(Float.class, "AREA_EFFECT_CLOUD_CHANGE_RATE");
     public static final EntityDataType<Float> AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP = new EntityDataType<>(Float.class, "AREA_EFFECT_CLOUD_CHANGE_ON_PICKUP");
     public static final EntityDataType<Integer> AREA_EFFECT_CLOUD_PICKUP_COUNT = new EntityDataType<>(Integer.class, "AREA_EFFECT_CLOUD_PICKUP_COUNT");
