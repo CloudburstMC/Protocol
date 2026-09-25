@@ -9,7 +9,6 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 
 import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * Transforms entity flags between their EnumMap representation and a packed long value.
@@ -55,9 +54,8 @@ public final class FlagTransformer implements EntityDataTransformer<Long, EnumMa
         // Track whether any flags in this range exist (even if set to false)
         boolean exists = false;
 
-        for (Map.Entry<EntityFlag, Boolean> entry : flags.entrySet()) {
-            EntityFlag flag = entry.getKey();
-            Boolean data = entry.getValue();
+        for (EntityFlag flag : flags.keySet()) {
+            Boolean data = flags.get(flag);
             if (data == null) {
                 continue;
             }

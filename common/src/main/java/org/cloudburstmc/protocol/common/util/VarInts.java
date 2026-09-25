@@ -30,6 +30,26 @@ public class VarInts {
         return (int) decode(buffer, 32);
     }
 
+    /**
+     * Number of bytes {@link #writeUnsignedInt(ByteBuf, int)} writes for the given value.
+     */
+    public static int sizeOfUnsignedInt(int value) {
+        return (38 - Integer.numberOfLeadingZeros(value | 1)) / 7;
+    }
+
+    /**
+     * Writes an unsigned VarInt at an absolute index without touching the buffer's indices.
+     * The caller is expected to have reserved {@link #sizeOfUnsignedInt(int)} bytes there.
+     */
+    public static void setUnsignedInt(ByteBuf buffer, int index, int value) {
+        long remaining = value & 0xFFFFFFFFL;
+        while ((remaining & ~0x7FL) != 0) {
+            buffer.setByte(index++, (byte) (remaining & 0x7F | 0x80));
+            remaining >>>= 7;
+        }
+        buffer.setByte(index, (byte) remaining);
+    }
+
     public static void writeLong(ByteBuf buffer, long value) {
         encode(buffer, (value << 1) ^ (value >> 63));
     }
