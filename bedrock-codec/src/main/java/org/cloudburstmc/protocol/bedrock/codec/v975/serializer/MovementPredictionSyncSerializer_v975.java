@@ -27,7 +27,7 @@ public class MovementPredictionSyncSerializer_v975 extends MovementPredictionSyn
         buffer.writeFloatLE(packet.getUnknown1());
         buffer.writeFloatLE(packet.getUnknown2());
         buffer.writeFloatLE(packet.getUnknown3());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeLong(buffer, packet.getUniqueEntityId());
         buffer.writeBoolean(packet.isFlying());
     }
 
@@ -44,7 +44,7 @@ public class MovementPredictionSyncSerializer_v975 extends MovementPredictionSyn
         packet.setUnknown1(buffer.readFloatLE());
         packet.setUnknown2(buffer.readFloatLE());
         packet.setUnknown3(buffer.readFloatLE());
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setUniqueEntityId(VarInts.readLong(buffer));
         packet.setFlying(buffer.readBoolean());
     }
 }
