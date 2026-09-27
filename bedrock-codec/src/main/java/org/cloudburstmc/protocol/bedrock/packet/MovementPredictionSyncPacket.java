@@ -17,7 +17,7 @@ import java.util.Set;
  * ClientMovementPredictionSyncPacket
  */
 public class MovementPredictionSyncPacket implements BedrockPacket {
-    private long runtimeEntityId;
+    private long uniqueEntityId;
 
     private final Set<EntityFlag> flags = new ObjectOpenHashSet<>();
     private Vector3f boundingBox;

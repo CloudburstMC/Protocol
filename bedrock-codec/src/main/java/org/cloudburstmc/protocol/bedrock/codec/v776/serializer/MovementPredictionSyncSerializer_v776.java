@@ -23,7 +23,7 @@ public class MovementPredictionSyncSerializer_v776 implements BedrockPacketSeria
         buffer.writeFloatLE(packet.getJumpStrength());
         buffer.writeFloatLE(packet.getHealth());
         buffer.writeFloatLE(packet.getHunger());
-        VarInts.writeUnsignedLong(buffer, packet.getRuntimeEntityId());
+        VarInts.writeLong(buffer, packet.getUniqueEntityId());
     }
 
     @Override
@@ -36,6 +36,6 @@ public class MovementPredictionSyncSerializer_v776 implements BedrockPacketSeria
         packet.setJumpStrength(buffer.readFloatLE());
         packet.setHealth(buffer.readFloatLE());
         packet.setHunger(buffer.readFloatLE());
-        packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
+        packet.setUniqueEntityId(VarInts.readLong(buffer));
     }
 }
