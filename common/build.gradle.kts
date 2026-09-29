@@ -5,6 +5,8 @@ dependencies {
     api(libs.fastutil.`object`.int.maps)
     api(libs.math)
     api(libs.natives)
+
+    testImplementation(libs.junit)
 }
 
 tasks.jar {
