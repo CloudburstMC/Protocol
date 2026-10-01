@@ -20,10 +20,10 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
         if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
             helper.writeString(buffer, packet.getMarkerText());
             helper.writeVector3f(buffer, packet.getMarkerPosition());
-            buffer.writeFloat(packet.getMarkerColorRed());
-            buffer.writeFloat(packet.getMarkerColorGreen());
-            buffer.writeFloat(packet.getMarkerColorBlue());
-            buffer.writeFloat(packet.getMarkerColorAlpha());
+            buffer.writeFloatLE(packet.getMarkerColorRed());
+            buffer.writeFloatLE(packet.getMarkerColorGreen());
+            buffer.writeFloatLE(packet.getMarkerColorBlue());
+            buffer.writeFloatLE(packet.getMarkerColorAlpha());
             buffer.writeLongLE(packet.getMarkerDuration());
         }
     }
@@ -34,10 +34,10 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
         if (packet.getDebugMarkerType() == ClientboundDebugRendererType.ADD_DEBUG_MARKER_CUBE) {
             packet.setMarkerText(helper.readString(buffer));
             packet.setMarkerPosition(helper.readVector3f(buffer));
-            packet.setMarkerColorRed(buffer.readFloat());
-            packet.setMarkerColorGreen(buffer.readFloat());
-            packet.setMarkerColorBlue(buffer.readFloat());
-            packet.setMarkerColorAlpha(buffer.readFloat());
+            packet.setMarkerColorRed(buffer.readFloatLE());
+            packet.setMarkerColorGreen(buffer.readFloatLE());
+            packet.setMarkerColorBlue(buffer.readFloatLE());
+            packet.setMarkerColorAlpha(buffer.readFloatLE());
             packet.setMarkerDuration(buffer.readLongLE());
         }
     }
