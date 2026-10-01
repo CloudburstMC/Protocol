@@ -13,14 +13,14 @@ public class PlaySoundSerializer_v2168 extends PlaySoundSerializer_v291 { // v29
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
         super.serialize(buffer, helper, packet);
-        VarInts.writeUnsignedInt(buffer, packet.getLoopCount());
+        VarInts.writeInt(buffer, packet.getLoopCount());
         helper.writeOptionalNull(buffer, packet.getServerSoundHandle(), ByteBuf::writeLongLE);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlaySoundPacket packet) {
         super.deserialize(buffer, helper, packet);
-        packet.setLoopCount(VarInts.readUnsignedInt(buffer));
+        packet.setLoopCount(VarInts.readInt(buffer));
         packet.setServerSoundHandle(helper.readOptional(buffer, null, ByteBuf::readLongLE));
     }
 }
