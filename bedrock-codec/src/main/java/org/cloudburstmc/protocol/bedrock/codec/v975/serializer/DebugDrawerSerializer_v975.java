@@ -25,7 +25,7 @@ public class DebugDrawerSerializer_v975 extends DebugDrawerSerializer_v924 {
         helper.writeOptionalNull(buffer, shape.getColor(), WRITE_COLOR);
 
         helper.writeOptionalNull(buffer, shape.getDimension(), VarInts::writeInt);
-        helper.writeOptionalNull(buffer, shape.getAttachedToEntityId(), VarInts::writeUnsignedLong);
+        helper.writeOptionalNull(buffer, shape.getAttachedToEntityId(), VarInts::writeLong);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class DebugDrawerSerializer_v975 extends DebugDrawerSerializer_v924 {
         Float maximumRenderDistance = helper.readOptional(buffer, null, ByteBuf::readFloatLE); // new
         Color color = helper.readOptional(buffer, null, READ_COLOR);
         Integer dimension = helper.readOptional(buffer, -1, VarInts::readInt);
-        Long attachedToEntityId = helper.readOptional(buffer, null, VarInts::readUnsignedLong);
+        Long attachedToEntityId = helper.readOptional(buffer, null, VarInts::readLong);
         VarInts.readUnsignedInt(buffer); // Unused payload type
 
         if (type == null) {
