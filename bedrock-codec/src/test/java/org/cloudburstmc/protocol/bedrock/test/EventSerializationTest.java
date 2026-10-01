@@ -125,6 +125,19 @@ public class EventSerializationTest {
         }
     }
 
+    // Before the payloads became fixed width: contents color (unsigned) first, then the potion type
+    @Test
+    public void testVarIntCauldronUsed() {
+        EventPacket packet = new EventPacket();
+        packet.setUniqueEntityId(PLAYER_ID);
+        packet.setUsePlayerId(true);
+        packet.setEventData(new CauldronUsedEventData(-300, 0xFF3F76E4, 3));
+
+        String wire = "fdffffffdf80010a01" + "e4edfdf90fd70406"; // no payload type before v898
+        assertEquals(wire, encode(Bedrock_v860.CODEC, packet));
+        assertEquals(packet.getEventData(), decode(Bedrock_v860.CODEC, wire).getEventData());
+    }
+
     private static EventPacket decode(BedrockCodec codec, String hex) {
         ByteBuf buffer = Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump(hex));
         try {
