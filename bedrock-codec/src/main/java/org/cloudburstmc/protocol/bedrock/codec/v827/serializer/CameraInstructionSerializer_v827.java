@@ -26,14 +26,14 @@ public class CameraInstructionSerializer_v827 extends CameraInstructionSerialize
     protected void writeFovInstruction(ByteBuf buffer, BedrockCodecHelper helper, CameraFovInstruction fovInstruction) {
         buffer.writeFloatLE(fovInstruction.getFov());
         buffer.writeFloatLE(fovInstruction.getEaseTime());
-        buffer.writeByte(fovInstruction.getEaseType().ordinal());
+        buffer.writeByte(fovInstruction.getEaseType().getId());
         buffer.writeBoolean(fovInstruction.isClear());
     }
 
     protected CameraFovInstruction readFovInstruction(ByteBuf buffer, BedrockCodecHelper helper) {
         float fow = buffer.readFloatLE();
         float easeTime = buffer.readFloatLE();
-        CameraEase easeType = CameraEase.values()[buffer.readUnsignedByte()];
+        CameraEase easeType = CameraEase.byId(buffer.readUnsignedByte());
         boolean fovClear = buffer.readBoolean();
         return new CameraFovInstruction(fow, easeTime, easeType, fovClear);
     }
