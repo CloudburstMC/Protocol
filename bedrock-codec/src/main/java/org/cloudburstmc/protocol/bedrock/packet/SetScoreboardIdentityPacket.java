@@ -35,11 +35,11 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
     public static class Entry {
         long scoreboardId;
         /**
-         * @since v2168
+         * Unique entity id of the player, sent for {@link Action#ADD} only.
          */
         long playerId;
         /**
-         * @deprecated since v2168
+         * @deprecated never sent; use {@link #playerId}
          */
         UUID uuid;
 

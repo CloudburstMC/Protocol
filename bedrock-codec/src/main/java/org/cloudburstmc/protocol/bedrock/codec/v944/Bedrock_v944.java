@@ -53,7 +53,6 @@ public class Bedrock_v944 extends Bedrock_v924 {
             .minecraftVersion("1.26.10")
             .helper(() -> new BedrockCodecHelper_v944(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
             .updateSerializer(CameraInstructionPacket.class, CameraInstructionSerializer_v944.INSTANCE)
-            .updateSerializer(CameraSplinePacket.class, CameraSplineSerializer_v944.INSTANCE)
             .updateSerializer(ClientboundDataDrivenUICloseScreenPacket.class, ClientboundDataDrivenUICloseScreenSerializer_v944.INSTANCE)
             .updateSerializer(ClientboundDataDrivenUIShowScreenPacket.class, ClientboundDataDrivenUIShowScreenSerializer_v944.INSTANCE)
             .updateSerializer(LevelEventPacket.class, new LevelEventSerializer_v291(LEVEL_EVENTS))

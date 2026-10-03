@@ -18,6 +18,32 @@ import java.awt.*;
 
 public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<CameraInstructionPacket> {
 
+    // The client numbers eases in this order, not in CameraEase's
+    protected static final CameraEase[] EASES = {
+            CameraEase.LINEAR, CameraEase.SPRING,
+            CameraEase.EASE_IN_QUAD, CameraEase.EASE_OUT_QUAD, CameraEase.EASE_IN_OUT_QUAD,
+            CameraEase.EASE_IN_CUBIC, CameraEase.EASE_OUT_CUBIC, CameraEase.EASE_IN_OUT_CUBIC,
+            CameraEase.EASE_IN_QUART, CameraEase.EASE_OUT_QUART, CameraEase.EASE_IN_OUT_QUART,
+            CameraEase.EASE_IN_QUINT, CameraEase.EASE_OUT_QUINT, CameraEase.EASE_IN_OUT_QUINT,
+            CameraEase.EASE_IN_SINE, CameraEase.EASE_OUT_SINE, CameraEase.EASE_IN_OUT_SINE,
+            CameraEase.EASE_IN_EXPO, CameraEase.EASE_OUT_EXPO, CameraEase.EASE_IN_OUT_EXPO,
+            CameraEase.EASE_IN_CIRC, CameraEase.EASE_OUT_CIRC, CameraEase.EASE_IN_OUT_CIRC,
+            CameraEase.EASE_IN_BOUNCE, CameraEase.EASE_OUT_BOUNCE, CameraEase.EASE_IN_OUT_BOUNCE,
+            CameraEase.EASE_IN_BACK, CameraEase.EASE_OUT_BACK, CameraEase.EASE_IN_OUT_BACK,
+            CameraEase.EASE_IN_ELASTIC, CameraEase.EASE_OUT_ELASTIC, CameraEase.EASE_IN_OUT_ELASTIC
+    };
+    private static final int[] EASE_IDS = new int[EASES.length];
+
+    static {
+        for (int id = 0; id < EASES.length; id++) {
+            EASE_IDS[EASES[id].ordinal()] = id;
+        }
+    }
+
+    protected static int easeId(CameraEase ease) {
+        return EASE_IDS[ease.ordinal()];
+    }
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, CameraInstructionPacket packet) {
         helper.writeOptionalNull(buffer, packet.getSetInstruction(), (buf, set) -> this.writeSetInstruction(helper, buf, set));
@@ -47,12 +73,12 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
     }
 
     protected void writeEase(ByteBuf buffer, CameraSetInstruction.EaseData ease) {
-        buffer.writeByte(ease.getEaseType().ordinal());
+        buffer.writeByte(easeId(ease.getEaseType()));
         buffer.writeFloatLE(ease.getTime());
     }
 
     protected CameraSetInstruction.EaseData readEase(ByteBuf buffer) {
-        CameraEase type = CameraEase.values()[buffer.readUnsignedByte()];
+        CameraEase type = EASES[buffer.readUnsignedByte()];
         float time = buffer.readFloatLE();
         return new CameraSetInstruction.EaseData(type, time);
     }
