@@ -8,7 +8,6 @@ import lombok.Value;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -38,15 +37,6 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
          * Unique entity id of the player, sent for {@link Action#ADD} only.
          */
         long playerId;
-        /**
-         * @deprecated never sent; use {@link #playerId}
-         */
-        UUID uuid;
-
-        public Entry(long scoreboardId, UUID uuid) {
-            this.scoreboardId = scoreboardId;
-            this.uuid = uuid;
-        }
 
         public Entry(long scoreboardId, long playerId) {
             this.scoreboardId = scoreboardId;
