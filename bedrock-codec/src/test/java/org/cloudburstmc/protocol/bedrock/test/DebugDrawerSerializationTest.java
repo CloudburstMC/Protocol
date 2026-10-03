@@ -1,6 +1,7 @@
 package org.cloudburstmc.protocol.bedrock.test;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
@@ -21,6 +22,17 @@ public class DebugDrawerSerializationTest {
 
     // StartGame unique id of the player in BDS 1.26.x captures
     private static final long PLAYER_UNIQUE_ID = -4294967295L;
+
+    // Sent by BDS 1.26.30 for a debug-utilities DebugBox attached to the player, whose StartGame unique id was -8589934586
+    @Test
+    void capturedAttachedIdDecodes() throws Exception {
+        ByteBuf buffer = Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump("01898180809081808001010101b4c0e63f000070c2969f00c1010000803f"
+                + "01000000000000000000000000010000204101000080bf01ffffffff010601f3ffffff3f030000803f0000803f0000803f"));
+        DebugDrawerPacket packet = (DebugDrawerPacket) Bedrock_v1001.CODEC.tryDecode(
+                Bedrock_v1001.CODEC.createHelper(), buffer, PACKET_ID, PacketRecipient.CLIENT);
+        assertFalse(buffer.isReadable(), "left bytes unread");
+        assertEquals(-8589934586L, packet.getShapes().get(0).getAttachedToEntityId());
+    }
 
     @Test
     void attachedEntityIdRoundTrips() {

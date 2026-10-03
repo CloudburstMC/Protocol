@@ -65,6 +65,9 @@ public class EventSerializationTest {
             {Bedrock_v860.CODEC, "fdffffff1f1e011a8606", new CauldronInteractEventData(BlockInteractionType.FILLED, 387)},
             {Bedrock_v860.CODEC, "fdffffff1f1e011c8a07", new CauldronInteractEventData(BlockInteractionType.EMPTIED, 453)},
             {Bedrock_v860.CODEC, "fdffffff1f020183f9ffff1f0a1a0000", new EntityInteractEventData(-4294966850L, 5, 13, 0, 0)},
+            // 1.21.124.2: contents color (unsigned) first, then the potion type
+            {Bedrock_v860.CODEC, "fbffffff3f0a01001c04", new CauldronUsedEventData(14, 0, 2)},
+            {Bedrock_v860.CODEC, "fbffffff3f0a01a1baf4f80f030c", new CauldronUsedEventData(-2, 0xFF1D1D21, 6)},
             {Bedrock_v860.CODEC, "fdffffff1f0201fff8ffff1f0c160000", new EntityInteractEventData(-4294966848L, 6, 11, 0, 0)},
             // 1.21.132.3
             {Bedrock_v898.CODEC, "fdffffff1f20010b13dffc", new ComposterInteractEventData(BlockInteractionType.COMPOST_ITEM_PLACE, -801)},
@@ -125,18 +128,6 @@ public class EventSerializationTest {
         }
     }
 
-    // Before the payloads became fixed width: contents color (unsigned) first, then the potion type
-    @Test
-    public void testVarIntCauldronUsed() {
-        EventPacket packet = new EventPacket();
-        packet.setUniqueEntityId(PLAYER_ID);
-        packet.setUsePlayerId(true);
-        packet.setEventData(new CauldronUsedEventData(-300, 0xFF3F76E4, 3));
-
-        String wire = "fdffffffdf80010a01" + "e4edfdf90fd70406"; // no payload type before v898
-        assertEquals(wire, encode(Bedrock_v860.CODEC, packet));
-        assertEquals(packet.getEventData(), decode(Bedrock_v860.CODEC, wire).getEventData());
-    }
 
     private static EventPacket decode(BedrockCodec codec, String hex) {
         ByteBuf buffer = Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump(hex));

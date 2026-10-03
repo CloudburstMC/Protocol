@@ -5,7 +5,9 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.v2193.Bedrock_v2193;
+import org.cloudburstmc.protocol.bedrock.codec.v1001.Bedrock_v1001;
 import org.cloudburstmc.protocol.bedrock.codec.v748.Bedrock_v748;
+import org.cloudburstmc.protocol.bedrock.codec.v766.Bedrock_v766;
 import org.cloudburstmc.protocol.bedrock.data.MovementEffectType;
 import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.packet.MovementEffectPacket;
@@ -21,17 +23,19 @@ public class MovementEffectSerializationTest {
     // Sent by BDS 1.26.51 to a real client: a firework boost while gliding, then swimming beside a dolphin
     @Test
     void decodesEffectsFromBds() throws Exception {
-        assertDecodes("1b0038f701", MovementEffectType.GLIDE_BOOST, 28, 247);
-        assertDecodes("1b0278f20a", MovementEffectType.DOLPHIN_BOOST, 60, 1394);
+        assertDecodes(Bedrock_v2193.CODEC, "1b0038f701", 27, MovementEffectType.GLIDE_BOOST, 28, 247);
+        assertDecodes(Bedrock_v2193.CODEC, "1b0278f20a", 27, MovementEffectType.DOLPHIN_BOOST, 60, 1394);
+        // BDS 1.21.50 and 1.26.30
+        assertDecodes(Bedrock_v766.CODEC, "0d002e00", 13, MovementEffectType.GLIDE_BOOST, 23, 0);
+        assertDecodes(Bedrock_v1001.CODEC, "0b0278ce0c", 11, MovementEffectType.DOLPHIN_BOOST, 60, 1614);
     }
 
-    private static void assertDecodes(String hex, MovementEffectType type, int duration, long tick) throws Exception {
-        BedrockCodec codec = Bedrock_v2193.CODEC;
+    private static void assertDecodes(BedrockCodec codec, String hex, long runtimeId, MovementEffectType type, int duration, long tick) throws Exception {
         ByteBuf buffer = Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump(hex));
         MovementEffectPacket packet = (MovementEffectPacket) codec.tryDecode(
                 codec.createHelper(), buffer, PACKET_ID, PacketRecipient.CLIENT);
         assertFalse(buffer.isReadable(), hex + " left bytes unread");
-        assertEquals(27, packet.getEntityRuntimeId(), hex);
+        assertEquals(runtimeId, packet.getEntityRuntimeId(), hex);
         assertEquals(type, packet.getEffectType(), hex);
         assertEquals(duration, packet.getDuration(), hex);
         assertEquals(tick, packet.getTick(), hex);
