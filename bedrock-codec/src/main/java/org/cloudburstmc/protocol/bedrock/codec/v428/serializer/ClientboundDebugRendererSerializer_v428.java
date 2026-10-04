@@ -7,7 +7,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.ClientboundDebugRendererType;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDebugRendererPacket;
-import org.cloudburstmc.protocol.common.util.VarInts;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSerializer<ClientboundDebugRendererPacket> {
@@ -43,10 +42,10 @@ public class ClientboundDebugRendererSerializer_v428 implements BedrockPacketSer
     }
 
     protected void writeMarkerType(ByteBuf buffer, BedrockCodecHelper helper, ClientboundDebugRendererType type) {
-        VarInts.writeUnsignedInt(buffer, type.ordinal());
+        buffer.writeIntLE(type.ordinal());
     }
 
     protected ClientboundDebugRendererType readMarkerType(ByteBuf buffer, BedrockCodecHelper helper) {
-        return ClientboundDebugRendererType.values()[VarInts.readUnsignedInt(buffer)];
+        return ClientboundDebugRendererType.values()[buffer.readIntLE()];
     }
 }
