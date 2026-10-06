@@ -241,4 +241,8 @@ public class SerializedSkin {
         }
         return fullSkinId;
     }
+
+    public void updatePlayFabId(String playFabId) {
+        this.playFabId = playFabId;
+    }
 }

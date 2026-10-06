@@ -32,6 +32,6 @@ public class DimensionDataSerializer_v2193 extends DimensionDataSerializer_v2168
         int dimensionType = VarInts.readInt(buffer);
         UUID packId = helper.readUuid(buffer);
         String defaultBiome = helper.readString(buffer);
-        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, defaultBiome);
+        return new DimensionDefinition(id, maximumHeight, minimumHeight, generatorType, dimensionType, packId, defaultBiome, 0, false);
     }
 }

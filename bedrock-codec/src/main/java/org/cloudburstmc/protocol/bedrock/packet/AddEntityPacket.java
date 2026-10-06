@@ -4,9 +4,11 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.math.vector.Vector2f;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.AttributeData;
+import org.cloudburstmc.protocol.bedrock.data.PassengerOfBlockArguments;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataMap;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityProperties;
@@ -40,6 +42,11 @@ public class AddEntityPacket implements BedrockPacket {
      * @since v557
      */
     private final EntityProperties properties = new EntityProperties();
+    /**
+     * @since v2223
+     */
+    @Nullable
+    private PassengerOfBlockArguments passengerOfBlockArguments;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -645,4 +645,14 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     public GatheringsConfigurationJoinInfo readGatheringsConfiguration(ByteBuf byteBuf, BedrockCodecHelper bedrockCodecHelper) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void writePassengerOfBlockArguments(ByteBuf buf, BedrockCodecHelper bedrockCodecHelper, PassengerOfBlockArguments passengerOfBlockArguments) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buf, BedrockCodecHelper bedrockCodecHelper) {
+        throw new UnsupportedOperationException();
+    }
 }

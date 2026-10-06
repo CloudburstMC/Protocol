@@ -1,15 +1,15 @@
-package org.cloudburstmc.protocol.bedrock.codec.v557.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2225.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.AddPlayerSerializer_v534;
+import org.cloudburstmc.protocol.bedrock.codec.v557.serializer.AddPlayerSerializer_v557;
 import org.cloudburstmc.protocol.bedrock.data.BuildPlatform;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class AddPlayerSerializer_v557 extends AddPlayerSerializer_v534 {
+public class AddPlayerSerializer_v2225 extends AddPlayerSerializer_v557 {
 
-    public static final AddPlayerSerializer_v557 INSTANCE = new AddPlayerSerializer_v557();
+    public static final AddPlayerSerializer_v2225 INSTANCE = new AddPlayerSerializer_v2225();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddPlayerPacket packet) {
@@ -23,9 +23,10 @@ public class AddPlayerSerializer_v557 extends AddPlayerSerializer_v534 {
         helper.writeItem(buffer, packet.getHand());
         VarInts.writeInt(buffer, packet.getGameType().ordinal());
         helper.writeEntityData(buffer, packet.getMetadata());
-        helper.writeEntityProperties(buffer, packet.getProperties()); // Added
+        helper.writeEntityProperties(buffer, packet.getProperties());
         helper.writePlayerAbilities(buffer, packet);
         helper.writeArray(buffer, packet.getEntityLinks(), helper::writeEntityLink);
+        helper.writeOptionalNull(buffer, packet.getPassengerOfBlockArguments(), helper::writePassengerOfBlockArguments); //new
         helper.writeString(buffer, packet.getDeviceId());
         buffer.writeIntLE(packet.getBuildPlatform().getId());
     }
@@ -42,9 +43,10 @@ public class AddPlayerSerializer_v557 extends AddPlayerSerializer_v534 {
         packet.setHand(helper.readItem(buffer));
         packet.setGameType(VALUES[VarInts.readInt(buffer)]);
         helper.readEntityData(buffer, packet.getMetadata());
-        helper.readEntityProperties(buffer, packet.getProperties()); // Added
+        helper.readEntityProperties(buffer, packet.getProperties());
         helper.readPlayerAbilities(buffer, packet);
         helper.readArray(buffer, packet.getEntityLinks(), helper::readEntityLink);
+        packet.setPassengerOfBlockArguments(helper.readOptional(buffer, null, helper::readPassengerOfBlockArguments)); //new
         packet.setDeviceId(helper.readString(buffer));
         packet.setBuildPlatform(BuildPlatform.from(buffer.readIntLE()));
     }

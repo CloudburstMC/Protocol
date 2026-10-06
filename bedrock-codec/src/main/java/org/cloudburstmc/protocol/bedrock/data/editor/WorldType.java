@@ -1,4 +1,4 @@
-package org.cloudburstmc.protocol.bedrock.data;
+package org.cloudburstmc.protocol.bedrock.data.editor;
 
 public enum WorldType {
 

@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.packet.AddEntityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class AddEntitySerializer_v557 extends AddEntitySerializer_v534 {
+    public static final AddEntitySerializer_v557 INSTANCE = new AddEntitySerializer_v557();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, AddEntityPacket packet) {

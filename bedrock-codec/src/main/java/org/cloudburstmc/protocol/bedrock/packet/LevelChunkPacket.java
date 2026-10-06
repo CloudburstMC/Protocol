@@ -34,6 +34,10 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
      * @since v649
      */
     private int dimension;
+    /**
+     * @since v2223
+     */
+    private boolean clientBiomeUpdate;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

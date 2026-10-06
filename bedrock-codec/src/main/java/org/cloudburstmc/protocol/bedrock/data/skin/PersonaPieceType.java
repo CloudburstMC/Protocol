@@ -35,6 +35,10 @@ public enum PersonaPieceType {
     CAPES("capes", "persona_capes"),
     CLASSIC_SKIN("classicskin", "persona_classic_skin"),
     EMOTE("emote", "persona_emote"),
+    /**
+     * @since v2223
+     */
+    COCO("coco", "persona_coco"),
     UNSUPPORTED("unsupported", "unsupported");
 
     @Getter

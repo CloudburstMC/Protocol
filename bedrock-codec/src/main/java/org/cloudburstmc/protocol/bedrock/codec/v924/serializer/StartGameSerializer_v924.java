@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v898.serializer.StartGameSerializer_v898;
 import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.editor.WorldType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;

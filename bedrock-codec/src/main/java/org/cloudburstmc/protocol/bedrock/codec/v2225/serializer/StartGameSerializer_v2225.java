@@ -1,28 +1,19 @@
-package org.cloudburstmc.protocol.bedrock.codec.v544.serializer;
+package org.cloudburstmc.protocol.bedrock.codec.v2225.serializer;
 
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
-import org.cloudburstmc.protocol.bedrock.codec.v534.serializer.StartGameSerializer_v534;
+import org.cloudburstmc.protocol.bedrock.codec.v2168.serializer.StartGameSerializer_v2168;
 import org.cloudburstmc.protocol.bedrock.data.*;
+import org.cloudburstmc.protocol.bedrock.data.editor.EditorLevelMigrationVersion;
 import org.cloudburstmc.protocol.bedrock.data.editor.WorldType;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
-    @Override
-    public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        super.serialize(buffer, helper, packet);
+public class StartGameSerializer_v2225 extends StartGameSerializer_v2168 {
 
-        buffer.writeBoolean(packet.isClientSideGenerationEnabled());
-    }
+    public static final StartGameSerializer_v2225 INSTANCE = new StartGameSerializer_v2225();
 
-    @Override
-    public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        super.deserialize(buffer, helper, packet);
-
-        packet.setClientSideGenerationEnabled(buffer.readBoolean());
-    }
 
     @Override
     protected void writeLevelSettings(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
@@ -32,12 +23,16 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         VarInts.writeInt(buffer, packet.getDimensionId());
         VarInts.writeInt(buffer, packet.getGeneratorId());
         VarInts.writeInt(buffer, packet.getLevelGameType().ordinal());
+        buffer.writeBoolean(packet.isHardcore());
         VarInts.writeInt(buffer, packet.getDifficulty());
         helper.writeBlockPosition(buffer, packet.getDefaultSpawn());
         buffer.writeBoolean(packet.isAchievementsDisabled());
-        buffer.writeBoolean(packet.getEditorWorldType() != WorldType.NON_EDITOR);
+        VarInts.writeInt(buffer, packet.getEditorWorldType().ordinal());
+        buffer.writeBoolean(packet.isCreatedInEditor());
+        buffer.writeBoolean(packet.isExportedFromEditor());
+        buffer.writeByte(packet.getEditorLevelMigrationVersion().ordinal()); //new
         VarInts.writeInt(buffer, packet.getDayCycleStopTime());
-        VarInts.writeInt(buffer, packet.getEduEditionOffers());
+        VarInts.writeUnsignedInt(buffer, packet.getEduEditionOffers());
         buffer.writeBoolean(packet.isEduFeaturesEnabled());
         helper.writeString(buffer, packet.getEducationProductionId());
         buffer.writeFloatLE(packet.getRainLevel());
@@ -54,7 +49,7 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         buffer.writeBoolean(packet.isExperimentsPreviouslyToggled());
         buffer.writeBoolean(packet.isBonusChestEnabled());
         buffer.writeBoolean(packet.isStartingWithMap());
-        VarInts.writeInt(buffer, packet.getDefaultPlayerPermission().ordinal());
+        buffer.writeByte(packet.getDefaultPlayerPermission().ordinal());
         buffer.writeIntLE(packet.getServerChunkTickRange());
         buffer.writeBoolean(packet.isBehaviorPackLocked());
         buffer.writeBoolean(packet.isResourcePackLocked());
@@ -63,8 +58,9 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         buffer.writeBoolean(packet.isFromWorldTemplate());
         buffer.writeBoolean(packet.isWorldTemplateOptionLocked());
         buffer.writeBoolean(packet.isOnlySpawningV1Villagers());
-        buffer.writeBoolean(packet.isDisablingPersonas()); // Added
-        buffer.writeBoolean(packet.isDisablingCustomSkins()); // Added
+        buffer.writeBoolean(packet.isDisablingPersonas());
+        buffer.writeBoolean(packet.isDisablingCustomSkins());
+        buffer.writeBoolean(packet.isEmoteChatMuted());
         helper.writeString(buffer, packet.getVanillaVersion());
         buffer.writeIntLE(packet.getLimitedWorldWidth());
         buffer.writeIntLE(packet.getLimitedWorldHeight());
@@ -73,8 +69,10 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         helper.writeString(buffer, packet.getEduSharedUriResource().getLinkUri());
         helper.writeOptional(buffer, OptionalBoolean::isPresent, packet.getForceExperimentalGameplay(),
                 (buf, optional) -> buf.writeBoolean(optional.getAsBoolean()));
-        buffer.writeByte(packet.getChatRestrictionLevel().ordinal()); // Added
-        buffer.writeBoolean(packet.isDisablingPlayerInteractions()); // Added
+        buffer.writeByte(packet.getChatRestrictionLevel().ordinal());
+        buffer.writeBoolean(packet.isDisablingPlayerInteractions());
+        VarInts.writeInt(buffer, packet.getServerEditorConnectionPolicy());
+        buffer.writeBoolean(packet.isAllowAnonymousBlockDropsInEditorWorlds());
     }
 
     @Override
@@ -85,12 +83,16 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         packet.setDimensionId(VarInts.readInt(buffer));
         packet.setGeneratorId(VarInts.readInt(buffer));
         packet.setLevelGameType(GameType.from(VarInts.readInt(buffer)));
+        packet.setHardcore(buffer.readBoolean());
         packet.setDifficulty(VarInts.readInt(buffer));
         packet.setDefaultSpawn(helper.readBlockPosition(buffer));
         packet.setAchievementsDisabled(buffer.readBoolean());
-        packet.setEditorWorldType(buffer.readBoolean() ? WorldType.EDITOR_PROJECT : WorldType.NON_EDITOR);
+        packet.setEditorWorldType(WorldType.values()[VarInts.readInt(buffer)]);
+        packet.setCreatedInEditor(buffer.readBoolean());
+        packet.setExportedFromEditor(buffer.readBoolean());
+        packet.setEditorLevelMigrationVersion(EditorLevelMigrationVersion.values()[buffer.readByte()]); //new
         packet.setDayCycleStopTime(VarInts.readInt(buffer));
-        packet.setEduEditionOffers(VarInts.readInt(buffer));
+        packet.setEduEditionOffers(VarInts.readUnsignedInt(buffer));
         packet.setEduFeaturesEnabled(buffer.readBoolean());
         packet.setEducationProductionId(helper.readString(buffer));
         packet.setRainLevel(buffer.readFloatLE());
@@ -107,7 +109,7 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         packet.setExperimentsPreviouslyToggled(buffer.readBoolean());
         packet.setBonusChestEnabled(buffer.readBoolean());
         packet.setStartingWithMap(buffer.readBoolean());
-        packet.setDefaultPlayerPermission(PLAYER_PERMISSIONS[VarInts.readInt(buffer)]);
+        packet.setDefaultPlayerPermission(PLAYER_PERMISSIONS[buffer.readByte()]);
         packet.setServerChunkTickRange(buffer.readIntLE());
         packet.setBehaviorPackLocked(buffer.readBoolean());
         packet.setResourcePackLocked(buffer.readBoolean());
@@ -116,15 +118,18 @@ public class StartGameSerializer_v544 extends StartGameSerializer_v534 {
         packet.setFromWorldTemplate(buffer.readBoolean());
         packet.setWorldTemplateOptionLocked(buffer.readBoolean());
         packet.setOnlySpawningV1Villagers(buffer.readBoolean());
-        packet.setDisablingPersonas(buffer.readBoolean()); // Added
-        packet.setDisablingCustomSkins(buffer.readBoolean()); // Added
+        packet.setDisablingPersonas(buffer.readBoolean());
+        packet.setDisablingCustomSkins(buffer.readBoolean());
+        packet.setEmoteChatMuted(buffer.readBoolean());
         packet.setVanillaVersion(helper.readString(buffer));
         packet.setLimitedWorldWidth(buffer.readIntLE());
         packet.setLimitedWorldHeight(buffer.readIntLE());
         packet.setNetherType(buffer.readBoolean());
         packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
         packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
-        packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]); // Added
-        packet.setDisablingPlayerInteractions(buffer.readBoolean()); // Added
+        packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]);
+        packet.setDisablingPlayerInteractions(buffer.readBoolean());
+        packet.setServerEditorConnectionPolicy(VarInts.readInt(buffer));
+        packet.setAllowAnonymousBlockDropsInEditorWorlds(buffer.readBoolean());
     }
 }
