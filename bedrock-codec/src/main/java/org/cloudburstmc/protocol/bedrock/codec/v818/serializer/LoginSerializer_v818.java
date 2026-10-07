@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.codec.v818.serializer;
 
+import org.cloudburstmc.protocol.bedrock.codec.LoginLimits;
 import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LoginSerializer_v291;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
@@ -42,7 +43,7 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
     @Override
     protected AuthPayload readAuthJwt(String authJwt) {
         try {
-            Map<String, Object> payload = JsonUtil.parseJson(authJwt);
+            Map<String, Object> payload = LoginLimits.parseJson(authJwt);
             checkArgument(payload.containsKey("AuthenticationType"), "Missing AuthenticationType in JWT");
             int authTypeOrdinal = ((Number) payload.get("AuthenticationType")).intValue();
             if (authTypeOrdinal < 0 || authTypeOrdinal >= AuthType.values().length - 1) {
@@ -55,7 +56,7 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
                 return new TokenPayload(token, authType);
             } else if (payload.containsKey("Certificate") && payload.get("Certificate") instanceof String && !((String) payload.get("Certificate")).isEmpty()) {
                 String certJson = (String) payload.get("Certificate");
-                Map<String, Object> certData = JsonUtil.parseJson(certJson);
+                Map<String, Object> certData = LoginLimits.parseJson(certJson);
                 if (!certData.containsKey("chain") || !(certData.get("chain") instanceof List)) {
                     throw new IllegalArgumentException("Invalid Certificate chain in JWT");
                 }

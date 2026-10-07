@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.codec.LoginLimits;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
 import org.cloudburstmc.protocol.bedrock.packet.LoginPacket;
@@ -41,11 +42,10 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SubClientLoginPacket packet) {
         ByteBuf jwt = buffer.readSlice(VarInts.readUnsignedInt(buffer)); // Get the JWT.
 
-        String authJwt = readString(jwt);
+        String authJwt = LoginLimits.readAuthPayload(jwt, StandardCharsets.UTF_8);
         packet.setAuthPayload(readAuthJwt(authJwt));
 
-        String value = (String) jwt.readCharSequence(jwt.readIntLE(), StandardCharsets.UTF_8);
-        packet.setClientJwt(value);
+        packet.setClientJwt(LoginLimits.readClientJwt(jwt));
     }
 
     protected String writeAuthJwt(AuthPayload payload) {
@@ -59,7 +59,7 @@ public class SubClientLoginSerializer_v291 implements BedrockPacketSerializer<Su
 
     protected AuthPayload readAuthJwt(String authJwt) {
         try {
-            Map<String, Object> json = JsonUtil.parseJson(authJwt);
+            Map<String, Object> json = LoginLimits.parseJson(authJwt);
             checkArgument(json != null && json.containsKey("chain") && json.get("chain") instanceof List,
                     "Invalid login chain");
             //noinspection unchecked
