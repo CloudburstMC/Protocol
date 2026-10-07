@@ -5,8 +5,10 @@ import io.netty.channel.ChannelInitializer;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.bedrock.BedrockPeer;
 import org.cloudburstmc.protocol.bedrock.BedrockSession;
+import org.cloudburstmc.protocol.bedrock.PacketDirection;
 import org.cloudburstmc.protocol.bedrock.data.CompressionAlgorithm;
 import org.cloudburstmc.protocol.bedrock.data.PacketCompressionAlgorithm;
+import org.cloudburstmc.protocol.bedrock.data.PacketRecipient;
 import org.cloudburstmc.protocol.bedrock.netty.codec.FrameIdCodec;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchDecoder;
 import org.cloudburstmc.protocol.bedrock.netty.codec.batch.BedrockBatchEncoder;
@@ -21,7 +23,8 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
 
     public static final int RAKNET_MINECRAFT_ID = 0xFE;
     private static final FrameIdCodec RAKNET_FRAME_CODEC = new FrameIdCodec(RAKNET_MINECRAFT_ID);
-    private static final BedrockBatchDecoder BATCH_DECODER = new BedrockBatchDecoder();
+    private static final BedrockBatchDecoder CLIENT_BATCH_DECODER = new BedrockBatchDecoder();
+    private static final BedrockBatchDecoder SERVER_BATCH_DECODER = new BedrockBatchDecoder(BedrockBatchDecoder.DEFAULT_MAX_SERVER_PACKETS);
 
     private static final CompressionStrategy ZLIB_RAW_STRATEGY = new SimpleCompressionStrategy(new ZlibCompression(Zlib.RAW));
     private static final CompressionStrategy ZLIB_STRATEGY = new SimpleCompressionStrategy(new ZlibCompression(Zlib.DEFAULT));
@@ -33,7 +36,7 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
         this.preInitChannel(channel);
 
         channel.pipeline()
-                .addLast(BedrockBatchDecoder.NAME, BATCH_DECODER)
+                .addLast(BedrockBatchDecoder.NAME, batchDecoder(channel.attr(PacketDirection.ATTRIBUTE).get()))
                 .addLast(BedrockBatchEncoder.NAME, new BedrockBatchEncoder());
 
         this.initPacketCodec(channel);
@@ -51,6 +54,13 @@ public abstract class BedrockChannelInitializer<T extends BedrockSession> extend
         CompressionStrategy compression = getCompression(PacketCompressionAlgorithm.ZLIB, rakVersion, true);
         // At this point all connections use not prefixed compression
         channel.pipeline().addLast(CompressionCodec.NAME, new CompressionCodec(compression, false));
+    }
+
+    /**
+     * Client channels read batches from a server, which may hold far more packets than a client sends.
+     */
+    static BedrockBatchDecoder batchDecoder(PacketDirection direction) {
+        return direction != null && direction.getInbound() == PacketRecipient.CLIENT ? SERVER_BATCH_DECODER : CLIENT_BATCH_DECODER;
     }
 
     public static CompressionStrategy getCompression(CompressionAlgorithm algorithm, int rakVersion, boolean initial) {
