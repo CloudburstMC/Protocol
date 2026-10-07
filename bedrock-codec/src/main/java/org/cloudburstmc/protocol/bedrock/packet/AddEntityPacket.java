@@ -43,7 +43,7 @@ public class AddEntityPacket implements BedrockPacket {
      */
     private final EntityProperties properties = new EntityProperties();
     /**
-     * @since v2223
+     * @since v2225
      */
     @Nullable
     private PassengerOfBlockArguments passengerOfBlockArguments;

@@ -68,6 +68,6 @@ public class ClientboundAttributeLayerSyncSerializer_v1001 extends ClientboundAt
         int localTransitionTicks = (int) buf.readUnsignedIntLE();
         boolean noiseTransition = buf.readBoolean();
 
-        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, localTransitionTicks, noiseTransition, null);
+        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, null, localTransitionTicks, noiseTransition, null, null);
     }
 }

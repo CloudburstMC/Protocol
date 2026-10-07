@@ -2,7 +2,6 @@ package org.cloudburstmc.protocol.bedrock.codec.v2225;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.EntityDataTypeMap;
 import org.cloudburstmc.protocol.bedrock.codec.v2193.BedrockCodecHelper_v2193;
 import org.cloudburstmc.protocol.bedrock.data.Ability;
@@ -32,7 +31,7 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
     }
 
     @Override
-    public void writePassengerOfBlockArguments(ByteBuf buf, BedrockCodecHelper bedrockCodecHelper, PassengerOfBlockArguments passengerOfBlockArguments) {
+    public void writePassengerOfBlockArguments(ByteBuf buf, PassengerOfBlockArguments passengerOfBlockArguments) {
         writeVector3i(buf, passengerOfBlockArguments.getBlockPos());
         writeVector3f(buf, passengerOfBlockArguments.getOffset());
         buf.writeFloatLE(passengerOfBlockArguments.getRotation());
@@ -41,7 +40,7 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
     }
 
     @Override
-    public PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buf, BedrockCodecHelper bedrockCodecHelper) {
+    public PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buf) {
         return new PassengerOfBlockArguments(
                 readVector3i(buf),
                 readVector3f(buf),

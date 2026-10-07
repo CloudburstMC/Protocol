@@ -647,12 +647,12 @@ public abstract class BaseBedrockCodecHelper implements BedrockCodecHelper {
     }
 
     @Override
-    public void writePassengerOfBlockArguments(ByteBuf buf, BedrockCodecHelper bedrockCodecHelper, PassengerOfBlockArguments passengerOfBlockArguments) {
+    public void writePassengerOfBlockArguments(ByteBuf buf, PassengerOfBlockArguments passengerOfBlockArguments) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buf, BedrockCodecHelper bedrockCodecHelper) {
+    public PassengerOfBlockArguments readPassengerOfBlockArguments(ByteBuf buf) {
         throw new UnsupportedOperationException();
     }
 }

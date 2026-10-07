@@ -18,10 +18,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ClientboundUpdateSoundDataPacket implements BedrockPacket {
 
     private long serverSoundHandle;
-    /**
-     * @deprecated since v2168
-     */
-    private String type;
+    private SoundData event;
     /**
      * @since v2168
      */

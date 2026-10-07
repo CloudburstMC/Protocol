@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
+import org.cloudburstmc.protocol.bedrock.data.sound.StopSoundData;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundUpdateSoundDataPacket;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,11 +15,12 @@ public class ClientboundUpdateSoundDataSerializer_v1001 implements BedrockPacket
 
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         buffer.writeLongLE(packet.getServerSoundHandle());
-        helper.writeString(buffer, packet.getType());
+        helper.writeString(buffer, "stop");
     }
 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundUpdateSoundDataPacket packet) {
         packet.setServerSoundHandle(buffer.readLongLE());
-        packet.setType(helper.readString(buffer));
+        helper.readString(buffer); // unused
+        packet.setEvent(new StopSoundData());
     }
 }

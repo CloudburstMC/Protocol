@@ -37,6 +37,6 @@ public class ClientboundAttributeLayerSyncSerializer_v2193 extends ClientboundAt
 
         NoiseAlignment na = new NoiseAlignment(NoiseAlignment.Type.values()[buf.readUnsignedByte()], VarInts.readUnsignedInt(buf));
 
-        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, localTransitionTicks, noiseTransition, na);
+        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, null, localTransitionTicks, noiseTransition, null, na);
     }
 }

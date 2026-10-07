@@ -36,7 +36,7 @@ public enum PersonaPieceType {
     CLASSIC_SKIN("classicskin", "persona_classic_skin"),
     EMOTE("emote", "persona_emote"),
     /**
-     * @since v2223
+     * @since v2225
      */
     COCO("coco", "persona_coco"),
     UNSUPPORTED("unsupported", "unsupported");

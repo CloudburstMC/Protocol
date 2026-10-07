@@ -217,7 +217,7 @@ public class StartGamePacket implements BedrockPacket {
      */
     private boolean isLoggingChat;
     /**
-     * @since v2223
+     * @since v2225
      */
     private EditorLevelMigrationVersion editorLevelMigrationVersion = EditorLevelMigrationVersion.LEGACY;
 

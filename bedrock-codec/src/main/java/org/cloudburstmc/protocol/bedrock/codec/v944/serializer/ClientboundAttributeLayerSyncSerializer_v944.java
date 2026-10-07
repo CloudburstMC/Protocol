@@ -190,14 +190,14 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
         CameraEase easing = CameraEase.fromName(helper.readString(buf));
 
-        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, 0, false, null);
+        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, null, 0, false, null, null);
     }
 
     private static final List<String> BOOL_OPERATIONS = Arrays.asList("override", "alpha_blend", "and", "nand", "or", "nor", "xor", "xnor");
     private static final List<String> FLOAT_OPERATIONS = Arrays.asList("override", "alpha_blend", "add", "subtract", "multiply", "minimum", "maximum");
     private static final List<String> COLOR_OPERATIONS = Arrays.asList("override", "alpha_blend", "add", "subtract", "multiply");
 
-    private void writeAttributeData(ByteBuf buf, BedrockCodecHelper helper, AttributeData data) {
+    protected void writeAttributeData(ByteBuf buf, BedrockCodecHelper helper, AttributeData data) {
         if (data instanceof BoolAttributeData) {
             BoolAttributeData at = (BoolAttributeData) data;
             VarInts.writeUnsignedInt(buf, 0);

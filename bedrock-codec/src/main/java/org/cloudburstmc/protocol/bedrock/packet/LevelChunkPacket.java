@@ -35,7 +35,7 @@ public class LevelChunkPacket extends AbstractReferenceCounted implements Bedroc
      */
     private int dimension;
     /**
-     * @since v2223
+     * @since v2225
      */
     private boolean clientBiomeUpdate;
 

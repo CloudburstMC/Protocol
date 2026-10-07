@@ -1011,4 +1011,36 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(SetPlayerFurnaceOptionsPacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(ClientboundMatchmakingStatePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ClientboundPlayAudioContentPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ClientboundStonecutterSetRecipePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundCursorItemDragPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundMatchmakingCancelPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundRegisterAudioContentPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerboundStonecutterSetRecipePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(SetPassengerOfBlockPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }

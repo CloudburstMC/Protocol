@@ -166,4 +166,8 @@ public enum ParticleType implements LevelEventType {
      * @since v2168
      */
     YELLOW_POPLAR_LEAVES,
+    /**
+     * @since v2225
+     */
+    ICE_BALL_BREAK,
 }
