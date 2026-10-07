@@ -3,8 +3,10 @@ package org.cloudburstmc.protocol.bedrock.netty.codec.batch;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.util.ReferenceCountUtil;
+import org.cloudburstmc.netty.channel.TransportChannel;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockBatchWrapper;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BedrockBatchEncoderTest {
 
@@ -140,6 +144,91 @@ public class BedrockBatchEncoderTest {
         } finally {
             wrapper.release();
         }
+    }
+
+    /**
+     * A flush larger than one batch may hold goes out as several, in order and each within the limit.
+     */
+    @Test
+    public void largeFlushIsSplitIntoBatches() {
+        EmbeddedChannel channel = new TransportEmbeddedChannel(1_024_000, new BedrockBatchEncoder());
+        try {
+            for (int i = 0; i < 10; i++) {
+                channel.write(wrapper(payload(300_000), true));
+            }
+            channel.flushOutbound();
+            assertBatchSizes(channel, 1_008_000, 3, 3, 3, 1);
+        } finally {
+            channel.finishAndReleaseAll();
+        }
+    }
+
+    /**
+     * A packet over the limit cannot be split, so it goes out in a batch of its own.
+     */
+    @Test
+    public void oversizedPacketGoesOutAlone() {
+        EmbeddedChannel channel = new TransportEmbeddedChannel(1_024_000, new BedrockBatchEncoder());
+        try {
+            channel.write(wrapper(payload(16), true));
+            channel.write(wrapper(payload(1_008_001), true));
+            channel.write(wrapper(payload(16), true));
+            channel.flushOutbound();
+            assertBatchSizes(channel, 1_008_000, 1, 1, 1);
+        } finally {
+            channel.finishAndReleaseAll();
+        }
+    }
+
+    /**
+     * A channel that is not one of the transports sets no limit, so its batches are not split.
+     */
+    @Test
+    public void flushIsOneBatchWithoutATransportLimit() {
+        EmbeddedChannel channel = new EmbeddedChannel(new BedrockBatchEncoder());
+        try {
+            for (int i = 0; i < 10; i++) {
+                channel.write(wrapper(payload(300_000), true));
+            }
+            channel.flushOutbound();
+            assertBatchSizes(channel, Integer.MAX_VALUE, 10);
+        } finally {
+            channel.finishAndReleaseAll();
+        }
+    }
+
+    /**
+     * Stands in for a transport channel taking messages of up to {@code maxMessageSize} bytes, of which batches
+     * leave a 64th for compression and encryption.
+     */
+    private static final class TransportEmbeddedChannel extends EmbeddedChannel implements TransportChannel {
+        private final int maxMessageSize;
+
+        TransportEmbeddedChannel(int maxMessageSize, ChannelHandler... handlers) {
+            super(handlers);
+            this.maxMessageSize = maxMessageSize;
+        }
+
+        @Override
+        public int maxMessageSize() {
+            return this.maxMessageSize;
+        }
+    }
+
+    private static void assertBatchSizes(EmbeddedChannel channel, int maxBatchSize, int... packetCounts) {
+        for (int packetCount : packetCounts) {
+            BedrockBatchWrapper batch = channel.readOutbound();
+            assertNotNull(batch);
+            try {
+                assertEquals(packetCount, batch.getPackets().size());
+                if (packetCount > 1) {
+                    assertTrue(batch.getUncompressed().readableBytes() <= maxBatchSize);
+                }
+            } finally {
+                batch.release();
+            }
+        }
+        assertNull(channel.readOutbound());
     }
 
     private static byte[] encodeBatch(boolean reserved) {

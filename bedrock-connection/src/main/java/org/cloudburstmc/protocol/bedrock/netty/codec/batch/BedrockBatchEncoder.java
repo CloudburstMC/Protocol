@@ -5,6 +5,7 @@ import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
+import org.cloudburstmc.netty.channel.TransportChannel;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockBatchWrapper;
 import org.cloudburstmc.protocol.bedrock.netty.BedrockPacketWrapper;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -32,26 +33,56 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void flush(ChannelHandlerContext ctx) throws Exception {
-        if (messages.isEmpty()) {
-            super.flush(ctx);
-            return;
+        if (!messages.isEmpty()) {
+            int maxBatchSize = maxBatchSize(ctx);
+            while (!messages.isEmpty()) {
+                this.writeBatch(ctx, maxBatchSize);
+            }
         }
+        super.flush(ctx);
+    }
 
+    /**
+     * Uncompressed bytes a batch may hold before the remaining packets go out in another, or {@link Integer#MAX_VALUE}
+     * for no limit. A batch travels as one message, which may be no larger than the transport allows, so this leaves
+     * a little room for compression and encryption to grow it. A larger single packet still goes alone.
+     */
+    private static int maxBatchSize(ChannelHandlerContext ctx) {
+        if (!(ctx.channel() instanceof TransportChannel)) {
+            return Integer.MAX_VALUE;
+        }
+        int maxMessageSize = ((TransportChannel) ctx.channel()).maxMessageSize();
+        return maxMessageSize - maxMessageSize / 64;
+    }
+
+    /**
+     * Writes queued packets as one batch, leaving the rest queued once it would grow past {@code maxBatchSize}.
+     */
+    private void writeBatch(ChannelHandlerContext ctx, int maxBatchSize) {
         CompositeByteBuf buf = ctx.alloc().compositeDirectBuffer(messages.size() * 2);
         BedrockBatchWrapper batch = BedrockBatchWrapper.newInstance();
 
         try {
             BedrockPacketWrapper packet;
-            while ((packet = messages.poll()) != null) try {
+            while ((packet = messages.peek()) != null) {
                 ByteBuf message = packet.getPacketBuffer();
-                if (message == null) {
-                    throw new IllegalArgumentException("BedrockPacket is not encoded");
+                if (message != null && buf.isReadable()) {
+                    int length = message.readableBytes();
+                    if (buf.readableBytes() + VarInts.sizeOfUnsignedInt(length) + length > maxBatchSize) {
+                        break;
+                    }
                 }
+                messages.poll();
+                try {
+                    if (message == null) {
+                        throw new IllegalArgumentException("BedrockPacket is not encoded");
+                    }
 
-                addPrefixed(ctx, buf, message, packet.getReservedPrefixBytes());
-                batch.addPacket(packet.retain());
-            } finally {
-                packet.release();
+                    addPrefixed(ctx, buf, message, packet.getReservedPrefixBytes());
+                    batch.addPacket(packet.retain());
+                } finally {
+                    packet.release();
+                }
             }
 
             batch.setUncompressed(buf.retain());
@@ -60,8 +91,6 @@ public class BedrockBatchEncoder extends ChannelOutboundHandlerAdapter {
             buf.release();
             batch.release();
         }
-
-        super.flush(ctx);
     }
 
     /**
