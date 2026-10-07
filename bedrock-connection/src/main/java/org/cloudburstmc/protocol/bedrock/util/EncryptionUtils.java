@@ -288,6 +288,11 @@ public class EncryptionUtils {
                         throw new IllegalStateException("The chain isn't signed by Mojang!");
                     }
 
+                    // the client signs the first entry itself, so only the others' validity windows hold
+                    if (i > 0) {
+                        ChainEntryWindow.check(chain.get(i));
+                    }
+
                     parsedPayload = JsonUtil.parseJson(signature.getUnverifiedPayload());
                     String identityPublicKey = JsonUtils.childAsType(parsedPayload, "identityPublicKey", String.class);
                     currentKey = parseKey(identityPublicKey);
