@@ -23,6 +23,7 @@ public class EncodingSettings {
             .maxGeometryDataSize(1024 * 512)
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(100)
+            .maxCraftResults(16) // vanilla recipes have at most 2
             .build();
 
     /**
@@ -39,6 +40,7 @@ public class EncodingSettings {
             .maxGeometryDataSize(1024 * 512)
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(100)
+            .maxCraftResults(16)
             .build();
 
     /**
@@ -55,6 +57,7 @@ public class EncodingSettings {
             .maxGeometryDataSize(1024 * 256)
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(100)
+            .maxCraftResults(16)
             .build();
 
     /**
@@ -72,6 +75,7 @@ public class EncodingSettings {
             .maxItemStackTagLength(-1)
             .maxGeometryDataSize(-1)
             .maxInventoryActionsOrRequests(-1)
+            .maxCraftResults(-1)
             .build();
 
     private final int maxListSize;
@@ -82,4 +86,5 @@ public class EncodingSettings {
     private final int maxItemStackTagLength;
     private final int maxGeometryDataSize;
     private final int maxInventoryActionsOrRequests;
+    private final int maxCraftResults;
 }

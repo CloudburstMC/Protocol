@@ -248,7 +248,8 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
                 return new CraftNonImplementedAction();
             case CRAFT_RESULTS_DEPRECATED:
                 return new CraftResultsDeprecatedAction(
-                        this.readArray(byteBuf, new ItemData[0], this::readItem),
+                        this.readArray(byteBuf, new ItemData[0], this::readItem,
+                                this.getEncodingSettings().maxCraftResults()),
                         byteBuf.readUnsignedByte()
                 );
             default:
