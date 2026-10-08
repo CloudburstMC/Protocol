@@ -13,9 +13,13 @@ import org.cloudburstmc.protocol.bedrock.data.inventory.transaction.LegacySetIte
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
+import static org.cloudburstmc.protocol.common.util.Preconditions.checkArgument;
+
 public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v944 {
 
     public static final PlayerAuthInputSerializer_v2168 INSTANCE = new PlayerAuthInputSerializer_v2168();
+
+    protected static final PlayerAuthInputData[] INPUT_DATA = PlayerAuthInputData.values();
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerAuthInputPacket packet) {
@@ -92,11 +96,7 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
         packet.setRotation(Vector3f.from(x, y, z));
 
         if (buffer.readBoolean()) {
-            int count = VarInts.readUnsignedInt(buffer);
-            for (int i = 0; i < count; i++) {
-                int index = VarInts.readInt(buffer);
-                packet.getInputData().add(PlayerAuthInputData.values()[index]);
-            }
+            this.readInputData(buffer, packet);
         }
 
         packet.setInputMode(INPUT_MODES[VarInts.readUnsignedInt(buffer)]);
@@ -124,6 +124,18 @@ public class PlayerAuthInputSerializer_v2168 extends PlayerAuthInputSerializer_v
         packet.setCameraOrientation(helper.readVector3f(buffer));
         packet.setRawMoveVector(helper.readVector2f(buffer));
     }
+
+    protected void readInputData(ByteBuf buffer, PlayerAuthInputPacket packet) {
+        int count = VarInts.readUnsignedInt(buffer);
+        checkArgument(count >= 0 && count <= INPUT_DATA.length, "Tried to read %s input flags but maximum is %s",
+                count, INPUT_DATA.length);
+        for (int i = 0; i < count; i++) {
+            int index = VarInts.readInt(buffer);
+            checkArgument(index >= 0 && index < INPUT_DATA.length, "Unknown input flag %s", index);
+            packet.getInputData().add(INPUT_DATA[index]);
+        }
+    }
+
     @Override
     protected void writeItemUseTransaction(ByteBuf buffer, BedrockCodecHelper helper, ItemUseTransaction transaction) {
         int legacyRequestId = transaction.getLegacyRequestId();
