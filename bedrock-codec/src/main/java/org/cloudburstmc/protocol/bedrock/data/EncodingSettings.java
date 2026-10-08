@@ -17,7 +17,7 @@ public class EncodingSettings {
     public static final EncodingSettings DEFAULT = EncodingSettings.builder()
             .maxListSize(1536)
             .maxByteArraySize(1024 * 1024) // 1MB
-            .maxNetworkNBTSize(1024 * 1024 * 512) // 1.5MB
+            .maxNetworkNBTSize(1024 * 1536) // 1.5MB
             .maxItemNBTSize(1024 * 100) // 100KB
             .maxStringLength(1024 * 32) // 32KB
             .maxGeometryDataSize(1024 * 512)
