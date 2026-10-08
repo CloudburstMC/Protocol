@@ -2,6 +2,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v340;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.nbt.NBTInputStream;
 import org.cloudburstmc.nbt.NbtMap;
 import org.cloudburstmc.nbt.NbtUtils;
@@ -14,6 +15,7 @@ import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
 
@@ -38,7 +40,7 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
         int nbtSize = buffer.readShortLE();
         NbtMap compoundTag = null;
         if (nbtSize > 0) {
-            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize), this.encodingSettings.maxItemNBTSize()))) {
+            try (NBTInputStream reader = NbtUtils.createReaderLE(new ByteBufInputStream(buffer.readSlice(nbtSize)), this.encodingSettings.maxItemNBTSize())) {
                 compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
@@ -46,22 +48,18 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
         } else if (nbtSize == -1) {
             int tagCount = buffer.readUnsignedByte();
             if (tagCount != 1) throw new IllegalArgumentException("Expected 1 tag but got " + tagCount);
-            try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer))) {
+            try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(buffer), this.encodingSettings.maxItemNBTSize())) {
                 compoundTag = (NbtMap) reader.readTag();
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to load NBT data", e);
             }
         }
 
-        String[] canPlace = new String[VarInts.readInt(buffer)];
-        for (int i = 0; i < canPlace.length; i++) {
-            canPlace[i] = this.readString(buffer);
-        }
+        List<String> canPlace = new ObjectArrayList<>();
+        this.readArray(buffer, canPlace, VarInts::readInt, this::readString);
 
-        String[] canBreak = new String[VarInts.readInt(buffer)];
-        for (int i = 0; i < canBreak.length; i++) {
-            canBreak[i] = this.readString(buffer);
-        }
+        List<String> canBreak = new ObjectArrayList<>();
+        this.readArray(buffer, canBreak, VarInts::readInt, this::readString);
 
         long blockingTicks = 0;
 
@@ -73,8 +71,8 @@ public class BedrockCodecHelper_v340 extends BedrockCodecHelper_v332 {
                 .damage(damage)
                 .count(count)
                 .tag(compoundTag)
-                .canPlace(canPlace)
-                .canBreak(canBreak)
+                .canPlace(canPlace.toArray(new String[0]))
+                .canBreak(canBreak.toArray(new String[0]))
                 .blockingTicks(blockingTicks)
                 .build();
     }
