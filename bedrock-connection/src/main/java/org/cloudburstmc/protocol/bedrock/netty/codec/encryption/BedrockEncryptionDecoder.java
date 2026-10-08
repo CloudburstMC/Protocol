@@ -19,7 +19,8 @@ public class BedrockEncryptionDecoder extends MessageToMessageDecoder<BedrockBat
 
     public static final String NAME = "bedrock-encryption-decoder";
 
-    private static final boolean VALIDATE = Boolean.getBoolean("cloudburst.validateEncryption");
+    // On unless -Dcloudburst.validateEncryption=false
+    private static final boolean VALIDATE = Boolean.parseBoolean(System.getProperty("cloudburst.validateEncryption", "true"));
 
     private final AtomicLong packetCounter = new AtomicLong();
     private final SecretKey key;
