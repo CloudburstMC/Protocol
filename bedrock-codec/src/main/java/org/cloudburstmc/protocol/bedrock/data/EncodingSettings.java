@@ -54,7 +54,7 @@ public class EncodingSettings {
             .maxNetworkNBTSize(1024 * 512) // 500KB
             .maxItemNBTSize(1024 * 100) // 100KB
             .maxStringLength(1024 * 32) // 32KB
-            .maxGeometryDataSize(1024 * 256)
+            .maxGeometryDataSize(1024 * 512)
             .maxItemStackTagLength(64)
             .maxInventoryActionsOrRequests(100)
             .maxCraftResults(16)
