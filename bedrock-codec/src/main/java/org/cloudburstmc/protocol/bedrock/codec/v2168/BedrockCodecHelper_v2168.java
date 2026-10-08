@@ -249,12 +249,9 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
             }
         }
 
-        if (buf.isReadable()) {
-            log.info("Item user data has {} readable bytes left", buf.readableBytes());
-
-            if (log.isDebugEnabled()) {
-                log.debug("Item data:\n{}", ByteBufUtil.prettyHexDump(buf.readerIndex(0)));
-            }
+        if (log.isDebugEnabled() && buf.isReadable()) {
+            log.debug("Item user data has {} readable bytes left", buf.readableBytes());
+            log.debug("Item data:\n{}", ByteBufUtil.prettyHexDump(buf.readerIndex(0)));
         }
 
         return ItemData.builder()
@@ -333,12 +330,9 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
             }
         }
 
-        if (buf.isReadable()) {
-            log.info("Item user data has {} readable bytes left", buf.readableBytes());
-
-            if (log.isDebugEnabled()) {
-                log.debug("Item data:\n{}", ByteBufUtil.prettyHexDump(buf.readerIndex(0)));
-            }
+        if (log.isDebugEnabled() && buf.isReadable()) {
+            log.debug("Item user data has {} readable bytes left", buf.readableBytes());
+            log.debug("Item data:\n{}", ByteBufUtil.prettyHexDump(buf.readerIndex(0)));
         }
 
         return ItemData.builder()
@@ -1098,12 +1092,9 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
             }
         }
 
-        if (buf.isReadable()) {
-            log.info("Item user data has {} readable bytes left", buf.readableBytes());
-
-            if (log.isDebugEnabled()) {
-                log.debug("Item data:\n{}", ByteBufUtil.prettyHexDump(buf.readerIndex(0)));
-            }
+        if (log.isDebugEnabled() && buf.isReadable()) {
+            log.debug("Item user data has {} readable bytes left", buf.readableBytes());
+            log.debug("Item data:\n{}", ByteBufUtil.prettyHexDump(buf.readerIndex(0)));
         }
 
         return ItemData.builder()
