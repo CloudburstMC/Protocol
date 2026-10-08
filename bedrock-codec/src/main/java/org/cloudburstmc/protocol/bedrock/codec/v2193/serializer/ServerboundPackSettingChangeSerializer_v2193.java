@@ -45,7 +45,7 @@ public class ServerboundPackSettingChangeSerializer_v2193 extends ServerboundPac
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundPackSettingChangePacket packet) {
         packet.setPackId(helper.readUuid(buffer));
-        packet.setPackSettingName(helper.readString(buffer));
+        packet.setPackSettingName(helper.readStringMaxLen(buffer, 128));
 
         int type = VarInts.readUnsignedInt(buffer);
 

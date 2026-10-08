@@ -812,7 +812,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         }, this.getEncodingSettings().maxInventoryActionsOrRequests());
 
         List<String> filteredStrings = new ObjectArrayList<>();
-        this.readArray(buffer, filteredStrings, this::readString);
+        this.readArray(buffer, filteredStrings, buf -> this.readStringMaxLen(buf, 1000));
 
         int originVal = buffer.readIntLE();
         TextProcessingEventOrigin origin = originVal == -1 ? null : this.textProcessingEventOrigins.getType(originVal);
@@ -980,7 +980,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
     @Override
     public StructureSettings readStructureSettings(ByteBuf buffer) {
-        String paletteName = this.readString(buffer);
+        String paletteName = this.readStringMaxLen(buffer, 256);
         boolean ignoringEntities = buffer.readBoolean();
         boolean ignoringBlocks = buffer.readBoolean();
         boolean nonTickingPlayersAndTickingAreasEnabled = buffer.readBoolean();

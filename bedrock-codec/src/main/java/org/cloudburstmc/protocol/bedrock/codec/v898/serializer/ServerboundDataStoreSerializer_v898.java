@@ -44,9 +44,9 @@ public class ServerboundDataStoreSerializer_v898 implements BedrockPacketSeriali
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerboundDataStorePacket packet) {
-        packet.getUpdate().setDataStoreName(helper.readString(buffer));
-        packet.getUpdate().setProperty(helper.readString(buffer));
-        packet.getUpdate().setPath(helper.readString(buffer));
+        packet.getUpdate().setDataStoreName(helper.readStringMaxLen(buffer, 1000));
+        packet.getUpdate().setProperty(helper.readStringMaxLen(buffer, 1000));
+        packet.getUpdate().setPath(helper.readStringMaxLen(buffer, 1000));
 
         int type = VarInts.readUnsignedInt(buffer);
 
@@ -58,7 +58,7 @@ public class ServerboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 packet.getUpdate().setData(buffer.readBoolean());
                 break;
             case 2:
-                packet.getUpdate().setData(helper.readString(buffer));
+                packet.getUpdate().setData(helper.readStringMaxLen(buffer, 5000));
                 break;
             default:
                 throw new IllegalStateException("Invalid data store data type: " + type);

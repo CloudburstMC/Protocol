@@ -17,6 +17,6 @@ public class PartyChangedSerializer_v975 extends PartyChangedSerializer_v944 {
 
     @Override
     protected PartyChangedPacket.PartyInfo readParty(ByteBuf buffer, BedrockCodecHelper helper) {
-        return new PartyChangedPacket.PartyInfo(helper.readString(buffer), buffer.readBoolean());
+        return new PartyChangedPacket.PartyInfo(helper.readStringMaxLen(buffer, 49), buffer.readBoolean());
     }
 }

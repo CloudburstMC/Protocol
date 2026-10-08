@@ -11,6 +11,8 @@ public class BookEditSerializer_v924 extends BookEditSerializer_v291 {
 
     public static final BookEditSerializer_v924 INSTANCE = new BookEditSerializer_v924();
 
+    private static final int MAX_TEXT_LENGTH = 768;
+
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, BookEditPacket packet) {
         VarInts.writeInt(buffer, packet.getInventorySlot());
@@ -49,8 +51,8 @@ public class BookEditSerializer_v924 extends BookEditSerializer_v291 {
             case REPLACE_PAGE:
             case ADD_PAGE:
                 packet.setPageNumber(VarInts.readInt(buffer));
-                packet.setText(converter.deserialize(helper.readString(buffer)));
-                packet.setPhotoName(helper.readString(buffer));
+                packet.setText(converter.deserialize(helper.readStringMaxLen(buffer, MAX_TEXT_LENGTH)));
+                packet.setPhotoName(helper.readStringMaxLen(buffer, MAX_TEXT_LENGTH));
                 break;
             case DELETE_PAGE:
                 packet.setPageNumber(VarInts.readInt(buffer));
@@ -60,9 +62,9 @@ public class BookEditSerializer_v924 extends BookEditSerializer_v291 {
                 packet.setSecondaryPageNumber(VarInts.readInt(buffer));
                 break;
             case SIGN_BOOK:
-                packet.setTitle(converter.deserialize(helper.readString(buffer)));
-                packet.setAuthor(converter.deserialize(helper.readString(buffer)));
-                packet.setXuid(helper.readString(buffer));
+                packet.setTitle(converter.deserialize(helper.readStringMaxLen(buffer, MAX_TEXT_LENGTH)));
+                packet.setAuthor(converter.deserialize(helper.readStringMaxLen(buffer, MAX_TEXT_LENGTH)));
+                packet.setXuid(helper.readStringMaxLen(buffer, MAX_TEXT_LENGTH));
                 break;
         }
     }

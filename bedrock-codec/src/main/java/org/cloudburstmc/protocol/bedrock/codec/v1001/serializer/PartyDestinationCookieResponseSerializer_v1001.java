@@ -18,7 +18,7 @@ public class PartyDestinationCookieResponseSerializer_v1001 implements BedrockPa
     }
 
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PartyDestinationCookieResponsePacket packet) {
-        packet.setCookie(helper.readString(buffer));
+        packet.setCookie(helper.readStringMaxLen(buffer, 2048));
         packet.setAccepted(buffer.readBoolean());
     }
 }
