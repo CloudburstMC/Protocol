@@ -32,6 +32,7 @@ import org.cloudburstmc.protocol.bedrock.netty.codec.encryption.BedrockEncryptio
 import org.cloudburstmc.protocol.bedrock.netty.codec.packet.BedrockPacketCodec;
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockChannelInitializer;
 import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket;
+import org.cloudburstmc.protocol.bedrock.packet.SubClientLoginPacket;
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils;
 
 import javax.crypto.SecretKey;
@@ -111,8 +112,25 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
             return;
         }
         int targetId = wrapper.getTargetSubClientId();
-        BedrockSession session = this.sessions.computeIfAbsent(targetId, this::onSessionCreated);
+        BedrockSession session = this.sessions.get(targetId);
+        if (session == null) {
+            if (!this.opensSession(wrapper)) {
+                return;
+            }
+            session = this.onSessionCreated(targetId);
+            this.sessions.put(targetId, session);
+        }
         session.onPacket(wrapper);
+    }
+
+    /**
+     * Whether a packet addressed to a session that does not exist yet may create it. On a server a sub-client's
+     * session only starts with that sub-client's login.
+     */
+    protected boolean opensSession(BedrockPacketWrapper wrapper) {
+        return wrapper.getTargetSubClientId() == 0
+                || this.channel.attr(PacketDirection.ATTRIBUTE).get() != PacketDirection.CLIENT_BOUND
+                || wrapper.getPacket() instanceof SubClientLoginPacket;
     }
 
     protected BedrockSession onSessionCreated(int sessionId) {
