@@ -47,12 +47,12 @@ public class CameraInstructionSerializer_618 implements BedrockPacketSerializer<
     }
 
     protected void writeEase(ByteBuf buffer, CameraSetInstruction.EaseData ease) {
-        buffer.writeByte(ease.getEaseType().ordinal());
+        buffer.writeByte(ease.getEaseType().getId());
         buffer.writeFloatLE(ease.getTime());
     }
 
     protected CameraSetInstruction.EaseData readEase(ByteBuf buffer) {
-        CameraEase type = CameraEase.values()[buffer.readUnsignedByte()];
+        CameraEase type = CameraEase.byId(buffer.readUnsignedByte());
         float time = buffer.readFloatLE();
         return new CameraSetInstruction.EaseData(type, time);
     }

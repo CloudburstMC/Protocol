@@ -8,8 +8,6 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.UUID;
-
 import static org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket.Action;
 import static org.cloudburstmc.protocol.bedrock.packet.SetScoreboardIdentityPacket.Entry;
 
@@ -25,7 +23,7 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
         helper.writeArray(buffer, packet.getEntries(), (buf, entry) -> {
             VarInts.writeLong(buffer, entry.getScoreboardId());
             if (action == Action.ADD) {
-                helper.writeUuid(buffer, entry.getUuid());
+                VarInts.writeLong(buffer, entry.getPlayerId());
             }
         });
     }
@@ -36,11 +34,11 @@ public class SetScoreboardIdentitySerializer_v291 implements BedrockPacketSerial
         packet.setAction(action);
         helper.readArray(buffer, packet.getEntries(), buf -> {
             long scoreboardId = VarInts.readLong(buffer);
-            UUID uuid = null;
+            long playerId = 0;
             if (action == Action.ADD) {
-                uuid = helper.readUuid(buffer);
+                playerId = VarInts.readLong(buffer);
             }
-            return new Entry(scoreboardId, uuid);
+            return new Entry(scoreboardId, playerId);
         });
     }
 }

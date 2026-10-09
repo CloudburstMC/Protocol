@@ -77,7 +77,7 @@ public class DebugDrawerSerializer_v1001 extends DebugDrawerSerializer_v975 {
         Float maximumRenderDistance = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
         Color color = helper.readOptional(buffer, null, READ_COLOR);
         Integer dimension = helper.readOptional(buffer, -1, VarInts::readInt);
-        Long attachedToEntityId = helper.readOptional(buffer, null, VarInts::readUnsignedLong);
+        Long attachedToEntityId = helper.readOptional(buffer, null, VarInts::readLong);
         VarInts.readUnsignedInt(buffer); // Unused payload type
 
         if (type == null) {
