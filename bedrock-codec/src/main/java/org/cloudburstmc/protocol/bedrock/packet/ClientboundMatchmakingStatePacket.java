@@ -53,7 +53,9 @@ public class ClientboundMatchmakingStatePacket implements BedrockPacket {
 
     @Value
     public static class MatchmakingStateOptions {
+        @Nullable
         String triggeringPlayerName;
-        boolean triggeredByLocalPlayer;
+        @Nullable
+        Boolean triggeredByLocalPlayer;
     }
 }
