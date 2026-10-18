@@ -52,6 +52,23 @@ public class ImageData {
         }
     }
 
+    public static boolean isValidImage(byte[] image) {
+        if (image == null) {
+            return false;
+        }
+        switch (image.length) {
+            case 0:
+            case SINGLE_SKIN_SIZE:
+            case DOUBLE_SKIN_SIZE:
+            case SKIN_128_64_SIZE:
+            case SKIN_128_128_SIZE:
+            case SKIN_PERSONA_SIZE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public void checkLegacySkinSize() {
         switch (image.length) {
             case SINGLE_SKIN_SIZE:
