@@ -19,6 +19,16 @@ public class BedrockPeerDisconnectReasonTest {
     }
 
     @Test
+    public void aRemoteThatAbortsHasClosed() throws Exception {
+        BedrockPeer peer = peer();
+        BedrockSession session = peer.sessions.get(0);
+
+        peer.userEventTriggered(null, TransportDisconnectReason.ABORTED_BY_REMOTE_PEER);
+
+        assertEquals(BedrockDisconnectReasons.CLOSED, session.getDisconnectReason());
+    }
+
+    @Test
     public void aReasonWithoutABedrockStringKeepsItsName() throws Exception {
         BedrockPeer peer = peer();
         BedrockSession session = peer.sessions.get(0);

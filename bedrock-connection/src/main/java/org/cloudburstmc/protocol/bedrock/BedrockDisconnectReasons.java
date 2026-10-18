@@ -21,6 +21,8 @@ public class BedrockDisconnectReasons {
     private static Map<TransportDisconnectReason, String> generateMappings() {
         EnumMap<TransportDisconnectReason, String> map = new EnumMap<>(TransportDisconnectReason.class);
         map.put(TransportDisconnectReason.CLOSED_BY_REMOTE_PEER, CLOSED);
+        // A retail client aborts its NetherNet connection on every quit
+        map.put(TransportDisconnectReason.ABORTED_BY_REMOTE_PEER, CLOSED);
         map.put(TransportDisconnectReason.DISCONNECTED, DISCONNECTED);
         map.put(TransportDisconnectReason.TIMED_OUT, TIMEOUT);
         map.put(TransportDisconnectReason.BAD_PACKET, REMOVED);
