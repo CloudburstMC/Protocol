@@ -50,7 +50,15 @@ public enum ContainerType {
     /**
      * @since v630
      */
-    CRAFTER(36);
+    CRAFTER(36),
+    /**
+     * @since v2193
+     */
+    DATA_DRIVEN_CONTAINER(37),
+    /**
+     * @since v2225
+     */
+    RESERVED_CONTAINER_TYPE(38);
 
     public static final ContainerType[] VALUES;
 
