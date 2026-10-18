@@ -15,7 +15,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.cloudburstmc.netty.channel.raknet.RakDisconnectReason;
+import org.cloudburstmc.netty.channel.TransportDisconnectReason;
 import org.cloudburstmc.netty.channel.raknet.config.RakChannelOption;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodec;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
@@ -235,10 +235,13 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
         GlobalEventExecutor.INSTANCE.schedule(retry, REJECTED_RETRY_DELAY_MILLIS, TimeUnit.MILLISECONDS);
     }
 
-    protected void onRakNetDisconnect(ChannelHandlerContext ctx, RakDisconnectReason reason) {
+    protected void onTransportDisconnect(ChannelHandlerContext ctx, TransportDisconnectReason reason) {
         CharSequence disconnectReason = BedrockDisconnectReasons.getReason(reason);
         for (BedrockSession session : this.sessions.values()) {
-            session.disconnectReason = disconnectReason;
+            // Keeps a reason this side gave when it closed
+            if (session.disconnectReason == BedrockDisconnectReasons.UNKNOWN) {
+                session.disconnectReason = disconnectReason;
+            }
         }
     }
 
@@ -486,8 +489,8 @@ public class BedrockPeer extends ChannelInboundHandlerAdapter {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof RakDisconnectReason) {
-            onRakNetDisconnect(ctx, (RakDisconnectReason) evt);
+        if (evt instanceof TransportDisconnectReason) {
+            onTransportDisconnect(ctx, (TransportDisconnectReason) evt);
         }
     }
 
