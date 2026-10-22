@@ -213,6 +213,11 @@ public class BedrockBatchEncoderTest {
         public int maxMessageSize() {
             return this.maxMessageSize;
         }
+
+        @Override
+        public long getPing() {
+            return 0;
+        }
     }
 
     private static void assertBatchSizes(EmbeddedChannel channel, int maxBatchSize, int... packetCounts) {
