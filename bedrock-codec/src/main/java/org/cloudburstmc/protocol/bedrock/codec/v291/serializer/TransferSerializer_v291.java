@@ -21,6 +21,6 @@ public class TransferSerializer_v291 implements BedrockPacketSerializer<Transfer
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, TransferPacket packet) {
         packet.setAddress(helper.readString(buffer));
-        packet.setPort(buffer.readShortLE());
+        packet.setPort(buffer.readUnsignedShortLE());
     }
 }
