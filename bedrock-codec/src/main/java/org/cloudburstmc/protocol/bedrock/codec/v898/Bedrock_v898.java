@@ -41,6 +41,7 @@ public class Bedrock_v898 extends Bedrock_v860 {
             .updateSerializer(AnimatePacket.class, AnimateSerializer_v898.INSTANCE)
             .updateSerializer(AvailableCommandsPacket.class, new AvailableCommandsSerializer_v898(COMMAND_PARAMS))
             .updateSerializer(CameraAimAssistPresetsPacket.class, CameraAimAssistPresetsSerializer_v898.INSTANCE)
+            .updateSerializer(ClientboundDebugRendererPacket.class, ClientboundDebugRendererSerializer_v898.INSTANCE)
             .updateSerializer(CommandOutputPacket.class, CommandOutputSerializer_v898.INSTANCE)
             .updateSerializer(CommandRequestPacket.class, CommandRequestSerializer_v898.INSTANCE)
             .updateSerializer(EntityEventPacket.class, new EntityEventSerializer_v291(ENTITY_EVENTS))
