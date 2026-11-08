@@ -26,8 +26,9 @@ import static java.util.Objects.requireNonNull;
 public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
 
     public BedrockCodecHelper_v2225(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
-        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins,
+                                    TypeMap<ItemStackRequestActionType> stackRequestActionEnumValues) {
+        super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins, stackRequestActionEnumValues);
     }
 
     @Override
