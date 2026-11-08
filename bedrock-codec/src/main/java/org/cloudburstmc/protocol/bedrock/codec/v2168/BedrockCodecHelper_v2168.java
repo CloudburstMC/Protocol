@@ -51,9 +51,13 @@ import static org.cloudburstmc.protocol.common.util.Preconditions.checkNotNull;
 
 public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
+    protected final TypeMap<ItemStackRequestActionType> stackRequestActionEnumValues;
+
     public BedrockCodecHelper_v2168(EntityDataTypeMap entityData, TypeMap<Class<?>> gameRulesTypes, TypeMap<ItemStackRequestActionType> stackRequestActionTypes,
-                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins) {
+                                    TypeMap<ContainerSlotType> containerSlotTypes, TypeMap<Ability> abilities, TypeMap<TextProcessingEventOrigin> textProcessingEventOrigins,
+                                    TypeMap<ItemStackRequestActionType> stackRequestActionEnumValues) {
         super(entityData, gameRulesTypes, stackRequestActionTypes, containerSlotTypes, abilities, textProcessingEventOrigins);
+        this.stackRequestActionEnumValues = stackRequestActionEnumValues;
     }
 
     @Override
@@ -470,7 +474,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
 
     @Override
     protected void writeRequestActionData(ByteBuf byteBuf, ItemStackRequestAction action) {
-        byteBuf.writeByte(action.getType().ordinal());
+        byteBuf.writeByte(this.stackRequestActionEnumValues.getId(action.getType()));
 
         switch (action.getType()) {
             case TAKE:
