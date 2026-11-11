@@ -107,7 +107,7 @@ public class CraftingDataSerializer_v2168 extends CraftingDataSerializer_v748 {
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getTag());
         VarInts.writeInt(buffer, data.getPriority());
-        buffer.writeBoolean(data.isAssumeSymetry());
+        buffer.writeBoolean(data.isAssumeSymmetry());
 
         buffer.writeBoolean(data.getType() == CraftingDataType.SHAPED);
         if (data.getType() == CraftingDataType.SHAPED) {

@@ -30,7 +30,7 @@ public class CraftingDataSerializer_v671 extends CraftingDataSerializer_v582 {
         helper.writeUuid(buffer, data.getUuid());
         helper.writeString(buffer, data.getTag());
         VarInts.writeInt(buffer, data.getPriority());
-        buffer.writeBoolean(data.isAssumeSymetry());
+        buffer.writeBoolean(data.isAssumeSymmetry());
         VarInts.writeUnsignedInt(buffer, data.getNetId());
     }
 
