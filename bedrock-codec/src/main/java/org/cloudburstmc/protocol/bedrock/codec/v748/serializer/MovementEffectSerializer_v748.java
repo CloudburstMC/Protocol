@@ -16,16 +16,16 @@ public class MovementEffectSerializer_v748 implements BedrockPacketSerializer<Mo
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, MovementEffectPacket packet) {
         VarInts.writeUnsignedLong(buffer, packet.getEntityRuntimeId());
-        VarInts.writeUnsignedInt(buffer, packet.getEffectType().getId());
-        VarInts.writeUnsignedInt(buffer, packet.getDuration());
+        VarInts.writeInt(buffer, packet.getEffectType().getId());
+        VarInts.writeInt(buffer, packet.getDuration());
         VarInts.writeUnsignedLong(buffer, packet.getTick());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, MovementEffectPacket packet) {
         packet.setEntityRuntimeId(VarInts.readUnsignedLong(buffer));
-        packet.setEffectType(MovementEffectType.byId(VarInts.readUnsignedInt(buffer)));
-        packet.setDuration(VarInts.readUnsignedInt(buffer));
+        packet.setEffectType(MovementEffectType.byId(VarInts.readInt(buffer)));
+        packet.setDuration(VarInts.readInt(buffer));
         packet.setTick(VarInts.readUnsignedLong(buffer));
     }
 }

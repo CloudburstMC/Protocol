@@ -38,9 +38,9 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
 
         helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (b, n) -> b.writeByte(n.ordinal()));
 
-        writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSurfaceBuilderData());
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
 
-        writeBiomeSurfaceBuilderData(buffer, helper, definitionChunkGen.getSubsurfaceBuilderData());
+        helper.writeOptionalNull(buffer, definitionChunkGen.getSubsurfaceBuilderData(), this::writeBiomeSurfaceBuilderData);
     }
 
     protected void writeBiomeSurfaceBuilderData(ByteBuf buffer, BedrockCodecHelper helper, BiomeSurfaceBuilderData data) {
