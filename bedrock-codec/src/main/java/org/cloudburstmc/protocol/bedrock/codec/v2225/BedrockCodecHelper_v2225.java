@@ -8,7 +8,6 @@ import org.cloudburstmc.protocol.bedrock.data.Ability;
 import org.cloudburstmc.protocol.bedrock.data.PassengerOfBlockArguments;
 import org.cloudburstmc.protocol.bedrock.data.definitions.ItemDefinition;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ContainerSlotType;
-import org.cloudburstmc.protocol.bedrock.data.inventory.descriptor.*;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.TextProcessingEventOrigin;
 import org.cloudburstmc.protocol.bedrock.data.inventory.itemstack.request.action.ItemStackRequestActionType;
 import org.cloudburstmc.protocol.bedrock.data.skin.*;
@@ -166,39 +165,8 @@ public class BedrockCodecHelper_v2225 extends BedrockCodecHelper_v2193 {
     private static final Pattern AUX_SUFFIX = Pattern.compile(":[0-9]+$");
 
     @Override
-    protected ItemDescriptor readItemDescriptor(ByteBuf buffer, ItemDescriptorType type) {
-        ItemDescriptor descriptor;
-        if (type != ItemDescriptorType.INVALID) {
-            String desc = this.readString(buffer);
-            type = ItemDescriptorType.fromName(desc);
-        }
-
-        switch (type) {
-            case INVALID:
-                int aux_ = VarInts.readInt(buffer);
-                descriptor = InvalidDescriptor.INSTANCE;
-                break;
-            case DEFAULT:
-                String id = AUX_SUFFIX.matcher(this.readString(buffer)).replaceFirst(""); // wtf why does it put aux here
-                int aux = VarInts.readInt(buffer);
-                ItemDefinition definition = this.itemDefinitions.getDefinition(id);
-                if (definition == null && log.isDebugEnabled()) {
-                    log.debug("No ItemDefinition for id {} aux {}, did proxy not set itemDefinitions?", id, aux);
-                }
-                descriptor = new DefaultDescriptor(definition, aux);
-                break;
-            case MOLANG:
-                descriptor = new MolangDescriptor(this.readString(buffer), buffer.readShortLE());
-                break;
-            case ITEM_TAG:
-                descriptor = new ItemTagDescriptor(this.readString(buffer));
-                int aux__ = VarInts.readInt(buffer);
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-
-        return descriptor;
+    protected ItemDefinition resolveNamedIngredient(String identifier) {
+        return super.resolveNamedIngredient(AUX_SUFFIX.matcher(identifier).replaceFirst(""));
     }
 }
 

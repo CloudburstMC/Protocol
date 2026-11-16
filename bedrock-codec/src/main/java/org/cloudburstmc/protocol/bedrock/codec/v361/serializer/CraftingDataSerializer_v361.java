@@ -94,7 +94,7 @@ public class CraftingDataSerializer_v361 extends CraftingDataSerializer_v354 {
         } else {
             int auxValue = fromAuxValue(VarInts.readInt(buffer));
             int stackSize = VarInts.readInt(buffer);
-            return new ItemDescriptorWithCount(new DefaultDescriptor(definition, auxValue), stackSize);
+            return new ItemDescriptorWithCount(new DefaultDescriptor(definition, auxValue, definition == null ? null : definition.getIdentifier()), stackSize);
         }
     }
 

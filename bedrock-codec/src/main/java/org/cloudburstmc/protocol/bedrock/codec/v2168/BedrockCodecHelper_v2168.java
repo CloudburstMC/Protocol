@@ -866,7 +866,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                 if (definition == null && log.isDebugEnabled()) {
                     log.debug("No ItemDefinition for id {}, did proxy not set itemDefinitions?", id);
                 }
-                descriptor = new DefaultDescriptor(definition, aux);
+                descriptor = new DefaultDescriptor(definition, aux, id);
                 break;
             case MOLANG:
                 descriptor = new MolangDescriptor(this.readString(buffer), buffer.readShortLE());
@@ -899,7 +899,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                 break;
             case DEFAULT:
                 DefaultDescriptor defaultDescriptor = (DefaultDescriptor) ingredient.getDescriptor();
-                this.writeString(buffer, defaultDescriptor.getItemId().getIdentifier());
+                this.writeString(buffer, defaultDescriptor.getIdentifier());
                 VarInts.writeInt(buffer, defaultDescriptor.getAuxValue());
                 break;
             case MOLANG:
@@ -918,6 +918,10 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
         buffer.writeShortLE(ingredient.getCount());
     }
 
+    protected ItemDefinition resolveNamedIngredient(String identifier) {
+        return this.itemDefinitions.getDefinition(identifier);
+    }
+
     @Override
     protected ItemDescriptor readItemDescriptor(ByteBuf buffer, ItemDescriptorType type) {
         ItemDescriptor descriptor;
@@ -934,11 +938,11 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
             case DEFAULT:
                 String id = this.readString(buffer);
                 int aux = VarInts.readInt(buffer);
-                ItemDefinition definition = this.itemDefinitions.getDefinition(id);
+                ItemDefinition definition = this.resolveNamedIngredient(id);
                 if (definition == null && log.isDebugEnabled()) {
                     log.debug("No ItemDefinition for id {}, did proxy not set itemDefinitions?", id);
                 }
-                descriptor = new DefaultDescriptor(definition, aux);
+                descriptor = new DefaultDescriptor(definition, aux, id);
                 break;
             case MOLANG:
                 descriptor = new MolangDescriptor(this.readString(buffer), buffer.readShortLE());
@@ -966,7 +970,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
                 break;
             case DEFAULT:
                 DefaultDescriptor defaultDescriptor = (DefaultDescriptor) descriptor;
-                this.writeString(buffer, defaultDescriptor.getItemId().getIdentifier());
+                this.writeString(buffer, defaultDescriptor.getIdentifier());
                 VarInts.writeInt(buffer, defaultDescriptor.getAuxValue());
                 break;
             case MOLANG:
@@ -1046,7 +1050,7 @@ public class BedrockCodecHelper_v2168 extends BedrockCodecHelper_v975 {
             if (definition == null &&log.isDebugEnabled()) {
                 log.debug("No ItemDefinition for id {}, did proxy not set itemDefinitions?", id);
             }
-            descriptor = new DefaultDescriptor(definition, aux);
+            descriptor = new DefaultDescriptor(definition, aux, definition == null ? null : definition.getIdentifier());
         }
 
         ItemDefinition definition = descriptor == InvalidDescriptor.INSTANCE ? ItemData.AIR.getDefinition() : ((DefaultDescriptor) descriptor).getItemId();

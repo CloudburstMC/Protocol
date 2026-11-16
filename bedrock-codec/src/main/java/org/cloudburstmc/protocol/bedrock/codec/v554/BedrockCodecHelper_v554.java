@@ -67,7 +67,7 @@ public class BedrockCodecHelper_v554 extends BedrockCodecHelper_v534 {
                 int itemId = buffer.readShortLE();
                 ItemDefinition definition = itemId == 0 ? ItemDefinition.AIR : this.getItemDefinitions().getDefinition(itemId);
                 int auxValue = itemId != 0 ? buffer.readShortLE() : 0;
-                descriptor = new DefaultDescriptor(definition, auxValue);
+                descriptor = new DefaultDescriptor(definition, auxValue, definition == null ? null : definition.getIdentifier());
                 break;
             case MOLANG:
                 descriptor = new MolangDescriptor(this.readString(buffer), buffer.readUnsignedByte());

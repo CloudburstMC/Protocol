@@ -294,7 +294,7 @@ public class BedrockCodecHelper_v407 extends BedrockCodecHelper_v390 {
         int meta = fromAuxValue(VarInts.readInt(buffer));
         int count = VarInts.readInt(buffer);
 
-        return new ItemDescriptorWithCount(new DefaultDescriptor(definition, meta), count);
+        return new ItemDescriptorWithCount(new DefaultDescriptor(definition, meta, definition == null ? null : definition.getIdentifier()), count);
     }
 
     @Override
