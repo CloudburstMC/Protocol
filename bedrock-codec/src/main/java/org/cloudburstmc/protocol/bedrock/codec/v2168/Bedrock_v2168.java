@@ -69,6 +69,29 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
             .insert(17, ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED)
             .build();
 
+    protected static final TypeMap<ItemStackRequestActionType> ITEM_STACK_REQUEST_ACTION_ENUM_VALUES = TypeMap.builder(ItemStackRequestActionType.class)
+            .insert(0, ItemStackRequestActionType.TAKE)
+            .insert(1, ItemStackRequestActionType.PLACE)
+            .insert(2, ItemStackRequestActionType.SWAP)
+            .insert(3, ItemStackRequestActionType.DROP)
+            .insert(4, ItemStackRequestActionType.DESTROY)
+            .insert(5, ItemStackRequestActionType.CONSUME)
+            .insert(6, ItemStackRequestActionType.CREATE)
+            .insert(7, ItemStackRequestActionType.PLACE_IN_ITEM_CONTAINER)
+            .insert(8, ItemStackRequestActionType.TAKE_FROM_ITEM_CONTAINER)
+            .insert(9, ItemStackRequestActionType.LAB_TABLE_COMBINE)
+            .insert(10, ItemStackRequestActionType.BEACON_PAYMENT)
+            .insert(11, ItemStackRequestActionType.MINE_BLOCK)
+            .insert(12, ItemStackRequestActionType.CRAFT_RECIPE)
+            .insert(13, ItemStackRequestActionType.CRAFT_RECIPE_AUTO)
+            .insert(14, ItemStackRequestActionType.CRAFT_CREATIVE)
+            .insert(15, ItemStackRequestActionType.CRAFT_RECIPE_OPTIONAL)
+            .insert(16, ItemStackRequestActionType.CRAFT_REPAIR_AND_DISENCHANT)
+            .insert(17, ItemStackRequestActionType.CRAFT_LOOM)
+            .insert(18, ItemStackRequestActionType.CRAFT_NON_IMPLEMENTED_DEPRECATED)
+            .insert(19, ItemStackRequestActionType.CRAFT_RESULTS_DEPRECATED)
+            .build();
+
     protected static final TypeMap<SoundEvent> SOUND_EVENTS = Bedrock_v1001.SOUND_EVENTS
             .toBuilder()
             .replace(611, SoundEvent.MOUNT)
@@ -80,7 +103,7 @@ public class Bedrock_v2168 extends Bedrock_v1001 {
     public static final BedrockCodec CODEC = Bedrock_v1001.CODEC.toBuilder()
             .protocolVersion(2168)
             .minecraftVersion("1.26.40")
-            .helper(() -> new BedrockCodecHelper_v2168(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS))
+            .helper(() -> new BedrockCodecHelper_v2168(ENTITY_DATA, GAME_RULE_TYPES, ITEM_STACK_REQUEST_TYPES, CONTAINER_SLOT_TYPES, PLAYER_ABILITIES, TEXT_PROCESSING_ORIGINS, ITEM_STACK_REQUEST_ACTION_ENUM_VALUES))
             .updateSerializer(AnvilDamagePacket.class, AnvilDamageSerializer_v2168.INSTANCE)
             .updateSerializer(ClientboundMapItemDataPacket.class, ClientboundMapItemDataSerializer_v2168.INSTANCE)
             .updateSerializer(ClientboundUpdateSoundDataPacket.class, ClientboundUpdateSoundDataSerializer_v2168.INSTANCE)
