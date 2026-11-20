@@ -78,19 +78,4 @@ public class CameraPresetsSerializer_v776 extends CameraPresetsSerializer_v766 {
 
         return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, minYawLimit, maxYawLimit, listener, effects, rotationSpeed, snapToTarget, entityOffset, horizontalRotationLimit, verticalRotationLimit, continueTargeting, alignTargetAndCameraForward, blockListeningRadius, aimAssist, null);
     }
-
-    protected CameraAimAssistPreset readCameraAimAssist(ByteBuf buffer, BedrockCodecHelper helper) {
-        String identifier = helper.readOptional(buffer, null, helper::readString);
-        Integer targetMode = helper.readOptional(buffer, null, ByteBuf::readIntLE);
-        Vector2f angle = helper.readOptional(buffer, null, helper::readVector2f);
-        Float distance = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
-        return new CameraAimAssistPreset(identifier, targetMode, angle, distance);
-    }
-
-    protected void writeCameraAimAssist(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPreset aimAssist) {
-        helper.writeOptionalNull(buffer, aimAssist.getIdentifier(), helper::writeString);
-        helper.writeOptionalNull(buffer, aimAssist.getTargetMode(), ByteBuf::writeIntLE);
-        helper.writeOptionalNull(buffer, aimAssist.getAngle(), helper::writeVector2f);
-        helper.writeOptionalNull(buffer, aimAssist.getDistance(), ByteBuf::writeFloatLE);
-    }
 }

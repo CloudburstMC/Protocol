@@ -30,12 +30,12 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
             helper.writeArray(buf, spline.getInstruction().getProgressKeyFrames(), (buf2, frame) -> {
                 buf2.writeFloatLE(frame.getValue());
                 buf2.writeFloatLE(frame.getTime());
-                helper.writeString(buf2, frame.getEase().getSerializeName());
+                helper.writeOptionalNull(buf2, frame.getEase(), (buf3, ease) -> helper.writeString(buf3, ease.getSerializeName()));
             });
             helper.writeArray(buf, spline.getInstruction().getRotationOption(), (buf2, rotationOption) -> {
                 helper.writeVector3f(buf2, rotationOption.getKeyFrameValues());
                 buf2.writeFloatLE(rotationOption.getKeyFrameTimes());
-                helper.writeString(buf2, rotationOption.getEase().getSerializeName());
+                helper.writeOptionalNull(buf2, rotationOption.getEase(), (buf3, ease) -> helper.writeString(buf3, ease.getSerializeName()));
             });
         });
     }
@@ -54,14 +54,14 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
             helper.readArray(buf, progressKeyFrames, buf2 -> {
                 float value = buf2.readFloatLE();
                 float time = buf2.readFloatLE();
-                CameraEase ease = CameraEase.fromName(helper.readString(buf2));
+                CameraEase ease = helper.readOptional(buf2, null, buf3 -> CameraEase.fromName(helper.readString(buf3)));
                 return new CameraSplineInstruction.SplineProgressOption(value, time, ease);
             });
             List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ArrayList<>();
             helper.readArray(buf, rotationOption, buf2 -> {
                 Vector3f keyFrameValues = helper.readVector3f(buf2);
                 float keyFrameTimes = buf2.readFloatLE();
-                CameraEase ease = CameraEase.fromName(helper.readString(buf2));
+                CameraEase ease = helper.readOptional(buf2, null, buf3 -> CameraEase.fromName(helper.readString(buf3)));
                 return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes, ease);
             });
             return new CameraSplineDefinition(name, new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption));

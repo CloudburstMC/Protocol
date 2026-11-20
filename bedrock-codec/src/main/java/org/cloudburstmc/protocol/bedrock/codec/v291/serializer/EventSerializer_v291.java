@@ -156,16 +156,16 @@ public class EventSerializer_v291 implements BedrockPacketSerializer<EventPacket
     }
 
     protected CauldronUsedEventData readCauldronUsed(ByteBuf buffer, BedrockCodecHelper helper) {
+        int color = VarInts.readUnsignedInt(buffer);
         int potionId = VarInts.readInt(buffer);
-        int color = VarInts.readInt(buffer);
         int fillLevel = VarInts.readInt(buffer);
         return new CauldronUsedEventData(potionId, color, fillLevel);
     }
 
     protected void writeCauldronUsed(ByteBuf buffer, BedrockCodecHelper helper, EventData eventData) {
         CauldronUsedEventData event = (CauldronUsedEventData) eventData;
-        VarInts.writeUnsignedInt(buffer, event.getPotionId());
-        VarInts.writeInt(buffer, event.getColor());
+        VarInts.writeUnsignedInt(buffer, event.getColor());
+        VarInts.writeInt(buffer, event.getPotionId());
         VarInts.writeInt(buffer, event.getFillLevel());
     }
 
