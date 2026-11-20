@@ -210,6 +210,6 @@ public class Bedrock_v407 extends Bedrock_v390 {
             .registerPacket(PositionTrackingDBServerBroadcastPacket::new, PositionTrackingDBServerBroadcastSerializer_v407.INSTANCE, 153, PacketRecipient.CLIENT)
             .registerPacket(PositionTrackingDBClientRequestPacket::new, PositionTrackingDBClientRequestSerializer_v407.INSTANCE, 154, PacketRecipient.SERVER)
             .registerPacket(DebugInfoPacket::new, DebugInfoSerializer_v407.INSTANCE, 155, PacketRecipient.BOTH)
-            .registerPacket(PacketViolationWarningPacket::new, PacketViolationWarningSerializer_v407.INSTANCE, 156, PacketRecipient.SERVER)
+            .registerPacket(PacketViolationWarningPacket::new, PacketViolationWarningSerializer_v407.INSTANCE, 156, PacketRecipient.BOTH)
             .build();
 }

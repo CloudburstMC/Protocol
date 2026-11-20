@@ -23,7 +23,7 @@ public class CompletedUsingItemSerializer_v388 implements BedrockPacketSerialize
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CompletedUsingItemPacket packet) {
-        packet.setItemId(buffer.readUnsignedShortLE());
+        packet.setItemId(buffer.readShortLE());
         packet.setType(VALUES[buffer.readIntLE() + 1]); // Enum starts at -1
     }
 }
